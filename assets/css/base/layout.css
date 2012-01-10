@@ -1,0 +1,123 @@
+ 
+#wrapper {width: 100%;}
+
+/*
+ * You can use this wrapper for the faux-column technique
+ * Check http://www.alistapart.com/articles/fauxcolumns/
+ */
+
+#body {
+	margin-top: 0;
+	margin-bottom: 15px;
+	border-bottom: 1px solid #555;
+	border-top:1px solid #555;
+}
+
+/*
+ * This element needs a width
+ */
+
+#sidebar {
+	width: 300px;
+	min-height:600px;
+	padding: 15px 15px 15px 0;
+}
+
+/*
+ * Unlike the first first column, this element does *not* need a width
+ */
+
+#main {padding: 15px 0 15px 15px;}
+
+
+
+/**********************************************************************************
+ Below this comment are the core rules, there should be no need to edit any of them
+ **********************************************************************************
+ *
+ * auto-centering in IE 5
+ * we reset this value in the next rule so content is left aligned. 
+ */
+ 
+body {text-align: center;}
+
+/* 
+ * margin "auto" is to center this element (we set the width in a separate rule near the top of this styles sheet).
+ * "text-align" is to reset the declaration from "body".
+ * "inline:block" is to create a block-formatting context (the "width" does that in IE).
+ */
+
+#wrapper {
+	margin-right: auto;
+	margin-left: auto;
+	text-align: left;
+	display: inline-block;
+}
+
+/*
+ * this is the clearfix method
+ * we rely on this to contain floats in these elements 
+ */
+ 
+#header:after,
+#body:after,
+#footer:after {
+      content: ".";
+      display: block;
+      height: 0;
+      clear: both;
+      visibility: hidden;
+}
+
+/*
+ * hacks for IE
+ * "min-height" triggers "hasLayout" in IE 7, 
+ * "height" is the trigger for IE 5 and 6.
+ */
+
+#header,
+#body,
+#main,
+#footer {min-height: 0;}    
+* html #header,
+* html #body,
+* html #main,
+* html #footer {height: 1%;}  
+
+/*
+ * this element must create a new block formatting context.
+ * by default, we rely on "overflow:hidden", but if this creates an issue with your design, then apply to this element one of the following rules 
+ * ez-oa
+ * ez-dt 
+ * ez-it
+ * ez-tc
+ * ez-ib
+ */
+ 
+#main {overflow: hidden;}
+
+/*
+ * rules to apply to the second column (#article) if the styling above (overflow:hidden) creates issues with your design
+ */
+
+.ez-oa {overflow: visible; overflow: auto;}
+.ez-dt {overflow: visible; display: table;}
+.ez-it {overflow: visible; display: inline-table;}
+.ez-tc {overflow: visible; display: table-cell;}
+.ez-ib {overflow: visible; display: inline-block;}
+ 
+/* 
+ * 1st column
+ * the negative margin is to allow the border of the two columns to overlap
+ */
+ 
+#sidebar {
+	float: left;
+	margin-right: -1px;
+}
+
+/* 
+ * the following fixes the "3px jog bug"
+ */
+
+* html #sidebar {margin-right: -4px;}

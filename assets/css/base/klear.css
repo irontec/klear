@@ -1,0 +1,109 @@
+#header {
+}
+
+#header h1 {
+	margin:1.2em;
+	font-size:1.2em;
+	width:350px;
+	height:80px;
+	padding:.5em;	
+}
+
+
+#header h1 img {
+	float:left;
+	margin-right:.5em;
+}
+
+
+#header h1 span {
+	color:#777;
+	display:block;
+	text-align:center;
+	margin-top:.3em;
+	font-size:.8em;	
+}
+
+#header .toolbar {
+	float:right;
+	margin:4em 1em 0 0;
+	padding:.3em;
+}
+
+#sidebar h2 {
+	padding:0.2em 0 0.2em 28px;
+	font-size:1.2em;
+}
+
+#sidebar div {
+	padding: 0.4em;
+}
+
+#sidebar ul {
+	 list-style: none;		
+}
+#sidebar li {
+	padding: 0.5em;	
+	font-size:0.9em;
+}
+
+#sidebar li a {
+	text-decoration:none;
+	margin-left:0.4em;
+}
+
+#canvasWrapper {
+    min-height: 700px;
+    padding: 15px 15px 15px 320px;
+    width: auto;
+}
+
+#canvas {
+	min-height:700px;
+}
+
+#canvasWrapper ul.tabs {
+	height:37px;
+}
+
+#tabsList {
+	overflow:hidden;
+}
+
+#tabsList li {
+	display:inline;
+}
+
+#tabsList li .ui-icon-close { float: right; margin: 0.4em 0.2em 0 0; cursor: pointer; }
+
+#tabsList li.ui-state-default a {
+    text-indent: -99999px;
+    width:0;
+    padding: 0.5em .1em;
+    margin:0;
+}
+
+#tabsList li.ui-state-default span.ui-silk {
+	display:block;
+	float:left;
+	margin:.5em;
+	cursor:pointer;
+}
+
+#tabsList li.ui-state-active a {
+    text-indent: 0;
+    width: auto;
+    padding: 0.5em 1em;
+    margin:0;	
+}
+
+#tabsList li.ui-state-active span.ui-silk {
+	margin-right:-.2em;
+	
+}
+
+
+#footer p {	
+	text-align:center;	
+}
+

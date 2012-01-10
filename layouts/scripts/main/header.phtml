@@ -1,0 +1,70 @@
+<!doctype html>
+<html lang="es">
+<head>
+<?php
+
+	
+	$this->headTitle()->append("klear");
+	$this->headTitle()->append($this->SiteConfig()->getYear());
+	$this->headTitle()->prepend($this->SiteConfig()->getName());
+	$this->headTitle()->setSeparator(' :: ');
+
+	echo $this->headTitle();
+
+	echo $this->headMeta()
+	->appendHttpEquiv('Content-Type', 'text/html; charset=utf-8')
+	->setIndent(4);
+
+
+	echo $this->headLink()
+			->appendStylesheet($this->baseUrl('/klear/css/base/reset.css'))
+			->appendStylesheet($this->baseUrl('/klear/css/base/layout.css'))
+			->appendStylesheet($this->baseUrl('/klear/css/silk/silk-sprite.css'))
+			->appendStylesheet($this->baseUrl('/klear/css/base/layout.css'))
+			->appendStylesheet($this->baseUrl('/klear/css/base/klear.css'))
+			->appendStylesheet($this->baseUrl('/klear/css/ui-lightness/jquery-ui-1.8.16.custom.css'))
+			->headLink(array('rel' => 'shortcut icon','href' => $this->baseUrl('/images/favicon.ico')))
+			->setIndent(4);
+	
+	echo $this->headScript()
+		->appendFile('http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js')
+		->appendFile('http://ajax.aspnetcdn.com/ajax/jquery.templates/beta1/jquery.tmpl.min.js')
+		->appendFile('http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.16/jquery-ui.min.js')
+		->appendFile($this->baseUrl('klear/js/plugins/jquery.makeModule.js'))
+		->appendFile($this->baseUrl('klear/js/navigation.js'))
+		->setIndent(4);
+?>
+	<base href="<?php echo $this->serverUrl($this->baseUrl('klear')); ?>/" />
+</head>
+<body rel='<?php echo $this->baseUrl('klear')?>'>
+<div id="wrapper">
+<div id="header">
+
+    <span class="toolbar ui-widget-header ui-corner-all">
+        <button data-icon="ui-icon-person" data-text="false">Configuración de usuario</button>
+        <button data-icon="ui-icon-locked" data-text="false">Bloquear Pantalla</button>
+        <button data-icon="ui-icon-cancel" data-text="false">Salir</button>
+        
+        <?php 
+        if ($langs = $this->SiteConfig()->getLangs()):
+            echo '<span class="langs">';
+            foreach($langs as $_langIden => $lang) {
+                echo '<input type="radio" id="lang_'.$_langIden.'" name="lang" '.(($_langIden == $this->SiteConfig()->getLang())? ' checked="checked"':'') .' /><label for="lang_'.$_langIden.'">'.$lang.'</label>';
+            }
+            echo '</span>';
+        endif;
+        ?>
+    </span>
+    
+    <h1 class="ui-widget-header ui-corner-all">
+    <?php 
+        if ($this->SiteConfig()->getLogo()):
+            echo '<img src="'.$this->baseUrl($this->SiteConfig()->getLogo()).'" alt="'.$this->SiteConfig()->getName().'" />';
+        endif;
+        echo $this->SiteConfig()->getName()?>
+        <span>Klear based site</span>  
+    </h1>
+      
+</div>
+<div id="body">
+<div id="main">
