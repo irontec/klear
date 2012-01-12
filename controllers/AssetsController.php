@@ -11,8 +11,10 @@ class Klear_AssetsController extends Zend_Controller_Action
 
     
     protected function _buildPath($base) {
-        $front = $this->getFrontController();
-        return $front->getModuleDirectory() . $base . $this->getRequest()->getParam("file");
+    	$front = $this->getFrontController();
+    	
+    	$moduleDirectory = $front->getModuleDirectory($this->getRequest()->getParam('moduleName'));
+        return $moduleDirectory . $base . $this->getRequest()->getParam("file");
     }
     
     public function jsAction() {
@@ -110,8 +112,6 @@ class Klear_AssetsController extends Zend_Controller_Action
     	        'default_options' => array(
     	            'tags'=>array($hashTag)
     	        )
-    	
-    	
     	);
     	
     	$backendOptions = array(
@@ -126,9 +126,14 @@ class Klear_AssetsController extends Zend_Controller_Action
     	
     	
 		if (!$cache->start($hash)) {
-		
-    		$min = new $className(file_get_contents($file));
-    		$data = $min->{$method}();
+			
+    		if ("development" === APPLICATION_ENV) {
+    			$data = file_get_contents($file);
+    		} else {
+    			$min = new $className(file_get_contents($file));
+    			$data = $min->{$method}();
+    		}
+    		
     	    
     		$response->setHeader('Pragma', 'public', true);
 		    $response->setHeader('Cache-control', 'maxage=' . 60*60*24*30, true);

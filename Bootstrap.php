@@ -24,14 +24,15 @@ class Klear_Bootstrap extends Zend_Application_Module_Bootstrap
 		$router->addRoute(
 			'klearScripts',
 			$route = new Zend_Controller_Router_Route_Regex(
-						'klear/js/(.*)$',
+						'(klear[^/]*)/js/(.*)$',
 						array(
 							'controller' => 'assets',
 							'action' => 'js',
 							'module' => 'klear'
 						),
 						array(
-								1 => 'file'
+								2 => 'file',
+								1 => 'moduleName'
 						)
 				)
 		);
@@ -40,14 +41,15 @@ class Klear_Bootstrap extends Zend_Application_Module_Bootstrap
 		$router->addRoute(
 				'klearCss',
 				$route = new Zend_Controller_Router_Route_Regex(
-						'klear/css/(.*)$',
+						'(klear[^/]*)/css/(.*)$',
 						array(
 								'controller' => 'assets',
 								'action' => 'css',
 								'module' => 'klear'
 						),
 						array(
-								1 => 'file'
+								2 => 'file',
+								1 => 'moduleName'
 						)
 				)
 		);
@@ -55,14 +57,15 @@ class Klear_Bootstrap extends Zend_Application_Module_Bootstrap
 		$router->addRoute(
 				'klearImagesinCss',
 				$route = new Zend_Controller_Router_Route_Regex(
-						'klear/css/(.*\.png)$',
+						'(klear[^/]*)/css/(.*\.png)$',
 						array(
 								'controller' => 'assets',
 								'action' => 'imageCss',
 								'module' => 'klear'
 						),
 						array(
-								1 => 'file'
+								2 => 'file',
+								1 => 'moduleName'
 						)
 				)
 		);

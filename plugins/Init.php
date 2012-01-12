@@ -7,7 +7,7 @@ class Klear_Plugin_Init extends Zend_Controller_Plugin_Abstract {
     {
 
         $module = $request->getModuleName();
-        if ($module != 'klear') return;
+        if (!preg_match("/^klear/",$module)) return;
         
         $front = Zend_Controller_Front::getInstance();
            
@@ -16,7 +16,7 @@ class Klear_Plugin_Init extends Zend_Controller_Plugin_Abstract {
          */
         Zend_Layout::startMvc();
         $layout = Zend_Layout::getMvcInstance();
-        $layout->setLayoutPath( $front->getMOduleDirectory() . '/layouts/scripts');
+        $layout->setLayoutPath( $front->getModuleDirectory() . '/layouts/scripts');
 	    $layout->setLayout('layout');
 	
         

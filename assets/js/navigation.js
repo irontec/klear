@@ -33,13 +33,20 @@
 		$main.tabs({
 			tabTemplate: "<li title='#{label}'><span class='ui-silk'></span><span class='ui-icon ui-icon-close'>Remove Tab</span><a href='#{href}'>#{label}</a></li>",
 			add: function( event, ui ) {
-				
 				$main.tabs('select', ui.index);
 				var $tabLi = $(ui.tab).parent("li");
 				
-				$tabLi.makeModule(ui).trigger("dispatch");
+				$tabLi.kModule({
+					ui: ui,
+					container : $main						
+				}).kModule("dispatch");
 				
-
+				
+				
+				
+				//$tabLi.kModule("loading").kModule("dispatch");
+				
+				
 			}
 			
 		});
@@ -60,6 +67,7 @@
 			var idContent = "#tabs-" + iden;
 			var title = $(this).html();
 			$main.tabs( "add", idContent, title);
+			
 		});
 
 	});

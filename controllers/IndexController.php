@@ -37,21 +37,36 @@ class Klear_IndexController extends Zend_Controller_Action
     			APPLICATION_ENV
     	);
     	
+    	// Cargamos el configurador de secciones por defecto
     	$sectionConfig = new Klear_Model_SectionConfig;
     	$sectionConfig->setConfig($config);
-    	
     	if (!$sectionConfig->isValid()) {
     		throw new Zend_Controller_Action_Exception("Configuración no válida");
     		return;    		
     	}
     	
+    	// Nos devuelve el configurador del módulo concreto instanciado.
     	$moduleConfig = $sectionConfig->factoryModuleConfig();
     	$moduleConfig->setConfig($config);
     	
+    	$moduleRouter = $moduleConfig->buildRouterConfig();
+		$moduleRouter->setParams($this->getRequest()->getParams());
+		
+		
+		$moduleRouter->resolveDispatch();
+		
+    	//Así tendremos disponible la configuración del módulo en el controlador principal.
+    	//$this->getRequest()->setParam("mainConfig", $moduleConfig);
     	
-    	$this->_forward($moduleConfig->getActionName(),$moduleConfig->getControllerName(),$moduleConfig->getModuleName());
-    	
-    	
+    	$this->_forward(
+    				$moduleRouter->getActionName(),
+    				$moduleRouter->getControllerName(),
+    				$moduleRouter->getModuleName(),
+    				array(
+    						"mainRouter"=>$moduleRouter,
+    				)
+    			);
+    	 	
     	
     }
 
