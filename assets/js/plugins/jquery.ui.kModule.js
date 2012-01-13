@@ -180,7 +180,10 @@
 					
 					
 					if (typeof $.fn[response.module] == 'function' ) {
-							$(self)[response.module](response.data);
+							$(self)[response.module]({
+								data: response.data
+							});
+							
 						}
 			            
 		            }).fail( function( data ){
@@ -189,12 +192,9 @@
 		            });	
 			
 		},
-		mostrar : function(msg) {
-			var self = this;
+		getPanel : function() {
 			
-			
-			window.setInterval(function(){ console.log(self.options.foo);},1000);
-			
+			return this.options.panel;
 		},
 		dispatch : function() {
             $.ajax({

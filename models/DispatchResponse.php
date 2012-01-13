@@ -15,8 +15,9 @@ class Klear_Model_DispatchResponse {
 	protected $_data;
 	
 	
-	public function addTemplate($tmpl) {
-		$this->_templates[crc32($tmpl)] = $tmpl;
+	public function addTemplate($tmpl, $iden = false) {
+	    $iden = ($iden)? $iden : crc32($tmpl);
+		$this->_templates[$iden] = $tmpl;
 	}
 
 	
