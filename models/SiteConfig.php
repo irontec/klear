@@ -10,6 +10,8 @@ class Klear_Model_SiteConfig {
 	protected $_langs = array();
 	
 	public function setConfig(Zend_Config $config) {
+		
+		
 		// TO-DO COntrol de errores, configuración mal seteada
 		$this->_year = $config->year;
 		$this->_name = $config->sitename;

@@ -33,7 +33,8 @@
 		$main.tabs({
 			tabTemplate: "<li title='#{label}'><span class='ui-silk'></span><span class='ui-icon ui-icon-close'>Remove Tab</span><a href='#{href}'>#{label}</a></li>",
 			add: function( event, ui ) {
-				$main.tabs('select', ui.index);
+				$main.tabs('select', ui.index)
+				
 				var $tabLi = $(ui.tab).parent("li");
 				
 				$tabLi.kModule({
@@ -53,6 +54,7 @@
 		
 		$( "#tabsList").on("click","span.ui-icon-close", function() {
 			var index = $( "li", $main ).index( $( this ).parent() );
+			$(this).parent("li").kModule("destroy");
 			$main.tabs( "remove", index );
 		});
 

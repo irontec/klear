@@ -1,5 +1,10 @@
 <?php
 
+/**
+ * @author jabi
+ * Iterador que devuelve Sectiontodos los elementos del menu principal Sections > Subsections
+ * 
+ */
 class Klear_Model_Menu implements Iterator
 {
 	
@@ -58,14 +63,16 @@ class Klear_Model_Menu implements Iterator
 	
 	public function parse() {
 		foreach($this->_config as $name => $sectionData) {
-			
+		
 			$section = new Klear_Model_Section;
+			
 			$section
 			    ->setParentMenu($this)
 				->setName($name)
 				->setData($sectionData);
 			
 			$this->_sections[] = $section;
+			
 		}
 		
 		$this->_config = null;

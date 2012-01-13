@@ -46,6 +46,7 @@ class Klear_Plugin_Init extends Zend_Controller_Plugin_Abstract {
 							"siteConfig"=>$klearConfig->getSiteConfig(),
 							"menu"=>$klearConfig->getMenu())
 		); 
+		
         
     }
 }

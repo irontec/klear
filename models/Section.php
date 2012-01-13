@@ -8,10 +8,10 @@
 class Klear_Model_Section  implements Iterator {
 	
 	protected $_name;
-	protected $_nameML = array();
+	protected $_name_i18n = array();
 	
 	protected $_description;
-	protected $_descriptionML = array();
+	protected $_description_i18n = array();
 	
 	protected $_menu = null;
 	
@@ -29,58 +29,37 @@ class Klear_Model_Section  implements Iterator {
 	}
 	
 	
-	protected function _setProperty($attribute,$data) {
-		if (!isset($data)) return;
-		
-		$attributeValue = '_'.$attribute;
-		
-		if (is_string($data)) {
-			$this->{$attributeValue} = $data;
-			return;
-		}
-		
-		/*
-		 * El atributo tiene multi-idioma
-		 */
-		$attributeValue .= "ML";
-		
-		if ( (is_object($data)) && (isset($data->ml)) ) {
-		    
-			foreach ($data->ml as $lang => $_data) {
-			    $this->{$attributeValue}[$lang] = $_data;
-			}
-		}
-	}
-	
 	public function setData(Zend_Config $data) {
 		
+		$config = new Klear_Model_KConfigParser();
+		$config->setConfig($data);
 		
-		// Si tenemos la sección title, se sobreescribe el name.
-		// Soporte Multi-idioma integrado
-		$this->_setProperty("name",$data->title);
-		$this->_setProperty("description",$data->desc);
-		$this->_setProperty("class",$data->class);
-        
+		
+		list($attrName,$value) = $config->getPropertyML("title","name",true);
+		$this->$attrName = $value;
+		
+		list($attrName,$value) = $config->getPropertyML("description",false,false);
+		$this->$attrName = $value;
+		
+		$this->_class = $config->getProperty("class",false);
+
 		if (!isset($data->submenus)) return;
 		
 		foreach($data->submenus as $file => $sectionData) {
-		    
-			$subsection = new Klear_Model_SubSection;
+		    $subsection = new Klear_Model_SubSection;
 			$subsection
 			    ->setParentMenu($this->_menu)
 				->setMainFile($file)
-				
 				->setData($sectionData);
-				
+			
 			$this->_subsections[] = $subsection;
-
 		}
-	
+			
 	}
 	
 	
 	protected function _getProperty($attribute) {
-	    $attributeName = '_' . $attribute . 'ML';
+	    $attributeName = '_' . $attribute . '_i18n';
 	    
 	    if (isset($this->{$attributeName}[$this->_menu->getCurrentLang()])) {
 	        

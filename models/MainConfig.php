@@ -15,17 +15,19 @@ class Klear_Model_MainConfig {
 	 */
 	public function setConfig(Zend_Config $config) {
 		$this->_buildSiteConfig($config);
-		$this->_buildMenu($config);		
+		$this->_buildMenu($config);
 	}
 
 	
 	protected function _buildSiteConfig(Zend_Config $config) {
 		$this->_siteConfig = new Klear_Model_SiteConfig;
 		$this->_siteConfig->setConfig($config->main);
+		
 	}
 
 	protected function _buildMenu(Zend_Config $config) {
-	    $this->_menu = new Klear_Model_Menu;
+
+		$this->_menu = new Klear_Model_Menu;
 		$this->_menu->setConfig($config->menu);
 		$this->_menu->setSiteConfig($this->getSiteConfig());
 		$this->_menu->parse();

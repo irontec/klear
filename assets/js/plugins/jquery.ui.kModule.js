@@ -66,10 +66,10 @@
 			}
 		},
 		destroy: function(){
+			
 			// remove this instance from $.ui.mywidget.instances
 			var element = this.element,
-			position = $.inArray(element, $.ui.mywidget.instances);
-
+			position = $.inArray(element, $.ui.kModule.instances);
 			// if this instance was found, splice it off
 			if(position > -1){
 				$.ui.kModule.instances.splice(position, 1);

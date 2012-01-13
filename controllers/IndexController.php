@@ -21,7 +21,10 @@ class Klear_IndexController extends Zend_Controller_Action
     	$this->_helper->layout->disableLayout();
     	$this->_helper->viewRenderer->setNoRender();
     	
-    	$yamlFile = APPLICATION_PATH . '/configs/klear/' . $this->getRequest()->getParam("file") . '.yaml';
+    	$configPath = APPLICATION_PATH . '/configs/klear/'; 
+    	
+    	// TODO: sanitize file param
+    	$yamlFile = $configPath . $this->getRequest()->getParam("file") . '.yaml';
     	
     	if (!file_exists($yamlFile)) {
     		//TO-DO Throw Exception
@@ -47,7 +50,11 @@ class Klear_IndexController extends Zend_Controller_Action
     	
     	// Nos devuelve el configurador del módulo concreto instanciado.
     	$moduleConfig = $sectionConfig->factoryModuleConfig();
+    	
     	$moduleConfig->setConfig($config);
+    	
+    	// Le pasamos a la configuración del módulo la ruta de configuración por defecto.
+    	$moduleConfig->setConfigPath($configPath);
     	
     	$moduleRouter = $moduleConfig->buildRouterConfig();
 		$moduleRouter->setParams($this->getRequest()->getParams());
@@ -56,8 +63,7 @@ class Klear_IndexController extends Zend_Controller_Action
 		$moduleRouter->resolveDispatch();
 		
     	//Así tendremos disponible la configuración del módulo en el controlador principal.
-    	//$this->getRequest()->setParam("mainConfig", $moduleConfig);
-    	
+ 	
     	$this->_forward(
     				$moduleRouter->getActionName(),
     				$moduleRouter->getControllerName(),
