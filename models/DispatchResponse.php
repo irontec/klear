@@ -12,6 +12,7 @@ class Klear_Model_DispatchResponse {
 	protected $_cssFiles;
 	protected $_templates;
 	protected $_module;
+	protected $_plugin;
 	protected $_data;
 	
 	
@@ -37,13 +38,17 @@ class Klear_Model_DispatchResponse {
 		$this->_module = $module;
 	}
 	
+	public function setPlugin($plugin) {
+		$this->_plugin = $plugin;
+	}
+	
 	public function attachView(Zend_View $view) {
 		$view->baseurl = $view->baseUrl($this->_module);
 		$view->templates = $this->_templates;
 		$view->scripts = $this->_jsFiles;
 		$view->css = $this->_cssFiles;
 		$view->data = $this->_data;
-		$view->module = $this->_module;
+		$view->plugin = $this->_plugin;
 
 	}
 	

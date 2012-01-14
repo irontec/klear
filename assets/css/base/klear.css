@@ -1,25 +1,28 @@
+body {
+    font-family: Lucida Grande,Lucida Sans,Arial,sans-serif;
+}
+
 #header {
 }
 
+#header #logoApp {
+    float:left;
+    width:180px;
+    margin:-40px 0 20px 20px;
+}
+#header h1, #header h2 {
+    margin-left:180px;
+    width:400px;
+}
+
 #header h1 {
-	margin:1.2em;
-	font-size:1.2em;
-	width:350px;
-	height:80px;
-	padding:.5em;	
+    margin-top:50px;
+	font-size:1.3em;
 }
 
 
-#header h1 img {
-	float:left;
-	margin-right:.5em;
-}
-
-
-#header h1 span {
+#header h2 {
 	color:#777;
-	display:block;
-	text-align:center;
 	margin-top:.3em;
 	font-size:.8em;	
 }
@@ -66,8 +69,11 @@
 	height:37px;
 }
 
-#tabsList {
+ul#tabsList {
 	overflow:hidden;
+	border-bottom:0;
+	border-bottom-right-radius:0;
+	border-bottom-left-radius:0;
 }
 
 #tabsList li {
@@ -76,12 +82,12 @@
 
 #tabsList li .ui-icon-close { float: right; margin: 0.4em 0.2em 0 0; cursor: pointer; }
 
-#tabsList li.ui-state-default a {
+/* #tabsList li.ui-state-default a {
     text-indent: -99999px;
     width:0;
     padding: 0.5em .1em;
     margin:0;
-}
+} */
 
 #tabsList li.ui-state-default span.ui-silk {
 	display:block;
@@ -107,3 +113,18 @@
 	text-align:center;	
 }
 
+
+div.ui-tabs-panel {
+    padding: 0.1em 0.05em;	
+}
+
+#loadingPanel {
+	position:absolute;
+	display:none;
+	background:#fff;
+	width: 20%;
+	padding:18px;
+	margin:18px auto auto 30%;
+	border:1px solid #444;
+	text-align:center;
+}

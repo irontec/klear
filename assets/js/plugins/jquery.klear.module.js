@@ -1,7 +1,7 @@
 ;(function($) {
 
 		
-	$.widget("ui.kModule", {
+	$.widget("klear.module", {
 		options: {
 			ui: null,
 			container: null,
@@ -12,47 +12,64 @@
             tabIndex : null,
             baseurl : null,
             menuLink : null,
-            foo : '22'
+            screen : null,
+            dispatchOptions : {},
+            loadingSelector : null
 		},
 		
 		_create: function(){
-
 			// remember this instance
-			$.ui.kModule.instances.push(this.element);
+			$.klear.module.instances.push(this.element);
 		},
 		_getOtherInstances: function(){
 			
 			var element = this.element;
 
-			return $.grep($.ui.kModule.instances, function(el){
+			return $.grep($.klear.module.instances, function(el){
 				return el !== element;
 			});
 		},
 		
 		_init: function() {
 				
-				this.options.mainEnl = $("a:first",this.element),
-				this.options.title = $("a:first",this.element).html(),
-				this.options.file = $("a:first",this.element).attr("href").replace(/\#tabs\-/,''),
-				this.options.panel = this.options.ui.panel,
-				this.options.tabIndex = this.options.ui.index,
-				this.options.menuLink = $('#target-' + this.options.file);
+				this.options.mainEnl = $("a:first",this.element);
+				this.options.title = $("a:first",this.element).html();
+				this.options.file = $("a:first",this.element).attr("href").replace(/\#tabs\-([^\_]+).*/,'$1');
 				
-				this._loadIcon();
-		},
-		_loadIcon : function() {
-		    
-				if ($("span.ui-silk",this.options.menuLink.parent()).length > 0) {
+				this.options.panel = this.options.ui.panel;
+				this.options.tabIndex = this.options.ui.index;
 				
-					var _menuLink = this.options.menuLink;
-					var curClasses = $("span.ui-silk",this.options.menuLink.parent()).attr("class").split(' ');
-					
-					$("span.ui-silk",this.element)
-						.addClass(curClasses[(curClasses.length-1)])
-						.on('click',function() {
-							$(_menuLink).trigger("click");
-						});
+				if ($('#target-' + this.options.file).length > 0) {
+					this.options.menuLink = $('#target-' + this.options.file);
 				}
+				this.setAsloading();
+				this._initTab();
+		},
+		
+		reload : function() {
+			this._initTab();
+		},
+		_initTab : function() {
+
+			if (!this.options.menuLink) return;
+
+			var _self = this;
+		    	
+			if ($("span.ui-silk",this.options.menuLink).length > 0) {
+				var _mainEnl = this.options.mainEnl;
+				var curClasses = $("span.ui-silk",this.options.menuLink.parent()).attr("class").split(' ');
+			} else return;
+			
+			var $_icon = $("span.ui-silk",_self.element);
+
+			if (curClasses) {
+				$_icon.addClass(curClasses[(curClasses.length-1)])
+			}
+				
+			$_icon.on('click',function() {
+				$(_mainEnl).trigger("click");
+			});
+		
 				
 		},
 		_setOption: function(key, value){
@@ -67,12 +84,15 @@
 		},
 		destroy: function(){
 			
+			
+			$(this.options.menuLink).removeClass("ui-state-highlight");
+			
 			// remove this instance from $.ui.mywidget.instances
 			var element = this.element,
-			position = $.inArray(element, $.ui.kModule.instances);
+			position = $.inArray(element, $.klear.module.instances);
 			// if this instance was found, splice it off
 			if(position > -1){
-				$.ui.kModule.instances.splice(position, 1);
+				$.klear.module.instances.splice(position, 1);
 			}
 
 			// call the original destroy method since we overwrote it
@@ -125,8 +145,8 @@
 
 		    
 			for(var i=0;i<total;i++) {
-				
-				  $.ajax({
+				var _script = scripts[i]; 
+				$.ajax({
             			url: this.options.baseurl + scripts[i],
             			dataType:'script',
             			type : 'get',
@@ -138,9 +158,9 @@
 							}
                         },
                         error : function(r) {
-                            dfr.reject("Error descargando el sript ["+scripts[i]+"]"); 
+                            dfr.reject("Error descargando el script ["+_script+"]"); 
             			}
-				  }); 
+				 }); 
 			  }
 			  return dfr.promise();							
 		},
@@ -163,54 +183,96 @@
 		},
 		_parseDispatchResponse : function(response) {
 			 
-			if ( (!response.baseurl) || (!response.templates) || (!response.scripts) || (!response.css) || (!response.data) || (!response.module) ) {
+			if ( (!response.baseurl) || (!response.templates) || (!response.scripts) || (!response.css) || (!response.data) || (!response.plugin) ) {
 				alert("Formato de respuesta incorrecta.<br />Consulte con su administrador.");
 				return;							
 			}
 			
 					
 			this.options.baseurl = response.baseurl;
-			var self = this.element;
+			var self = this;
 			
 			$.when(
 				this._loadTemplates(response.templates),
 				this._loadCss(response.css),
 				this._loadScripts(response.scripts)
 			).done( function(tmplReturn,scriptsReturn,cssReturn) {
+				
+				if (typeof $.fn[response.plugin] == 'function' ) {
+					$(self.element)[response.plugin]({
+						data: response.data
+					});
+				} else {
 					
-					
-					if (typeof $.fn[response.module] == 'function' ) {
-							$(self)[response.module]({
-								data: response.data
-							});
-							
-						}
-			            
-		            }).fail( function( data ){
-		            	console.log("error",data);
-		            	$self.trigger("alert","Error registrando el módulo");				                    
-		            });	
+				}
+				self.setAsloaded();
+				
+			}).fail( function( data ){
+				
+		        self.dialog("Error registrando el módulo");				                    
+		    });	
 			
 		},
 		getPanel : function() {
 			
 			return this.options.panel;
 		},
+		getContainer : function() {
+			return this.options.container;			
+		},
 		dispatch : function() {
+			var dispatchData = {};
+			dispatchData.file = this.options.file;
+			
+			$.extend(dispatchData,this.options.dispatchOptions);
+			
             $.ajax({
                	url:$.baseurl + 'index/dispatch',
                	dataType:'json',
                	context : this,
-               	data : {file:this.options.file},
+               	data : dispatchData,
                	type : 'get',
                	success: this._parseDispatchResponse
             });
+		},
+		dialog : function(msg) {
+			
+			var _dialog = $("<div title='Aviso'>"+msg+"</div>");
+			var self = this;
+			_dialog.dialog({
+				open : function(event,ui) {
+					
+				},
+				position : 'center',
+				draggable : false,
+				resizable : false,
+				
+			});
+			
+		},
+		highlightOn: function() {
+			$(this.element).addClass("ui-state-highlight");
+		},
+		highlightOff : function() {
+			$(this.element).removeClass("ui-state-highlight");
+		},
+		setAsloading : function() {
+			var _loadingItem = $(this.options.loadingSelector);
+			_loadingItem.hide().appendTo(this.options.panel).css("z-index",'10000').fadeIn();
+		},
+		setAsloaded : function() {
+			var _loadingItem = $(this.options.loadingSelector);
+			_loadingItem.fadeOut(function() {
+				$(this).appendTo(document.body);
+			});
 		}
+		
+		
 
 	});
 
 	
-	$.extend($.ui.kModule, {
+	$.extend($.klear.module, {
 		instances: []
 	});
 		

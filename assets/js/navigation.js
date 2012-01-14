@@ -33,20 +33,20 @@
 		$main.tabs({
 			tabTemplate: "<li title='#{label}'><span class='ui-silk'></span><span class='ui-icon ui-icon-close'>Remove Tab</span><a href='#{href}'>#{label}</a></li>",
 			add: function( event, ui ) {
+				
 				$main.tabs('select', ui.index)
-				
 				var $tabLi = $(ui.tab).parent("li");
-				
-				$tabLi.kModule({
+				$tabLi.module({
 					ui: ui,
-					container : $main						
-				}).kModule("dispatch");
+					container : $main,
+					loadingSelector : '#loadingPanel'
+				});
+
+				// Se invoca custom event para actualizar objeto klear.module (si fuera necesario);
+				$main.trigger("tabspostadd",ui);
 				
-				
-				
-				
-				//$tabLi.kModule("loading").kModule("dispatch");
-				
+				$tabLi.module("dispatch");
+			
 				
 			}
 			
@@ -54,7 +54,7 @@
 		
 		$( "#tabsList").on("click","span.ui-icon-close", function() {
 			var index = $( "li", $main ).index( $( this ).parent() );
-			$(this).parent("li").kModule("destroy");
+			$(this).parent("li").module("destroy");
 			$main.tabs( "remove", index );
 		});
 
@@ -67,11 +67,14 @@
 				return;
 			}
 			var idContent = "#tabs-" + iden;
-			var title = $(this).html();
+			var title = $(this).text();
 			$main.tabs( "add", idContent, title);
 			
 		});
 
+		
 	});
+	
+	
 	
 })(jQuery);

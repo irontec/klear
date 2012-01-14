@@ -32,10 +32,16 @@ class Klear_AssetsController extends Zend_Controller_Action
     }
     
     
-    public function imagecssAction() {
+	public function imagecssAction() {
         $imgFile = $this->_buildPath('/assets/css/');
         return $this->_imgAction($imgFile);
                 
+    }
+    
+    public function imageAction() {
+    	$imgFile = $this->_buildPath('/assets/images/');
+    	return $this->_imgAction($imgFile);
+    
     }
     
     protected function _imgAction($file) {
@@ -57,7 +63,11 @@ class Klear_AssetsController extends Zend_Controller_Action
     			return;
     	}
         
-    	$response->setHeader('ETag',$hash);
+    	
+    	if ("development" !== APPLICATION_ENV) {
+    		$response->setHeader('ETag',$hash);
+    	}
+    	
 		$response->setHeader('Cache-control', 'maxage=' . 60*60*24*30, true);
         $response->setHeader('Content-type',$format);	
 	   	$response->setHeader('Content-length',filesize($file));
@@ -137,7 +147,11 @@ class Klear_AssetsController extends Zend_Controller_Action
     	    
     		$response->setHeader('Pragma', 'public', true);
 		    $response->setHeader('Cache-control', 'maxage=' . 60*60*24*30, true);
-		    $response->setHeader('Last-Modified', gmdate('D, d M Y H:i:s', $lastModifiedTime).' GMT', true);
+		
+		    if ("development" !== APPLICATION_ENV) {
+		    	$response->setHeader('Last-Modified', gmdate('D, d M Y H:i:s', $lastModifiedTime).' GMT', true);
+		    }
+		    
 		    $response->setHeader('Content-type',$file_content_type);	
 	    	$response->setHeader('Content-length',strlen($data));
     	    $response->sendHeaders();

@@ -69,6 +69,22 @@ class Klear_Bootstrap extends Zend_Application_Module_Bootstrap
 						)
 				)
 		);
+		
+		$router->addRoute(
+				'klearImages',
+				$route = new Zend_Controller_Router_Route_Regex(
+						'(klear[^/]*)/images/(.*)$',
+						array(
+								'controller' => 'assets',
+								'action' => 'image',
+								'module' => 'klear'
+						),
+						array(
+								2 => 'file',
+								1 => 'moduleName'
+						)
+				)
+		);
 	
 	}
 }

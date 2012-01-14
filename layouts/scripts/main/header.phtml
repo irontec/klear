@@ -21,18 +21,18 @@
 			->appendStylesheet($this->baseUrl('/klear/css/base/layout.css'))
 			->appendStylesheet($this->baseUrl('/klear/css/silk/silk-sprite.css'))
 			->appendStylesheet($this->baseUrl('/klear/css/base/layout.css'))
-			->appendStylesheet($this->baseUrl('/klear/css/base/klear.css'))
-			->appendStylesheet($this->baseUrl('/klear/css/ui-lightness/jquery-ui-1.8.16.custom.css'))
+			->appendStylesheet($this->baseUrl('/klear/css/EKT-theme/jquery-ui-1.8.17.custom.css'))
+			->appendStylesheet($this->baseUrl('/klear/css/base/klear.css'))			
 			->headLink(array('rel' => 'shortcut icon','href' => $this->baseUrl('/images/favicon.ico')))
 			->setIndent(4);
 	
 	echo $this->headScript()
 		->appendFile('http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js')
 		->appendFile('http://ajax.aspnetcdn.com/ajax/jquery.templates/beta1/jquery.tmpl.min.js')
-		->appendFile('http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.16/jquery-ui.min.js')
+		->appendFile('http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.17/jquery-ui.min.js')
 		->appendFile($this->baseUrl('klear/js/plugins/jquery.translate.js'))
 		->appendFile($this->baseUrl('klear/js/plugins/jquery.getStylesheet.js'))
-		->appendFile($this->baseUrl('klear/js/plugins/jquery.ui.kModule.js'))
+		->appendFile($this->baseUrl('klear/js/plugins/jquery.klear.module.js'))
 		->appendFile($this->baseUrl('klear/js/navigation.js'))
 		->setIndent(4);
 ?>
@@ -58,14 +58,16 @@
         ?>
     </span>
     
-    <h1 class="ui-widget-header ui-corner-all">
-    <?php 
+    
+        <?php 
         if ($this->SiteConfig()->getLogo()):
-            echo '<img src="'.$this->baseUrl($this->SiteConfig()->getLogo()).'" alt="'.$this->SiteConfig()->getName().'" />';
+            echo '<div id="logoApp"><img src="'.$this->baseUrl($this->SiteConfig()->getLogo()).'" alt="'.$this->SiteConfig()->getName().'" /></div>';
         endif;
-        echo $this->SiteConfig()->getName()?>
-        <span>Klear based site</span>  
+    ?>        
+    <h1>
+    <?php echo $this->SiteConfig()->getName()?>
     </h1>
+    <h2>Klear based site</h2>  
       
 </div>
 <div id="body">

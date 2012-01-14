@@ -6,6 +6,9 @@ class Klear_IndexController extends Zend_Controller_Action
     public function init()
     {
         /* Initialize action controller here */
+    	$this->_helper->ContextSwitch()
+    			->addActionContext('dispatch', 'json')
+    			->initContext('json');
     }
 
     public function indexAction()
@@ -28,7 +31,7 @@ class Klear_IndexController extends Zend_Controller_Action
     	
     	if (!file_exists($yamlFile)) {
     		//TO-DO Throw Exception
-    		die("no existe el fichero");
+    		throw new Zend_Controller_Action_Exception("No existe el Fichero de configuración.");
     		return;
     	}
     	

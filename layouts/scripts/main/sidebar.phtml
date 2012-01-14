@@ -7,8 +7,9 @@
         echo '<ul>';
         foreach ($section as $subsection) {
             echo '<li>';
+            echo '<a class="subsection" href="?" id="target-'.$subsection->getMainFile().'" >';
             echo '<span class="ui-silk inline '.$subsection->getClass().'"></span>';
-            echo '<a class="subsection" href="?" id="target-'.$subsection->getMainFile().'" >' . $subsection->getName() . '</a>';
+            echo $subsection->getName() . '</a>';
             echo '</li>';            
         }
         
