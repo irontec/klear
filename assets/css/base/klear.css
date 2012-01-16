@@ -139,13 +139,53 @@ div.ui-tabs-panel {
     padding: 0.1em 0.05em;	
 }
 
-#loadingPanel {
-	position:absolute;
-	display:none;
-	background:#fff;
-	width: 20%;
-	padding:18px;
-	margin:18px auto auto 30%;
-	border:1px solid #444;
-	text-align:center;
+
+/*
+LOADING PANEL
+*/
+#loadingPanel{
+    position:absolute;
+    display:none;
+    margin:18px auto auto 30%;
+    width: 20%;
+    overflow:hidden;
 }
+#loadingPanel div{
+	background:#fff;
+    padding:18px;
+    text-align:center;
+}
+
+/*
+MESSAGES
+*/
+.inlineMessage{
+    margin: 0 0 10px;
+    padding: 0.3em 0.7em;	
+}
+.inlineMessage-icon{
+	float: left; 
+	margin-right: .3em;
+}
+/*
+PANEL
+*/
+.ui-tabs .ui-tabs-panel{
+	
+	padding: 0.5em;
+}
+.dialogTitle {
+	
+	margin:0 10px 0 0;
+}
+
+
+
+
+
+
+
+
+
+
+
