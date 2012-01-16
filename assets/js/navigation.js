@@ -47,18 +47,28 @@
 				// Se invoca custom event para actualizar objeto klear.module (si fuera necesario);
 				$main.trigger("tabspostadd",ui);
 				
+				
 				$tabLi.klearModule("dispatch");
+				
+				$tabLi.klearModule("chekModuleDialog");
+				
 			},
 			select : function(event, ui) {
-				$("li:eq("+ui.index+")",$main).klearModule("updateLoader");				
+				$("li:eq("+ui.index+")",$main).klearModule("updateLoader");		
+				var $tabLi = $(ui.tab).parent("li");
+				$tabLi.klearModule("chekModuleDialog");
+				
 			}
 			
 		});
 		
 		$( "#tabsList").on("click","span.ui-icon-close", function() {
 			var index = $( "li", $main ).index( $( this ).parent() );
-			$(this).parent("li").klearModule("destroy");
-			$main.tabs( "remove", index );
+			var $tab = $(this).parent("li");
+			$tab.klearModule("close", {callback: function() {
+				$main.tabs( "remove", index );
+			}});
+						
 		});
 
 		$( "#sidebar").on("click","a.subsection", function(e) {
