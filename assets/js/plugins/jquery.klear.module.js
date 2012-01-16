@@ -240,28 +240,32 @@
 			var self = this;
 			
 			$.when(
-				this._loadScripts(response.scripts),
 				this._loadTemplates(response.templates),
-				this._loadCss(response.css)
+				this._loadCss(response.css),
+				this._loadScripts(response.scripts)
 			).done( function(tmplReturn,scriptsReturn,cssReturn) {
-				
-				console.log(response.plugin, $.fn[response.plugin]);
-				
-				window.setTimeout(function(){
+
+				// Javascript takes a bit executing. 
+				// Wait and check until plugin is ready (3 tries)
+				var tryOuts = 0;
+				(function tryAgain() {
 					
 					if (typeof $.fn[response.plugin] == 'function' ) {
+						self.setAsloaded();
 						$(self.element)[response.plugin]({
 							data: response.data
 						});
 					} else {
-						
+						console.log("trying..." + tryOuts);
+						if (++tryOuts == 3) {
+							// Mostrar error... algo pasa con el javascript :S
+							alert("Error!");
+						} else {
+							window.setTimeout(tryAgain,100);
+						}
 					}
-					self.setAsloaded();
+				})();
 					
-				}, 10);
-				
-				
-				
 				
 			}).fail( function( data ){
 				console.log(data);
