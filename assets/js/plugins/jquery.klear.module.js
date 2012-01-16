@@ -148,6 +148,7 @@
 				var _script = scripts[i]; 
 				$.ajax({
             			url: this.options.baseurl + scripts[i],
+            			cache:true,
             			dataType:'script',
             			type : 'get',
             			success: function() {
@@ -245,8 +246,7 @@
 				},
 				position : 'center',
 				draggable : false,
-				resizable : false,
-				
+				resizable : false				
 			});
 			
 		},
@@ -256,18 +256,33 @@
 		highlightOff : function() {
 			$(this.element).removeClass("ui-state-highlight");
 		},
+		_loading : false,
 		setAsloading : function() {
-			var _loadingItem = $(this.options.loadingSelector);
-			_loadingItem.hide().appendTo(this.options.panel).css("z-index",'10000').fadeIn();
+			this._loading = true;
+			this.updateLoader();
 		},
 		setAsloaded : function() {
+			this._loading = false;
+			this.updateLoader();
+		},
+		updateLoader : function() {
+			
 			var _loadingItem = $(this.options.loadingSelector);
-			_loadingItem.fadeOut(function() {
-				$(this).appendTo(document.body);
-			});
-		}
-		
-		
+			
+			if (this._loading) {
+				
+				_loadingItem.hide().appendTo(this.options.panel).css("z-index",'10000').fadeIn();
+				$(this.options.ui.tab).addClass("ui-state-disabled");
+			
+			} else {
+				$(this.options.ui.tab).removeClass("ui-state-disabled");
+				_loadingItem.fadeOut(function() {
+					$(this).appendTo(document.body);
+					
+				});				
+			}
+			
+		}		
 
 	});
 

@@ -31,8 +31,9 @@
 		
 		var $main = $("#canvas");
 		$main.tabs({
-			tabTemplate: "<li title='#{label}'><span class='ui-silk'></span><span class='ui-icon ui-icon-close'>Remove Tab</span><a href='#{href}'>#{label}</a></li>",
-			add: function( event, ui ) {
+			tabTemplate: "<li title='#{label}'><span class='ui-silk'></span><span class='ui-icon ui-icon-close'></span><a href='#{href}'>#{label}</a></li>",
+			scrollable: true,
+			add : function( event, ui ) {
 				
 				$main.tabs('select', ui.index)
 				var $tabLi = $(ui.tab).parent("li");
@@ -40,14 +41,15 @@
 					ui: ui,
 					container : $main,
 					loadingSelector : '#loadingPanel'
-				});
+				}).tooltip();
 
 				// Se invoca custom event para actualizar objeto klear.module (si fuera necesario);
 				$main.trigger("tabspostadd",ui);
 				
 				$tabLi.module("dispatch");
-			
-				
+			},
+			select : function(event, ui) {
+				$("li:eq("+ui.index+")",$main).module("updateLoader");				
 			}
 			
 		});
