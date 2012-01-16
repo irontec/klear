@@ -178,25 +178,19 @@
 		
 		_initTab : function() {
 
-			if (!this.options.menuLink) return;
-
-			var _self = this;
-		    	
-			if ($("span.ui-silk",this.options.menuLink).length > 0) {
-				var _mainEnl = this.options.mainEnl;
-				var curClasses = $("span.ui-silk",this.options.menuLink.parent()).attr("class").split(' ');
-			} else return;
 			
-			var $_icon = $("span.ui-silk",_self.element);
-
-			if (curClasses) {
-				$_icon.addClass(curClasses[(curClasses.length-1)]);
+			if ((!this.options.menuLink) 
+				|| ($("span.ui-silk",this.options.menuLink).length <= 0)) {
+				return;
 			}
-				
-			$_icon.on('click',function() {
-				$(_mainEnl).trigger("click");
+			var _mainEnl = this.options.mainEnl;
+			$("span.ui-silk",this.element)
+				.addClass(this._getTabIconClass())
+				.on('click',function() {
+					$(_mainEnl).trigger("click");
 			});
-		
+			
+					
 				
 		},
 		
@@ -318,20 +312,21 @@
                	context : this,
                	data : dispatchData,
                	type : 'get',
-               	success: this._parseDispatchResponse
+               	success: this._parseDispatchResponse,
+               	error: this._errorResponse
             });
 		},
+		
+		_errorResponse: function() {
+			this.setAsloaded();
+			this.showDialogError($.translate("Error registrando el módulo"));
+		}, 
 		
 		_parseDispatchResponse : function(response) {
 			var responseCheck = ['baseurl', 'templates', 'scripts', 'css', 'data', 'plugin'];
 			for(var i=0; i<responseCheck.length; i++) {
 				if (response[responseCheck[i]] == undefined) {
-					
-					/*this.dialogAlert(
-						$.translate("Formato de respuesta incorrecta.<br />Consulte con su administrador."),
-						{closeTab: true,tabInfo: true}
-					);*/
-					self.dialog("Error registrando el módulo");
+					this.showDialogError($.translate("Error registrando el módulo"));
 					return;
 				}
 			}
@@ -355,13 +350,10 @@
 						$(self.element)[response.plugin]({
 							data: response.data
 						});
-						
 					} else {
-						
-						console.log("trying..." + tryOuts);
 						if (++tryOuts == 5) {
 							// Mostrar error... algo pasa con el javascript :S
-							alert("Error!");
+							self.showDialogError($.translate("Error registrando el módulo"), {dialogType: 'dialog'});
 						} else {
 							window.setTimeout(tryAgain,50);
 						}
@@ -370,9 +362,7 @@
 					
 				
 			}).fail( function( data ){
-				console.log(data);
-				
-		        self.dialog("Error registrando el módulo");				                    
+				self.showDialogError($.translate("Error registrando el módulo"));
 		    });	
 			
 		},
@@ -403,6 +393,132 @@
 			}
 		},
 		
+		
+		/*
+		 * blockTab
+		 */
+		
+		$moduleDialog: null,
+		
+		chekModuleDialog: function() {
+			
+			var otherInstances = this._getOtherInstances();
+			for (var i in otherInstances) {
+				var oElement = otherInstances[i];
+				oElement.klearModule('toggleModuleDialog');
+			}
+			this.toggleModuleDialog();
+			
+		},
+		
+		toggleModuleDialog: function() {
+			if (this.$moduleDialog) {
+				if (this.$moduleDialog.moduleDialog( "option" , 'isHidden') == true) {
+					this.$moduleDialog.moduleDialog( "option" , 'isHidden' , false );
+					this.$moduleDialog.moduleDialog('open');
+				} else {
+					this.$moduleDialog.moduleDialog( "option" , 'isHidden' , true );
+					this.$moduleDialog.moduleDialog('close');	
+				}
+			}
+		},
+		
+		blockTab: function(msg, options) {
+			var self = this;
+			var iconClass = self._getTabIconClass();
+			this.$moduleDialog = $('<div>'+self.options.title+'</div>').moduleDialog({
+				position: ['auto',200],
+				title: '<span class="ui-silk inline dialogTitle '+iconClass+' "></span>'+this.options.title + "",
+				modal:true, 
+				klearPosition: '#canvas' ,
+				open: function(ui) {
+					$(self.options.ui.tab).addClass("ui-state-disabled");
+				},
+				close: function(ui) {
+					if ($(this).moduleDialog('option', 'isHidden')) {
+						
+					} else {
+						$(self.options.ui.tab).removeClass("ui-state-disabled");
+						$(this).remove();
+					}
+				}
+			});
+		},
+		
+		dialogMessageTmpl: '<div class="ui-widget"><div class="ui-state-${state} ui-corner-all inlineMessage"><p><span class="ui-icon ${icon} inlineMessage-icon"></span>{{html text}}</p></div></div>',
+		
+		showDialog: function (msg, options) {
+			var $parsetHtml = $.tmpl(this.dialogMessageTmpl, {
+				icon: options.icon? options.icon:'ui-icon-info',
+				state: options.state? options.state:'highlight',
+				text: msg
+			});
+			var dialogType = options.dialogType || 'moduleDialog';
+			var self = this;
+			var iconClass = self._getTabIconClass();
+			if (dialogType == 'moduleDialog') {
+				this.$moduleDialog = $parsetHtml.moduleDialog({
+					position: ['auto',200],
+					title: '<span class="ui-silk inline dialogTitle '+iconClass+' "></span>'+this.options.title + "",
+					modal:true, 
+					klearPosition: '#canvas' ,
+					open: function(ui) {
+						$(self.options.ui.tab).addClass("ui-state-disabled");
+					},
+					close: function(ui) {
+						if ($(this).moduleDialog('option', 'isHidden')) {
+							
+						} else {
+							$(self.options.ui.tab).removeClass("ui-state-disabled");
+							$(this).remove();
+						}
+					}
+				});
+			} else {
+				$parsetHtml.dialog({
+					title: '<span class="ui-silk inline dialogTitle '+iconClass+' "></span>'+this.options.title + "",
+					modal: options.modal || false, 
+					close: function(ui) {
+						$(this).remove();
+					}
+				});
+			}
+			
+		},
+		
+		showDialogMessage: function (msg, opts) {
+			var options = {
+				type: 'msg',
+				dialogType: 'moduleDialog'
+			};
+			var opts = opts || {}
+			$.extend(options, opts);
+			this.showDialog(msg, options);
+		},
+		
+		showDialogWarn: function(msg, opts) {
+			var options = {
+				type: 'warn',
+				icon: 'ui-icon-alert',
+				dialogType: 'moduleDialog'
+			};
+			var opts = opts || {}
+			$.extend(options, opts);
+			this.showDialog(msg, options);
+		},
+		
+		showDialogError: function(msg, opts) {
+			var options = {
+				type: 'error',
+				icon: 'ui-icon-alert',
+				state: 'error',
+				dialogType: 'moduleDialog'
+			};
+			var opts = opts || {}
+			$.extend(options, opts);
+			this.showDialog(msg, options);
+		},
+		
 		/*
 		 * TAB LOCK
 		 */
@@ -423,6 +539,14 @@
 		 * DECORATORS
 		 * 
 		 */
+		
+		_getTabIconClass: function() {
+			if (this.options.menuLink && $("span.ui-silk",this.options.menuLink).length > 0) {
+				var curClasses = $("span.ui-silk",this.options.menuLink.parent()).attr("class").split(' ');
+				return curClasses[(curClasses.length-1)];
+			}
+			return '';
+		},
 		
 		inlineMessageTmpl: '<div class="ui-widget"><div class="ui-state-${state} ui-corner-all inlineMessage"><p><span class="ui-icon ${icon} inlineMessage-icon"></span>{{html text}}</p></div></div>',
 		
@@ -519,16 +643,16 @@
 			var _loadingItem = $(this.options.loadingSelector);
 			
 			if (this._loading) {
-				
 				_loadingItem.hide().appendTo(this.options.panel).css("z-index",'10000').fadeIn();
 				$(this.options.ui.tab).addClass("ui-state-disabled");
+				
+				
 			
 			} else {
 				$(this.options.ui.tab).removeClass("ui-state-disabled");
 				_loadingItem.fadeOut(function() {
 					$(this).appendTo(document.body);
-					
-				});				
+				});	
 			}
 			
 		}
