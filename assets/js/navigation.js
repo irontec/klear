@@ -37,7 +37,8 @@
 				
 				$main.tabs('select', ui.index)
 				var $tabLi = $(ui.tab).parent("li");
-				$tabLi.module({
+				
+				$tabLi.klearModule({
 					ui: ui,
 					container : $main,
 					loadingSelector : '#loadingPanel'
@@ -46,17 +47,17 @@
 				// Se invoca custom event para actualizar objeto klear.module (si fuera necesario);
 				$main.trigger("tabspostadd",ui);
 				
-				$tabLi.module("dispatch");
+				$tabLi.klearModule("dispatch");
 			},
 			select : function(event, ui) {
-				$("li:eq("+ui.index+")",$main).module("updateLoader");				
+				$("li:eq("+ui.index+")",$main).klearModule("updateLoader");				
 			}
 			
 		});
 		
 		$( "#tabsList").on("click","span.ui-icon-close", function() {
 			var index = $( "li", $main ).index( $( this ).parent() );
-			$(this).parent("li").module("destroy");
+			$(this).parent("li").klearModule("destroy");
 			$main.tabs( "remove", index );
 		});
 

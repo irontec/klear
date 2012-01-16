@@ -32,19 +32,19 @@
 		},
 		
 		_init: function() {
-				
-				this.options.mainEnl = $("a:first",this.element);
-				this.options.title = $("a:first",this.element).html();
-				this.options.file = $("a:first",this.element).attr("href").replace(/\#tabs\-([^\_]+).*/,'$1');
-				
-				this.options.panel = this.options.ui.panel;
-				this.options.tabIndex = this.options.ui.index;
-				
-				if ($('#target-' + this.options.file).length > 0) {
-					this.options.menuLink = $('#target-' + this.options.file);
-				}
-				this.setAsloading();
-				this._initTab();
+				alert("si");
+			this.options.mainEnl = $("a:first",this.element);
+			this.options.title = $("a:first",this.element).html();
+			this.options.file = $("a:first",this.element).attr("href").replace(/\#tabs\-([^\_]+).*/,'$1');
+			
+			this.options.panel = this.options.ui.panel;
+			this.options.tabIndex = this.options.ui.index;
+			
+			if ($('#target-' + this.options.file).length > 0) {
+				this.options.menuLink = $('#target-' + this.options.file);
+			}
+			this.setAsloading();
+			this._initTab();
 		},
 		
 		reload : function() {
@@ -145,11 +145,8 @@
 			var dfr = $.Deferred();
 			var total = 0;
 			for(var iden in scripts) total++;
-			
 			var done = 0;
 			var isAjax = false;
-
-			console.log("GETING!" , scripts);
 			
 			for(var iden in scripts) {
 				
@@ -163,20 +160,16 @@
 				var _script = scripts[iden];
 				
 				
-				console.log("LOAD : "+ _script);
 				$.ajax({
             			url: this.options.baseurl + _script,
             			dataType:'script',
             			type : 'get',
             			success: function() {
-            				console.log("IDEN: "+iden);
             				$.loadedScripts[iden] = true;
             				total--;
 							done++;
-							console.log("finish LOADIND" + total);
 							
 							if (total == 0) {
-								console.log("Resolving");
 								dfr.resolve(done);		
 							}
                         },
@@ -186,10 +179,10 @@
 				 }); 
 			  }
 			if (!isAjax) {
-				console.log("noAJAX!");
 				return dfr.resolve(0);
 			} else {
-				console.log("priomise!");
+				console.log("promising");
+				alert("sis");
 				return dfr.promise();
 			}
 		},
@@ -211,7 +204,7 @@
 			dfr.promise(true);							
 		},
 		_parseDispatchResponse : function(response) {
-			 console.log("wuwniw");
+
 			if ( (!response.baseurl) || (!response.templates) || (!response.scripts) || (!response.css) || (!response.data) || (!response.plugin) ) {
 				alert("Formato de respuesta incorrecta.<br />Consulte con su administrador.");
 				return;							
@@ -228,9 +221,8 @@
 			).done( function(tmplReturn,scriptsReturn,cssReturn) {
 				
 				console.log(response.plugin);
-				
+				alert("bien");
 				if (typeof $.fn[response.plugin] == 'function' ) {
-					console.log("aoi");
 					$(self.element)[response.plugin]({
 						data: response.data
 					});
@@ -240,13 +232,13 @@
 				self.setAsloaded();
 				
 			}).fail( function( data ){
-				
+				console.log(data);
+				alert("eerro");
 		        self.dialog("Error registrando el módulo");				                    
 		    });	
 			
 		},
 		getPanel : function() {
-			
 			return this.options.panel;
 		},
 		getContainer : function() {
@@ -321,5 +313,8 @@
 	$.extend($.klear.module, {
 		instances: []
 	});
-		
+
+	
+	$.widget.bridge("klearModule", $.klear.module);
+	
 })(jQuery);
