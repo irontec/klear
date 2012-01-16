@@ -32,7 +32,6 @@
 		},
 		
 		_init: function() {
-				alert("si");
 			this.options.mainEnl = $("a:first",this.element);
 			this.options.title = $("a:first",this.element).html();
 			this.options.file = $("a:first",this.element).attr("href").replace(/\#tabs\-([^\_]+).*/,'$1');
@@ -142,49 +141,75 @@
 		},
 		
 		_loadScripts : function(scripts) {
+			
+			
+			
+			
+			
 			var dfr = $.Deferred();
 			var total = 0;
 			for(var iden in scripts) total++;
 			var done = 0;
 			var isAjax = false;
+
+			var _self = this;
+
+			$.each(scripts, function(iden, _script) {
+				
 			
-			for(var iden in scripts) {
+			//for(var iden in scripts) {
 				
 				if ($.loadedScripts[iden]) {
 					total--;
-					continue;
+					return;
 				}
 				
 				isAjax = true;
 
-				var _script = scripts[iden];
-				
-				
+				//var _script = scripts[iden];
+								
 				$.ajax({
-            			url: this.options.baseurl + _script,
+            			url: _self.options.baseurl + _script,
             			dataType:'script',
             			type : 'get',
+            			async: false,
             			success: function() {
+            				console.log(_script, iden);
             				$.loadedScripts[iden] = true;
             				total--;
 							done++;
-							
+							console.log(total);
 							if (total == 0) {
-								dfr.resolve(done);		
+								
+							//window.setTimeout(function(){
+								
+								dfr.resolve(done);
+								
+							//}, 1000);
+								
 							}
+							
+							
+							
+							
                         },
                         error : function(r) {
                             dfr.reject("Error descargando el script ["+_script+"]"); 
             			}
 				 }); 
-			  }
+			 // }
+			
+			});
+			
 			if (!isAjax) {
 				return dfr.resolve(0);
 			} else {
-				console.log("promising");
-				alert("sis");
 				return dfr.promise();
 			}
+			
+			
+			
+			
 		},
 		_loadCss : function(css) {
 			
@@ -215,25 +240,32 @@
 			var self = this;
 			
 			$.when(
+				this._loadScripts(response.scripts),
 				this._loadTemplates(response.templates),
-				this._loadCss(response.css),
-				this._loadScripts(response.scripts)
+				this._loadCss(response.css)
 			).done( function(tmplReturn,scriptsReturn,cssReturn) {
 				
-				console.log(response.plugin);
-				alert("bien");
-				if (typeof $.fn[response.plugin] == 'function' ) {
-					$(self.element)[response.plugin]({
-						data: response.data
-					});
-				} else {
+				console.log(response.plugin, $.fn[response.plugin]);
+				
+				window.setTimeout(function(){
 					
-				}
-				self.setAsloaded();
+					if (typeof $.fn[response.plugin] == 'function' ) {
+						$(self.element)[response.plugin]({
+							data: response.data
+						});
+					} else {
+						
+					}
+					self.setAsloaded();
+					
+				}, 10);
+				
+				
+				
 				
 			}).fail( function( data ){
 				console.log(data);
-				alert("eerro");
+				
 		        self.dialog("Error registrando el módulo");				                    
 		    });	
 			
