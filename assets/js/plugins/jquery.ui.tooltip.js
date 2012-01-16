@@ -102,7 +102,6 @@ $.widget("ui.tooltip", {
 		
 		if (this.options.disabled)
 			return;
-			console.log(content);
 		this.tooltipContent.html(content);
 		this.tooltip.css({
 			top: 0,

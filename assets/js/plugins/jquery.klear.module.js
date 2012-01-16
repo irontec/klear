@@ -76,11 +76,10 @@
 		 */
 		
 		_setOptions: function() {
-			
+			$.Widget.prototype._setOptions.apply(this, arguments);
 		},
 		
 		_setOption: function(key, value) {
-			
 			$.Widget.prototype._setOption.apply(this, arguments); 
 		},
 		
@@ -191,7 +190,7 @@
 			var $_icon = $("span.ui-silk",_self.element);
 
 			if (curClasses) {
-				$_icon.addClass(curClasses[(curClasses.length-1)])
+				$_icon.addClass(curClasses[(curClasses.length-1)]);
 			}
 				
 			$_icon.on('click',function() {
@@ -360,11 +359,11 @@
 					} else {
 						
 						console.log("trying..." + tryOuts);
-						if (++tryOuts == 3) {
+						if (++tryOuts == 5) {
 							// Mostrar error... algo pasa con el javascript :S
 							alert("Error!");
 						} else {
-							window.setTimeout(tryAgain,100);
+							window.setTimeout(tryAgain,50);
 						}
 					}
 				})();
@@ -532,7 +531,7 @@
 				});				
 			}
 			
-		},
+		}
 		
 	});
 
