@@ -1,5 +1,6 @@
 ;(function($) {
-
+	
+	$.loadedScripts = {};
 		
 	$.widget("klear.module", {
 		options: {
@@ -91,9 +92,11 @@
 			var element = this.element,
 			position = $.inArray(element, $.klear.module.instances);
 			// if this instance was found, splice it off
+			
 			if(position > -1){
 				$.klear.module.instances.splice(position, 1);
 			}
+			
 
 			// call the original destroy method since we overwrote it
 			$.Widget.prototype.destroy.call( this );
@@ -140,21 +143,40 @@
 		
 		_loadScripts : function(scripts) {
 			var dfr = $.Deferred();
-			var total = $(scripts).length;
+			var total = 0;
+			for(var iden in scripts) total++;
+			
 			var done = 0;
+			var isAjax = false;
 
-		    
-			for(var i=0;i<total;i++) {
-				var _script = scripts[i]; 
+			console.log("GETING!" , scripts);
+			
+			for(var iden in scripts) {
+				
+				if ($.loadedScripts[iden]) {
+					total--;
+					continue;
+				}
+				
+				isAjax = true;
+
+				var _script = scripts[iden];
+				
+				
+				console.log("LOAD : "+ _script);
 				$.ajax({
-            			url: this.options.baseurl + scripts[i],
-            			cache:true,
+            			url: this.options.baseurl + _script,
             			dataType:'script',
             			type : 'get',
             			success: function() {
+            				console.log("IDEN: "+iden);
+            				$.loadedScripts[iden] = true;
             				total--;
 							done++;
+							console.log("finish LOADIND" + total);
+							
 							if (total == 0) {
+								console.log("Resolving");
 								dfr.resolve(done);		
 							}
                         },
@@ -163,7 +185,13 @@
             			}
 				 }); 
 			  }
-			  return dfr.promise();							
+			if (!isAjax) {
+				console.log("noAJAX!");
+				return dfr.resolve(0);
+			} else {
+				console.log("priomise!");
+				return dfr.promise();
+			}
 		},
 		_loadCss : function(css) {
 			
@@ -183,7 +211,7 @@
 			dfr.promise(true);							
 		},
 		_parseDispatchResponse : function(response) {
-			 
+			 console.log("wuwniw");
 			if ( (!response.baseurl) || (!response.templates) || (!response.scripts) || (!response.css) || (!response.data) || (!response.plugin) ) {
 				alert("Formato de respuesta incorrecta.<br />Consulte con su administrador.");
 				return;							
@@ -199,7 +227,10 @@
 				this._loadScripts(response.scripts)
 			).done( function(tmplReturn,scriptsReturn,cssReturn) {
 				
+				console.log(response.plugin);
+				
 				if (typeof $.fn[response.plugin] == 'function' ) {
+					console.log("aoi");
 					$(self.element)[response.plugin]({
 						data: response.data
 					});

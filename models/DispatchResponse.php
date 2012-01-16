@@ -23,7 +23,7 @@ class Klear_Model_DispatchResponse {
 
 	
 	public function addJsFile($js) {
-		$this->_jsFiles[] = $js;
+		$this->_jsFiles[crc32($js)] = $js;
 	}
 	
 	public function addCssFile($css) {
