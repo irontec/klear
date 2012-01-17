@@ -236,7 +236,7 @@
 						successCallback();
 					},
 					error : function(r) {
-						dfr.reject($.translate("Error descargando el template [%s]", tmplIden)); 
+						dfr.reject($.translate("Error downloading template [%s].", tmplIden)); 
 					}
 				}); 
 			});
@@ -270,7 +270,7 @@
 							}
                         },
                         error : function(r) {
-                            dfr.reject("Error descargando el script ["+_script+"]"); 
+                            dfr.reject("Error downloading script ["+_script+"]"); 
             			}
 				 }); 
 			});
@@ -322,14 +322,28 @@
 		
 		_errorResponse: function() {
 			this.setAsloaded();
-			this.showDialogError($.translate("Error registrando el módulo"));
+			this.showDialogError(
+				$.translate("Module registration error.") +
+				'<br /><br />' + 
+				$.translate("Error: %s.", '<em>response error</em>')
+			, {
+				title: $.translate("Klear Module Error"),
+				closeTab: this.options.tabIndex
+			});
 		}, 
 		
 		_parseDispatchResponse : function(response) {
 			var responseCheck = ['baseurl', 'templates', 'scripts', 'css', 'data', 'plugin'];
 			for(var i=0; i<responseCheck.length; i++) {
 				if (response[responseCheck[i]] == undefined) {
-					this.showDialogError($.translate("Error registrando el módulo"));
+					this.showDialogError(
+						$.translate("Module registration error.") +
+						'<br /><br />' + 
+						$.translate("Error: %s.", '<em>response check error</em>')
+					, {
+						title: $.translate("Klear Module Error"),
+						closeTab: this.options.tabIndex
+					});
 					return;
 				}
 			}
@@ -356,7 +370,14 @@
 					} else {
 						if (++tryOuts == 5) {
 							// Mostrar error... algo pasa con el javascript :S
-							self.showDialogError($.translate("Error registrando el módulo"), {dialogType: 'dialog'});
+							self.showDialogError(
+								$.translate("Module registration error.") +
+								'<br /><br />' + 
+								$.translate("Error: %s.", '<em>dependency loading error</em>')
+							, {
+								title: $.translate("Klear Module Error"),
+								closeTab: this.options.tabIndex
+							});
 						} else {
 							window.setTimeout(tryAgain,50);
 						}
@@ -365,7 +386,14 @@
 					
 				
 			}).fail( function( data ){
-				self.showDialogError($.translate("Error registrando el módulo"));
+				self.showDialogError(
+					$.translate("Module registration error.") +
+					'<br /><br />' + 
+					$.translate("Error: %s.", '<em>response error</em>')
+				, {
+					title: $.translate("Klear Module Error"),
+					closeTab: this.options.tabIndex
+				});
 		    });	
 			
 		},
@@ -387,7 +415,7 @@
 		
 		close: function(opts) {
 			if (this.isLocked()) {
-				this.showInlineWarn($.translate('This tab is locked'));
+				this.showInlineWarn($.translate('This tab is locked.'));
 			} else {
 				if (opts.callback && typeof opts.callback == "function") {
 					this.destroy();
@@ -426,45 +454,34 @@
 			}
 		},
 		
-		blockTab: function(msg, options) {
-			var self = this;
-			var iconClass = self._getTabIconClass();
-			this.$moduleDialog = $('<div>'+self.options.title+'</div>').moduleDialog({
-				position: ['auto',200],
-				title: '<span class="ui-silk inline dialogTitle '+iconClass+' "></span>'+this.options.title + "",
-				modal:true, 
-				klearPosition: this.getPanel(),
-				open: function(ui) {
-					$(self.options.ui.tab).addClass("ui-state-disabled");
-				},
-				close: function(ui) {
-					if ($(this).moduleDialog('option', 'isHidden')) {
-						
-					} else {
-						$(self.options.ui.tab).removeClass("ui-state-disabled");
-						$(this).remove();
-					}
-				}
-			});
-		},
-		
 		dialogMessageTmpl: '<div class="ui-widget"><div class="ui-state-${state} ui-corner-all inlineMessage"><p><span class="ui-icon ${icon} inlineMessage-icon"></span>{{html text}}</p></div></div>',
 		
 		showDialog: function (msg, options) {
-			var $parsetHtml = $.tmpl(this.dialogMessageTmpl, {
+			var defaults = {
 				icon: options.icon? options.icon:'ui-icon-info',
 				state: options.state? options.state:'highlight',
 				text: msg
-			});
+			};
+			var $parsetHtml = $.tmpl(this.dialogMessageTmpl, defaults);
 			var dialogType = options.dialogType || 'moduleDialog';
 			var self = this;
 			var iconClass = self._getTabIconClass();
+			var title = 
+				'<span class="ui-icon inline dialogTitle '+defaults.icon+' "></span>'+options.title + '' 
+				|| 
+				'<span class="ui-silk inline dialogTitle '+iconClass+' "></span>'+this.options.title + '';
 			if (dialogType == 'moduleDialog') {
+				var closeTab = ((options.closeTab==0)||(options.closeTab))? options.closeTab.toString() : false;
 				this.$moduleDialog = $parsetHtml.moduleDialog({
-					position: ['auto',200],
-					title: '<span class="ui-silk inline dialogTitle '+iconClass+' "></span>'+this.options.title + "",
+					position: {
+						my: 'center top',
+						at: 'center center',
+						collision: 'fit'
+					},
+					title: title,
 					modal:true, 
 					klearPosition: this.getPanel() ,
+					//klearPosition: $('#canvas') ,
 					open: function(ui) {
 						$(self.options.ui.tab).addClass("ui-state-disabled");
 					},
@@ -474,6 +491,9 @@
 						} else {
 							$(self.options.ui.tab).removeClass("ui-state-disabled");
 							$(this).remove();
+							if (closeTab) {
+								self.options.container.tabs('remove', closeTab);
+							}
 						}
 					}
 				});
@@ -514,7 +534,7 @@
 			var options = {
 				type: 'error',
 				icon: 'ui-icon-alert',
-				state: 'error',
+				state: 'highlight',
 				dialogType: 'moduleDialog'
 			};
 			var opts = opts || {}
