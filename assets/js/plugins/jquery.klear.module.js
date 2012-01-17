@@ -209,7 +209,8 @@
 		
 		_loadTemplates : function(templates) {
 			var dfr = $.Deferred();
-			var total = $(templates).length;
+			var total = 0;
+			for(var iden in templates) total++;
 			var done = 0;
 			var successCallback = function() {
 				total--;
@@ -218,14 +219,16 @@
 					dfr.resolve(done);		
 				}									
 			};
-			for (var tmplIden in templates) {
-				var tmplSrc = templates[tmplIden];
+			var _self = this;
+			$.each(templates,function(tmplIden,tmplSrc) {
+				
 				if (undefined !== $.template[tmplIden]) {
 					successCallback();
 					return;
 				}
+				
 				$.ajax({
-					url: this.options.baseurl + tmplSrc,
+					url: _self.options.baseurl + tmplSrc,
 					dataType:'text',
 					type : 'get',
 					success: function(r) {
@@ -236,7 +239,7 @@
 						dfr.reject($.translate("Error descargando el template [%s]", tmplIden)); 
 					}
 				}); 
-			}
+			});
 			return dfr.promise();							
 		},
 		
@@ -430,7 +433,7 @@
 				position: ['auto',200],
 				title: '<span class="ui-silk inline dialogTitle '+iconClass+' "></span>'+this.options.title + "",
 				modal:true, 
-				klearPosition: '#canvas' ,
+				klearPosition: this.getPanel(),
 				open: function(ui) {
 					$(self.options.ui.tab).addClass("ui-state-disabled");
 				},
@@ -461,7 +464,7 @@
 					position: ['auto',200],
 					title: '<span class="ui-silk inline dialogTitle '+iconClass+' "></span>'+this.options.title + "",
 					modal:true, 
-					klearPosition: '#canvas' ,
+					klearPosition: this.getPanel() ,
 					open: function(ui) {
 						$(self.options.ui.tab).addClass("ui-state-disabled");
 					},

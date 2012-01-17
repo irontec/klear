@@ -21,6 +21,9 @@ class Klear_Model_DispatchResponse {
 		$this->_templates[$iden] = $tmpl;
 	}
 
+	public function addTemplateArray($aTmpls) {
+	    $this->_templates += $aTmpls;	    
+	}
 	
 	public function addJsFile($js) {
 		$this->_jsFiles[crc32($js)] = $js;
