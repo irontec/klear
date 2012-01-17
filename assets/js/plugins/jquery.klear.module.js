@@ -367,6 +367,12 @@
 						$(self.element)[response.plugin]({
 							data: response.data
 						});
+						
+						window.setTimeout(function(){
+							self.showDialogConfirm('asdg');
+							
+						});
+						
 					} else {
 						if (++tryOuts == 5) {
 							// Mostrar error... algo pasa con el javascript :S
@@ -478,6 +484,7 @@
 						at: 'center center',
 						collision: 'fit'
 					},
+					buttons: options.buttons|| {},
 					title: title,
 					modal:true, 
 					klearPosition: this.getPanel() ,
@@ -500,7 +507,8 @@
 			} else {
 				$parsetHtml.dialog({
 					title: '<span class="ui-silk inline dialogTitle '+iconClass+' "></span>'+this.options.title + "",
-					modal: options.modal || false, 
+					modal: options.modal || false,
+					buttons: options.buttons|| {},
 					close: function(ui) {
 						$(this).remove();
 					}
