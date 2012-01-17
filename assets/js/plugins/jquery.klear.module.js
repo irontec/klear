@@ -198,103 +198,6 @@
 			this._initTab();
 		},
 
-		/*
-		 * Klear Module Dependency Loader
-		 * 
-		 * Templates
-		 * Scripts
-		 * Styles
-		 * 
-		 */
-		
-		_loadTemplates : function(templates) {
-			var dfr = $.Deferred();
-			var total = 0;
-			for(var iden in templates) total++;
-			var done = 0;
-			var successCallback = function() {
-				total--;
-				done++;
-				if (total == 0) {
-					dfr.resolve(done);		
-				}									
-			};
-			var _self = this;
-			$.each(templates,function(tmplIden,tmplSrc) {
-				
-				if (undefined !== $.template[tmplIden]) {
-					successCallback();
-					return;
-				}
-				
-				$.ajax({
-					url: _self.options.baseurl + tmplSrc,
-					dataType:'text',
-					type : 'get',
-					success: function(r) {
-						$.template(tmplIden, r);
-						successCallback();
-					},
-					error : function(r) {
-						dfr.reject($.translate("Error downloading template [%s].", tmplIden)); 
-					}
-				}); 
-			});
-			return dfr.promise();							
-		},
-		
-		_loadScripts : function(scripts) {
-			var dfr = $.Deferred();
-			var total = 0;
-			for(var iden in scripts) total++;
-			var done = 0;
-			var isAjax = false;
-			var _self = this;
-			$.each(scripts, function(iden, _script) {
-				if ($.klear.loadedScripts[iden]) {
-					total--;
-					return;
-				}
-				isAjax = true;
-				$.ajax({
-            			url: _self.options.baseurl + _script,
-            			dataType:'script',
-            			type : 'get',
-            			async: false,
-            			success: function() {
-            				$.klear.loadedScripts[iden] = true;
-            				total--;
-							done++;
-							if (total == 0) {
-								dfr.resolve(done);
-							}
-                        },
-                        error : function(r) {
-                            dfr.reject("Error downloading script ["+_script+"]"); 
-            			}
-				 }); 
-			});
-			if (!isAjax) {
-				return dfr.resolve(0);
-			} else {
-				return dfr.promise();
-			}
-		},
-		
-		_loadCss : function(css) {
-			var total = $(css).length;
-			var dfr = $.Deferred();
-			for(var iden in css) {
-				$.getStylesheet(this.options.baseurl + css[iden],iden);
-				$("#" + iden).on("load",function() {
-					total--;
-					if (total == 0) {
-						dfr.resolve(true);		
-					}
-				});
-			}
-			dfr.promise(true);							
-		},
 		
 		/*
 		 * Klear Module Dispatch Method
@@ -304,22 +207,15 @@
 		 */
 		 
 		dispatch : function() {
-			var dispatchData = {};
-			dispatchData.file = this.options.file;
+			var dispatchData = {
+					file : this.options.file
+			};
 			
 			$.extend(dispatchData,this.options.dispatchOptions);
 			
-            $.ajax({
-               	url:$.baseurl + 'index/dispatch',
-               	dataType:'json',
-               	context : this,
-               	data : dispatchData,
-               	type : 'get',
-               	success: this._parseDispatchResponse,
-               	error: this._errorResponse
-            });
-		},
+			$.klear.request(dispatchData,this._parseDispatchResponse,this._errorResponse,this);
 		
+		},		
 		_errorResponse: function() {
 			this.setAsloaded();
 			this.showDialogError(
@@ -332,76 +228,11 @@
 			});
 		}, 
 		
-		_parseDispatchResponse : function(response) {
-			var responseCheck = ['baseurl', 'templates', 'scripts', 'css', 'data', 'plugin'];
-			for(var i=0; i<responseCheck.length; i++) {
-				if (response[responseCheck[i]] == undefined) {
-					this.showDialogError(
-						$.translate("Module registration error.") +
-						'<br /><br />' + 
-						$.translate("Error: %s.", '<em>response check error</em>')
-					, {
-						title: $.translate("Klear Module Error"),
-						closeTab: this.options.tabIndex
-					});
-					return;
-				}
-			}
-								
-			this.options.baseurl = response.baseurl;
-			var self = this;
-			
-			$.when(
-				this._loadTemplates(response.templates),
-				this._loadCss(response.css),
-				this._loadScripts(response.scripts)
-			).done( function(tmplReturn,scriptsReturn,cssReturn) {
-
-				// Javascript takes a bit executing. 
-				// Wait and check until plugin is ready (3 tries)
-				var tryOuts = 0;
-				(function tryAgain() {
-					
-					if (typeof $.fn[response.plugin] == 'function' ) {
-						self.setAsloaded();
-						$(self.element)[response.plugin]({
-							data: response.data
-						});
-						
-						window.setTimeout(function(){
-							self.showDialogConfirm('asdg');
-							
-						});
-						
-					} else {
-						if (++tryOuts == 5) {
-							// Mostrar error... algo pasa con el javascript :S
-							self.showDialogError(
-								$.translate("Module registration error.") +
-								'<br /><br />' + 
-								$.translate("Error: %s.", '<em>dependency loading error</em>')
-							, {
-								title: $.translate("Klear Module Error"),
-								closeTab: this.options.tabIndex
-							});
-						} else {
-							window.setTimeout(tryAgain,50);
-						}
-					}
-				})();
-					
-				
-			}).fail( function( data ){
-				self.showDialogError(
-					$.translate("Module registration error.") +
-					'<br /><br />' + 
-					$.translate("Error: %s.", '<em>response error</em>')
-				, {
-					title: $.translate("Klear Module Error"),
-					closeTab: this.options.tabIndex
-				});
-		    });	
-			
+		_parseDispatchResponse : function(plugin,data) {
+			this.setAsloaded();
+			$(this.element)[plugin]({
+				data : data
+			});	
 		},
 		
 		getPanel : function() {
@@ -484,7 +315,6 @@
 						at: 'center center',
 						collision: 'fit'
 					},
-					buttons: options.buttons|| {},
 					title: title,
 					modal:true, 
 					klearPosition: this.getPanel() ,
@@ -507,8 +337,7 @@
 			} else {
 				$parsetHtml.dialog({
 					title: '<span class="ui-silk inline dialogTitle '+iconClass+' "></span>'+this.options.title + "",
-					modal: options.modal || false,
-					buttons: options.buttons|| {},
+					modal: options.modal || false, 
 					close: function(ui) {
 						$(this).remove();
 					}

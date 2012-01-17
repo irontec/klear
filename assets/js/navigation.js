@@ -1,7 +1,9 @@
 ;(function($) {
 	$(document).ready(function() {
 		
-		$.baseurl = $("base").attr("href");
+		$.klear = $.klear || {};
+		
+		$.klear.baseurl = $("base").attr("href");
 		
 		$( "#sidebar" ).accordion({
 			icons : {
