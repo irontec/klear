@@ -48,11 +48,8 @@
 
 				// Se invoca custom event para actualizar objeto klear.module (si fuera necesario);
 				$main.trigger("tabspostadd",ui);
-				
-				
-				$tabLi.klearModule("dispatch");
-				
-				$tabLi.klearModule("chekModuleDialog");
+								
+				$tabLi.klearModule("dispatch").klearModule("checkModuleDialog");
 				
 			},
 			select : function(event, ui) {

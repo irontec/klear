@@ -218,6 +218,7 @@
 		},		
 		_errorResponse: function() {
 			this.setAsloaded();
+			console.log(arguments);
 			this.showDialogError(
 				$.translate("Module registration error.") +
 				'<br /><br />' + 
@@ -267,8 +268,10 @@
 		 */
 		
 		$moduleDialog: null,
-		
-		chekModuleDialog: function() {
+		getModuleDialog : function() {
+			return this.$moduleDialog;			
+		},
+		checkModuleDialog: function() {
 			
 			var otherInstances = this._getOtherInstances();
 			for (var i in otherInstances) {
@@ -292,19 +295,21 @@
 		},
 		
 		dialogMessageTmpl: '<div class="ui-widget"><div class="ui-state-${state} ui-corner-all inlineMessage"><p><span class="ui-icon ${icon} inlineMessage-icon"></span>{{html text}}</p></div></div>',
-		
+				
 		showDialog: function (msg, options) {
 			var defaults = {
-				icon: options.icon? options.icon:'ui-icon-info',
-				state: options.state? options.state:'highlight',
-				text: msg
+				icon: options.icon || 'ui-icon-info',
+				state: options.state || 'highlight',
+				text: msg,
+				resizable: options.resizable || false 
 			};
-			var $parsetHtml = $.tmpl(this.dialogMessageTmpl, defaults);
-			var dialogType = options.dialogType || 'moduleDialog';
+			var dialogTemplate = options.template || this.dialogMessageTmpl;
+			var $parsetHtml = $.tmpl(dialogTemplate, defaults);
+			var dialogType = options.dialogType || 'moduleDialog';		
 			var self = this;
 			var iconClass = self._getTabIconClass();
 			var title = 
-				'<span class="ui-icon inline dialogTitle '+defaults.icon+' "></span>'+options.title + '' 
+				'<span class="ui-icon  inlineMessage-icon dialogTitle '+defaults.icon+' "></span>'+options.title + '' 
 				|| 
 				'<span class="ui-silk inline dialogTitle '+iconClass+' "></span>'+this.options.title + '';
 			if (dialogType == 'moduleDialog') {
@@ -317,6 +322,7 @@
 					},
 					title: title,
 					modal:true, 
+					resizable: defaults.resizable,
 					klearPosition: this.getPanel() ,
 					//klearPosition: $('#canvas') ,
 					open: function(ui) {

@@ -222,6 +222,11 @@
 			self._trigger('open');
 
 			return self;
+		},
+		updateContent : function(content) {
+			$(this.element).slideUp(function() {
+				$(this).html(content).slideDown();
+			});		
 		}
 		
 	});

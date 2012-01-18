@@ -148,12 +148,7 @@ LOADING PANEL
     display:none;
     margin:18px auto auto 30%;
     width: 20%;
-    overflow:hidden;
-}
-#loadingPanel div{
-	background:#fff;
-    padding:18px;
-    text-align:center;
+    padding-top:30px;
 }
 
 /*
@@ -180,12 +175,63 @@ PANEL
 }
 
 
+.loadingCircle {
+    -moz-animation: 1s ease-in-out 0s normal none infinite spinPulse;
+    -moz-border-bottom-colors: none;
+    -moz-border-image: none;
+    -moz-border-left-colors: none;
+    -moz-border-right-colors: none;
+    -moz-border-top-colors: none;
+    background-color: transparent;
+    border-color: rgba(230,98,23, 0.9) transparent;
+    border-radius: 50px 50px 50px 50px;
+    border-style: solid;
+    border-width: 5px;
+    box-shadow: 0 0 35px #E66217;
+    height: 50px;
+    margin: 0 auto;
+    opacity: 0.9;
+    width: 50px;
+}
 
+.loadingCircle1 {
+    -moz-animation: 1s linear 0s normal none infinite spinoffPulse;
+    -moz-border-bottom-colors: none;
+    -moz-border-image: none;
+    -moz-border-left-colors: none;
+    -moz-border-right-colors: none;
+    -moz-border-top-colors: none;
+    background-color: transparent;
+    border-color: rgba(230,98,23, 0.9) transparent;
+    border-radius: 50px 50px 50px 50px;
+    border-style: solid;
+    border-width: 5px;
+    box-shadow: 0 0 15px #E66217;
+    height: 30px;
+    margin: 0 auto;
+    opacity: 0.9;
+    position: relative;
+    width: 30px;
+    top:-50px;
+}
 
-
-
-
-
-
+@-moz-keyframes spinPulse {
+    0% { -moz-transform:rotate(160deg); opacity:0; box-shadow:0 0 1px #E66217;}
+    50% { -moz-transform:rotate(145deg); opacity:1; }
+    100% { -moz-transform:rotate(-320deg); opacity:0; }
+}
+@-moz-keyframes spinoffPulse {
+    0% { -moz-transform:rotate(0deg); }
+    100% { -moz-transform:rotate(360deg);  }
+}
+@-webkit-keyframes spinPulse {
+    0% { -webkit-transform:rotate(160deg); opacity:0; box-shadow:0 0 1px #E66217; }
+    50% { -webkit-transform:rotate(145deg); opacity:1;}
+    100% { -webkit-transform:rotate(-320deg); opacity:0; }
+}
+@-webkit-keyframes spinoffPulse {
+    0% { -webkit-transform:rotate(0deg); }
+    100% { -webkit-transform:rotate(360deg); }
+}
 
 

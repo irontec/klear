@@ -22,6 +22,7 @@ class Klear_Model_DispatchResponse {
 	}
 
 	public function addTemplateArray($aTmpls) {
+		
 	    $this->_templates += $aTmpls;	    
 	}
 	
