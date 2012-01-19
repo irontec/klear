@@ -39,7 +39,6 @@
 				
 				$main.tabs('select', ui.index)
 				var $tabLi = $(ui.tab).parent("li");
-				
 				$tabLi.klearModule({
 					ui: ui,
 					container : $main,
@@ -49,14 +48,29 @@
 				// Se invoca custom event para actualizar objeto klear.module (si fuera necesario);
 				$main.trigger("tabspostadd",ui);
 								
-				$tabLi.klearModule("dispatch").klearModule("checkModuleDialog");
+				$tabLi
+					.klearModule("dispatch")
+					.klearModule("highlightOn")
+					.klearModule("checkModuleDialog");
 				
+				$("#tabsList li").each(function(idx,elem) {
+					$(elem).klearModule("option","tabIndex",idx);
+				});
 			},
 			select : function(event, ui) {
-				$("li:eq("+ui.index+")",$main).klearModule("updateLoader");		
+				$("#tabsList li").each(function(idx,elem) {
+					$(elem).klearModule("highlightOff");
+				});
 				var $tabLi = $(ui.tab).parent("li");
-				$tabLi.klearModule("chekModuleDialog");
-				
+				$tabLi
+					.klearModule("checkModuleDialog")
+					.klearModule("updateLoader")
+					.klearModule("highlightOn");
+			},
+			remove: function(event, ui) {
+				$("#tabsList li").each(function(idx,elem) {
+					$(elem).klearModule("option","tabIndex",idx);
+				});
 			}
 			
 		});
@@ -64,9 +78,7 @@
 		$( "#tabsList").on("click","span.ui-icon-close", function() {
 			var index = $( "li", $main ).index( $( this ).parent() );
 			var $tab = $(this).parent("li");
-			$tab.klearModule("close", {callback: function() {
-				$main.tabs( "remove", index );
-			}});
+			$tab.klearModule("close");
 						
 		});
 
