@@ -227,6 +227,9 @@
 			$(this.element).slideUp(function() {
 				$(this).html(content).slideDown();
 			});		
+		},
+		setAsLoading : function() {
+			$(this.element).html('<br /><div class="loadingCircle"></div><div class="loadingCircle1"></div>');
 		}
 		
 	});

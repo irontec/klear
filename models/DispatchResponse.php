@@ -1,12 +1,15 @@
 <?php
 
 /**
- * Clase factory de todos los objetos a partir de klear[config] 
+ * Clase respuesta para peticiones desde klear.request.js
+ * Peticiones de tipo screen / dialog
+ *  
  * @author jabi
  *
  */
 class Klear_Model_DispatchResponse {
 	
+	const RESPONSE_TYPE = 'dispatch';
 	
 	protected $_jsFiles;
 	protected $_cssFiles;
@@ -53,6 +56,7 @@ class Klear_Model_DispatchResponse {
 		$view->css = $this->_cssFiles;
 		$view->data = $this->_data;
 		$view->plugin = $this->_plugin;
+		$view->responseType = self::RESPONSE_TYPE; 
 
 	}
 	

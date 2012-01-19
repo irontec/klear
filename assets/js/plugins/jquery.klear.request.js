@@ -17,6 +17,30 @@
         
         var request_baseurl = '';
         
+        var _parseResponse = function _parseResponse(response) {
+        	
+        	switch(response.responseType) {
+        		case 'dispatch':
+        			return _parseDispatchResponse(response);
+        		case 'simple':
+        			return _parseSimpleResponse(response);
+        		default:
+        			errorCallback.apply(context,["Unknown response type"]);
+        		break;
+        	}
+        	
+        };
+        
+        var _parseSimpleResponse = function _parseSimpleResponse(response) {
+        	
+        	if (!response.data) {
+        		errorCallback.apply(context,["Unknown response format in Simple Response"]);
+        		return;
+        	}
+        	successCallback.apply(context,[response.data]);
+        	return;        	
+        };
+        
         var _parseDispatchResponse = function _parseDispatchResponse(response) {
         	
         	var responseCheck = ['baseurl', 'templates', 'scripts', 'css', 'data', 'plugin'];
@@ -158,7 +182,7 @@
            	context : this,
            	data : options,
            	type : 'get',
-           	success: _parseDispatchResponse,
+           	success: _parseResponse,
            	error: _errorResponse
         });
 		
