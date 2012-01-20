@@ -2,8 +2,10 @@
 
 class Klear_View_Helper_Menu extends Klear_View_Helper_Base {
 	
+	/**
+	 * @return Klear_Model_Menu 
+	 */
 	public function Menu() {
-		if ($this->_initialized === false) $this->_initHelper('menu');
-		return $this->_object;	
+	    return $this->_klearBootstrap->getOption('menu');
 	}
 }
