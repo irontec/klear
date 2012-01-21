@@ -8,10 +8,8 @@
 class Klear_Model_Section  implements Iterator {
 	
 	protected $_name;
-	protected $_name_i18n = array();
 	
 	protected $_description;
-	protected $_description_i18n = array();
 	
 	protected $_menu = null;
 	
@@ -34,12 +32,8 @@ class Klear_Model_Section  implements Iterator {
 		$config = new Klear_Model_KConfigParser();
 		$config->setConfig($data);
 		
-		
-		list($attrName,$value) = $config->getPropertyML("title","name",true);
-		$this->$attrName = $value;
-		
-		list($attrName,$value) = $config->getPropertyML("description",false,false);
-		$this->$attrName = $value;
+		$this->_name = $config->getProperty("title",true);
+		$this->_description = $config->getProperty("description",false);
 		
 		$this->_class = $config->getProperty("class",false);
 
@@ -57,25 +51,12 @@ class Klear_Model_Section  implements Iterator {
 			
 	}
 	
-	
-	protected function _getProperty($attribute) {
-	    $attributeName = '_' . $attribute . '_i18n';
-	    
-	    if (isset($this->{$attributeName}[$this->_menu->getCurrentLang()])) {
-	        
-            return $this->{$attributeName}[$this->_menu->getCurrentLang()];
-	    }
-	    $attributeName = '_' . $attribute;
-		return $this->{$attributeName};
-	}
-	
-	
     public function getName() {
-	    return $this->_getProperty('name');    
+	    return $this->_name;    
 	}
 	
     public function getDescription() {
-	    return $this->_getProperty('description');    
+	    return $this->_description;    
 	}
 	
 	

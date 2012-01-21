@@ -21,53 +21,12 @@ class Klear_Model_KConfigParser {
 	 * @return array   
 	 */
 	public function getPropertyML($attribute, $fieldName = false, $required = false) {
-		
-		if (!isset($this->_config->{$attribute})) {
-			if ($required) {
-				//TODO: Capturar esta excepción... sino, se romperá todo (la vista no tendrá SiteConfig);
-				throw new Zend_Exception("Propiedad ".$attribute." no encontrada.");
-			} else {
-				// Si no es un campo required, devuelvo false;
-				return array($attribute,false);
-			}
-		}
-		
-		if (false === $fieldName) {
-			$fieldName = $attribute;
-		}
-		
-		$attributeValue = '_' . $fieldName;
-		
-		if (is_string($this->_config->{$attribute})) {
-				
-			return array($attributeValue,$this->_config->{$attribute});
-		}
-		
-		/*
-		 * El atributo tiene multi-idioma
-		*/
-		$attributeValue .= "_i18n";
-		
-		if ( (is_object($this->_config->{$attribute})) && (isset($this->_config->{$attribute}->i18n)) ) {
-		
-			$retArr = array();
-			
-			foreach ($this->_config->{$attribute}->i18n as $lang => $_data) {
-				$retArr[$lang] = $_data;
-			}
-			
-		} else {
-			
-			Throw new Zend_Exception("Formato de configuración no soportada");
-			
-		}
-		
-		return array($attributeValue,$retArr);
+		Throw new Zend_Exception("Deprecated Method getPropertyML");
 	}
 	
 	
-	public function getProperty($attribute,$required) {
-		
+	public function getProperty($attribute,$required = false,$lang = false) {
+	    
 		if (!isset($this->_config->{$attribute})) {
 			if ($required) {
 				Throw new Zend_Exception("Propiedad ".$attribute." no encontrada.");
@@ -75,7 +34,28 @@ class Klear_Model_KConfigParser {
 			return null;
 		}
 		
-		return $this->_config->{$attribute};
+		$_system_lang = 'es'; // TO-DO: Recoger el idioma del Zend Registry?
+		if (false === $lang) {
+		    $lang = $_system_lang;
+		}
+		
+		/*
+		 * El atributo tiene multi-idioma
+		*/
+		if ( (is_object($this->_config->{$attribute})) && (isset($this->_config->{$attribute}->i18n->{$lang})) ) {
+		    
+		    if (isset($this->_config->{$attribute}->i18n->{$lang})) {
+		        return $this->_config->{$attribute}->i18n->{$lang};
+		    }
+		    //Si no tenemos el idioma deseado en el array, devolvemos el primer idioma
+            foreach ($this->_config->{$attribute}->i18n as $lang => $_data) {
+                return $_data;
+			}
+		    
+		}
+		
+	    return $this->_config->{$attribute};
+		
 	
 	}
 	
