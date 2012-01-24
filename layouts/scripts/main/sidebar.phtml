@@ -1,5 +1,5 @@
 <div id="sidebar">
-<?php 
+<?php
 
     foreach ($this->menu() as $section) {
         echo '<h2>' . $section->getName() . '</h2>';
@@ -10,12 +10,12 @@
             echo '<a class="subsection" href="?" id="target-'.$subsection->getMainFile().'" >';
             echo '<span class="ui-silk inline '.$subsection->getClass().'"></span>';
             echo $subsection->getName() . '</a>';
-            echo '</li>';            
+            echo '</li>';
         }
-        
+
         echo '</ul>';
         echo '</div>';
-        
+
     }
 
 ?>
