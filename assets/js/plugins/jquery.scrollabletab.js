@@ -98,13 +98,32 @@
 					})
 					.bind( "tabsadd", function(event, ui) {
 						var $tab = $(ui.tab).parent();
+						
+						
+							//var prevArrowWidth = $tab.prev('li').length==0 ? 2 : $navPrev.outerWidth()+2;
+							
+						/*
+						var $els = $tab.prev('li').add($tab.next('li')).add($tab);
+						
+						var w = 0;
+						$els.each(function(){
+							w+=$(this).outerWidth(true);
+						});
+						
+						//if ($tab.parents('div').width())
+						
+						console.log($tab.parents('div'), w);
+						*/
+							$navNext.show('fade');
+						
+							
 							//Add close button to the newely created tab
 							//_addclosebutton($tab)
 							//Show close buttons as we have more than 1 tab
 							//$tabs.find('.ui-tabs-close').show();
 							//$nav.addClass('ui-tabs-closable');
 							//Select the tab
-							$tab.find('a').trigger('click');
+						//	$tab.find('a').trigger('click');
 					}).bind( "tabsremove", function(event, ui) {
 						if(!o.closable) return;
 						//Check if there is only one tab than hide the close button

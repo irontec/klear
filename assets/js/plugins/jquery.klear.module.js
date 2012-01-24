@@ -217,13 +217,16 @@
 		},		
 		_errorResponse: function() {
 			this.setAsloaded();
-			console.log(arguments);
+			//console.log(arguments);
+			
+			var title = '<span class="ui-silk inline dialogTitle '+this._getTabIconClass()+' "></span>';
+			
 			this.showDialogError(
 				$.translate("Module registration error.") +
 				'<br /><br />' + 
 				$.translate("Error: %s.", '<em>response error</em>')
 			, {
-				title: $.translate("Klear Module Error"),
+				title: $.translate("Klear Module Error") + ' - ' + title + '',
 				closeTab: this.options.tabIndex
 			});
 		}, 
@@ -275,28 +278,6 @@
 		getModuleDialog : function() {
 			return this.$moduleDialog;			
 		},
-		checkModuleDialog: function() {
-			
-			var otherInstances = this._getOtherInstances();
-			for (var i in otherInstances) {
-				var oElement = otherInstances[i];
-				oElement.klearModule('toggleModuleDialog');
-			}
-			this.toggleModuleDialog();
-			
-		},
-		
-		toggleModuleDialog: function() {
-			if (this.$moduleDialog) {
-				if (this.$moduleDialog.moduleDialog( "option" , 'isHidden') == true) {
-					this.$moduleDialog.moduleDialog( "option" , 'isHidden' , false );
-					this.$moduleDialog.moduleDialog('open');
-				} else {
-					this.$moduleDialog.moduleDialog( "option" , 'isHidden' , true );
-					this.$moduleDialog.moduleDialog('close');	
-				}
-			}
-		},
 		
 		dialogMessageTmpl: '<div class="ui-widget"><div class="ui-state-${state} ui-corner-all inlineMessage"><p><span class="ui-icon ${icon} inlineMessage-icon"></span>{{html text}}</p></div></div>',
 				
@@ -339,7 +320,7 @@
 							$(self.options.ui.tab).removeClass("ui-state-disabled");
 							$(this).remove();
 							if (closeTab) {
-								self.options.container.tabs('remove', closeTab);
+								self.close();
 							}
 						}
 					}

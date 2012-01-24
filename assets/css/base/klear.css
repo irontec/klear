@@ -57,7 +57,7 @@ body {
 
 #canvasWrapper {
     min-height: 700px;
-    padding: 15px 15px 15px 320px;
+    padding: 15px;
     width: auto;
 }
 
@@ -95,6 +95,7 @@ ul#tabsList {
 	border-bottom:0;
 	border-bottom-right-radius:0;
 	border-bottom-left-radius:0;
+	display:none;
 }
 
 #tabsList li {
@@ -118,10 +119,10 @@ ul#tabsList {
 }
 
 #tabsList li.ui-state-active a {
+    margin: 0 0.2em 0 0.5em;
+    padding: 0.5em 0.1em;
     text-indent: 0;
-    width: auto;
-    padding: 0.5em 1em;
-    margin:0;	
+    width: auto;	
 }
 
 #tabsList li.ui-state-active span.ui-silk {
@@ -166,12 +167,18 @@ MESSAGES
 PANEL
 */
 .ui-tabs .ui-tabs-panel{
-	
-	padding: 0.5em;
+	min-height: 647px;
+    padding: 0.5em;
+    height: auto;
+    overflow: hidden;
+    padding: 0.5em;
+    position: relative;	
 }
 .dialogTitle {
-	
 	margin:0 10px 0 0;
+}
+.ui-icon.inline {
+	float: left;
 }
 
 
@@ -226,5 +233,3 @@ PANEL
     0% { -webkit-transform:rotate(0deg); }
     100% { -webkit-transform:rotate(360deg); }
 }
-
-
