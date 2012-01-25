@@ -1,0 +1,15 @@
+{{each(sec,section) sections}}
+<h2>${sec}</h2>
+<div>
+<ul>
+{{each(idx,subsection) section.subsections}}
+<li>
+<a class="subsection" href="?" id="target-${subsection.sectionId}" >
+<span class="ui-silk inline ${subsection.sectionClass}"></span>
+${subsection.sectionName}
+</a>
+</li>
+{{/each}}
+</ul>
+</div>
+{{/each}}

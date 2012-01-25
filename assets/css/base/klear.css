@@ -55,9 +55,14 @@ body {
 	margin-left:0.4em;
 }
 
+#sidebar{
+    padding: 15px 15px 0 0;
+    display: none;
+}
+
 #canvasWrapper {
     min-height: 700px;
-    padding: 15px;
+    padding: 15px 15px 15px 0;
     width: auto;
 }
 

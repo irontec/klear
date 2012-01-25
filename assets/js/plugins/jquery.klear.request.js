@@ -9,7 +9,9 @@
 		
 		
 		var options = {
-			file : 'index',
+			controller : 'index',
+			action: 'dispatch',
+			file : 'index'
 		};
 		
 		$.extend(options,params);
@@ -50,8 +52,7 @@
     				return;
     			}
    			}
-    								
-    		request_baseurl = response.baseurl;
+			request_baseurl = response.baseurl;
     		
     		$.when(
     				_loadTemplates(response.templates),
@@ -64,6 +65,7 @@
     			(function tryAgain() {
     					
     				if (typeof $.fn[response.plugin] == 'function' ) {
+    					
     					successCallback.apply(context,[response.plugin,response.data]);
     					return;
    					} else {
@@ -135,6 +137,10 @@
 					total--;
 					return;
 				}
+				if ("" == _script) {
+					total--;
+					return;
+				}
 				isAjax = true;
 				$.ajax({
             			url: request_baseurl + _script,
@@ -177,7 +183,7 @@
 		};
 		
 		$.ajax({
-           	url:$.klear.baseurl + 'index/dispatch',
+           	url: $.klear.baseurl + options.controller + '/' + options.action,
            	dataType:'json',
            	context : this,
            	data : options,
