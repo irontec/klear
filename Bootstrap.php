@@ -2,25 +2,25 @@
 
 class Klear_Bootstrap extends Zend_Application_Module_Bootstrap
 {
-	
-    
+
+
 	/**
 	 * Registramos plugin que se encarga de discriminar cargas desde fuera del módulo
 	 */
 	protected function _initKlear()
 	{
-	
+
 		$front = Zend_Controller_Front::getInstance();
+
         $front->registerPlugin(new Klear_Plugin_Init());
-        
 	}
-	
+
 	protected function _initJsRoutes()
 	{
-		
+
 		$frontController = Zend_Controller_Front::getInstance();
 		$router = $frontController->getRouter();
-		
+
 		$router->addRoute(
 			'klearScripts',
 			$route = new Zend_Controller_Router_Route_Regex(
@@ -36,8 +36,8 @@ class Klear_Bootstrap extends Zend_Application_Module_Bootstrap
 						)
 				)
 		);
-		
-		
+
+
 		$router->addRoute(
 				'klearCss',
 				$route = new Zend_Controller_Router_Route_Regex(
@@ -53,7 +53,7 @@ class Klear_Bootstrap extends Zend_Application_Module_Bootstrap
 						)
 				)
 		);
-		
+
 		$router->addRoute(
 				'klearImagesinCss',
 				$route = new Zend_Controller_Router_Route_Regex(
@@ -69,7 +69,7 @@ class Klear_Bootstrap extends Zend_Application_Module_Bootstrap
 						)
 				)
 		);
-		
+
 		$router->addRoute(
 				'klearImages',
 				$route = new Zend_Controller_Router_Route_Regex(
@@ -85,6 +85,6 @@ class Klear_Bootstrap extends Zend_Application_Module_Bootstrap
 						)
 				)
 		);
-	
+
 	}
 }
