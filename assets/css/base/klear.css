@@ -135,6 +135,9 @@ ul#tabsList {
 	
 }
 
+#tabsList li.changed a:before {
+    content: '*';
+}
 
 #footer p {	
 	text-align:center;	

@@ -36,7 +36,7 @@
         var _parseSimpleResponse = function _parseSimpleResponse(response) {
         	
         	if (!response.data) {
-        		errorCallback.apply(context,["Unknown response format in Simple Response"]);
+        		errorCallback.apply(context,[$.translate("Unknown response format in Simple Response")]);
         		return;
         	}
         	successCallback.apply(context,[response.data]);
@@ -48,7 +48,7 @@
         	var responseCheck = ['baseurl', 'templates', 'scripts', 'css', 'data', 'plugin'];
     		for(var i=0; i<responseCheck.length; i++) {
     			if (response[responseCheck[i]] == undefined) {
-    				errorCallback.apply(context,["Module registration error"]);
+    				errorCallback.apply(context,[$.translate("Module registration error")]);
     				return;
     			}
    			}
@@ -80,7 +80,7 @@
     		
     		}).fail( function( data ){
     			
-    			errorCallback.apply(context,['Module resistration error',data]);
+    			errorCallback.apply(context,[$.translate('Module resistration error'),data]);
     		});	
         };
         
@@ -113,6 +113,7 @@
 					url: request_baseurl + tmplSrc,
 					dataType:'text',
 					type : 'get',
+					cache : true,
 					success: function(r) {
 						$.template(tmplIden, r);
 						successCallback();
@@ -146,7 +147,8 @@
             			url: request_baseurl + _script,
             			dataType:'script',
             			type : 'get',
-            			async: false,
+            			cache : true,
+            			async: true,
             			success: function() {
             				$.klear.loadedScripts[iden] = true;
             				total--;

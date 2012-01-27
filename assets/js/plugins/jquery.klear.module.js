@@ -217,14 +217,14 @@
 		},		
 		_errorResponse: function() {
 			this.setAsloaded();
-			//console.log(arguments);
+			console.log(arguments);
 			
 			var title = '<span class="ui-silk inline dialogTitle '+this._getTabIconClass()+' "></span>';
 			
 			this.showDialogError(
 				$.translate("Module registration error.") +
 				'<br /><br />' + 
-				$.translate("Error: %s.", '<em>response error</em>')
+				$.translate("Error: %s.", '<em>' + Array.prototype.join.call(arguments, '</em><br /><em>')+ '</em>')
 			, {
 				title: $.translate("Klear Module Error") + ' - ' + title + '',
 				closeTab: this.options.tabIndex
@@ -256,17 +256,29 @@
 		close: function(opts) {
 			
 			if (this.isLocked()) {
-				this.showInlineWarn($.translate('This tab is locked.'));
-			} else {
+				$(this.options.container).tabs( "select", this.options.tabIndex );
 				
-				if (opts && opts.callback && typeof opts.callback == "function") {
-					opts.callback();
+				if ('function' == typeof this.options.tabLock) {
+					
+					if (this.options.tabLock()) {
+						
+						return;
+					} 
+					
+				} else {
+					this.showInlineWarn($.translate('This tab is locked.'));
 				}
-				
-				$(this.options.container).tabs( "remove", this.options.tabIndex );
-				
-				
+			} 
+			
+			
+			if (opts && opts.callback && typeof opts.callback == "function") {
+				opts.callback();
 			}
+				
+			$(this.options.container).tabs( "remove", this.options.tabIndex );
+				
+				
+			
 		},
 		
 		
@@ -282,11 +294,13 @@
 		dialogMessageTmpl: '<div class="ui-widget"><div class="ui-state-${state} ui-corner-all inlineMessage"><p><span class="ui-icon ${icon} inlineMessage-icon"></span>{{html text}}</p></div></div>',
 				
 		showDialog: function (msg, options) {
+	
 			var defaults = {
 				icon: options.icon || 'ui-icon-info',
 				state: options.state || 'highlight',
 				text: msg,
-				resizable: options.resizable || false 
+				resizable: options.resizable || false,
+				buttons : options.buttons || null
 			};
 			var dialogTemplate = options.template || this.dialogMessageTmpl;
 			var $parsetHtml = $.tmpl(dialogTemplate, defaults);
@@ -297,14 +311,17 @@
 				'<span class="ui-icon  inlineMessage-icon dialogTitle '+defaults.icon+' "></span>'+options.title + '' 
 				|| 
 				'<span class="ui-silk inline dialogTitle '+iconClass+' "></span>'+this.options.title + '';
+			
+			var closeTab = ((options.closeTab==0)||(options.closeTab))? options.closeTab.toString() : false;
+			
 			if (dialogType == 'moduleDialog') {
-				var closeTab = ((options.closeTab==0)||(options.closeTab))? options.closeTab.toString() : false;
 				this.$moduleDialog = $parsetHtml.moduleDialog({
 					position: {
 						my: 'center top',
 						at: 'center center',
 						collision: 'fit'
 					},
+					buttons : defaults.buttons,
 					title: title,
 					modal:true, 
 					resizable: defaults.resizable,
@@ -331,6 +348,9 @@
 					modal: options.modal || false, 
 					close: function(ui) {
 						$(this).remove();
+						if (closeTab) {
+							self.close();
+						}
 					}
 				});
 			}
@@ -375,16 +395,28 @@
 		 */
 		
 		isLocked: function() {
-			return this.options.tabLock;
+			return this.options.tabLock !== false;
 		},
 		
-		lockTab: function() {
-			this._setOption('tabLock', true);
+		lockTab: function(callback) {
+			if ('function' == typeof callback) {
+				this._setOption('tabLock', callback);
+			} else {
+				this._setOption('tabLock', true);
+			}
 		},
-		
 		unLockTab: function() {
 			this._setOption('tabLock', false);
 		},
+		
+		setAsChanged : function(changeCallback) {
+			this.element.addClass('changed');
+			this.lockTab(changeCallback);
+		},
+		setAsUnChanged : function() {
+			this.element.removeClass('changed');
+			this.unLockTab();
+		},		
 		
 		/*
 		 * DECORATORS
