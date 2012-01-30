@@ -199,6 +199,16 @@
 			this._initTab();
 		},
 
+
+		/*
+		 * Update TABS indexes
+		 */
+		
+		updateIndexes: function() {
+			$("#tabsList li").each(function(idx,elem) {
+				$(elem).klearModule("option","tabIndex",idx);
+			});
+		},
 		
 		/*
 		 * Klear Module Dispatch Method

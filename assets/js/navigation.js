@@ -4,13 +4,25 @@
 
 ;(function($) {
 	
+	/*
+	 * setting / getting $.klear Namespace
+	 */
+	
 	$.klear = $.klear || {};
+	
+	/*
+	 * Adding ctrlKey is pressed as $el data
+	 */
 	
 	$.klear.navctrlKey = function(e, $el){
 		if(e.ctrlKey) {
 			$el.data('ctrlKey', true);
 		}
 	};	
+	
+	/*
+	 * Hello Klear Server
+	 */
 	
 	$.klear.hello = function(){
 		
@@ -36,24 +48,51 @@
 	};
 
 	$.klear.menu = function(){
+
+		var $sidebar = $('#sidebar');
+
+		var $headerbar = $('#headerbar');
+		
+		var $footerbar = $('#footerbar');
 		
 		$.klear._doMenuSuccess = function(plg, response) {
-			var sidebar = $('#sidebar');
-			sidebar.empty();
-			$.tmpl('klearMenu', response).appendTo(sidebar);
-			sidebar.fadeIn();
-			$( "#sidebar" ).accordion({
+			
+			var navMenus = response.navMenus;
+			
+			$sidebar.empty();
+			
+			$headerbar.empty();
+			
+			$footerbar.empty();
+
+			$.tmpl('klearSidebarMenu', navMenus.sidebar).appendTo($sidebar);
+			
+			$.tmpl('klearHeaderbarMenu', navMenus.headerbar).appendTo($headerbar);
+			
+			$.tmpl('klearFooterbarMenu', navMenus.footerbar).appendTo($footerbar);
+
+			$sidebar.fadeIn();
+			
+			$headerbar.fadeIn();
+			
+			$footerbar.fadeIn();
+			
+			/*
+			 * JQ Decorartors 
+			 */
+
+			$sidebar.accordion({
 				icons : {
 						header: "ui-icon-circle-arrow-e",
 						headerSelected: "ui-icon-circle-arrow-s"
 				},
 				autoHeight: false
 			});
-
-			$("#sidebar li").on("mouseenter",function() {
+			
+			$("li", $sidebar).on("mouseenter",function() {
 				$(this).addClass("ui-state-highlight");
 			}).on("mouseleave",function() {
-				$("#sidebar li").removeClass("ui-state-highlight");
+				$(this).removeClass("ui-state-highlight");
 			});
 			
 		};
@@ -72,7 +111,7 @@
 			this
 		);
 		
-		$( "#sidebar").on("click","a.subsection", function(e) {
+		$sidebar.add($headerbar).add($footerbar).on("click","a.subsection", function(e) {
 			e.preventDefault();
 			e.stopPropagation();
 			var iden = $(this).attr("id").replace(/^target-/,'');
@@ -84,7 +123,8 @@
 				return;
 			}
 			var idContent = "#tabs-" + iden;
-			var title = $(this).text();
+			var title = $(this).text()!=""? $(this).text():$(this).parent().attr('title');
+			
 			$.klear.canvas.tabs( "add", idContent, title);
 			
 		});
@@ -94,8 +134,12 @@
 		/*
 		 * TABS
 		 */
+		
+		var tabTemplate = "<li title='#{label}'><span class='ui-silk'></span>"+
+			"<span class='ui-icon ui-icon-close'></span><a href='#{href}'>#{label}</a></li>";
+		
 		$.klear.canvas.tabs({
-			tabTemplate: "<li title='#{label}'><span class='ui-silk'></span><span class='ui-icon ui-icon-close'></span><a href='#{href}'>#{label}</a></li>",
+			tabTemplate: tabTemplate,
 			scrollable: true,
 			add : function( event, ui ) {
 				if ($(ui.tab).parents('ul').css('display') == 'none') {
@@ -128,14 +172,15 @@
 					$tabLi.klearModule("highlightOn");
 				}
 				
-				$("#tabsList li").each(function(idx,elem) {
-					$(elem).klearModule("option","tabIndex",idx);
-				});
+				var $tabLi = $(ui.tab).parent("li");
+				$tabLi.klearModule("updateIndexes");
 			},
 			select : function(event, ui) {
+				
 				$("#tabsList li").each(function(idx,elem) {
 					$(elem).klearModule("highlightOff");
 				});
+				
 				var $tabLi = $(ui.tab).parent("li");
 				
 				$tabLi
@@ -144,9 +189,8 @@
 					.klearModule("highlightOn");
 			},
 			remove: function(event, ui) {
-				$("#tabsList li").each(function(idx,elem) {
-					$(elem).klearModule("option","tabIndex",idx);
-				});
+				var $tabLi = $(ui.tab).parent("li");
+				$tabLi.klearModule("updateIndexes");
 				
 				$.klear.canvas.tabs('select', $.klear.canvas.tabs('option', 'selected'));
 				
@@ -159,6 +203,30 @@
 			var $tab = $(this).parent("li");
 			$tab.klearModule("close");
 		});
+		
+		$(document).on("keydown",function(e) {
+			if(e.shiftKey && e.ctrlKey && e.which==87) {
+				e.preventDefault();
+				var selectedTab = parseInt($.klear.canvas.tabs('option', 'selected'));
+				$.klear.canvas.tabs('remove', selectedTab);
+			}
+			if(e.shiftKey && e.ctrlKey && e.which==34) {
+				e.preventDefault();
+				var selectedTab = parseInt($.klear.canvas.tabs('option', 'selected'));
+				selectedTab++;
+				selectedTab = selectedTab<$("#tabsList li").length ? selectedTab : 0;
+				$.klear.canvas.tabs('select', selectedTab);
+			}
+			if(e.shiftKey && e.ctrlKey && e.which==33) {
+				e.preventDefault();
+				var selectedTab = parseInt($.klear.canvas.tabs('option', 'selected'));
+				selectedTab--;
+				selectedTab = selectedTab<0 ? $("#tabsList li").length-1 : selectedTab ;
+				$.klear.canvas.tabs('select', selectedTab);
+			}
+		});
+		
+		
 	};
 	
 	
@@ -167,11 +235,20 @@
 		 * Setting klear.baseurl value
 		 */
 		$.klear.baseurl = $.klear.baseurl || $("base").attr("href");
-		
+		/*
+		 * Setting klear canvas MAIN container.
+		 */
 		$.klear.canvas = $("#canvas");
-		
+		/*
+		 * Loading and binding main container
+		 */
 		$.klear.loadCanvas();
-		
+		/*
+		 * Saying hello to server.
+		 * 
+		 * - check user
+		 * 
+		 */
 		$.klear.hello();
 	};
 
@@ -182,6 +259,7 @@
 /*
  * document ready Klear Launch 
  */
+
 ;(function($) {
 	
 	$(document).ready(function() {

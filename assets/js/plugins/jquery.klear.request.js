@@ -52,6 +52,7 @@
     				return;
     			}
    			}
+    		
 			request_baseurl = response.baseurl;
     		
     		$.when(
