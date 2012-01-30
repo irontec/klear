@@ -32,6 +32,7 @@
 		->appendFile('http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.17/jquery-ui.min.js')
 		->appendFile($this->baseUrl('klear/js/plugins/jquery.scrollabletab.js'))
 		->appendFile($this->baseUrl('klear/js/plugins/jquery.ui.tooltip.js'))
+		->appendFile($this->baseUrl('klear/js/plugins/jquery.ui.tooltip.js'))
 		->appendFile($this->baseUrl('klear/js/plugins/jquery.translate.js'))
 		->appendFile($this->baseUrl('klear/js/plugins/jquery.klear.request.js'))
 		->appendFile($this->baseUrl('klear/js/plugins/jquery.getStylesheet.js'))
@@ -46,8 +47,10 @@
 <div id="wrapper">
 <div id="header">
 
-    <?php
-    /*?>
+    <div id="headerbar">
+
+    </div>
+    <?php  /*?>
     <span class="toolbar ui-widget-header ui-corner-all">
         <button data-icon="ui-icon-person" data-text="false">Configuración de usuario</button>
         <button data-icon="ui-icon-locked" data-text="false">Bloquear Pantalla</button>
@@ -62,8 +65,7 @@
         endif;
         ?>
     </span>
-    */?>
-
+<?php*/?>
         <?php
         if ($this->SiteConfig()->getLogo()):
             echo '<div id="logoApp"><img src="'.$this->baseUrl($this->SiteConfig()->getLogo()).'" alt="'.$this->SiteConfig()->getName().'" /></div>';

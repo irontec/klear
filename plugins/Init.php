@@ -63,19 +63,35 @@ class Klear_Plugin_Init extends Zend_Controller_Plugin_Abstract
         $klearConfig = new Klear_Model_MainConfig();
         $klearConfig->setConfig($config);
 
-        /*
-         * Guardamos la configuración en el recurso de modulos
-         */
-        $bootstrap = $this->_front->getParam("bootstrap");
-        $bootstrap
-        ->getResource('modules')
-        ->offsetGet('klear')
-        ->setOptions(
-            array(
-                "siteConfig"=>$klearConfig->getSiteConfig(),
-                "menu"=>$klearConfig->getMenu()
-            )
-        );
+		/*
+		 * Carga configuración principal de klear
+		 */
+		$config = new Zend_Config_Yaml(
+				APPLICATION_PATH . '/configs/klear/klear.yaml',
+				APPLICATION_ENV
+		);
+
+
+		$klearConfig = new Klear_Model_MainConfig();
+		$klearConfig->setConfig($config);
+
+		/*
+		 * Recupearmos bootstrap para usar su contenedor para guardar
+		 */
+
+
+		$bootstrap = $this->_front->getParam("bootstrap");
+
+		$bootstrap
+		        ->getResource('modules')
+		        ->offsetGet('klear')
+		        ->setOptions(array(
+							"siteConfig"=>$klearConfig->getSiteConfig(),
+		                    "menu"=>$klearConfig->getMenu(),
+		                    "headerMenu"=>$klearConfig->getHeaderMenu(),
+		                    "footerMenu"=>$klearConfig->getFooterMenu()
+		                )
+		);
     }
 
     protected function _initErrorHandler()
