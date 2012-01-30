@@ -138,8 +138,6 @@
 				});
 				var $tabLi = $(ui.tab).parent("li");
 				
-				
-				
 				$tabLi
 					.klearModule("selectCounter")
 					.klearModule("updateLoader")
@@ -158,7 +156,6 @@
 		 * CLOSE
 		 */
 		$( "#tabsList").on("click","span.ui-icon-close", function() {
-			var index = $( "li", $.klear.canvas ).index( $( this ).parent() );
 			var $tab = $(this).parent("li");
 			$tab.klearModule("close");
 		});
@@ -189,6 +186,8 @@
 	
 	$(document).ready(function() {
 		$.klear.start();
+		
+		setTimeout(function() {$("#target-FeatureMastersList").trigger("click");},800);
 	});
 
 })(jQuery);

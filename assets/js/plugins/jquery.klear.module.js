@@ -153,9 +153,11 @@
             baseurl : null,
             menuLink : null,
             screen : null,
+            dialog : null,
             dispatchOptions : {},
             loadingSelector : null,
-            tabLock: false
+            tabLock: false,
+            parentScreen: false
 		},
 				
 		/*
@@ -236,6 +238,15 @@
 			$(this.element)[plugin]({
 				data : data
 			});	
+		},
+		
+		reDispatch : function() {
+			var self = this;
+			$(this.options.panel).fadeOut(function() {
+				$(this).html('');
+				self.dispatch();
+			});
+			
 		},
 		
 		getPanel : function() {

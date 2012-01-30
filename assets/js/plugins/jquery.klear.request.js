@@ -11,12 +11,12 @@
 		var options = {
 			controller : 'index',
 			action: 'dispatch',
-			file : 'index'
+			file : 'index',
+			post : false
 		};
 		
 		$.extend(options,params);
 
-        
         var request_baseurl = '';
         
         var _parseResponse = function _parseResponse(response) {
@@ -69,11 +69,11 @@
     					successCallback.apply(context,[response.plugin,response.data]);
     					return;
    					} else {
-   						if (++tryOuts == 5) {
-   							errorCallback.apply(context,['Module resistration error']);
+   						if (++tryOuts == 20) {
+   							errorCallback.apply(context,[response.plugin + ' plugin not found']);
    							return;
     					} else {
-    						window.setTimeout(tryAgain,50);
+    						window.setTimeout(tryAgain,20);
     					}
     				}
     			})();
@@ -143,6 +143,8 @@
 					return;
 				}
 				isAjax = true;
+				
+				try {
 				$.ajax({
             			url: request_baseurl + _script,
             			dataType:'script',
@@ -158,9 +160,13 @@
 							}
                         },
                         error : function(r) {
+                        	console.log(arguments);
                             dfr.reject("Error downloading script ["+_script+"]"); 
             			}
 				 }); 
+				} catch(e) {
+					console.log(e);
+				}
 			});
 			if (!isAjax) {
 				return dfr.resolve(0);
@@ -184,12 +190,32 @@
 			dfr.promise(true);							
 		};
 		
+		
+		var _validParams = "execute type file screen dialog pk".split(" ");
+		var _params = {};
+
+		$.each(_validParams,function(idx,_value) {
+			if (options[_value]) {
+				_params[_value] = options[_value];
+			}
+		})
+		
+		var _type = options.post? 'post':'get';
+		var _action = $.klear.baseurl + options.controller + '/' + options.action;
+		
+		if (_type == 'post') {
+			_action += '?' + $.param(_params);
+			_data = options.post;
+		} else {
+			_data = _params;
+		}
+		
 		$.ajax({
-           	url: $.klear.baseurl + options.controller + '/' + options.action,
+			url : _action,
            	dataType:'json',
            	context : this,
-           	data : options,
-           	type : 'get',
+           	data : _data,
+           	type : _type,
            	success: _parseResponse,
            	error: _errorResponse
         });
