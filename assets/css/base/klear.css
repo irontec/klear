@@ -27,12 +27,6 @@ body {
 	font-size:.8em;	
 }
 
-#header .toolbar {
-	float:right;
-	margin:4em 1em 0 0;
-	padding:.3em;
-}
-
 #sidebar h2 {
 	padding:0.2em 0 0.2em 28px;
 	font-size:1.2em;
@@ -148,6 +142,64 @@ div.ui-tabs-panel {
     padding: 0.1em 0.05em;	
 }
 
+#headerbar {
+
+}
+
+#headerbar .toolbar {
+    float: right;
+    margin: 4em 1em 0 0;
+    padding: 0.1em;
+    /*position: absolute;
+    right: 0;*/
+}
+
+
+
+/*
+.klear-headerbar-menu li{
+    float: left;
+    list-style: none outside none;
+    margin: 0 0.2em;
+}
+
+.klear-headerbar-submenu{
+    
+    float: left;
+    list-style: none outside none;
+    padding: 9px;
+}
+
+.klear-headerbar-submenu li{ 
+    float: left;
+    list-style: none outside none;
+    margin: 0 0.2em;
+    
+}
+
+.klear-headerbar-menu .ui-silk, .klear-headerbar-menu .ui-icon {
+	
+	    border: 1px solid red;
+    float: left;
+    margin: 0.25em;
+}
+*/
+
+#footerbar {
+    float: left;
+    margin: 0.2em 0 0.8em;
+    text-align: center;
+    width: 100%;
+}
+#footerbar ul li{
+    cursor: pointer;
+    display: inline;
+    list-style: none outside none;
+    margin: 4px;
+    padding: 4px 0;
+    position: relative;
+}
+#footerbar ul li a{ text-decoration:none; }
 
 /*
 LOADING PANEL
