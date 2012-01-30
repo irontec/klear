@@ -243,20 +243,27 @@
 			});
 		}, 
 		
-		_parseDispatchResponse : function(plugin,data) {
+		_parseDispatchResponse : function(response) {
+			
 			this.setAsloaded();
-			$(this.element)[plugin]({
-				data : data
-			});	
+			
+			$(this.options.panel).html('');
+			$(this.element)[response.plugin]({
+				data: response.data
+			});
+			
 		},
 		
 		reDispatch : function() {
-			var self = this;
-			$(this.options.panel).fadeOut(function() {
-				$(this).html('');
-				self.dispatch();
-			});
+
+			this.showDialog('',{title:false,closeTab:false});
+			this.$moduleDialog
+					.moduleDialog("setAsLoading")
+					.moduleDialog("option","buttons",[]);
 			
+			this.element.moduleDialog("setAsLoading")
+			this.element.moduleDialog("option","buttons",[]);
+			this.dispatch();
 		},
 		
 		getPanel : function() {
@@ -323,15 +330,20 @@
 				resizable: options.resizable || false,
 				buttons : options.buttons || null
 			};
+			
 			var dialogTemplate = options.template || this.dialogMessageTmpl;
 			var $parsetHtml = $.tmpl(dialogTemplate, defaults);
 			var dialogType = options.dialogType || 'moduleDialog';		
 			var self = this;
 			var iconClass = self._getTabIconClass();
-			var title = 
-				'<span class="ui-icon  inlineMessage-icon dialogTitle '+defaults.icon+' "></span>'+options.title + '' 
-				|| 
-				'<span class="ui-silk inline dialogTitle '+iconClass+' "></span>'+this.options.title + '';
+			if (false === options.title) {
+				var title = false;
+			} else {
+				var title = 
+					'<span class="ui-icon  inlineMessage-icon dialogTitle '+defaults.icon+' "></span>'+options.title + '' 
+					|| 
+					'<span class="ui-silk inline dialogTitle '+iconClass+' "></span>'+this.options.title + '';
+			}
 			
 			var closeTab = ((options.closeTab==0)||(options.closeTab))? options.closeTab.toString() : false;
 			
@@ -447,8 +459,13 @@
 		_getTabIconClass: function() {
 			
 			if (this.options.menuLink && $("span.ui-silk",this.options.menuLink).length > 0) {
+				return $("span.ui-silk",this.options.menuLink).attr("class");
+			}
+			
+			if (this.options.menuLink && $("span.ui-silk",this.options.menuLink.parent()).length > 0) {
 				return $("span.ui-silk",this.options.menuLink.parent()).attr("class");
 			}
+			
 			return '';
 		},
 		

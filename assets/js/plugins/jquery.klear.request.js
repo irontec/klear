@@ -66,8 +66,7 @@
     			(function tryAgain() {
     					
     				if (typeof $.fn[response.plugin] == 'function' ) {
-    					
-    					successCallback.apply(context,[response.plugin,response.data]);
+    					successCallback.apply(context,[response]);
     					return;
    					} else {
    						if (++tryOuts == 20) {

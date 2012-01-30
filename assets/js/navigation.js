@@ -52,12 +52,11 @@
 		var $sidebar = $('#sidebar');
 
 		var $headerbar = $('#headerbar');
-		
 		var $footerbar = $('#footerbar');
-		
-		$.klear._doMenuSuccess = function(plg, response) {
-			
-			var navMenus = response.navMenus;
+
+		$.klear._doMenuSuccess = function(response) {
+
+			var navMenus = response.data.navMenus;
 			
 			$sidebar.empty();
 			
