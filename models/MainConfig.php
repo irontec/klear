@@ -42,19 +42,23 @@ class Klear_Model_MainConfig {
 	protected function _buildHeaderMenu(Zend_Config $config) {
 
 	    $this->_headerMenu = new Klear_Model_HeaderMenu;
-	    $this->_headerMenu->setConfig($config->headerMenu);
-	    $this->_headerMenu->setSiteConfig($this->getSiteConfig());
-	    $this->_headerMenu->parse();
-
+	    if ($config->headerMenu) {
+    	    $this->_headerMenu->setConfig($config->headerMenu);
+    	    $this->_headerMenu->setSiteConfig($this->getSiteConfig());
+    	    $this->_headerMenu->setMenuConfig($config->menu);
+    	    $this->_headerMenu->parse();
+	    }
 	}
 
 	protected function _buildFooterMenu(Zend_Config $config) {
 
 	    $this->_footerMenu = new Klear_Model_FooterMenu;
-	    $this->_footerMenu->setConfig($config->footerMenu);
-	    $this->_footerMenu->setSiteConfig($this->getSiteConfig());
-	    $this->_footerMenu->parse();
-
+	    if ($config->footerMenu) {
+	        $this->_footerMenu->setConfig($config->footerMenu);
+	        $this->_footerMenu->setSiteConfig($this->getSiteConfig());
+	        $this->_footerMenu->setMenuConfig($config->menu);
+	        $this->_footerMenu->parse();
+	    }
 	}
 
 	/**

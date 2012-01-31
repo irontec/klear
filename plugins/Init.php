@@ -75,6 +75,7 @@ class Klear_Plugin_Init extends Zend_Controller_Plugin_Abstract
 		$klearConfig = new Klear_Model_MainConfig();
 		$klearConfig->setConfig($config);
 
+
 		/*
 		 * Recupearmos bootstrap para usar su contenedor para guardar
 		 */

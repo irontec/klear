@@ -9,6 +9,7 @@ class Klear_Model_HeaderMenu implements Iterator
 {
 
 	protected $_siteConfig;
+	protected $_menuConfig;
 	protected $_sections = array();
 	protected $_position = 0;
 
@@ -51,6 +52,12 @@ class Klear_Model_HeaderMenu implements Iterator
 		$this->_config = $config;
 	}
 
+	public function setMenuConfig(Zend_Config $config)
+	{
+	    $this->_menuConfig = $config;
+	}
+
+
 	public function getCurrentLang()
 	{
 	    return $this->_siteConfig->getLang();
@@ -61,10 +68,58 @@ class Klear_Model_HeaderMenu implements Iterator
 		$this->_siteConfig = $siteConfig;
 	}
 
-	public function parse() {
-		foreach($this->_config as $name => $sectionData) {
+	protected function _identify($configKey)
+	{
+	    $method = '_parse'. ucfirst($configKey);
+	    if (method_exists($this, $method)) {
+	        call_user_method($method, $this, $configKey);
+	        return true;
+	    }
+	    return false;
+	}
 
-			$section = new Klear_Model_Section;
+	protected function _parseKlearMenuLink($configKey)
+	{
+	    $sections = array();
+	    foreach ($this->_config->$configKey as $section=>$subSection) {
+	        if ($subSection instanceof Zend_Config) {
+	            $sections[$section] = array();
+	            foreach ($subSection as $subSectionKey=>$bool) {
+	                $sections[$section][] = $subSectionKey;
+	            }
+	        } else {
+	            $sections[$section] = array();
+	        }
+	    }
+
+
+	    foreach($this->_menuConfig as $name => $sectionData) {
+	        if (array_key_exists($name, $sections)) {
+    	        $skip = array();
+    	        if (! empty($sections[$name])) {
+	                foreach ($sectionData->submenus as $submenuIndex => $submenu) {
+	                    if (!in_array($submenuIndex, $sections[$name])) {
+	                        $skip[] = $submenuIndex;
+	                    }
+	                }
+    	        }
+    	        $section = new Klear_Model_Section;
+    	        $section
+    	        ->setParentMenu($this)
+    	        ->setName($name)
+    	        ->setDataToSkip($skip)
+    	        ->setData($sectionData);
+    	        $this->_sections[] = $section;
+	        }
+	    }
+	}
+
+	public function parse() {
+        foreach($this->_config as $name => $sectionData) {
+		    if ($this->_identify($name)) {
+	            continue;
+		    }
+		    $section = new Klear_Model_Section;
 
 			$section
 			    ->setParentMenu($this)
