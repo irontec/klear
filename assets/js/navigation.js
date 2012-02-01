@@ -38,7 +38,7 @@
 			e.stopPropagation();
 			e.preventDefault();
 		
-			var prevHref = $(this).attr("href");
+			var prevHref = $link.attr("href");
 			$link.removeAttr("href");
 			var $_link = $link;
 			setTimeout(function() {
