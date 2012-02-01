@@ -191,6 +191,35 @@
 					$(_mainEnl).trigger("click");
 			});
 			
+			var self = this;
+			
+			$(this.options.ui.tab).on('mouseup',function(event) {
+				 
+				if (event.which == null) {
+				       /* IE case */
+				       button= (event.button < 2) ? "LEFT" :
+				                 ((event.button == 4) ? "MIDDLE" : "RIGHT");
+				} else {
+				       /* All others */
+				       button= (event.which < 2) ? "LEFT" :
+				                 ((event.which == 2) ? "MIDDLE" : "RIGHT");
+				}
+				
+				if (button == 'MIDDLE') { //middle
+					// Parar el evento no sirve de nada, pero por si acaso.
+					event.stopPropagation();
+					event.preventDefault();
+				
+					var prevHref = $(this).attr("href");
+					$(this).removeAttr("href");
+					var $self = $(this);
+					setTimeout(function() {
+						$self.attr("href",prevHref);
+					},100);
+					self.close();
+				}
+				
+			});
 					
 				
 		},
@@ -199,17 +228,6 @@
 			this._initTab();
 		},
 
-
-		/*
-		 * Update TABS indexes
-		 */
-		
-		updateIndexes: function() {
-			$("#tabsList li").each(function(idx,elem) {
-				$(elem).klearModule("option","tabIndex",idx);
-			});
-		},
-		
 		/*
 		 * Klear Module Dispatch Method
 		 * 

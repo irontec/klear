@@ -46,8 +46,10 @@
         var _parseDispatchResponse = function _parseDispatchResponse(response) {
         	
         	var responseCheck = ['baseurl', 'templates', 'scripts', 'css', 'data', 'plugin'];
+
     		for(var i=0; i<responseCheck.length; i++) {
-    			if (response[responseCheck[i]] == undefined) {
+
+    			if (typeof response[responseCheck[i]] == 'undefined') {
     				errorCallback.apply(context,[$.translate("Module registration error")]);
     				return;
     			}
@@ -93,6 +95,11 @@
 			var dfr = $.Deferred();
 			var total = 0;
 			for(var iden in templates) total++;
+			if (total == 0) {
+				dfr.resolve();
+				return;
+			}
+			
 			var done = 0;
 			var successCallback = function() {
 				total--;
@@ -130,6 +137,10 @@
 			var dfr = $.Deferred();
 			var total = 0;
 			for(var iden in scripts) total++;
+			if (total == 0) {
+				dfr.resolve();
+				return;
+			}
 			var done = 0;
 			var isAjax = false;
 			var _self = this;
@@ -176,8 +187,14 @@
 		};
 		
 		var _loadCss = function(css) {
-			var total = $(css).length;
 			var dfr = $.Deferred();
+			var total = $(css).length;
+			
+			if (total == 0) {
+				dfr.resolve();
+				return;
+			}
+			
 			for(var iden in css) {
 				$.getStylesheet(request_baseurl + css[iden],iden);
 				$("#" + iden).on("load",function() {

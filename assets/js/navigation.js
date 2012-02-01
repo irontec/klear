@@ -11,14 +11,45 @@
 	$.klear = $.klear || {};
 	
 	/*
-	 * Adding ctrlKey is pressed as $el data
+	 * Checking open in background Event:
+	 * control | middle click
 	 */
 	
-	$.klear.navctrlKey = function(e, $el){
+	$.klear.checkNoFocusEvent = function(e, $el, $link) {
+		
 		if(e.ctrlKey) {
-			$el.data('ctrlKey', true);
+			$el.data('noFocus', true);
+			return;
 		}
-	};	
+		if (typeof $link == 'undefined') return;
+		if (e.which == null) {
+				if (!e.button) return;
+		       /* IE case */
+		       var button= (e.button < 2) ? "LEFT" :
+		                 ((event.button == 4) ? "MIDDLE" : "RIGHT");
+		} else {
+		       /* All others */
+		       var button= (e.which < 2) ? "LEFT" :
+		                 ((e.which == 2) ? "MIDDLE" : "RIGHT");
+		}
+		
+		if (button == 'MIDDLE') {
+			
+			e.stopPropagation();
+			e.preventDefault();
+		
+			var prevHref = $(this).attr("href");
+			$link.removeAttr("href");
+			var $_link = $link;
+			setTimeout(function() {
+				$_link.attr("href",prevHref);
+			},100);
+			$el.data('noFocus', true);
+
+		}
+		
+		
+	};
 	
 	/*
 	 * Hello Klear Server
@@ -110,12 +141,13 @@
 			this
 		);
 		
-		$sidebar.add($headerbar).add($footerbar).on("click","a.subsection", function(e) {
+		$sidebar.add($headerbar).add($footerbar).on("mouseup","a.subsection", function(e) {
 			e.preventDefault();
 			e.stopPropagation();
+			
 			var iden = $(this).attr("id").replace(/^target-/,'');
 			
-			$.klear.navctrlKey(e, $.klear.canvas);
+			$.klear.checkNoFocusEvent(e, $.klear.canvas, $(this));
 			
 			if ($("#tabs-"+iden).length > 0) {
 				$.klear.canvas.tabs('select', '#tabs-'+iden);
@@ -126,6 +158,9 @@
 			
 			$.klear.canvas.tabs( "add", idContent, title);
 			
+		}).on("click",function(e) {
+			e.preventDefault();
+			e.stopPropagation();
 		});
 	};
 
@@ -145,8 +180,8 @@
 					$(ui.tab).parents('ul').fadeIn();
 				}
 				var backgroundTab = false;
-				if ($(this).data('ctrlKey')===true) {
-					$(this).data('ctrlKey', false)
+				if ($(this).data('noFocus')===true) {
+					$(this).data('noFocus', false)
 					backgroundTab = true;
 				}
 				
@@ -171,8 +206,10 @@
 					$tabLi.klearModule("highlightOn");
 				}
 				
-				var $tabLi = $(ui.tab).parent("li");
-				$tabLi.klearModule("updateIndexes");
+				$("li",$.klear.canvas).each(function(idx,elem) {
+	                $(elem).klearModule("option","tabIndex",idx);
+	            });
+				
 			},
 			select : function(event, ui) {
 				
@@ -188,8 +225,10 @@
 					.klearModule("highlightOn");
 			},
 			remove: function(event, ui) {
-				var $tabLi = $(ui.tab).parent("li");
-				$tabLi.klearModule("updateIndexes");
+
+				$("li",$.klear.canvas).each(function(idx,elem) {
+	                $(elem).klearModule("option","tabIndex",idx);
+	            });
 				
 				$.klear.canvas.tabs('select', $.klear.canvas.tabs('option', 'selected'));
 				
@@ -264,7 +303,7 @@
 	$(document).ready(function() {
 		$.klear.start();
 		
-		setTimeout(function() {$("#target-FeatureMastersList").trigger("click");},800);
+		setTimeout(function() {$("#target-brandList").trigger("click");},1500);
 	});
 
 })(jQuery);
