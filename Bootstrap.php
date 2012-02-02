@@ -10,6 +10,28 @@ class Klear_Bootstrap extends Zend_Application_Module_Bootstrap
 	{
 		$front = Zend_Controller_Front::getInstance();
         $front->registerPlugin(new Klear_Plugin_Init());
+        /*
+         * 
+         */
+        $front->registerPlugin(new Klear_Plugin_I18n());
+	}
+	
+	protected function _initModuleRoutes()
+	{
+	    $frontController = Zend_Controller_Front::getInstance();
+	    $router = $frontController->getRouter();
+	    
+	    $router->addRoute(
+	            'klearDispatch',
+	            $route = new Zend_Controller_Router_Route(
+	                    'klear/dispatch/:file/*',
+	                    array(
+	                            'controller' => 'index',
+	                            'action' => 'dispatch',
+	                            'module' => 'klear'
+	                    )
+	            )
+	    );
 	}
 
 	protected function _initAssetRoutes()
