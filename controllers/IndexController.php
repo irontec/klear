@@ -41,7 +41,8 @@ class Klear_IndexController extends Zend_Controller_Action
      * Esta acción redirigirá a la acción del módulo de subsección definido en el fichero de configuración de sección
      */
     public function dispatchAction()
-    {
+    {   
+        
     	$this->_helper->layout->disableLayout();
     	$this->_helper->viewRenderer->setNoRender();
 

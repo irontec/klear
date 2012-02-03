@@ -78,6 +78,20 @@ class Klear_Model_HeaderMenu implements Iterator
 	    return false;
 	}
 
+	protected function _parseKlearSettings($configKey)
+	{
+	    $section = new Klear_Model_Section;
+	    $section
+	    ->setParentMenu($this)
+	    ->setName('')
+	    ->setData(new Zend_Config(array('title'=>'')));
+	    $this->_sections[] = $section;
+
+
+
+
+	}
+
 	protected function _parseKlearMenuLink($configKey)
 	{
 	    $sections = array();

@@ -15,18 +15,21 @@ class Klear_Model_SiteConfig {
 		// TO-DO COntrol de errores, configuración mal seteada
 		$this->_year = $config->year;
 		$this->_name = $config->sitename;
-		$this->_lang = $config->lang;
 		
 		if (isset($config->logo)) {
 		    $this->_logo = $config->logo;
 		}
-		
 		if (isset($config->langs)) {
-		    foreach($config->langs as $_langIden => $lang) {
-	            $this->_langs[$_langIden] = $lang;	        
+		    foreach($config->langs as $_langIden=>$lang) {
+		        $language = new Klear_Model_Language;
+		        $language->setIden($_langIden);
+		        $language->setConfig($lang);
+		        $this->_langs[$language->getIden()] = $language;
 		    }
-		    
 		}
+		
+		
+		$this->_lang = $this->_langs[$config->lang];
 		
 	}
 	
