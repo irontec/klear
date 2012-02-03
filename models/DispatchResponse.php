@@ -33,10 +33,18 @@ class Klear_Model_DispatchResponse {
 		$this->_jsFiles[crc32($js)] = $js;
 	}
 
+	public function addJsArray($aJs) {
+	    $this->_jsFiles += $aJs;
+	}
+	
 	public function addCssFile($css) {
 		$this->_cssFiles[crc32($css)] = $css;
 	}
 
+	public function addCssArray($aCss) {
+	    $this->_cssFiles += $aCss;
+	}
+	
 	public function setData($data) {
 		$this->_data = $data;
 	}

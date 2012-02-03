@@ -303,7 +303,7 @@
 	$(document).ready(function() {
 		$.klear.start();
 		
-		setTimeout(function() {$("#target-brandList").trigger("click");},1500);
+		setTimeout(function() {$("#target-TerminalModelsList").trigger("mouseup");},1500);
 	});
 
 })(jQuery);
