@@ -11,9 +11,21 @@ class Klear_Plugin_Init extends Zend_Controller_Plugin_Abstract
      */
     protected $_front;
 
-    public function __construct()
+    /**
+     * @var Klear_Bootstrap
+     */
+    protected $_bootstrap;
+
+    /**
+     * Inicia los atributos utilizados en el plugin
+     */
+    public function _initPlugin()
     {
         $this->_front = Zend_Controller_Front::getInstance();
+        $this->_bootstrap = $this->_front
+                                 ->getParam('bootstrap')
+                                 ->getResource('modules')
+                                 ->offsetGet('klear');
     }
 
     /**
@@ -26,10 +38,10 @@ class Klear_Plugin_Init extends Zend_Controller_Plugin_Abstract
         if (!preg_match("/^klear/", $request->getModuleName())) {
             return;
         }
-
-        $this->_initErrorHandler();
-        $this->_initConfig();
+        $this->_initPlugin();
         $this->_initLayout();
+        $this->_initConfig();
+        $this->_initErrorHandler();
     }
 
     /**
@@ -56,42 +68,20 @@ class Klear_Plugin_Init extends Zend_Controller_Plugin_Abstract
          * Cargamos la configuración
          */
         $config = new Zend_Config_Yaml(
-            APPLICATION_PATH . '/configs/klear/klear.yaml',
+            $this->_getConfigPath(),
             APPLICATION_ENV
         );
 
         $klearConfig = new Klear_Model_MainConfig();
         $klearConfig->setConfig($config);
 
-		/*
-		 * Carga configuración principal de klear
-		 */
-		$config = new Zend_Config_Yaml(
-				APPLICATION_PATH . '/configs/klear/klear.yaml',
-				APPLICATION_ENV
-		);
-
-
-		$klearConfig = new Klear_Model_MainConfig();
-		$klearConfig->setConfig($config);
-
-
-		/*
-		 * Recupearmos bootstrap para usar su contenedor para guardar
-		 */
-
-
-		$bootstrap = $this->_front->getParam("bootstrap");
-
-		$bootstrap
-		        ->getResource('modules')
-		        ->offsetGet('klear')
-		        ->setOptions(array(
-							"siteConfig"=>$klearConfig->getSiteConfig(),
-		                    "menu"=>$klearConfig->getMenu(),
-		                    "headerMenu"=>$klearConfig->getHeaderMenu(),
-		                    "footerMenu"=>$klearConfig->getFooterMenu()
-		                )
+		$this->_bootstrap->setOptions(
+            array(
+				"siteConfig" => $klearConfig->getSiteConfig(),
+                "menu" => $klearConfig->getMenu(),
+                "headerMenu" => $klearConfig->getHeaderMenu(),
+                "footerMenu" => $klearConfig->getFooterMenu()
+            )
 		);
     }
 
@@ -103,10 +93,24 @@ class Klear_Plugin_Init extends Zend_Controller_Plugin_Abstract
             $error = new Zend_Controller_Plugin_ErrorHandler();
             $this->_front->registerPlugin($error);
         }
-        $error
-        ->setErrorHandlerModule('klear')
-        ->setErrorHandlerController('error')
-        ->setErrorHandlerAction('error');
-    }
-}
 
+        $error->setErrorHandlerModule('klear')
+              ->setErrorHandlerController('error')
+              ->setErrorHandlerAction('error');
+    }
+
+    /**
+     * Devuelve la ruta al fichero de configuración
+     */
+    protected function _getConfigPath()
+    {
+        $configPath = APPLICATION_PATH . '/configs/klear/klear.yaml';
+        $moduleConfig = $this->_bootstrap->getOption('config');
+        if (isset($moduleConfig['file'])
+                && file_exists($moduleConfig['file'])) {
+            $configPath = $moduleConfig['file'];
+        }
+        return $configPath;
+    }
+
+}

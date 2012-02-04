@@ -2,83 +2,87 @@
 
 /**
  * @author jabi
- * Iterador que devuelve Sectiontodos los elementos del menu principal Sections > Subsections
+ * Iterador que devuelve todos los elementos del menu principal Sections > Subsections
  *
  */
 class Klear_Model_Menu implements Iterator
 {
 
-	protected $_siteConfig;
-	protected $_sections = array();
-	protected $_position = 0;
+    protected $_siteConfig;
+    protected $_sections = array();
+    protected $_position = 0;
 
-	public function setName($name)
-	{
-		$this->_name = $name;
-	}
+    public function __construct()
+    {
+        $this->_position = 0;
+    }
 
-	public function setDescription($description) {
-		$this->_description = $description;
-	}
+    public function setName($name)
+    {
+        $this->_name = $name;
+    }
 
-	public function __construct() {
-		$this->_position = 0;
-	}
+    public function setDescription($description)
+    {
+        $this->_description = $description;
+    }
 
-	public function rewind() {
-		$this->_position = 0;
-	}
+    public function setConfig(Zend_Config $config)
+    {
+        $this->_config = $config;
+    }
 
-	public function current() {
-		return $this->_sections[$this->_position];
-	}
+    public function getCurrentLang()
+    {
+        return $this->_siteConfig->getLang();
+    }
 
-	public function key() {
-		return $this->_position;
-	}
+    public function setSiteConfig(Klear_Model_SiteConfig $siteConfig)
+    {
+        $this->_siteConfig = $siteConfig;
+    }
 
-	public function next() {
-		++$this->_position;
-	}
+    public function parse()
+    {
+        foreach ($this->_config as $name => $sectionData) {
 
-	public function valid() {
-		return isset($this->_sections[$this->_position]);
+            $section = new Klear_Model_Section;
 
-	}
+            $section
+                ->setParentMenu($this)
+                ->setName($name)
+                ->setData($sectionData);
 
-	public function setConfig(Zend_Config $config)
-	{
-		$this->_config = $config;
-	}
+            $this->_sections[] = $section;
 
-	public function getCurrentLang()
-	{
-	    return $this->_siteConfig->getLang();
-	}
+        }
 
-	public function setSiteConfig(Klear_Model_SiteConfig $siteConfig)
-	{
-		$this->_siteConfig = $siteConfig;
-	}
+        $this->_config = null;
+    }
 
-	public function parse() {
-		foreach($this->_config as $name => $sectionData) {
+    public function rewind()
+    {
+        $this->_position = 0;
+    }
 
-			$section = new Klear_Model_Section;
+    public function current()
+    {
+        return $this->_sections[$this->_position];
+    }
 
-			$section
-			    ->setParentMenu($this)
-				->setName($name)
-				->setData($sectionData);
+    public function key()
+    {
+        return $this->_position;
+    }
 
-			$this->_sections[] = $section;
+    public function next()
+    {
+        ++$this->_position;
+    }
 
-		}
+    public function valid()
+    {
+        return isset($this->_sections[$this->_position]);
 
-		$this->_config = null;
-	}
-
-
-
-
+    }
 }
