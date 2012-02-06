@@ -59,7 +59,12 @@
 		
 		$.klear._doHelloSuccess = function(response) {
 			if (response.success && response.success === true) {
-				$.klear.menu();
+				if (response.loggedIn) {
+					$.klear.menu();
+				} else {
+					$.klear.login();
+					
+				}
 			}
 		};
 		
@@ -162,6 +167,41 @@
 			e.preventDefault();
 			e.stopPropagation();
 		});
+	};
+	
+	
+	$.klear.login = function(){
+
+
+		$.klear._doLoginSuccess = function(response) {
+				
+			var $loginForm = $.tmpl('klearForm', {});
+			$("form",$loginForm).on('submit',function(e) {
+				e.preventDefault();
+				e.stopPropagation();
+				
+			});
+			
+			$loginForm.appendTo(document.body).dialog({
+				resizable: false,
+				modal: true
+			});
+		};
+		
+		$.klear._doLoginError = function(response) {
+			console.log(response);
+		};
+		
+		$.klear.request(
+			{
+				controller: 'login',
+				action: 'index'
+			},
+			$.klear._doLoginSuccess,
+			$.klear._doLoginSuccess,
+			this
+		);
+		
 	};
 
 	$.klear.loadCanvas = function(){
@@ -303,7 +343,7 @@
 	$(document).ready(function() {
 		$.klear.start();
 		
-		setTimeout(function() {$("#target-TerminalModelsList").trigger("mouseup");},1500);
+		setTimeout(function() {$("#target-brandList").trigger("mouseup");},1500);
 	});
 
 })(jQuery);

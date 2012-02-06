@@ -100,5 +100,6 @@ class Klear_Model_MainConfig
     {
         return $this->_footerMenu;
     }
+    
 
 }

@@ -110,7 +110,7 @@ class Klear_MenuController extends Zend_Controller_Action
 
         $jsonResponse = new Klear_Model_DispatchResponse;
         $jsonResponse->setModule('klear');
-        $jsonResponse->setPlugin('menu');
+        $jsonResponse->setPlugin(false); // no requiere plugin
         $jsonResponse->addTemplate("/template/menu/type/sidebar", "klearSidebarMenu");
         $jsonResponse->addTemplate("/template/menu/type/headerbar", "klearHeaderbarMenu");
         $jsonResponse->addTemplate("/template/menu/type/footerbar", "klearFooterbarMenu");

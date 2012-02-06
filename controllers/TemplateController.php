@@ -17,4 +17,11 @@ class Klear_TemplateController extends Zend_Controller_Action
 		}
     }
 
+    
+    public function loginAction()
+    {
+        
+        $this->_helper->viewRenderer('login/form');
+        
+    }
 }

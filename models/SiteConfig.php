@@ -57,4 +57,16 @@ class Klear_Model_SiteConfig
         if (sizeof($this->_langs) == 0) return false;
         return $this->_langs;
     }
+    
+    
+    
+    public function getAuthAdapterName()
+    {
+        if ( (!isset($this->_config->auth)) || (isset($this->_config->auth->adapter)) ) {
+            return false;
+        }
+    
+        return $this->_config->auth->adapter;
+    
+    }
 }

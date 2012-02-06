@@ -63,11 +63,12 @@
     				_loadScripts(response.scripts)
     				
     		).done( function(tmplReturn,scriptsReturn,cssReturn) {
-
+    			
+    			
     			var tryOuts = 0;
     			(function tryAgain() {
     					
-    				if (typeof $.fn[response.plugin] == 'function' ) {
+    				if ( (false === response.plugin) || (typeof $.fn[response.plugin] == 'function' ) ) {
     					successCallback.apply(context,[response]);
     					return;
    					} else {

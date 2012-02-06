@@ -3,6 +3,9 @@
 class Klear_IndexController extends Zend_Controller_Action
 {
 
+    protected $_auth;
+    protected $_loggedIn = false;
+    
     public function init()
     {
         /* Initialize action controller here */
@@ -10,6 +13,11 @@ class Klear_IndexController extends Zend_Controller_Action
     			->addActionContext('dispatch', 'json')
     			->addActionContext('hello', 'json')
     			->initContext('json');
+    	
+    	$this->_auth = Zend_Auth::getInstance();
+    	/* Redirect to logout if not logged and ControllerName!=index */
+
+    	$this->_loggedIn = true;
 
     }
 
@@ -27,9 +35,11 @@ class Klear_IndexController extends Zend_Controller_Action
         $this->_helper->viewRenderer->setNoRender();
 
         $jsonResponse = new Klear_Model_SimpleResponse();
-
+        
+        
         $jsonResponse->setData(
             array(
+                'loggedIn'=>$this->_loggedIn,
                 'success'=> true
             )
         );
