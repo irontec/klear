@@ -15,9 +15,6 @@ class Klear_IndexController extends Zend_Controller_Action
     			->initContext('json');
     	
     	$this->_auth = Zend_Auth::getInstance();
-    	/* Redirect to logout if not logged and ControllerName!=index */
-
-    	$this->_loggedIn = true;
 
     }
 
@@ -34,12 +31,11 @@ class Klear_IndexController extends Zend_Controller_Action
         $this->_helper->layout->disableLayout();
         $this->_helper->viewRenderer->setNoRender();
 
-        $jsonResponse = new Klear_Model_SimpleResponse();
         
+        $jsonResponse = new Klear_Model_SimpleResponse();
         
         $jsonResponse->setData(
             array(
-                'loggedIn'=>$this->_loggedIn,
                 'success'=> true
             )
         );
@@ -83,6 +79,15 @@ class Klear_IndexController extends Zend_Controller_Action
     	if (!$sectionConfig->isValid()) {
     		throw new Zend_Controller_Action_Exception("Configuración no válida");
     		return;
+    	}
+    	
+    	if (!$this->_auth->hasIdentity()) {
+    	    $this->_forward(
+    	            "hello",
+    	            "index",
+    	            "klear"
+    	    );
+    	    return;
     	}
 
     	// Nos devuelve el configurador del módulo concreto instanciado.

@@ -9,6 +9,8 @@ class Klear_Model_SiteConfig
     protected $_logo;
     protected $_langs = array();
 
+    protected $_authConfig = false;
+    
     public function setConfig(Zend_Config $config)
     {
         // TODO: Control de errores, configuración mal seteada
@@ -27,7 +29,15 @@ class Klear_Model_SiteConfig
                 $this->_langs[$language->getIden()] = $language;
             }
         }
+        
         $this->_lang = $this->_langs[$config->lang];
+        
+        if (isset($config->auth)) {
+            
+            $this->_authConfig = new Klear_Model_KConfigParser();
+            $this->_authConfig->setConfig($config->auth);
+        }
+        
     }
 
     public function getYear()
@@ -60,13 +70,10 @@ class Klear_Model_SiteConfig
     
     
     
-    public function getAuthAdapterName()
+    public function getAuthConfig()
     {
-        if ( (!isset($this->_config->auth)) || (isset($this->_config->auth->adapter)) ) {
-            return false;
-        }
-    
-        return $this->_config->auth->adapter;
+        
+        return $this->_authConfig;
     
     }
 }

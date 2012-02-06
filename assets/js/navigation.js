@@ -55,16 +55,14 @@
 	 * Hello Klear Server
 	 */
 	
-	$.klear.hello = function(){
+	$.klear.hello = function(post){
 		
 		$.klear._doHelloSuccess = function(response) {
 			if (response.success && response.success === true) {
-				if (response.loggedIn) {
-					$.klear.menu();
-				} else {
-					$.klear.login();
-					
-				}
+				
+				$.klear.login('close');
+				$.klear.menu();
+				
 			}
 		};
 		
@@ -75,7 +73,8 @@
 		$.klear.request(
 			{
 				controller: 'index',
-				action: 'hello'
+				action: 'hello',
+				post: post
 			},
 			$.klear._doHelloSuccess,
 			$.klear._doErrorSuccess,
@@ -170,22 +169,43 @@
 	};
 	
 	
-	$.klear.login = function(){
+	$.klear.login = function(option){
 
+		switch(option) {
+			case 'close':
+				if (this.$loginForm) {
+					this.$loginForm.fadeOut(function() {
+						$(this).dialog("destroy").remove();
+					});
+				}
+				return;
+			break;
+		}
+		
+		if (typeof this.$loginForm != 'undefined') {
+			this.$loginForm.dialog("destroy").remove();
+		}
 
+		var self = this;
+		
 		$.klear._doLoginSuccess = function(response) {
 				
-			var $loginForm = $.tmpl('klearForm', {});
-			$("form",$loginForm).on('submit',function(e) {
-				e.preventDefault();
-				e.stopPropagation();
-				
-			});
+			self.$loginForm = $.tmpl('klearForm', {});
 			
-			$loginForm.appendTo(document.body).dialog({
+			self.$loginForm.appendTo(document.body).dialog({
 				resizable: false,
 				modal: true
 			});
+			
+			$("form",self.$loginForm.parent()).on('submit',function(e) {
+				
+				e.preventDefault();
+				e.stopPropagation();
+				$.klear.hello($(this).serialize());
+				$("input",self.$loginForm).attr("disabled","disabled");
+			});
+			
+			
 		};
 		
 		$.klear._doLoginError = function(response) {
@@ -195,12 +215,14 @@
 		$.klear.request(
 			{
 				controller: 'login',
-				action: 'index'
+				action: 'index',
 			},
 			$.klear._doLoginSuccess,
 			$.klear._doLoginSuccess,
 			this
 		);
+		
+		return this;
 		
 	};
 

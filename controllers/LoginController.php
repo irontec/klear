@@ -20,12 +20,6 @@ class Klear_LoginController extends Zend_Controller_Action
     
     public function indexAction()
     {
-        $bootstrap = Zend_Controller_Front::getInstance()->getParam('bootstrap');
-        $this->_klearBootstrap = $bootstrap->getResource('modules')->offsetGet('klear');
-
-       
-
-        $data = array();
 
        
         Zend_Json::$useBuiltinEncoderDecoder = true;
@@ -36,7 +30,7 @@ class Klear_LoginController extends Zend_Controller_Action
         $jsonResponse->addTemplate("/template/login/form", "klearForm");
         $jsonResponse->addJsFile("");
         $jsonResponse->addCssFile("");
-        $jsonResponse->setData($data);
+        $jsonResponse->setData(array());
         $jsonResponse->attachView($this->view);
     }
 

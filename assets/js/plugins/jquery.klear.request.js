@@ -21,6 +21,11 @@
         
         var _parseResponse = function _parseResponse(response) {
         	
+        	if ( (response.mustLogIn) && (options.controller != 'login') ) {
+        		$.klear.login();
+        		return;
+        	}
+        	
         	switch(response.responseType) {
         		case 'dispatch':
         			return _parseDispatchResponse(response);

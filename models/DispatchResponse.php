@@ -65,7 +65,12 @@ class Klear_Model_DispatchResponse {
 		$view->data = $this->_data;
 		$view->plugin = $this->_plugin;
 		$view->responseType = self::RESPONSE_TYPE;
-
+		
+		$auth = Zend_Auth::getInstance();
+		if (!$auth->hasIdentity()) {
+		    $view->mustLogIn = true;
+		}
+		
 	}
 
 
