@@ -44,7 +44,8 @@ class Klear_IndexController extends Zend_Controller_Action
     }
 
     /**
-     * Esta acción redirigirá a la acción del módulo de subsección definido en el fichero de configuración de sección
+     * Esta acción redirigirá a la acción del módulo de subsección definido en el fichero de
+     *  configuración de sección
      */
     public function dispatchAction()
     {   
@@ -82,7 +83,7 @@ class Klear_IndexController extends Zend_Controller_Action
     	}
     	
     	if (!$this->_auth->hasIdentity()) {
-    	    die("fok");
+
     	    $this->_forward(
     	            "hello",
     	            "index",
