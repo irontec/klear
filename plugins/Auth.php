@@ -51,15 +51,16 @@ class Klear_Plugin_Auth extends Zend_Controller_Plugin_Abstract
         if ( (false === ($authConfig = $this->_bootstrap->getOption('siteConfig')->getAuthConfig()) )   || 
             (!$authConfig->exists("adapter") )
             ) {
-            
+
             // La instancia de klear no tiene autenticación 
             return true;
         }
         
         $auth = Zend_Auth::getInstance();
+
         
         if ((bool)$request->getPost("klearLogin")) {
-         
+            
             $authAdapterName = $authConfig->getProperty("adapter");
             
             $authAdapter = new $authAdapterName($request);
@@ -75,6 +76,7 @@ class Klear_Plugin_Auth extends Zend_Controller_Plugin_Abstract
                 }
             
             } else {
+                
                 $messages = $oResult->getMessages();
                 $this->view->errorLogin[] = $messages['message'];
             }
