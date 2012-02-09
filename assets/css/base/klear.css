@@ -7,15 +7,20 @@ body {
     display:none;
 }
 
+.loginDialog div.loginError {
+    padding:1em;
+    width:70%;
+    margin:0 auto;
+}
+
 .loginDialog label {
     width:40%;
     text-align:right;
     padding:.3em;
-    dispaly:block;
     float:left;
 }
 
-.loginDialog .description span {
+.loginDialog div span {
     float:left;
 }
 

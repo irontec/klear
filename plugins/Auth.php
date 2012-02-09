@@ -78,7 +78,7 @@ class Klear_Plugin_Auth extends Zend_Controller_Plugin_Abstract
             } else {
                 
                 $messages = $oResult->getMessages();
-                $this->view->errorLogin[] = $messages['message'];
+                $request->setParam('loginError', $messages['message']);
             }
         }
         

@@ -24,6 +24,7 @@ class Klear_Model_SimpleResponse {
 		$auth = Zend_Auth::getInstance();
 		
 		if (!$auth->hasIdentity()) {
+		    
 		    $view->mustLogIn = true;
 		}
 	}

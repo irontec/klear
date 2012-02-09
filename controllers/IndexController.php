@@ -31,6 +31,13 @@ class Klear_IndexController extends Zend_Controller_Action
         $this->_helper->layout->disableLayout();
         $this->_helper->viewRenderer->setNoRender();
 
+        /* Si el plugin de autenticación ha dejado en request
+         * algún mensaje de error, se lo dejamos en flashMessenger
+        * para que lo recoja loginController al re-servir el formulario
+        */
+        if ($this->getRequest()->getParam("loginError")) {
+            $this->_helper->getHelper('FlashMessenger')->addMessage($this->getRequest()->getParam("loginError"));
+        }
         
         $jsonResponse = new Klear_Model_SimpleResponse();
         
@@ -83,12 +90,9 @@ class Klear_IndexController extends Zend_Controller_Action
     	}
     	
     	if (!$this->_auth->hasIdentity()) {
-
-    	    $this->_forward(
-    	            "hello",
-    	            "index",
-    	            "klear"
-    	    );
+    	    
+    	    $this->_forward("hello", "index", "klear");
+    	    
     	    return;
     	}
 

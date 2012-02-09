@@ -28,10 +28,14 @@
         var _parseResponse = function _parseResponse(response) {
         	
         	if ( (response.mustLogIn) && (options.controller != 'login') ) {
-        		$.klear.hello('setCallback', reCall);
+        		if (!options.isLogin) {
+        			$.klear.hello('setCallback', reCall);
+        		}
         		$.klear.login();
         		return;
         	}
+        	
+        	$.klear.login('close');
         	
         	switch(response.responseType) {
         		case 'dispatch':

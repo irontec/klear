@@ -33,6 +33,10 @@ class Klear_LoginController extends Zend_Controller_Action
                     "description" =>$siteConfig->getAuthConfig()->getProperty("description")
                 );
         
+        if ($error = $this->_helper->getHelper('FlashMessenger')->getMessages()) {
+            $data['error'] = $error;
+        }
+        
         Zend_Json::$useBuiltinEncoderDecoder = true;
 
         $jsonResponse = new Klear_Model_DispatchResponse;

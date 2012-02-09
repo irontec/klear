@@ -1,6 +1,9 @@
 <form title="${title}" action="" id="klearLogin">
 {{if (error) }}
-<div class="ui-widget ui-corner-all ui-state-error">${error}</div>
+    <div class="ui-widget ui-corner-all ui-state-error loginError">
+        ${error}
+        <span class="ui-icon ui-icon-alert" style="float: left; margin-right: .3em;"></span>
+    </div>
 {{/if}}
 <div class="description ui-widget-content ui-corner-all">
 ${description}
@@ -8,7 +11,7 @@ ${description}
 </div>
 <input type="hidden" name="klearLogin" value="true" />
 <p>
-    <input id="username" type="text" name="username" />
+    <input id="username" autofocus="autofocus" type="text" name="username" />
     <label for="username">Usuario:</label>
 </p>
 

@@ -57,16 +57,22 @@
 	
 	$.klear.hello = function(option){
 		
+		var options = {
+				controller: 'index',
+				action: 'hello'
+		};
+		
 		switch(option) {
 			case 'setCallback':
 				this.callback = arguments[1];
 				return;
 			break;
-
-			case 'post':
-				var post = arguments[1];
+			case 'options':
+				// completamos las opciones de klear.request con las enviadas como segundo parámetro
+				$.extend(options,arguments[1]);
 			break;
 		}
+		
 		var self = this;
 		$.klear._doHelloSuccess = function(response) {
 		
@@ -77,7 +83,7 @@
 				} else {
 					$.klear.menu();
 				}
-				$.klear.login('close');
+
 			}
 		};
 		
@@ -85,15 +91,10 @@
 			console.log(response);
 		};
 		
-		$.klear.request(
-			{
-				controller: 'index',
-				action: 'hello',
-				post: post
-			},
-			$.klear._doHelloSuccess,
-			$.klear._doErrorSuccess,
-			this
+		$.klear.request(options,
+						$.klear._doHelloSuccess,
+						$.klear._doErrorSuccess,
+						this
 		);
 	};
 
@@ -203,10 +204,7 @@
 			break;
 		}
 		
-		if (typeof this.$loginForm != 'undefined') {
-			this.$loginForm.dialog("destroy").remove();
-		}
-
+		
 		var self = this;
 		
 		$.klear._doLoginSuccess = function(response) {
@@ -216,7 +214,7 @@
 			self.$loginForm.appendTo("#canvas").dialog({
 				resizable: false,
 				modal: true,
-				draggable: true,
+				draggable: false,
 				stack: true,
 				width:'40%',
 				minHeigth:'350px',
@@ -230,13 +228,22 @@
 			
 			$("input",self.$loginForm).removeAttr("disabled");
 			$("input[submit]",self.$loginForm).button();
-			
 			$("input[text]:eq(0)").trigger("focusin").select();
+			
+			if ($("div.loginError",self.$loginForm).length > 0) {
+	
+				self.$loginForm.effect("shake",{times: 3},60);
+			}
+			
 			$("form",self.$loginForm.parent()).on('submit',function(e) {
 				
 				e.preventDefault();
 				e.stopPropagation();
-				$.klear.hello('post',$(this).serialize());
+				$.klear.hello('options',{
+							post: $(this).serialize(),
+							isLogin: true
+				});
+				
 				$("input",self.$loginForm).attr("disabled","disabled");
 			});
 			
