@@ -82,6 +82,7 @@ class Klear_IndexController extends Zend_Controller_Action
     	}
     	
     	if (!$this->_auth->hasIdentity()) {
+    	    die("fok");
     	    $this->_forward(
     	            "hello",
     	            "index",

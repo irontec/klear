@@ -69,6 +69,7 @@
 		}
 		var self = this;
 		$.klear._doHelloSuccess = function(response) {
+		
 			if (response.success && response.success === true) {
 				if (self.callback) {
 					self.callback();
@@ -215,7 +216,7 @@
 			self.$loginForm.appendTo("#canvas").dialog({
 				resizable: false,
 				modal: true,
-				draggable: false,
+				draggable: true,
 				stack: true,
 				width:'40%',
 				minHeigth:'350px',
@@ -223,6 +224,7 @@
 				closeOnEscape: false,
 				open : function(event, ui) {
 					$("p.submit input",self.$loginForm).button();
+					$("input:eq(0)",self.$loginForm).trigger("focusin").select();
 				}
 			});
 			
