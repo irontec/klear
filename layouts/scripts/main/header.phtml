@@ -21,7 +21,7 @@
 			->appendStylesheet($this->baseUrl('/klear/css/base/layout.css'))
 			->appendStylesheet($this->baseUrl('/klear/css/silk/silk-sprite.css'))
 			->appendStylesheet($this->baseUrl('/klear/css/base/layout.css'))
-			->appendStylesheet($this->baseUrl('/klear/css/EKT-theme/jquery-ui-1.8.17.custom.css'))
+			->appendStylesheet($this->SiteConfig()->getJQueryUItheme($this->baseUrl()))
 			->appendStylesheet($this->baseUrl('/klear/css/base/klear.css'))
 			->headLink(array('rel' => 'shortcut icon','href' => $this->baseUrl('/images/favicon.ico')))
 			->setIndent(4);

@@ -1,16 +1,23 @@
-<form action="" id="klearLogin">
+<form title="${title}" action="" id="klearLogin">
+{{if (error) }}
+<div class="ui-widget ui-corner-all ui-state-error">${error}</div>
+{{/if}}
+<div class="description ui-widget-content ui-corner-all">
+${description}
+<span class="ui-icon ui-icon-key"></span>
+</div>
 <input type="hidden" name="klearLogin" value="true" />
 <p>
+    <input id="username" type="text" name="username" />
     <label for="username">Usuario:</label>
-       <input id="username" type="text" name="username" />
 </p>
 
 <p>
-<label for="password">Contraseña:</label>
-       <input id="password" type="password" name="password" />
+    <input id="password" type="password" name="password" />
+    <label for="password">Contraseña:</label>
 </p>
 
-<p><input type="submit" value="Autenticarse" /></p>
+<p class="submit"><input type="submit" value="Autenticarse" /></p>
 
 
 </form>

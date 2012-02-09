@@ -157,7 +157,8 @@
             dispatchOptions : {},
             loadingSelector : null,
             tabLock: false,
-            parentScreen: false
+            parentScreen: false,
+            moduleDialog: null
 		},
 				
 		/*
@@ -275,7 +276,7 @@
 		reDispatch : function() {
 
 			this.showDialog('',{title:false,closeTab:false});
-			this.$moduleDialog
+			this.options.moduleDialog
 					.moduleDialog("setAsLoading")
 					.moduleDialog("option","buttons",[]);
 			
@@ -332,9 +333,10 @@
 		 * blockTab
 		 */
 		
-		$moduleDialog: null,
+		
 		getModuleDialog : function() {
-			return this.$moduleDialog;			
+			
+			return this.options.moduleDialog;			
 		},
 		
 		dialogMessageTmpl: '<div class="ui-widget"><div class="ui-state-${state} ui-corner-all inlineMessage"><p><span class="ui-icon ${icon} inlineMessage-icon"></span>{{html text}}</p></div></div>',
@@ -350,7 +352,7 @@
 			};
 			
 			var dialogTemplate = options.template || this.dialogMessageTmpl;
-			var $parsetHtml = $.tmpl(dialogTemplate, defaults);
+			var $parsedHtml = $.tmpl(dialogTemplate, defaults);
 			var dialogType = options.dialogType || 'moduleDialog';		
 			var self = this;
 			var iconClass = self._getTabIconClass();
@@ -366,7 +368,9 @@
 			var closeTab = ((options.closeTab==0)||(options.closeTab))? options.closeTab.toString() : false;
 			
 			if (dialogType == 'moduleDialog') {
-				this.$moduleDialog = $parsetHtml.moduleDialog({
+				
+				this.options.moduleDialog = $parsedHtml;
+				this.options.moduleDialog.moduleDialog({
 					position: {
 						my: 'center top',
 						at: 'center center',
@@ -394,7 +398,7 @@
 					}
 				});
 			} else {
-				$parsetHtml.dialog({
+				$parsedHtml.dialog({
 					title: '<span class="ui-silk inline dialogTitle '+iconClass+' "></span>'+this.options.title + "",
 					modal: options.modal || false, 
 					close: function(ui) {

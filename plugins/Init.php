@@ -39,8 +39,8 @@ class Klear_Plugin_Init extends Zend_Controller_Plugin_Abstract
             return;
         }
         $this->_initPlugin();
-        $this->_initLayout();
         $this->_initConfig();
+        $this->_initLayout();        
         $this->_initErrorHandler();
     }
 
@@ -83,6 +83,8 @@ class Klear_Plugin_Init extends Zend_Controller_Plugin_Abstract
                 "footerMenu" => $klearConfig->getFooterMenu()
             )
 		);
+		
+
     }
 
     protected function _initErrorHandler()

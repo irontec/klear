@@ -1,0 +1,31 @@
+production:
+  baseurl: http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.17/themes/%theme%/jquery-ui.css
+  themes:
+    - base
+    - black-tie
+    - blitzer
+    - cupertino
+    - dark-hive
+    - dot-luv
+    - eggplant
+    - excite-bike
+    - flick
+    - hot-sneaks
+    - humanity
+    - le-frog
+    - mint-choc
+    - overcast
+    - pepper-grinder
+    - redmond
+    - smoothness
+    - south-street
+    - start
+    - sunny
+    - swanky-purse
+    - trontastic
+    - ui-darkness
+    - ui-lightness
+    - vader
+    
+development:
+  _extends: production

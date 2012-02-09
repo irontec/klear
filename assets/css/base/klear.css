@@ -1,5 +1,38 @@
 body {
     font-family: Lucida Grande,Lucida Sans,Arial,sans-serif;
+    font-size:12px;
+}
+
+.loginDialog .ui-dialog-titlebar-close {
+    display:none;
+}
+
+.loginDialog label {
+    width:40%;
+    text-align:right;
+    padding:.3em;
+    dispaly:block;
+    float:left;
+}
+
+.loginDialog .description span {
+    float:left;
+}
+
+.loginDialog .description {
+    width:60%;
+    padding:.7em;
+    margin:.8em auto;
+    text-align:center;    
+}
+
+.loginDialog p {
+    text-align:left;
+}
+
+.loginDialog p.submit {
+    text-align:center;
+    margin-top:1em;   
 }
 
 #header {
@@ -68,7 +101,7 @@ body {
 }
 
 #canvasWrapper ul.tabs {
-	height:40px;
+	height:35px;
 }
 
 .ui-scrollable-tabs{overflow:hidden;position:relative;}
@@ -77,8 +110,8 @@ body {
 .ui-scrollable-tabs .ui-tabs-nav-arrows{left:0;margin:0;margin:0 0.05em;padding:0;position:absolute;right:0;top:2px;}
 *:first-child+html .ui-scrollable-tabs .ui-tabs-nav-arrows{z-index:1}
 
-.ui-scrollable-tabs .ui-tabs .ui-tabs-nav li{top:2px;margin:0 1px 0}
-.ui-scrollable-tabs .ui-tabs .ui-tabs-nav li.ui-tabs-selected{top:3px}
+.ui-scrollable-tabs .ui-tabs .ui-tabs-nav li{top:1px;margin:0 1px 0}
+.ui-scrollable-tabs .ui-tabs .ui-tabs-nav li.ui-tabs-selected{top:2px}
 
 .ui-tabs-nav li .ui-tabs-close{float:left;margin-top:8px;margin-right:4px;border:none;cursor:pointer}
 .ui-scrollable-tabs .ui-tabs-nav-arrows .ui-tabs-arrow-next{float:right;border-right:none;}

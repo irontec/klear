@@ -14,14 +14,12 @@ class Klear_Bootstrap extends Zend_Application_Module_Bootstrap
         /*
          * Klear_Plugin_Auth if enabled in klear.yaml
         */
-        
         $front->registerPlugin(new Klear_Plugin_Auth());
         
         /*
          * Klear_Plugin_Translator lander
          */
         $front->registerPlugin(new Klear_Plugin_Translator());
-        
 
 	}
 	

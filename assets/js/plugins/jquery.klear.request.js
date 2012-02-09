@@ -17,11 +17,18 @@
 		
 		$.extend(options,params);
 
+		var caller = arguments;
+		var reCall = function() {
+			caller.callee.apply(caller.callee, Array.prototype.slice.call(caller));
+		}
+		
+		
         var request_baseurl = '';
         
         var _parseResponse = function _parseResponse(response) {
         	
         	if ( (response.mustLogIn) && (options.controller != 'login') ) {
+        		$.klear.hello('setCallback', reCall);
         		$.klear.login();
         		return;
         	}
