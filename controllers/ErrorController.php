@@ -21,10 +21,10 @@ class Klear_ErrorController extends Zend_Controller_Action
 	                $response['exception'] = $errors->exception->getMessage();
 
 	                // Send stack trace
-	                $response['trace'] = $errors->exception->getTrace();
+	               // $response['trace'] = $errors->exception->getTrace();
 
 	                // Send request params
-	                $response['request'] = $this->getRequest()->getParams();
+	                //$response['request'] = $this->getRequest()->getParams();
 	            }
 
 	            $this->view->response = $response;

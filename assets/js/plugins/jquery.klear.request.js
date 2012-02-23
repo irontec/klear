@@ -3,20 +3,47 @@
 	$.klear = $.klear || {};
 	
 	
+	$.klear.buildRequest = function(params) {
+		var options = {
+				controller : 'index',
+				action: 'dispatch',
+				file : 'index',
+				post : false
+		};
+			
+		$.extend(options,params);
+			
+		var _validParams = "execute type file screen dialog command pk".split(" ");
+		var _params = {};
+
+		$.each(_validParams,function(idx,_value) {
+			if (options[_value]) {
+				_params[_value] = options[_value];
+			}
+		})
+			
+		var _type = options.post? 'post':'get';
+		var _action = $.klear.baseurl + options.controller + '/' + options.action;
+		
+		if (_type == 'post') {
+			_action += '?' + $.param(_params);
+			_data = options.post;
+		} else {
+			_data = _params;
+		}
+		
+		return {
+			action: _action,
+			data: _data,
+			type: _type
+		};
+		
 	
+		
+	};	
 	
 	$.klear.request = function(params,successCallback,errorCallback,context) {
 		
-		
-		var options = {
-			controller : 'index',
-			action: 'dispatch',
-			file : 'index',
-			post : false
-		};
-		
-		$.extend(options,params);
-
 		var caller = arguments;
 		var reCall = function() {
 			caller.callee.apply(caller.callee, Array.prototype.slice.call(caller));
@@ -27,8 +54,8 @@
         
         var _parseResponse = function _parseResponse(response) {
         	
-        	if ( (response.mustLogIn) && (options.controller != 'login') ) {
-        		if (!options.isLogin) {
+        	if ( (response.mustLogIn) && (params.controller != 'login') ) {
+        		if (!params.isLogin) {
         			$.klear.hello('setCallback', reCall);
         		}
         		$.klear.login();
@@ -224,40 +251,49 @@
 			dfr.promise(true);							
 		};
 		
-		
-		var _validParams = "execute type file screen dialog pk".split(" ");
-		var _params = {};
-
-		$.each(_validParams,function(idx,_value) {
-			if (options[_value]) {
-				_params[_value] = options[_value];
+	
+		var req = $.klear.buildRequest(params);
+	
+		if (params.external) {
+			//La petición se realizará sobre un iframe oculto, no se controla response
+			var _name = 'ftarget' + Math.round(Math.random(1000,1000));
+			var _theForm = $("<form />")
+								.attr({action: req.action,method: req.type, target: _name});
+			
+			for(var _idx in req.data) {
+				$("<input>")
+					.attr("name",_idx)
+					.attr("type","hidden")
+					.val(req.data[_idx])
+					.appendTo(_theForm);
 			}
-		})
-		
-		var _type = options.post? 'post':'get';
-		var _action = $.klear.baseurl + options.controller + '/' + options.action;
-		
-		if (_type == 'post') {
-			_action += '?' + $.param(_params);
-			_data = options.post;
-		} else {
-			_data = _params;
-		}
+			_theForm.appendTo('body');
+			var _iFrame = $("<iframe />").attr("name",_name).hide().appendTo("body");
+			_theForm.trigger('submit');
+			
+			successCallback(true);
+			
+			// Esperamos 1 segundo para eliminar iframe y form
+			setTimeout(function() {
+				_theForm.remove();
+				_iFrame.remove();
+			},1000);
+						
+			return false;
+			
+		} 
 		
 		$.ajax({
-			url : _action,
+			url : req.action,
            	dataType:'json',
            	context : this,
-           	data : _data,
-           	type : _type,
+           	data : req.data,
+           	type : req.type,
            	success: _parseResponse,
            	error: _errorResponse
         });
 		
 		
 	};
-		
-	
-	
 	
 })(jQuery);

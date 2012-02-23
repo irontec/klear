@@ -51,6 +51,7 @@ class Klear_Model_Section  implements Iterator {
 		foreach($data->submenus as $file => $sectionData) {
 		    if (in_array($file, $this->_skip)) continue;
 		    $subsection = new Klear_Model_SubSection;
+		    
 			$subsection
 			    ->setParentMenu($this->_menu)
 				->setMainFile($file)

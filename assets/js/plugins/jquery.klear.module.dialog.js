@@ -180,8 +180,6 @@
 				options = self.options,
 				uiDialog = self.uiDialog;
 
-			
-			console.log(options.modal);
 			self.overlay = options.modal ? new $.ui.dialog.overlay(self) : null;
 			
 			self.overlay.$el.appendTo(this._getKlearPosition());

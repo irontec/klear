@@ -13,6 +13,7 @@ body {
     margin:0 auto;
 }
 
+
 .loginDialog label {
     width:40%;
     text-align:right;
@@ -21,7 +22,8 @@ body {
 }
 
 .loginDialog div span {
-    float:left;
+    float: left;
+    margin-right:.2em;
 }
 
 .loginDialog .description {
@@ -29,6 +31,10 @@ body {
     padding:.7em;
     margin:.8em auto;
     text-align:center;    
+}
+
+.loginDialog .description p {
+    margin-right: 1em;   
 }
 
 .loginDialog p {
