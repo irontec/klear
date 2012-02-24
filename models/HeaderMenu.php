@@ -72,7 +72,7 @@ class Klear_Model_HeaderMenu implements Iterator
 	{
 	    $method = '_parse'. ucfirst($configKey);
 	    if (method_exists($this, $method)) {
-	        call_user_method($method, $this, $configKey);
+	        $this->{$method}($configKey);
 	        return true;
 	    }
 	    return false;
