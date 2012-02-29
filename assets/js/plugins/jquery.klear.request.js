@@ -259,6 +259,7 @@
 			var _name = 'ftarget' + Math.round(Math.random(1000,1000));
 			var _theForm = $("<form />")
 								.attr({action: req.action,method: req.type, target: _name});
+
 			
 			for(var _idx in req.data) {
 				$("<input>")
@@ -267,17 +268,18 @@
 					.val(req.data[_idx])
 					.appendTo(_theForm);
 			}
-			_theForm.appendTo('body');
-			var _iFrame = $("<iframe />").attr("name",_name).hide().appendTo("body");
-			_theForm.trigger('submit');
+			
+			_theForm
+				.appendTo('body')
+				.on('submit',function() {
+					var $self = $(this);
+					setTimeout(function() {
+						$self.remove();
+					},10000);
+				})
+				.trigger('submit');
 			
 			successCallback(true);
-			
-			// Esperamos 1 segundo para eliminar iframe y form
-			setTimeout(function() {
-				_theForm.remove();
-				_iFrame.remove();
-			},1000);
 						
 			return false;
 			
