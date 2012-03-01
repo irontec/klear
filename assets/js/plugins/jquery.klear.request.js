@@ -2,6 +2,9 @@
 	
 	$.klear = $.klear || {};
 	
+	$.klear.errorCodes = {
+			auth : ['1002']
+	};
 	
 	$.klear.buildRequest = function(params) {
 		var options = {
@@ -130,7 +133,19 @@
     		});	
         };
         
-		var _errorResponse = function _errorResponse() {
+		var _errorResponse = function _errorResponse(response) {
+
+			
+        	if ( ( (response.mustLogIn) && (params.controller != 'login') ) || 
+        		($.inArray(response.code,$.klear.errorCodes.auth) != -1) )
+        		{
+        		if (!params.isLogin) {
+        			$.klear.hello('setCallback', reCall);
+        		}
+        		$.klear.login();
+        		return;
+        	}
+        	
 			errorCallback.apply(context,arguments);
 		};
 		

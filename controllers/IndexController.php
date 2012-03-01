@@ -90,9 +90,7 @@ class Klear_IndexController extends Zend_Controller_Action
     	}
     	
     	if (!$this->_auth->hasIdentity()) {
-    	    
     	    $this->_forward("hello", "index", "klear");
-    	    
     	    return;
     	}
 
@@ -113,13 +111,13 @@ class Klear_IndexController extends Zend_Controller_Action
     	//Así tendremos disponible la configuración del módulo en el controlador principal.
 
  		$this->_forward(
-    				$moduleRouter->getActionName(),
-    				$moduleRouter->getControllerName(),
-    				$moduleRouter->getModuleName(),
-    				array(
-    						"mainRouter"=>$moduleRouter,
-    				)
-    			);
+ 		    $moduleRouter->getActionName(), 
+ 		    $moduleRouter->getControllerName(),
+ 		    $moduleRouter->getModuleName(),
+ 		    array(
+ 		        "mainRouter"=>$moduleRouter,
+ 		    )
+ 		);
 
 
     }
