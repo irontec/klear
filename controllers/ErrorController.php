@@ -4,9 +4,14 @@ class Klear_ErrorController extends Zend_Controller_Action
 {
 
 	public function init() {
-		$this->_helper->ContextSwitch()
-				->addActionContext('error', 'json')
-				->initContext('json');
+	    
+	    if ($this->_request->isXmlHttpRequest()) { 
+	            $this
+	                ->_helper->ContextSwitch()
+	                ->addActionContext('error', 'json')
+	                ->initContext('json');
+	    }
+	            
 	}
 
 	public function errorAction()

@@ -133,8 +133,13 @@
     		});	
         };
         
-		var _errorResponse = function _errorResponse(response) {
+		var _errorResponse = function _errorResponse(xhr) {
 
+			try {
+				var response = $.parseJSON(xhr.responseText);
+			} catch(e) {
+				//TODO: lanzar error...
+			}
 			
         	if ( ( (response.mustLogIn) && (params.controller != 'login') ) || 
         		($.inArray(response.code,$.klear.errorCodes.auth) != -1) )
