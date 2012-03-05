@@ -248,7 +248,6 @@
 		},		
 		_errorResponse: function() {
 			this.setAsloaded();
-			console.log(arguments);
 			
 			var title = '<span class="ui-silk inline dialogTitle '+this._getTabIconClass()+' "></span>';
 			
@@ -270,18 +269,10 @@
 			$(this.element)[response.plugin]({
 				data: response.data
 			});
-			
 		},
 		
 		reDispatch : function() {
-
-			this.showDialog('',{title:false,closeTab:false});
-			this.options.moduleDialog
-					.moduleDialog("setAsLoading")
-					.moduleDialog("option","buttons",[]);
-			
-			this.element.moduleDialog("setAsLoading")
-			this.element.moduleDialog("option","buttons",[]);
+			this.setAsloading();
 			this.dispatch();
 		},
 		
@@ -583,19 +574,31 @@
 		
 		updateLoader : function() {
 			
-			var _loadingItem = $(this.options.loadingSelector);
+			var _panel = $(this.options.panel);
+			if ($(".loadingPanel",_panel).length == 0) {
+				var _loadingItem = $("#loadingTemplate").clone();
+				_loadingItem
+					.removeAttr("id")
+					.spin({lines:8,length:18,width:4,radius:10,trail:100,speed:1.2})
+					.hide()
+					.appendTo(_panel);
+			} else {
+				var _loadingItem = $(".loadingPanel",_panel); 
+			}
+			
+			$("<div />").addClass("overlay")
+					.css({
+						opacity: '0.6',
+						width: _panel.width() + 'px',
+						height: _panel.height() + 'px'})
+					.appendTo(_panel);
+			
 			
 			if (this._loading) {
-				_loadingItem.hide().appendTo(this.options.panel).css("z-index",'10000').fadeIn();
+				_loadingItem.show();
 				$(this.options.ui.tab).addClass("ui-state-disabled");
-				
-				
-			
 			} else {
 				$(this.options.ui.tab).removeClass("ui-state-disabled");
-				_loadingItem.fadeOut(function() {
-					$(this).appendTo(document.body);
-				});	
 			}
 			
 		}

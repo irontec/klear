@@ -251,14 +251,29 @@ div.ui-tabs-panel {
 /*
 LOADING PANEL
 */
-#loadingPanel{
-    position:absolute;
+.loadingPanel{
+    position:fixed;
     display:none;
-    margin:18px auto auto 30%;
-    width: 20%;
-    padding-top:30px;
+    padding:3em;
+    z-index:500000;
+    font-size: 1.5em;
+    left: 2em;
+    padding: 3em 2em 2.5em 3em;
+    position: absolute;
+    top: 2em;
+    width: 13%;
 }
 
+div.overlay {
+	position:absolute;
+	top:0;
+	left:0;
+	background:#fff;
+}
+
+.loadingPanel p{
+	margin: -0.5em 0 0 3em;
+}
 /*
 MESSAGES
 */
@@ -286,57 +301,4 @@ PANEL
 }
 .ui-icon.inline {
 	float: left;
-}
-
-
-.loadingCircle {
-	background-color: rgba(0,0,0,0);
-	border:5px solid rgba(230,98,23, 0.9);
-	opacity:.9;
-	border-right:5px solid rgba(0,0,0,0);
-	border-left:5px solid rgba(0,0,0,0);
-	border-radius:50px;
-	box-shadow: 0 0 35px #E66217;
-	width:50px;
-	height:50px;
-	margin:0 auto;
-	-moz-animation:spinPulse 1s infinite ease-in-out;
-	-webkit-animation:spinPulse 1s infinite linear;
-}
-
-.loadingCircle1 {
-	background-color: rgba(0,0,0,0);
-	border:5px solid rgba(230,98,23, 0.9);
-	opacity:.9;
-	border-left:5px solid rgba(0,0,0,0);
-	border-right:5px solid rgba(0,0,0,0);
-	border-radius:50px;
-	box-shadow: 0 0 15px #E66217;
-	width:30px;
-	height:30px;
-	margin:0 auto;
-	position:relative;
-	top:-50px;
-	-moz-animation:spinoffPulse 1s infinite linear;
-	-webkit-animation:spinoffPulse 1s infinite linear;
-}
-
-
-@-moz-keyframes spinPulse {
-    0% { -moz-transform:rotate(160deg); opacity:0; box-shadow:0 0 1px #E66217;}
-    50% { -moz-transform:rotate(145deg); opacity:1; }
-    100% { -moz-transform:rotate(-320deg); opacity:0; }
-}
-@-moz-keyframes spinoffPulse {
-    0% { -moz-transform:rotate(0deg); }
-    100% { -moz-transform:rotate(360deg);  }
-}
-@-webkit-keyframes spinPulse {
-    0% { -webkit-transform:rotate(160deg); opacity:0; box-shadow:0 0 1px #E66217; }
-    50% { -webkit-transform:rotate(145deg); opacity:1;}
-    100% { -webkit-transform:rotate(-320deg); opacity:0; }
-}
-@-webkit-keyframes spinoffPulse {
-    0% { -webkit-transform:rotate(0deg); }
-    100% { -webkit-transform:rotate(360deg); }
 }

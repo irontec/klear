@@ -297,8 +297,7 @@
 				var $tabLi = $(ui.tab).parent("li");
 				$tabLi.klearModule({
 					ui: ui,
-					container : $.klear.canvas,
-					loadingSelector : '#loadingPanel' 
+					container : $.klear.canvas
 				}).tooltip();
 
 				// Se invoca custom event para actualizar objeto klear.module (si fuera necesario);

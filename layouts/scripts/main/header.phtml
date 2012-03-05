@@ -29,11 +29,13 @@
 	echo $this->headScript()
 		//->appendFile('http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js')
 		->appendFile('http://code.jquery.com/jquery-1.7.2b1.js')
-		->appendFile('http://ajax.aspnetcdn.com/ajax/jquery.templates/beta1/jquery.tmpl.min.js')
-		->appendFile('http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.17/jquery-ui.min.js')
+		//->appendFile('http://ajax.aspnetcdn.com/ajax/jquery.templates/beta1/jquery.tmpl.min.js')
+		->appendFile($this->baseUrl('klear/js/jquery.tmpl.js'))
+		->appendFile('http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.18/jquery-ui.min.js')
+
 		->appendFile($this->baseUrl('klear/js/plugins/jquery.scrollabletab.js'))
 		->appendFile($this->baseUrl('klear/js/plugins/jquery.ui.tooltip.js'))
-		->appendFile($this->baseUrl('klear/js/plugins/jquery.ui.tooltip.js'))
+		->appendFile($this->baseUrl('klear/js/scripts/spin.min.js'))
 		->appendFile($this->baseUrl('klear/js/plugins/jquery.translate.js'))
 		->appendFile($this->baseUrl('klear/js/plugins/jquery.klear.request.js'))
 		->appendFile($this->baseUrl('klear/js/plugins/jquery.getStylesheet.js'))
@@ -76,7 +78,7 @@
     <?php echo $this->SiteConfig()->getName()?>
     </h1>
     <h2>Klear based site</h2>
-<?php 
+<?php
 /*
  * LANDERTRANSLATION
 */
