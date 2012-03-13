@@ -406,7 +406,7 @@
 	$(document).ready(function() {
 		$.klear.start();
 		
-		setTimeout(function() {$("#target-TerminalFirmwaresList").trigger("mouseup");},2000);
+		setTimeout(function() {$("#target-brandList").trigger("mouseup");},2000);
 	});
 
 })(jQuery);

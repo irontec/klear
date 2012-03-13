@@ -2,6 +2,10 @@
 	
 	$.klear = $.klear || {};
 	
+	$.klear.removeCache = function() {
+		$.klear.loadedScripts = {};
+	};
+	
 	$.klear.errorCodes = {
 			auth : ['1002']
 	};
