@@ -51,6 +51,7 @@ class Klear_AssetsController extends Zend_Controller_Action
 
         // TODO: Fix
         /* FIXME: Fix what?? :S */
+        /* TOBEFIXED: Instanciate  Imagick on every image request?? very bad!!! :'( */
         $format = 'image/' . strtolower($image->getImageFormat());
 
         $response = $this->getResponse();
