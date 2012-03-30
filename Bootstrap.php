@@ -112,6 +112,22 @@ class Klear_Bootstrap extends Zend_Application_Module_Bootstrap
 				)
 			)
 		);
+		
+		$router->addRoute(
+		        'klearBinaryAssets',
+		        $route = new Zend_Controller_Router_Route_Regex(
+		                '(klear[^/]*)/bin/(.*)$',
+		                array(
+		                        'controller' => 'assets',
+		                        'action' => 'bin',
+		                        'module' => 'klear'
+		                ),
+		                array(
+		                        2 => 'file',
+		                        1 => 'moduleName'
+		                )
+		        )
+		);
 
 	}
 }

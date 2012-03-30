@@ -42,6 +42,7 @@ class Klear_Plugin_Init extends Zend_Controller_Plugin_Abstract
         $this->_initConfig();
         $this->_initLayout();        
         $this->_initErrorHandler();
+        $this->_registerYamlStream();
     }
 
     /**
@@ -115,4 +116,8 @@ class Klear_Plugin_Init extends Zend_Controller_Plugin_Abstract
         return $configPath;
     }
 
+    protected function _registerYamlStream() {
+        stream_wrapper_register("klear.yaml", "Klear_Model_YamlStream");
+    }
+    
 }

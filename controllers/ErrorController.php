@@ -53,7 +53,13 @@ class Klear_ErrorController extends Zend_Controller_Action
         }
         
         if (strtolower(get_class($errors->exception)) == "soapfault") {
-            list(,$code) = explode(":",$errors->exception->faultcode);
+            $codeSpec = explode(":",$errors->exception->faultcode);  
+            var_dump($errors);exit;
+            if (sizeof($codeSpec) > 1) {
+                $code = $codeSpec[1];
+            } else {
+                $code = $errors->exception->faultcode;
+            }
             $this->view->code = $code;
             
         } else {

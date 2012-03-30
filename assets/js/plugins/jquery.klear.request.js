@@ -1,7 +1,9 @@
 ;(function($) {
 	
 	$.klear = $.klear || {};
-	
+
+	$.klear.cacheEnabled = true;
+
 	$.klear.removeCache = function() {
 		$.klear.loadedScripts = {};
 	};
@@ -179,7 +181,7 @@
 			
 			$.each(templates,function(tmplIden,tmplSrc) {
 				
-				if (undefined !== $.template[tmplIden]) {
+				if ($.klear.cacheEnabled && undefined !== $.template[tmplIden]) {
 					successCallback();
 					return;
 				}
@@ -213,7 +215,7 @@
 			var isAjax = false;
 			var _self = this;
 			$.each(scripts, function(iden, _script) {
-				if ($.klear.loadedScripts[iden]) {
+				if ($.klear.cacheEnabled && $.klear.loadedScripts[iden]) {
 					total--;
 					return;
 				}
@@ -239,8 +241,7 @@
 							}
                         },
                         error : function(r) {
-                        	console.log(arguments);
-                            dfr.reject("Error downloading script ["+_script+"]"); 
+                        	dfr.reject("Error downloading script ["+_script+"]"); 
             			}
 				 }); 
 				} catch(e) {
