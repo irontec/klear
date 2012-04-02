@@ -35,6 +35,7 @@ class Klear_Model_YamlStream {
         $this->_openedPath = dirname($file);
         $this->_file = $file;
         
+        
         $fp = fopen($this->_file, 'r');
         
         while ($line = fgets($fp)) {
@@ -54,18 +55,15 @@ class Klear_Model_YamlStream {
         }
         
         fclose($fp);
+        
         $this->_content = '';
         foreach ($this->_extraFiles as $_confFile) {
             $this->_content .= file_get_contents($_confFile) ."\n";
         }
         
-     
-        
         
         $this->_content .= file_get_contents($this->_file);
-        
-        
-        $this->_length = strlen($this->_content);
+        $this->_length = mb_strlen($this->_content);
         $this->_position = 0; 
         
         return true;
@@ -73,9 +71,9 @@ class Klear_Model_YamlStream {
 
     public function stream_read($count)
     {
-        
-        $chunk = substr($this->_content, $this->_position, $count);
+        $chunk = mb_substr($this->_content, $this->_position, $count);
         $this->_position += $count;
+        if ($this->_position > $this->_length) $this->_position = $this->_length;
         return $chunk;
     }
 
@@ -135,7 +133,11 @@ class Klear_Model_YamlStream {
      */
     public function stream_stat()
     {
-        return stat($this->_file);
+        $stat = stat($this->_file);
+        $stat[7] = $stat['size'] = $this->_length;
+        
+        return $stat;
+        
     }
     
 }
