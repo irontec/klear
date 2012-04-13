@@ -10,6 +10,40 @@
 	
 	$.klear = $.klear || {};
 	
+	$.klear.checkDeps = function(dependencies,callback) {
+		console.log("entrando",dependencies);
+		
+		if (typeof callback._numberOfTries == 'undefined') {
+			callback._numberOfTries = 0;
+		} else {
+			callback._numberOfTries++;
+		}
+		
+		if (!dependencies.length) {
+			throw "Dependecies parameter type.";
+		}
+		
+		if (callback._numberOfTries > 50) {
+			throw "JS Dependecy Timeout.";
+		}
+		
+		var depLength = dependencies.length;
+		for(var i=0;i<depLength;i++) {
+			
+			var segments = dependencies[i].split('.');
+			var prev = window;
+			for(var j=0; j<segments.length;j++) {
+				if (typeof prev[segments[j]] == 'undefined') {
+					setTimeout(function() {callback($);},100);
+					return false;
+				} else {
+					prev = prev[segments[j]];
+				}
+			}
+		}
+		return true;
+	};
+	
 	/*
 	 * Checking open in background Event:
 	 * control | middle click
