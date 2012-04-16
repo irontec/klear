@@ -11,7 +11,6 @@
 	$.klear = $.klear || {};
 	
 	$.klear.checkDeps = function(dependencies,callback) {
-		console.log("entrando",dependencies);
 		
 		if (typeof callback._numberOfTries == 'undefined') {
 			callback._numberOfTries = 0;
