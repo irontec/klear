@@ -25,7 +25,7 @@
 		if (callback._numberOfTries > 50) {
 			throw "JS Dependecy Timeout.";
 		}
-		
+		console.log("checking ", dependencies);
 		var depLength = dependencies.length;
 		for(var i=0;i<depLength;i++) {
 			
