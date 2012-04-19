@@ -30,11 +30,11 @@ body {
     width:60%;
     padding:.7em;
     margin:.8em auto;
-    text-align:center;    
+    text-align:center;
 }
 
 .loginDialog .description p {
-    margin-right: 1em;   
+    margin-right: 1em;
 }
 
 .loginDialog p {
@@ -43,7 +43,7 @@ body {
 
 .loginDialog p.submit {
     text-align:center;
-    margin-top:1em;   
+    margin-top:1em;
 }
 
 #header {
@@ -61,36 +61,36 @@ body {
 
 #header h1 {
     margin-top:50px;
-	font-size:1.3em;
+    font-size:1.3em;
 }
 
 
 #header h2 {
-	color:#777;
-	margin-top:.3em;
-	font-size:.8em;	
+    color:#777;
+    margin-top:.3em;
+    font-size:.8em;
 }
 
 #sidebar h2 {
-	padding:0.2em 0 0.2em 28px;
-	font-size:1.2em;
+    padding:0.2em 0 0.2em 28px;
+    font-size:1.2em;
 }
 
 #sidebar div {
-	padding: 0.4em;
+    padding: 0.4em;
 }
 
 #sidebar ul {
-	 list-style: none;		
+     list-style: none;
 }
 #sidebar li {
-	padding: 0.5em;	
-	font-size:0.9em;
+    padding: 0.5em;
+    font-size:0.9em;
 }
 
 #sidebar li a {
-	text-decoration:none;
-	margin-left:0.4em;
+    text-decoration:none;
+    margin-left:0.4em;
 }
 
 #sidebar{
@@ -105,14 +105,14 @@ body {
 }
 
 #canvas {
-	min-height:700px;
-	overflow:hidden;
-	width:auto;
-	margin:1px;
+    min-height:700px;
+    overflow:hidden;
+    width:auto;
+    margin:1px;
 }
 
 #canvasWrapper ul.tabs {
-	height:35px;
+    height:35px;
 }
 
 .ui-scrollable-tabs{overflow:hidden;position:relative;}
@@ -131,21 +131,21 @@ body {
 .ui-scrollable-tabs .ui-tabs-nav-arrows li a{display:block;padding:9px 3px 14px;outline:none;}
 
 .ui-tooltip {
-	position:absolute;
-	padding:1.3em;
-	font-size:.85em;	
+    position:absolute;
+    padding:1.3em;
+    font-size:.85em;
 }
 
 ul#tabsList {
-	overflow:hidden;
-	border-bottom:0;
-	border-bottom-right-radius:0;
-	border-bottom-left-radius:0;
-	display:none;
+    overflow:hidden;
+    border-bottom:0;
+    border-bottom-right-radius:0;
+    border-bottom-left-radius:0;
+    display:none;
 }
 
 #tabsList li {
-	display:inline;
+    display:inline;
 }
 
 #tabsList li .ui-icon-close { float: right; margin: 0.4em 0.2em 0 0; cursor: pointer; }
@@ -158,35 +158,35 @@ ul#tabsList {
 }
 
 #tabsList li.ui-state-default span.ui-silk {
-	display:block;
-	float:left;
-	margin:.5em;
-	cursor:pointer;
+    display:block;
+    float:left;
+    margin:.5em;
+    cursor:pointer;
 }
 
 #tabsList li.ui-state-active a {
     margin: 0 0.2em 0 0.5em;
     padding: 0.5em 0.1em;
     text-indent: 0;
-    width: auto;	
+    width: auto;
 }
 
 #tabsList li.ui-state-active span.ui-silk {
-	margin-right:-.2em;
-	
+    margin-right:-.2em;
+
 }
 
 #tabsList li.changed a:before {
     content: '*';
 }
 
-#footer p {	
-	text-align:center;	
+#footer p {
+    text-align:center;
 }
 
 
 div.ui-tabs-panel {
-    padding: 0.1em 0.05em;	
+    padding: 0.1em 0.05em;
 }
 
 #headerbar {
@@ -211,22 +211,22 @@ div.ui-tabs-panel {
 }
 
 .klear-headerbar-submenu{
-    
+
     float: left;
     list-style: none outside none;
     padding: 9px;
 }
 
-.klear-headerbar-submenu li{ 
+.klear-headerbar-submenu li{
     float: left;
     list-style: none outside none;
     margin: 0 0.2em;
-    
+
 }
 
 .klear-headerbar-menu .ui-silk, .klear-headerbar-menu .ui-icon {
-	
-	    border: 1px solid red;
+
+        border: 1px solid red;
     float: left;
     margin: 0.25em;
 }
@@ -255,7 +255,7 @@ LOADING PANEL
     position:fixed;
     display:none;
     padding:3em;
-    z-index:500000;
+    z-index:1001;
     font-size: 1.5em;
     left: 2em;
     padding: 3em 2em 2.5em 3em;
@@ -265,15 +265,15 @@ LOADING PANEL
 }
 
 div.overlay {
-	position:absolute;
-	top:0;
-	left:0;
-	background:#fff;
+    position:absolute;
+    top:0;
+    left:0;
+    background:#fff;
 }
 
 .loadingPanel p{
-	margin: -0.5em 0 0 3em;
-	background: transparent;
+    margin: -0.5em 0 0 3em;
+    background: transparent;
 }
 .loadingPanel .spinner div {
     background:#000;
@@ -283,26 +283,26 @@ MESSAGES
 */
 .inlineMessage{
     margin: 0 0 10px;
-    padding: 0.3em 0.7em;	
+    padding: 0.3em 0.7em;
 }
 .inlineMessage-icon{
-	float: left; 
-	margin-right: .3em;
+    float: left;
+    margin-right: .3em;
 }
 /*
 PANEL
 */
 .ui-tabs .ui-tabs-panel{
-	min-height: 647px;
+    min-height: 647px;
     padding: 0.5em;
     height: auto;
     overflow: hidden;
     padding: 0.5em;
-    position: relative;	
+    position: relative;
 }
 .dialogTitle {
-	margin:0 10px 0 0;
+    margin:0 10px 0 0;
 }
 .ui-icon.inline {
-	float: left;
+    float: left;
 }
