@@ -2,7 +2,7 @@
 	
 	$.klear = $.klear || {};
 
-	$.klear.cacheEnabled = true;
+	$.klear.cacheEnabled = false;
 
 	$.klear.removeCache = function() {
 		$.klear.loadedScripts = {};
@@ -144,6 +144,7 @@
 			try {
 				var response = $.parseJSON(xhr.responseText);
 			} catch(e) {
+				console.log(e);
 				//TODO: lanzar error...
 			}
 			

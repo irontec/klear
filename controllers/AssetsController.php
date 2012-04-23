@@ -6,6 +6,7 @@ class Klear_AssetsController extends Zend_Controller_Action
     {
         $this->_helper->layout->disableLayout();
         $this->_helper->getHelper('viewRenderer')->setNoRender();
+
     }
 
     protected function _buildPath($base)
@@ -32,8 +33,8 @@ class Klear_AssetsController extends Zend_Controller_Action
         $binFile = $this->_buildPath('/assets/bin/');
         $this->_sendRaw($binFile);
     }
-    
-    
+
+
     public function cssImageAction()
     {
         $imgFile = $this->_buildPath('/assets/css/');
@@ -80,29 +81,29 @@ class Klear_AssetsController extends Zend_Controller_Action
         readFile($file);
     }
 
-    
+
     protected function _sendRaw($file)
     {
-        
+
         $lastModifiedTime = filemtime($file);
-        
+
         $response = $this->getResponse();
         $request = $this->getRequest();
-        
+
         if (($request->getHeader('IF-MODIFIED-SINCE'))
                 && (strtotime($request->getHeader('IF-MODIFIED-SINCE')) == $lastModifiedTime)) {
             $response->setHttpResponseCode(304);
             return;
         }
-        
+
         $response = $this->getResponse();
         $request = $this->getRequest();
-    
-        
-        
+
+
+
         $response->setHeader('Pragma', 'public', true);
         $response->setHeader('Cache-control', 'maxage=' . 60*60*24*30, true);
-        
+
         if ("production" === APPLICATION_ENV) {
             $response->setHeader(
                 'Last-Modified',
@@ -110,17 +111,17 @@ class Klear_AssetsController extends Zend_Controller_Action
                 true
             );
         }
-        
+
         $finfo = new finfo(FILEINFO_MIME_TYPE);
         $format = $finfo->file($file);
-        
-        
+
+
         $response->setHeader('Cache-control', 'maxage=' . 60*60*24*30, true);
         $response->setHeader('Content-type', $format);
         $response->setHeader('Content-length', filesize($file));
         readFile($file);
     }
-    
+
     public function _compress($file, $type)
     {
         $lastModifiedTime = filemtime($file);
