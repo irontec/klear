@@ -43,9 +43,21 @@ class Klear_Model_DispatchResponse
         $this->_templates += $aTmpls;
     }
 
-    public function addJsFile($js)
+    public function addJsFile($js, $module = '')
     {
-        $this->_jsFiles[crc32($js)] = $js;
+        if (! empty($module)) {
+
+            $script = array(
+                'module' => $module,
+                'tmpl' => $js
+            );
+
+        } else {
+
+            $script = $js;
+        }
+
+        $this->_jsFiles[crc32($js)] = $script;
     }
 
     public function addJsArray($aJs)
