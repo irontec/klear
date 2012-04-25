@@ -219,6 +219,7 @@
         };
 
         var _loadScripts = function(scripts) {
+
             var dfr = $.Deferred();
             var total = 0;
             for(var iden in scripts) total++;
@@ -229,6 +230,7 @@
             var done = 0;
             var isAjax = false;
             var _self = this;
+
             $.each(scripts, function(iden, _script) {
                 if ($.klear.cacheEnabled && $.klear.loadedScripts[iden]) {
                     total--;
@@ -240,9 +242,20 @@
                 }
                 isAjax = true;
 
+
+                var targetUrl = "";
+                if (typeof _script == 'object' && typeof _script.module != 'undefined') {
+
+                    targetUrl = clean_baseurl + "/" + _script.module + _script.tmpl;
+
+                } else {
+
+                   targetUrl = request_baseurl + _script;
+                }
+
                 try {
                 $.ajax({
-                        url: request_baseurl + _script,
+                        url: targetUrl,
                         dataType:'script',
                         type : 'get',
                         cache : true,
