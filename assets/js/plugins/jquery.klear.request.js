@@ -46,9 +46,6 @@
             data: _data,
             type: _type
         };
-
-
-
     };
 
     $.klear.request = function(params,successCallback,errorCallback,context) {
@@ -167,7 +164,9 @@
 
         var _loadTemplates = function(templates) {
 
+
             var dfr = $.Deferred();
+
             var total = 0;
             for(var iden in templates) total++;
             if (total == 0) {
@@ -185,9 +184,11 @@
             };
 
             var targetUrl = '';
+
             $.each(templates,function(tmplIden,tmplSrc) {
 
                 if ($.klear.cacheEnabled && undefined !== $.template[tmplIden]) {
+
                     successCallback();
                     return;
                 }
@@ -207,6 +208,7 @@
                     type : 'get',
                     cache : true,
                     success: function(r) {
+
                         $.template(tmplIden, r);
                         successCallback();
                     },

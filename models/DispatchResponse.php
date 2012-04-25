@@ -14,6 +14,7 @@ class Klear_Model_DispatchResponse
     protected $_jsFiles = array();
     protected $_cssFiles = array();
     protected $_templates = array();
+    protected $_mainTemplate = null;
     protected $_module;
     protected $_plugin;
     protected $_data;
@@ -29,6 +30,8 @@ class Klear_Model_DispatchResponse
                 'module' => $module,
                 'tmpl' => $tmpl
             );
+
+            $this->_mainTemplate = $iden;
 
         } else {
 
@@ -95,6 +98,7 @@ class Klear_Model_DispatchResponse
         $view->baseurl = $view->baseUrl($this->_module);
         $view->cleanBaseurl = $view->baseUrl();
         $view->templates = $this->_templates;
+        $view->mainTemplate = $this->_mainTemplate;
         $view->scripts = $this->_jsFiles;
         $view->css = $this->_cssFiles;
         $view->data = $this->_data;

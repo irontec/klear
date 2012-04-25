@@ -266,6 +266,12 @@
             this.setAsloaded();
 
             $(this.options.panel).html('');
+
+            if (response.mainTemplate) {
+
+                response.data.mainTemplate = response.mainTemplate;
+            }
+
             $(this.element)[response.plugin]({
                 data: response.data
             });
@@ -401,7 +407,6 @@
                     }
                 });
             }
-
         },
 
         showDialogMessage: function (msg, opts) {
@@ -593,7 +598,6 @@
                         width: _panel.width() + 'px',
                         height: _panel.height() + 'px'})
                     .appendTo(_panel);
-
 
             if (this._loading) {
                 _loadingItem.show();
