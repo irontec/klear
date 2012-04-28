@@ -158,7 +158,9 @@
             loadingSelector : null,
             tabLock: false,
             parentScreen: false,
-            moduleDialog: null
+            moduleDialog: null,
+            PostDispatchMethod: null,
+            PreDispatchMethod : null
         },
 
         /*
@@ -242,7 +244,11 @@
             };
 
             $.extend(dispatchData,this.options.dispatchOptions);
-
+            
+            if (typeof this.options.PreDispatchMethod == 'function') {
+            	console.log("executing preDispatch");
+            	this.options.PreDispatchMethod.apply(this);           
+            }
             $.klear.request(dispatchData,this._parseDispatchResponse,this._errorResponse,this);
 
         },
@@ -264,7 +270,7 @@
         _parseDispatchResponse : function(response) {
 
             this.setAsloaded();
-
+            
             $(this.options.panel).html('');
 
             if (response.mainTemplate) {
@@ -275,10 +281,16 @@
             $(this.element)[response.plugin]({
                 data: response.data
             });
+            
+            if (typeof this.options.PostDispatchMethod == 'function') {
+            	this.options.PostDispatchMethod.apply(this);           
+            }
+
         },
 
         reDispatch : function() {
             this.setAsloading();
+            
             this.dispatch();
         },
 

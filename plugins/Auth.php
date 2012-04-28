@@ -6,7 +6,7 @@
  */
 class Klear_Plugin_Auth extends Zend_Controller_Plugin_Abstract
 {
- 
+
     /**
      * @var Zend_Controller_Front
      */
@@ -47,42 +47,42 @@ class Klear_Plugin_Auth extends Zend_Controller_Plugin_Abstract
 
     protected function _initAuth(Zend_Controller_Request_Abstract $request)
     {
-        
-        if ( (false === ($authConfig = $this->_bootstrap->getOption('siteConfig')->getAuthConfig()) )   || 
+
+        if ( (false === ($authConfig = $this->_bootstrap->getOption('siteConfig')->getAuthConfig()) )   ||
             (!$authConfig->exists("adapter") )
             ) {
 
-            // La instancia de klear no tiene autenticación 
+            // La instancia de klear no tiene autenticación
             return true;
         }
-        
+
         $auth = Zend_Auth::getInstance();
 
-        
+
         if ((bool)$request->getPost("klearLogin")) {
-            
+
             $authAdapterName = $authConfig->getProperty("adapter");
-            
+
             $authAdapter = new $authAdapterName($request);
             $oResult = $auth->authenticate($authAdapter);
-            
+
             if ($oResult->isValid()) {
-                
+
                 $authAdapter->saveStorage();
                 $session = new Zend_Session_Namespace('Zend_Auth');
                 $session->setExpirationSeconds(86400);
                 if ($request->getParam('remember', '') == 'true') {
                     Zend_Session::rememberMe();
                 }
-            
+
             } else {
-                
+
                 $messages = $oResult->getMessages();
                 $request->setParam('loginError', $messages['message']);
             }
         }
-        
+
     }
 
-    
+
 }

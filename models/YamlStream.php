@@ -63,10 +63,40 @@ class Klear_Model_YamlStream {
 
 
         $this->_content .= file_get_contents($this->_file);
+
+        $this->_resolveVariables();
+
         $this->_length = mb_strlen($this->_content);
         $this->_position = 0;
 
         return true;
+    }
+
+    protected function _parseVariables($data)
+    {
+        switch(true) {
+            case preg_match("/auth\.(.*)/", $data[1], $result):
+                $auth = Zend_Auth::getInstance();
+                if ( ($auth->hasIdentity()) &&
+                    (isset($auth->getIdentity()->{$result[1]})) ) {
+
+                    return $auth->getIdentity()->{$result[1]};
+                }
+
+                break;
+
+        }
+
+        return '';
+    }
+
+    protected function _resolveVariables()
+    {
+        $this->_content = preg_replace_callback(
+            '/\$\{(.*)\}/',
+            array($this,'_parseVariables'),
+            $this->_content
+        );
     }
 
     public function stream_read($count)

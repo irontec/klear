@@ -5,7 +5,7 @@ class Klear_IndexController extends Zend_Controller_Action
 
     protected $_auth;
     protected $_loggedIn = false;
-    
+
     public function init()
     {
         /* Initialize action controller here */
@@ -13,7 +13,7 @@ class Klear_IndexController extends Zend_Controller_Action
     			->addActionContext('dispatch', 'json')
     			->addActionContext('hello', 'json')
     			->initContext('json');
-    	
+
     	$this->_auth = Zend_Auth::getInstance();
 
     }
@@ -38,9 +38,9 @@ class Klear_IndexController extends Zend_Controller_Action
         if ($this->getRequest()->getParam("loginError")) {
             $this->_helper->getHelper('FlashMessenger')->addMessage($this->getRequest()->getParam("loginError"));
         }
-        
+
         $jsonResponse = new Klear_Model_SimpleResponse();
-        
+
         $jsonResponse->setData(
             array(
                 'success'=> true
@@ -55,30 +55,29 @@ class Klear_IndexController extends Zend_Controller_Action
      *  configuración de sección
      */
     public function dispatchAction()
-    {   
-        
+    {
+
     	$this->_helper->layout->disableLayout();
     	$this->_helper->viewRenderer->setNoRender();
 
-    	
+
     	$file = $this->getRequest()->getParam("file");
 
-    	$file_path = 'klear.yaml://' . $file;
-    	
-    	
+    	$filePath = 'klear.yaml://' . $file;
+
+
     	/*
     	 * Carga configuración de la sección cargada según la request.
     	 */
     	$config = new Zend_Config_Yaml(
-    			$file_path,
-    			APPLICATION_ENV,
-    	        array(
-    	                "yamldecoder"=>"yaml_parse"
-    	                
-    	        )
+			$filePath,
+			APPLICATION_ENV,
+	        array(
+	                "yamldecoder"=>"yaml_parse"
+	        )
     	);
-    	
-    	
+
+
     	// Cargamos el configurador de secciones por defecto
     	$sectionConfig = new Klear_Model_SectionConfig;
     	$sectionConfig->setConfig($config);
@@ -86,7 +85,7 @@ class Klear_IndexController extends Zend_Controller_Action
     		throw new Zend_Controller_Action_Exception("Configuración no válida");
     		return;
     	}
-    	
+
     	if (!$this->_auth->hasIdentity()) {
     	    $this->_forward("hello", "index", "klear");
     	    return;
@@ -105,7 +104,7 @@ class Klear_IndexController extends Zend_Controller_Action
 
     	//Así tendremos disponible la configuración del módulo en el controlador principal.
  		$this->_forward(
- 		    $moduleRouter->getActionName(), 
+ 		    $moduleRouter->getActionName(),
  		    $moduleRouter->getControllerName(),
  		    $moduleRouter->getModuleName(),
  		    array(
