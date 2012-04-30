@@ -16,11 +16,12 @@ class Klear_Plugin_Translator extends Zend_Controller_Plugin_Abstract
     /*
      * Translator Variables
      */
-    protected $_zendTranslateAdapter = 'array';
+    protected $_zendTranslateAdapter = 'Iron_Translate_Adapter_GettextKlear';
 
     protected $_zendTranslateContent = array('Zend_Translate_Content'=>'Zend_Translate_Content');
 
-    protected $_translationFileName = 'translation.php';
+    protected $_translationFileName = '%LOCALE%.mo';
+    
     protected $_translationLanguagePath = 'languages';
 
 
@@ -49,76 +50,51 @@ class Klear_Plugin_Translator extends Zend_Controller_Plugin_Abstract
     protected function _initKlearTranslator()
     {
 
-        $this->_zendTranslateAdapter = 'Iron_Translate_Adapter_Klear';
-
+        $this->_zendTranslateAdapter = 'Iron_Translate_Adapter_GettextKlear';
+        
         $this->_directory = $this->_front->getModuleDirectory();
-
+        
         $bootstrap = $this->_front->getParam("bootstrap");
-
+        
         $klearBootstrap = $bootstrap->getResource('modules')->offsetGet('klear');
-
+        
         $siteLanguage = $klearBootstrap->getOption('siteConfig')->getLang();
-
+        
         $siteLanguages = $klearBootstrap->getOption('siteConfig')->getLangs();
-
+        
         //TODO user language
-
+        
         $currentLanguage = $siteLanguage;
-
+        
         $this->_locale = new Zend_Locale($currentLanguage->getLocale());
-
+        
         foreach ($siteLanguages as $language) {
-
             $this->_locales[] = new Zend_Locale($language->getLocale());
-
         }
-
-        $this->_translationFile = $this->_directory
-        . DIRECTORY_SEPARATOR
-        . $this->_translationLanguagePath
-        . DIRECTORY_SEPARATOR
-        . (string) $this->_locale
-        . DIRECTORY_SEPARATOR
-        . $this->_translationFileName;
-
-        $this->_initZendTranslate();
-
-        if (file_exists($this->_translationFile)) {
-            $translations = include $this->_translationFile;
-            if (!is_array($translations)) $translations = array();
-            foreach ($translations as $key=>$value) {
-                if ($value === false) {
-                    unset($translations[$key]);
-                }
-            }
-            if (empty($translations)) {
-                $translations = $this->_zendTranslateContent;
-            }
-            $this->_translate->getAdapter()->addTranslation(
+        
+        $this->_translationFile = implode(
+                DIRECTORY_SEPARATOR,
                 array(
-                    'content'=>$translations,
-                    'locale'=>(string) $this->_locale
-                )
-            );
-        }
-
-        $writer = new Zend_Log_Writer_Stream('/tmp/foo.log');
+                        $this->_directory,
+                        $this->_translationLanguagePath,
+                        (string) $this->_locale,
+                        str_replace('%LOCALE%', 
+                                $this->_locale, 
+                                $this->_translationFileName)
+                        )
+                ); 
+        
+        $this->_initZendTranslate();
+       
+        $writer = new Zend_Log_Writer_Stream('/tmp/klear-translation-error.log');
         $log    = new Zend_Log($writer);
 
         $this->_translate->setOptions(
             array(
                 'log' => $log,
-                'logUntranslated' => false
-          )
+                'logUntranslated' => true
+            )
         );
-
-        $adapter = $this->_translate->getAdapter();
-        $adapter->setTranslationFile($this->_translationFile);
-        $adapter->setDirectory($this->_directory);
-        $adapter->setTranslationLanguagePath($this->_translationLanguagePath);
-        $adapter->setTranslationFileName($this->_translationFileName);
-        $adapter->setAvailableLocales($this->_locales);
-        $adapter->setCurrentLocale($this->_locale);
     }
 
     protected function _initZendTranslate()
@@ -127,7 +103,7 @@ class Klear_Plugin_Translator extends Zend_Controller_Plugin_Abstract
     		$this->_translate = new Zend_Translate(
 				array(
 					'adapter' => $this->_zendTranslateAdapter,
-					'content' => $this->_zendTranslateContent,
+					'content' => $this->_translationFile,
 				)
 			);
     		Zend_Registry::set('Zend_Translate', $this->_translate);
