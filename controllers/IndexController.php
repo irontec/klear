@@ -64,18 +64,30 @@ class Klear_IndexController extends Zend_Controller_Action
 
         if ($namespace && $str) {
             list($type, $namespace) = explode("/", $this->getRequest()->getParam("namespace"), 2);
+            if ($namespace=='null') {
+                $namespace = 'default.default';
+            }
+            if (strpos($namespace, ".")) {
+                list($module, $plugin) = explode(".", $namespace, 2);
+            } else {
+                $plugin = null;
+                $module = $namespace;
+            }
             list($module, $plugin) = explode(".", $namespace, 2);
-
             $modules = Zend_Controller_Front::getInstance()->getControllerDirectory();
             $mods = array_keys($modules);
+            $done = false;
 
             foreach ($mods as $mod) {
                 if (strtolower($mod) == strtolower($module)) {
                     $this->getRequest()->setModuleName($mod);
+                    $done = true;
                     break;
                 }
             }
-
+            if ($done === false) {
+                $this->getRequest()->setModuleName('default');
+            }
             $bootstrap = $this->getFrontController()->getParam("bootstrap");
             $klearBootstrap = $bootstrap->getResource('modules')->offsetGet('klear');
             $siteLanguage = $klearBootstrap->getOption('siteConfig')->getLang();
@@ -89,8 +101,6 @@ class Klear_IndexController extends Zend_Controller_Action
                             'js-translations.php'
                     )
             );
-
-
 
             if (!file_exists($translationFile)) {
                 $contents = array();
