@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Klear\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-04-30 13:00+0100\n"
-"PO-Revision-Date: 2012-04-30 13:01+0100\n"
+"POT-Creation-Date: 2012-04-30 16:36+0100\n"
+"PO-Revision-Date: 2012-04-30 16:37+0100\n"
 "Last-Translator: Lander Ontoria <lander@irontec.com>\n"
 "Language-Team: Irontec-Klear <lander+klear@irontec.com>\n"
 "Language: \n"
@@ -29,7 +29,7 @@ msgstr ""
 #: jquery.klear.module.js:237
 #: jquery.klear.module.js:273
 #: jquery.klear.module.js:289
-#: assets/js/plugins/jquery.klear.module.js:265
+#: assets/js/plugins/jquery.klear.module.js:273
 msgid "Module registration error."
 msgstr "Error registrando el módulo."
 
@@ -42,7 +42,7 @@ msgstr "Error descargando el template [%s]."
 #: jquery.klear.module.js:239
 #: jquery.klear.module.js:275
 #: jquery.klear.module.js:291
-#: assets/js/plugins/jquery.klear.module.js:267
+#: assets/js/plugins/jquery.klear.module.js:275
 #, python-format
 msgid "Error: %s."
 msgstr "Error: %s."
@@ -51,14 +51,29 @@ msgstr "Error: %s."
 #: jquery.klear.module.js:241
 #: jquery.klear.module.js:277
 #: jquery.klear.module.js:293
-#: assets/js/plugins/jquery.klear.module.js:269
+#: assets/js/plugins/jquery.klear.module.js:277
 msgid "Klear Module Error"
 msgstr "Error de Klear Module"
 
 #: assets/js/plugins/Copy of jquery.klear.module.js:324
-#: assets/js/plugins/jquery.klear.module.js:329
+#: assets/js/plugins/jquery.klear.module.js:337
 msgid "This tab is locked."
 msgstr "Esta pestaña está bloqueada."
+
+#: assets/js/plugins/jquery.klear.module.js:56
+#: assets/js/plugins/jquery.klear.module.js:59
+#: assets/js/plugins/jquery.klear.module.js:60
+#: assets/js/plugins/jquery.klear.module.js:61
+msgid "asdg"
+msgstr ""
+
+#: assets/js/plugins/jquery.klear.module.js:57
+msgid "as  asdgasdg \"\"a\"\"\"\"\"Afdhadsfhasdh '' asdg'asd'ga'sdg 'asd'gas'dgdg"
+msgstr "aquií a'sdg' \"asdghasdg\""
+
+#: assets/js/plugins/jquery.klear.module.js:58
+msgid "asdxcqads g asd\"a sdg asd gas dg''asd 'ga'sd'g a'sdg 'as'd\\\" \\\\''g"
+msgstr "asdgasd ga sdg as dg asd g"
 
 #~ msgid "klear-translation-test"
 #~ msgstr "klear-translation-test-ES"

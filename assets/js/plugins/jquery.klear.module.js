@@ -52,7 +52,6 @@
             this.setAsloading();
 
             this._initTab();
-
         },
 
         destroy: function(){

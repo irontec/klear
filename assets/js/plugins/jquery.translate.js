@@ -22,7 +22,8 @@
 			var _strClean = _str.replace(/'/g, '').replace(/"/g, '');
 			
 			if ($.translations[_strClean]==undefined) {
-				$.translationRegister(_str, _namespace);
+				if ($.translationRegister!=undefined)
+					$.translationRegister(_str, _namespace);
 			} else {
 				_str = $.translations[_strClean];
 			}
@@ -36,20 +37,6 @@
 			} 
 			
 			return _str;
-		},
-		translationRegister: function(_str, _namespace) {
-			console.log(':::::::::::::' + _str);
-			$.klear.request(
-					{
-						controller: 'index',
-						action: 'registertranslation',
-						namespace: 'javascript/'+_namespace,
-						str: _str
-					},
-					function(){},
-					function(){}
-			);
-			
 		},
 		addTranslation: function(obj){
 			$.extend($.translations, obj);
