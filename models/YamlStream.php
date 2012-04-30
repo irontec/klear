@@ -67,8 +67,11 @@ class Klear_Model_YamlStream {
         $this->_resolveVariables();
 
         $this->_length = mb_strlen($this->_content);
+
         $this->_position = 0;
 
+        // Uncomment for debug
+        //file_put_contents("/tmp/last",$this->_content);
         return true;
     }
 
@@ -124,6 +127,7 @@ class Klear_Model_YamlStream {
 
     public function stream_seek($offset, $whence)
     {
+
         switch ($whence) {
             case SEEK_SET:
                 if ($offset < $this->_length && $offset >= 0) {
