@@ -12,7 +12,14 @@ class Klear_AssetsController extends Zend_Controller_Action
     protected function _buildPath($base)
     {
         $front = $this->getFrontController();
+        
         $moduleDirectory = $front->getModuleDirectory($this->getRequest()->getParam('moduleName'));
+        
+        if (strpos($this->getRequest()->getParam("file"), 'translation/')!==false) {
+            $this->_jsModuleTranslation($moduleDirectory);
+            exit;
+        }
+        
         return $moduleDirectory . $base . $this->getRequest()->getParam("file");
     }
 
@@ -223,5 +230,43 @@ class Klear_AssetsController extends Zend_Controller_Action
         }
         return $data;
     }
+    
+    public function _jsModuleTranslation($directory)
+    {
+        $transFile = $directory . '/languages/js-translations.php';
+        $jsTranslations = array();
+        if (file_exists($transFile)) {
+            $jsTranslations = include $transFile;
+        }
+        $response = $this->getResponse();
+        $response->setHeader('Pragma', 'public', true);
+        $response->setHeader('Cache-control', 'maxage=' . 60*60*24*30, true);
+        if ("production" === APPLICATION_ENV) {
+            $response->setHeader(
+                'Last-Modified',
+                gmdate('D, d M Y H:i:s', $lastModifiedTime) . ' GMT',
+                true
+            );
+        }
+        $fileContentType = 'application/x-javascript';
+        $response->setHeader('Content-type', $fileContentType);
+        $response->sendHeaders();
+        $aLines = array();
+        foreach ($jsTranslations as $literal) {
+            $key = str_replace(array('\'', '"'), '', $literal);
+            $translateMethod = "translate";
+            $value = $this->view->{$translateMethod}($literal);
+            $value = str_replace(
+                    array('\\\'', '"'),
+                    array('\'', '\"'),
+                    $value);
+            $aLines[] = '"'.$key.'" : "'.$value.'"';
+        }
+        echo "/*\n *\t[".$this->getRequest()->getParam('moduleName')."]\n *\tTranslation File\n */\n";
+        echo "$.addTranslation({\n\t";
+        echo implode(",\n\t", $aLines);
+        echo "\n});";
+    }
+    
 }
 
