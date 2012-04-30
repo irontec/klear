@@ -12,6 +12,9 @@
             auth : ['1002']
     };
 
+
+    var __namespace__ = 'klear.buildRequest';
+
     $.klear.buildRequest = function(params) {
         var options = {
                 controller : 'index',
@@ -22,7 +25,7 @@
 
         $.extend(options,params);
 
-        var _validParams = "execute type file screen dialog command pk".split(" ");
+        var _validParams = "execute type file screen dialog command pk str namespace".split(" ");
         var _params = {};
 
         $.each(_validParams,function(idx,_value) {
@@ -85,7 +88,7 @@
         var _parseSimpleResponse = function _parseSimpleResponse(response) {
 
             if (!response.data) {
-                errorCallback.apply(context,[$.translate("Unknown response format in Simple Response")]);
+                errorCallback.apply(context,[$.translate("Unknown response format in Simple Response", [__namespace__])]);
                 return;
             }
             successCallback.apply(context,[response.data]);
@@ -99,7 +102,7 @@
             for(var i=0; i<responseCheck.length; i++) {
 
                 if (typeof response[responseCheck[i]] == 'undefined') {
-                    errorCallback.apply(context,[$.translate("Module registration error")]);
+                    errorCallback.apply(context,[$.translate("Module registration error.", [__namespace__])]);
                     return;
                 }
             }
@@ -135,7 +138,7 @@
 
             }).fail( function( data ){
 
-                errorCallback.apply(context,[$.translate('Module resistration error'),data]);
+                errorCallback.apply(context,[$.translate('Module registration error.', [__namespace__]),data]);
             });
         };
 
@@ -213,7 +216,7 @@
                         successCallback();
                     },
                     error : function(r) {
-                        dfr.reject($.translate("Error downloading template [%s].", tmplIden));
+                        dfr.reject($.translate("Error downloading template [%s].", tmplIden, [__namespace__]));
                     }
                 });
             });

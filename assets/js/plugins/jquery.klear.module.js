@@ -25,9 +25,12 @@
      * Klear Module definition
      *
      * [jQuery UI Widget]
-     *
-     */
-
+     * 
+     */ 
+    
+    var __namespace__ = 'klear.module';
+    
+    
     $.widget("klear.module", {
 
         /*
@@ -183,7 +186,8 @@
          */
 
         _initTab : function() {
-            if ((!this.options.menuLink)
+        	
+        	if ((!this.options.menuLink)
                 || ($("span.ui-silk",this.options.menuLink).length <= 0)) {
                 return;
             }
@@ -258,11 +262,11 @@
             var title = '<span class="ui-silk inline dialogTitle '+this._getTabIconClass()+' "></span>';
 
             this.showDialogError(
-                $.translate("Module registration error.") +
+                $.translate("Module registration error.", [__namespace__]) +
                 '<br /><br />' +
-                $.translate("Error: %s.", '<em>' + Array.prototype.join.call(arguments, '</em><br /><em>')+ '</em>')
+                $.translate("Error: %s.", '<em>' + Array.prototype.join.call(arguments, '</em><br /><em>', [__namespace__])+ '</em>')
             , {
-                title: $.translate("Klear Module Error") + ' - ' + title + '',
+                title: $.translate("Klear Module Error", [__namespace__]) + ' - ' + title + '',
                 closeTab: this.options.tabIndex
             });
         },
@@ -322,7 +326,7 @@
                     }
 
                 } else {
-                    this.showInlineWarn($.translate('This tab is locked.'));
+                    this.showInlineWarn($.translate('This tab is locked.', [__namespace__]));
                 }
             }
 

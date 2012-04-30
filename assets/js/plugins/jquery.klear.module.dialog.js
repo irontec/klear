@@ -33,6 +33,8 @@
 		click: true
 	};
 	
+	var __namespace__ = "klear.moduleDialog";
+	
 	$.widget("klear.moduleDialog", $.ui.dialog, {
 		_superClass: $.ui.dialog.prototype,
 		_getKlearPosition: function() {
