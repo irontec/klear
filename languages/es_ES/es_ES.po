@@ -1,0 +1,79 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: Klear\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2012-04-30 13:00+0100\n"
+"PO-Revision-Date: 2012-04-30 13:01+0100\n"
+"Last-Translator: Lander Ontoria <lander@irontec.com>\n"
+"Language-Team: Irontec-Klear <lander+klear@irontec.com>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Poedit-KeywordsList: _;gettext;gettext_noop;translate;plural:1,2\n"
+"X-Poedit-Basepath: /home/landerog/workspace/klear-core/klear\n"
+"X-Poedit-Language: Spanish\n"
+"X-Poedit-Country: SPAIN\n"
+"X-Poedit-SourceCharset: utf-8\n"
+"Plural-Forms: nplurals=2; plural=n != 1;\n"
+"X-Poedit-SearchPath-0: .\n"
+
+#: assets/js/plugins/jquery.klear.request.js:91
+msgid "Unknown response format in Simple Response"
+msgstr ""
+
+#: assets/js/plugins/jquery.klear.request.js:105
+#: assets/js/plugins/jquery.klear.request.js:141
+#: assets/js/plugins/Copy of
+#: jquery.klear.module.js:222
+#: jquery.klear.module.js:237
+#: jquery.klear.module.js:273
+#: jquery.klear.module.js:289
+#: assets/js/plugins/jquery.klear.module.js:265
+msgid "Module registration error."
+msgstr "Error registrando el módulo."
+
+#: assets/js/plugins/jquery.klear.request.js:219
+#, python-format
+msgid "Error downloading template [%s]."
+msgstr "Error descargando el template [%s]."
+
+#: assets/js/plugins/Copy of jquery.klear.module.js:224
+#: jquery.klear.module.js:239
+#: jquery.klear.module.js:275
+#: jquery.klear.module.js:291
+#: assets/js/plugins/jquery.klear.module.js:267
+#, python-format
+msgid "Error: %s."
+msgstr "Error: %s."
+
+#: assets/js/plugins/Copy of jquery.klear.module.js:226
+#: jquery.klear.module.js:241
+#: jquery.klear.module.js:277
+#: jquery.klear.module.js:293
+#: assets/js/plugins/jquery.klear.module.js:269
+msgid "Klear Module Error"
+msgstr "Error de Klear Module"
+
+#: assets/js/plugins/Copy of jquery.klear.module.js:324
+#: assets/js/plugins/jquery.klear.module.js:329
+msgid "This tab is locked."
+msgstr "Esta pestaña está bloqueada."
+
+#~ msgid "klear-translation-test"
+#~ msgstr "klear-translation-test-ES"
+
+#~ msgid "Module TEST."
+#~ msgstr "Module TEST ES"
+
+#~ msgid "Dándo por 'saco' uno ."
+#~ msgstr "Dándo por 'saco' uno  trans 'asdgasdg'."
+
+#~ msgid "Dándo por \"saco\" dos ."
+#~ msgstr "Dándo por \"saco\" dos    trans 'asdgasdg'.."
+
+#~ msgid "Dándo por 'saco' tres \"xx\" ."
+#~ msgstr " Dándo por 'saco' tres \"xx\" .  trans 'asdgasdg'."
+
+#~ msgid "Dándo por 'saco' cuatro \"xx\" ."
+#~ msgstr "Dándo por 'saco' cuatro \"xx\"    trans 'asdgasdg'.. \"a\" 'b'"
