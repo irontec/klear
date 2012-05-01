@@ -8,8 +8,8 @@ class Klear_Bootstrap extends Zend_Application_Module_Bootstrap
 	 */
 	protected function _initKlear()
 	{
-		$front = Zend_Controller_Front::getInstance();
-        $front->registerPlugin(new Klear_Plugin_Init());
+	    $front = Zend_Controller_Front::getInstance();
+	    $front->registerPlugin(new Klear_Plugin_Init());
 
         /*
          * Klear_Plugin_Auth if enabled in klear.yaml

@@ -26,6 +26,9 @@ production:
     - ui-darkness
     - ui-lightness
     - vader
+
+testing:
+  _extends: production
     
 development:
   _extends: production
