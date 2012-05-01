@@ -51,8 +51,8 @@
 		->appendFile($this->baseUrl('klear/js/plugins/jquery.klear.module.dialog.js'))
 		->appendFile($this->baseUrl('klear/js/navigation.js'))
 		->setIndent(4);
-	
-	
+
+
 ?>
 	<base href="<?php echo $this->serverUrl($this->baseUrl('klear')); ?>/" />
 </head>
@@ -63,7 +63,7 @@
     <div id="headerbar">
 
     </div>
-    <?php  /*?>
+<?php /*
     <span class="toolbar ui-widget-header ui-corner-all">
         <button data-icon="ui-icon-person" data-text="false">Configuración de usuario</button>
         <button data-icon="ui-icon-locked" data-text="false">Bloquear Pantalla</button>
@@ -78,19 +78,16 @@
         endif;
         ?>
     </span>
-<?php*/?>
-        <?php
+*/?>
+    <?php
         if ($this->SiteConfig()->getLogo()):
             echo '<div id="logoApp"><img src="'.$this->baseUrl($this->SiteConfig()->getLogo()).'" alt="'.$this->SiteConfig()->getName().'" /></div>';
         endif;
     ?>
     <h1>
-    <?php echo $this->SiteConfig()->getName()?>
+        <?php echo $this->SiteConfig()->getName()?>
     </h1>
-    <h2>Klear based site</h2>
-<?php
-
-?>
+    <h2>Klear based site [<a href="<?php echo $this->url(array('controller' => 'index', 'action' => 'bye'));?>"?><?php echo $this->translate("logout")?></a>]</h2>
 </div>
 <div id="body">
 <div id="main">
