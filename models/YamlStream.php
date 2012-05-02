@@ -87,6 +87,10 @@ class Klear_Model_YamlStream {
                 }
 
                 break;
+            case ($data[1] == 'lang'):
+                    // TODO: pickup language
+                    return 'es';
+                break;
 
         }
 
