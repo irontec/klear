@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Klear\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-05-03 16:33+0100\n"
-"PO-Revision-Date: 2012-05-03 16:34+0100\n"
+"POT-Creation-Date: 2012-05-03 18:01+0100\n"
+"PO-Revision-Date: 2012-05-03 18:08+0100\n"
 "Last-Translator: Lander Ontoria <lander@irontec.com>\n"
 "Language-Team: Irontec-Klear <lander+klear@irontec.com>\n"
 "Language: \n"
@@ -11,88 +11,75 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "X-Poedit-KeywordsList: _;gettext;gettext_noop;translate;plural:1,2\n"
-"X-Poedit-Basepath: /home/landerog/workspace/klear-core/klear\n"
-"X-Poedit-Language: Spanish\n"
+"X-Poedit-Basepath: /opt/ektcentrex/klear-core/klear/\n"
+"X-Poedit-Language: English\n"
 "X-Poedit-Country: SPAIN\n"
 "X-Poedit-SourceCharset: utf-8\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
 "X-Poedit-SearchPath-0: .\n"
 
+#: controllers/IndexController.php:177
+msgid "Configuration error"
+msgstr "Configuration error"
+
+#: controllers/ErrorController.php:44
+msgid "Page not found"
+msgstr ""
+
+#: controllers/ErrorController.php:50
+msgid "Application error"
+msgstr ""
+
 #: layouts/scripts/main/header.phtml:90
 msgid "Klear based site"
-msgstr "Klear based site"
+msgstr ""
 
 #: layouts/scripts/main/header.phtml:94
 #: layouts/scripts/main/header.phtml:95
 msgid "logout"
-msgstr "desconectar"
+msgstr ""
 
 #: views/scripts/template/login/form.phtml:17
 msgid "User"
-msgstr "Usuario"
+msgstr ""
 
 #: views/scripts/template/login/form.phtml:22
 msgid "Password"
-msgstr "Contraseña"
+msgstr ""
 
 #: views/scripts/template/login/form.phtml:25
 msgid "Authenticate"
-msgstr "Autenticarse"
+msgstr ""
 
-#: assets/js/plugins/jquery.klear.request.js:124
+#: assets/js/plugins/jquery.klear.request.js:123
 msgid "Unknown response format in Simple Response"
 msgstr ""
 
-#: assets/js/plugins/jquery.klear.request.js:138
-#: assets/js/plugins/jquery.klear.request.js:174
+#: assets/js/plugins/jquery.klear.request.js:137
+#: assets/js/plugins/jquery.klear.request.js:173
 #: assets/js/plugins/jquery.klear.module.js:264
 msgid "Module registration error."
-msgstr "Error registrando el módulo."
+msgstr ""
 
-#: assets/js/plugins/jquery.klear.request.js:252
+#: assets/js/plugins/jquery.klear.request.js:251
 #, python-format
 msgid "Error downloading template [%s]."
-msgstr "Error descargando el template [%s]."
+msgstr ""
 
 #: assets/js/plugins/jquery.klear.module.js:266
 #, python-format
 msgid "Error: %s."
-msgstr "Error: %s."
+msgstr ""
 
 #: assets/js/plugins/jquery.klear.module.js:268
 msgid "Klear Module Error"
-msgstr "Error de Klear Module"
+msgstr ""
 
 #: assets/js/plugins/jquery.klear.module.js:328
 msgid "This tab is locked."
-msgstr "Esta pestaña está bloqueada."
+msgstr ""
 
 #: assets/js/plugins/jquery.klear.module.js:604
 msgid "Loading content"
-msgstr "Cargando contenido"
+msgstr ""
 
-#~ msgid ""
-#~ "as  asdgasdg \"\"a\"\"\"\"\"Afdhadsfhasdh '' asdg'asd'ga'sdg 'asd'gas'dgdg"
-#~ msgstr "aquií a'sdg' \"asdghasdg\""
-
-#~ msgid ""
-#~ "asdxcqads g asd\"a sdg asd gas dg''asd 'ga'sd'g a'sdg 'as'd\\\" \\\\''g"
-#~ msgstr "asdgasd ga sdg as dg asd g"
-
-#~ msgid "klear-translation-test"
-#~ msgstr "klear-translation-test-ES"
-
-#~ msgid "Module TEST."
-#~ msgstr "Module TEST ES"
-
-#~ msgid "Dándo por 'saco' uno ."
-#~ msgstr "Dándo por 'saco' uno  trans 'asdgasdg'."
-
-#~ msgid "Dándo por \"saco\" dos ."
-#~ msgstr "Dándo por \"saco\" dos    trans 'asdgasdg'.."
-
-#~ msgid "Dándo por 'saco' tres \"xx\" ."
-#~ msgstr " Dándo por 'saco' tres \"xx\" .  trans 'asdgasdg'."
-
-#~ msgid "Dándo por 'saco' cuatro \"xx\" ."
-#~ msgstr "Dándo por 'saco' cuatro \"xx\"    trans 'asdgasdg'.. \"a\" 'b'"
