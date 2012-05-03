@@ -14,15 +14,15 @@
 <input type="hidden" name="klearLogin" value="true" />
 <p>
     <input id="username" autofocus="autofocus" type="text" name="username" />
-    <label for="username">Usuario:</label>
+    <label for="username"><?php echo $this->translate('User'); ?>:</label>
 </p>
 
 <p>
     <input id="password" type="password" name="password" />
-    <label for="password">Contraseña:</label>
+    <label for="password"><?php echo $this->translate('Password'); ?>:</label>
 </p>
 
-<p class="submit"><input type="submit" value="Autenticarse" /></p>
+<p class="submit"><input type="submit" value="<?php echo $this->translate('Authenticate'); ?>" /></p>
 
 
 </form>

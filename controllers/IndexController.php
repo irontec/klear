@@ -65,7 +65,7 @@ class Klear_IndexController extends Zend_Controller_Action
     public function registertranslationAction()
     {
         // action body
-        exit;
+
         $this->_helper->layout->disableLayout();
         $this->_helper->viewRenderer->setNoRender();
 

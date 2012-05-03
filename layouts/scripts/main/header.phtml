@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="es">
+<html lang="<?php echo $this->SiteConfig()->getLang()->getLanguage();?>">
 <head>
 <?php
 
@@ -10,11 +10,11 @@
 	$this->headTitle()->setSeparator(' :: ');
 
 	echo $this->headTitle();
-
+	echo "\n";
 	echo $this->headMeta()
 	->appendHttpEquiv('Content-Type', 'text/html; charset=utf-8')
 	->setIndent(4);
-
+	echo "\n";
 
 	echo $this->headLink()
 			->appendStylesheet($this->baseUrl('/klear/css/base/reset.css'))
@@ -25,7 +25,7 @@
 			->appendStylesheet($this->baseUrl('/klear/css/base/klear.css'))
 			->headLink(array('rel' => 'shortcut icon','href' => $this->baseUrl('/images/favicon.ico')))
 			->setIndent(4);
-
+	echo "\n";
 	echo $this->headScript()
 		//->appendFile('http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js')
 		//->appendFile('http://code.jquery.com/jquery-1.7.2b1.js')
@@ -37,10 +37,12 @@
 		->appendFile($this->baseUrl('klear/js/scripts/spin.min.js'))
 		->setIndent(4);
 	if ("development" === APPLICATION_ENV) {
+	    echo "\n";
 	    echo $this->headScript()
 	    ->appendFile($this->baseUrl('klear/js/plugins/jquery.translationRegister.js'))
 	    ->setIndent(4);
 	}
+	echo "\n";
 	echo $this->headScript()
 		->appendFile($this->baseUrl('klear/js/plugins/jquery.translate.js'))
 		->appendFile($this->baseUrl('klear/js/translation/jquery.klear.translation.js'))
@@ -59,10 +61,6 @@
 <body rel='<?php echo $this->baseUrl('klear')?>'>
 <div id="wrapper">
 <div id="header">
-
-    <div id="headerbar">
-
-    </div>
 <?php /*
     <span class="toolbar ui-widget-header ui-corner-all">
         <button data-icon="ui-icon-person" data-text="false">Configuración de usuario</button>
@@ -87,7 +85,30 @@
     <h1>
         <?php echo $this->SiteConfig()->getName()?>
     </h1>
-    <h2>Klear based site [<a href="<?php echo $this->url(array('controller' => 'index', 'action' => 'bye'));?>"?><?php echo $this->translate("logout")?></a>]</h2>
+    <h2>
+    <?php 
+        echo $this->translate("Klear based site");
+        $auth = Zend_Auth::getInstance();
+        if ($auth->hasIdentity()) {
+            echo ' [<a href="'.$this->url(array('controller' => 'index', 'action' => 'bye')).'" ';
+            echo 'title="' . $this->translate("logout") . '">';
+            echo $this->translate("logout") .'</a>]';
+        }
+    ?>
+    </h2>
+    <div id="headerbar">
+    </div>
+    <div id="headerLanguagebar">
+    <?php 
+    if ($langs = $this->SiteConfig()->getLangs()):
+            echo '<span class="langSelector">';
+            foreach($langs as $_langIden => $lang) {
+                echo '<input type="radio" id="lang_'.$_langIden.'" value="'.$_langIden.'" name="lang" '.(($_langIden == $this->SiteConfig()->getLang()->getIden())? ' checked="checked"':'') .' /><label for="lang_'.$_langIden.'">'.$lang.'</label>';
+            }
+            echo '</span>';
+        endif;
+    ?>
+    </div>
 </div>
 <div id="body">
 <div id="main">

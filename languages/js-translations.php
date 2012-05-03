@@ -6,4 +6,5 @@ return array (
   6 => 'Error: %s.',
   7 => 'Klear Module Error',
   8 => ' -- Eliminar',
+  9 => 'Loading content',
 );

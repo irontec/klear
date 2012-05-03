@@ -25,7 +25,7 @@
 
         $.extend(options,params);
 
-        var _validParams = "execute type file screen dialog command pk str namespace".split(" ");
+        var _validParams = "execute type file screen dialog command pk language str namespace".split(" ");
         var _params = {};
 
         $.each(_validParams,function(idx,_value) {
@@ -51,6 +51,38 @@
         };
     };
 
+    $.klear.requestTranslations = new Array();
+    $.klear.requestSearchTranslations = function(){
+    	$('script[src*="js/translation"]', $('head')).each(function(){
+    		$.klear.requestTranslations.push($(this).attr('src'));
+    	});
+    };
+    
+    $.klear.requestReloadTranslations = function(){
+    	var l = $.klear.requestTranslations.length;
+    	var done = {};
+    	var nScr = [];
+    	for (var i = 0; i<l; i++) {
+    		if (done[$.klear.requestTranslations[i]] != undefined) continue;
+    		done[$.klear.requestTranslations[i]] = true;
+    		var $el = $('script[src="'+$.klear.requestTranslations[i]+'"]');
+    		if ($el.length>0) {
+    			$el.remove();
+    		}
+    		$.ajax({
+                 url: $.klear.requestTranslations[i] + '?'+(new Date).getTime() + '&language='+$.klear.language,
+                 dataType:'script',
+                 type : 'get',
+                 cache : true,
+                 async: true,
+                 success: function() {},
+                 error : function(r) {}
+    		});
+    		nScr.push($.klear.requestTranslations[i]);
+    	} 
+    	$.klear.requestTranslations = nScr; 
+    };
+    
     $.klear.request = function(params,successCallback,errorCallback,context) {
 
         var caller = arguments;
@@ -62,7 +94,7 @@
         var clean_baseurl = '';
 
         var _parseResponse = function _parseResponse(response) {
-
+        	if (response == null) return;
             if ( (response.mustLogIn) && (params.controller != 'login') ) {
                 if (!params.isLogin) {
                     $.klear.hello('setCallback', reCall);
@@ -222,6 +254,14 @@
             });
             return dfr.promise();
         };
+        
+        var _checkScript = function(script) {
+        	
+        	if (script.match(/js\/translation/)) {
+        		$.klear.requestTranslations.push(script);
+        	}
+        	
+        };
 
         var _loadScripts = function(scripts) {
 
@@ -256,6 +296,9 @@
                 } else {
 
                    targetUrl = request_baseurl + _script;
+                   
+                   _checkScript(targetUrl);
+                   
                 }
 
                 try {

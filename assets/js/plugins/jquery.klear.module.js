@@ -593,18 +593,27 @@
             this.updateLoader();
         },
 
+        loadingTmpl: '<div id="loadingTemplate" class="loadingPanel ui-widget-content ui-corner-all"><p>${loadingText}</p></div>',
+        
         updateLoader : function() {
 
             var _panel = $(this.options.panel);
             if ($(".loadingPanel",_panel).length == 0) {
-                var _loadingItem = $("#loadingTemplate").clone();
+            
+            	var $parsetHtml = $.tmpl(this.loadingTmpl, {
+                    loadingText: $.translate("Loading content", [__namespace__])
+                });
+            	
+            	_loadingItem = $parsetHtml;
+            	
                 _loadingItem
                     .removeAttr("id")
                     .spin({lines:8,length:18,width:4,radius:10,trail:100,speed:1.2})
                     .hide()
                     .appendTo(_panel);
+                
             } else {
-                var _loadingItem = $(".loadingPanel",_panel);
+                var _loadingItem = $(".loadingPanel",_panel);  
             }
 
             $("<div />").addClass("overlay")

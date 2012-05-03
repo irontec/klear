@@ -200,7 +200,15 @@ div.ui-tabs-panel {
     right: 0;*/
 }
 
+#headerLanguagebar{
+    float: right;
+    margin: 15px 0 0;	
+}
 
+.langSelector {
+    font-size: 0.8em;
+	display:none;
+}
 
 /*
 .klear-headerbar-menu li{

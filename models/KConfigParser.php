@@ -5,7 +5,7 @@
 * @author jabi
 *
 */
-class Klear_Model_KConfigParser
+class Klear_Model_KConfigParser 
 {
     protected $_config;
 
@@ -33,7 +33,10 @@ class Klear_Model_KConfigParser
             return null;
         }
 
-        $_system_lang = 'es'; // TO-DO: Recoger el idioma del Zend Registry?
+        $currentSystemLanguage = Zend_Registry::get('currentSystemLanguage');
+        
+        
+        $_system_lang = $currentSystemLanguage->getLanguage(); // TO-DO: Recoger el idioma del Zend Registry?
         if (false === $lang) {
             $lang = $_system_lang;
         }
@@ -50,12 +53,21 @@ class Klear_Model_KConfigParser
             foreach ($this->_config->{$attribute}->i18n as $lang => $_data) {
                 return $_data;
             }
-
         }
-
+        if ( (is_object($this->_config->{$attribute})) && !(isset($this->_config->{$attribute}->i18n->{$lang})) ) {
+            $lang = Zend_Registry::get('SystemDefaultLanguage')->getLanguage();
+            if (isset($this->_config->{$attribute}->i18n->{$lang})) {
+                return $this->_config->{$attribute}->i18n->{$lang};
+            } else {
+                foreach (Zend_Registry::get('SystemLanguages') as $lang) {
+                    if (isset($this->_config->{$attribute}->i18n->{$lang->getLanguage()})) {
+                        return $this->_config->{$attribute}->i18n->{$lang->getLanguage()};
+                    }
+                }
+            }
+        }
+        
         return $this->_config->{$attribute};
-
-
     }
 
     public function getRaw()

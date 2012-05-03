@@ -29,6 +29,21 @@ class Klear_Model_SiteConfig
         
         $this->_initJQueryUITheme($config);
 
+        $this->_initKlearLanguage($config);
+
+        if (isset($config->auth)) {
+            
+            $this->_authConfig = new Klear_Model_KConfigParser();
+            $this->_authConfig->setConfig($config->auth);
+        }
+        
+    }
+    
+    protected function _initKlearLanguage(Zend_Config $config) 
+    {
+        /*
+         * Loading System Languages
+         */
         if (isset($config->langs)) {
             foreach ($config->langs as $_langIden => $lang) {
                 $language = new Klear_Model_Language();
@@ -38,15 +53,43 @@ class Klear_Model_SiteConfig
             }
         }
         
-        $this->_lang = $this->_langs[$config->lang];
+        /*
+         * Resquested Language // SESSION Language 
+         */
         
-        if (isset($config->auth)) {
-            
-            $this->_authConfig = new Klear_Model_KConfigParser();
-            $this->_authConfig->setConfig($config->auth);
+        $session = new Zend_Session_Namespace('UserSettings');
+        
+        $front = Zend_Controller_Front::getInstance();
+        
+        $requestedLanguage = $front->getRequest()->getParam('language', false);
+        
+        $lang = null;
+        
+        if ($requestedLanguage && (array_key_exists($requestedLanguage, $this->_langs)) ) {
+            $lang = $requestedLanguage;
+        } 
+        if ((!$lang) 
+                && ($session->currentSystemLanguage!=null) 
+                && (array_key_exists($session->currentSystemLanguage, $this->_langs)) ) {
+            $lang = $session->currentSystemLanguage;
+        } 
+        if (!$lang){
+            $lang = $config->lang;
         }
         
+        $session->currentSystemLanguage = $lang;
+        
+        /*
+         * Setting language Object
+         */
+        $this->_lang = $this->_langs[$session->currentSystemLanguage];
+        
+        Zend_Registry::set('currentSystemLanguage', $this->_lang);
+        Zend_Registry::set('SystemDefaultLanguage', $this->_langs[$config->lang]);
+        Zend_Registry::set('SystemLanguages', $this->_langs);
+        
     }
+    
 
     public function _initJQueryUITheme(Zend_Config $config)
     {

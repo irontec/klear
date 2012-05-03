@@ -130,27 +130,28 @@
 		);
 	};
 
-	$.klear.menu = function(force) {
+	$.klear.menu = function(force, options) {
+		
+		var options = options || {};
 		
 		if (this.loaded && typeof force == 'undefined') {
 			return;
 		}
-
+		
 		var $sidebar = $('#sidebar');
-
+		$sidebar.empty();
+		$sidebar.accordion("destroy");
 		var $headerbar = $('#headerbar');
+		$headerbar.empty();
 		var $footerbar = $('#footerbar');
+		$footerbar.empty();
+		
 		var self = this;
+		
 		$.klear._doMenuSuccess = function(response) {
 			
 			var navMenus = response.data.navMenus;
 			
-			$sidebar.empty();
-			
-			$headerbar.empty();
-			
-			$footerbar.empty();
-
 			$.tmpl('klearSidebarMenu', navMenus.sidebar).appendTo($sidebar);
 			
 			$.tmpl('klearHeaderbarMenu', navMenus.headerbar).appendTo($headerbar);
@@ -182,17 +183,29 @@
 			});
 			
 			self.loaded = true;
+			
+			/*
+			 * 
+			 */
+			$( ".langSelector" ).buttonset();
+			$( ".langSelector > input" ).off('change').on('change', function(){
+				$.klear.language = $(this).val();
+				$.klear.restart({'language': $(this).val()});
+			});
+			$( ".langSelector" ).show();
 		};
 		
 		$.klear._doMenuError = function(response) {
 			console.log(response);
 		};
 		
+		var settings = $.extend({
+			controller: 'menu',
+			action: 'index'
+		},options);
+		
 		$.klear.request(
-			{
-				controller: 'menu',
-				action: 'index'
-			},
+			settings,
 			$.klear._doMenuSuccess,
 			$.klear._doMenuSuccess,
 			this
@@ -402,12 +415,19 @@
 		
 	};
 	
+	$.klear.restart = function(opts) {
+		$.klear.requestSearchTranslations();
+		$.klear.menu(true, opts);
+		$.klear.requestReloadTranslations();
+	};
 	
 	$.klear.start = function() {
 		/*
 		 * Setting klear.baseurl value
 		 */
 		$.klear.baseurl = $.klear.baseurl || $("base").attr("href");
+		
+		$.klear.language = $('html').attr('lang');
 		/*
 		 * Setting klear canvas MAIN container.
 		 */
@@ -436,6 +456,7 @@
 ;(function($) {
 	
 	$(document).ready(function() {
+		
 		$.klear.start();
 		
 		setTimeout(function() {$("#target-brandList").trigger("mouseup");},2000);
