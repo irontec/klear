@@ -39,6 +39,15 @@ class Klear_Model_SiteConfig
         
     }
     
+    protected function _validate(Klear_Model_Language $language, Zend_Config $config)
+    {
+        if ($class = $config->langFilter) {
+            return $class::isAvailable($language);
+        }
+        return true;
+    }
+    
+    
     protected function _initKlearLanguage(Zend_Config $config) 
     {
         /*
@@ -49,9 +58,14 @@ class Klear_Model_SiteConfig
                 $language = new Klear_Model_Language();
                 $language->setIden($_langIden);
                 $language->setConfig($lang);
-                $this->_langs[$language->getIden()] = $language;
+                if ($this->_validate($language, $config)) {
+                    $this->_langs[$language->getIden()] = $language;
+                }
+                
             }
         }
+        
+        //Klear_Model_Interface_Language_Filter
         
         /*
          * Resquested Language // SESSION Language 
