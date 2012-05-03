@@ -174,7 +174,7 @@ class Klear_IndexController extends Zend_Controller_Action
     	$sectionConfig = new Klear_Model_SectionConfig;
     	$sectionConfig->setConfig($config);
     	if (!$sectionConfig->isValid()) {
-    		throw new Zend_Controller_Action_Exception("Configuración no válida");
+    		throw new Zend_Controller_Action_Exception($this->view->translate("Configuration error"));
     		return;
     	}
 
