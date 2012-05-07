@@ -7,4 +7,5 @@ return array (
   7 => 'Klear Module Error',
   8 => ' -- Eliminar',
   9 => 'Loading content',
+  10 => 'Error downloading template [%s].',
 );

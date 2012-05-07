@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: Klear\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2012-05-03 18:01+0100\n"
-"PO-Revision-Date: 2012-05-03 18:07+0100\n"
+"PO-Revision-Date: 2012-05-07 11:01+0100\n"
 "Last-Translator: Lander Ontoria <lander@irontec.com>\n"
 "Language-Team: Irontec-Klear <lander+klear@irontec.com>\n"
 "Language: \n"
@@ -20,66 +20,66 @@ msgstr ""
 
 #: controllers/IndexController.php:177
 msgid "Configuration error"
-msgstr "Configuration error"
+msgstr "Errorea konfigurazioan"
 
 #: controllers/ErrorController.php:44
 msgid "Page not found"
-msgstr ""
+msgstr "Ez da orririk aurkitu"
 
 #: controllers/ErrorController.php:50
 msgid "Application error"
-msgstr ""
+msgstr "Aplikazio errorea"
 
 #: layouts/scripts/main/header.phtml:90
 msgid "Klear based site"
-msgstr ""
+msgstr "Klear-en oinarritutako lekua"
 
 #: layouts/scripts/main/header.phtml:94
 #: layouts/scripts/main/header.phtml:95
 msgid "logout"
-msgstr ""
+msgstr "saioa amaitu"
 
 #: views/scripts/template/login/form.phtml:17
 msgid "User"
-msgstr ""
+msgstr "Erabiltzailea"
 
 #: views/scripts/template/login/form.phtml:22
 msgid "Password"
-msgstr ""
+msgstr "Pasahitza"
 
 #: views/scripts/template/login/form.phtml:25
 msgid "Authenticate"
-msgstr ""
+msgstr "Autentifikatu"
 
 #: assets/js/plugins/jquery.klear.request.js:123
 msgid "Unknown response format in Simple Response"
-msgstr ""
+msgstr "Erantzun modu ezezaguna Simple Responsen."
 
 #: assets/js/plugins/jquery.klear.request.js:137
 #: assets/js/plugins/jquery.klear.request.js:173
 #: assets/js/plugins/jquery.klear.module.js:264
 msgid "Module registration error."
-msgstr ""
+msgstr "Errorea modulua erregistratzean."
 
 #: assets/js/plugins/jquery.klear.request.js:251
 #, python-format
 msgid "Error downloading template [%s]."
-msgstr ""
+msgstr "Errorea [%s] txantiloia jaisten."
 
 #: assets/js/plugins/jquery.klear.module.js:266
 #, python-format
 msgid "Error: %s."
-msgstr ""
+msgstr "Errorea: %s."
 
 #: assets/js/plugins/jquery.klear.module.js:268
 msgid "Klear Module Error"
-msgstr ""
+msgstr "Klear Module Errorea"
 
 #: assets/js/plugins/jquery.klear.module.js:328
 msgid "This tab is locked."
-msgstr ""
+msgstr "Fitxa hau blokeatuta dago."
 
 #: assets/js/plugins/jquery.klear.module.js:604
 msgid "Loading content"
-msgstr ""
+msgstr "Edukia kargatzen"
 
