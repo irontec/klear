@@ -230,6 +230,9 @@
 				$(this).html(content).slideDown();
 			});		
 		},
+		updateTitle : function(title) {
+			$(".ui-dialog-title",this.uiDialogTitlebar).html(title);
+		},
 		setAsLoading : function() {
 			$(this.element).html('<br /><div class="loadingCircle"></div><div class="loadingCircle1"></div>');
 		}

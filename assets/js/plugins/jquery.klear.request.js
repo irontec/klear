@@ -2,7 +2,7 @@
 
     $.klear = $.klear || {};
 
-    $.klear.cacheEnabled = true;
+    $.klear.cacheEnabled = false;
 
     $.klear.removeCache = function() {
         $.klear.loadedScripts = {};
@@ -181,6 +181,7 @@
             } catch(e) {
                 console.log(e);
                 //TODO: lanzar error...
+                return;
             }
 
             if ( ( (response.mustLogIn) && (params.controller != 'login') ) ||
