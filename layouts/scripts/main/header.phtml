@@ -20,15 +20,13 @@
 			->appendStylesheet($this->baseUrl('/klear/css/base/reset.css'))
 			->appendStylesheet($this->baseUrl('/klear/css/base/layout.css'))
 			->appendStylesheet($this->baseUrl('/klear/css/silk/silk-sprite.css'))
-			->appendStylesheet($this->baseUrl('/klear/css/base/layout.css'))
 			->appendStylesheet($this->SiteConfig()->getJQueryUItheme($this->baseUrl()))
 			->appendStylesheet($this->baseUrl('/klear/css/base/klear.css'))
 			->headLink(array('rel' => 'shortcut icon','href' => $this->baseUrl('/images/favicon.ico')))
 			->setIndent(4);
 	echo "\n";
-	echo $this->headScript()
-		//->appendFile('http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js')
-		//->appendFile('http://code.jquery.com/jquery-1.7.2b1.js')
+
+	$this->headScript()
 		->appendFile('http://code.jquery.com/jquery-1.7.2.min.js')
 		->appendFile('http://ajax.aspnetcdn.com/ajax/jquery.templates/beta1/jquery.tmpl.min.js')
 		->appendFile('http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.18/jquery-ui.min.js')
@@ -36,9 +34,9 @@
 		->appendFile($this->baseUrl('klear/js/plugins/jquery.ui.tooltip.js'))
 		->appendFile($this->baseUrl('klear/js/scripts/spin.min.js'))
 		->setIndent(4);
+	
 	if ("development" === APPLICATION_ENV) {
-	    echo "\n";
-	    echo $this->headScript()
+	    $this->headScript()
 	    ->appendFile($this->baseUrl('klear/js/plugins/jquery.translationRegister.js'))
 	    ->setIndent(4);
 	}

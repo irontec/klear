@@ -12,7 +12,6 @@ class Klear_AssetsController extends Zend_Controller_Action
     protected function _buildPath($base)
     {
         $front = $this->getFrontController();
-        
         $moduleDirectory = $front->getModuleDirectory($this->getRequest()->getParam('moduleName'));
         
         if (strpos($this->getRequest()->getParam("file"), 'translation/')!==false) {
@@ -148,7 +147,7 @@ class Klear_AssetsController extends Zend_Controller_Action
             return;
         }
 
-        $this->getFrontController()->setParam('disableOutputBuffering', true);
+        $this->getFrontController()->setParam('disableOutputBuffering', false);
 
         $frontendOptions = array(
             'lifetime' => null, // Forever! - mimetype is implicit in cache signature!
@@ -175,7 +174,7 @@ class Klear_AssetsController extends Zend_Controller_Action
             $backendOptions
         );
 
-        if (!$cache->start($hash)) {
+        if (!$cache->start()) {
             $data = $this->_getContents($file, $type);
 
             $response->setHeader('Pragma', 'public', true);
@@ -208,7 +207,7 @@ class Klear_AssetsController extends Zend_Controller_Action
                 Zend_Cache::CLEANING_MODE_MATCHING_TAG,
                 array($hashTag)
             );
-            $cache->save($data);
+		   	      
         }
     }
 
