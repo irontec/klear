@@ -22,16 +22,42 @@ class Klear_AssetsController extends Zend_Controller_Action
         return $moduleDirectory . $base . $this->getRequest()->getParam("file");
     }
 
+    protected function _getFileExtension( $file )
+    {
+        $pathInfo = pathinfo($file);
+        return $pathInfo['extension'];
+    }
+    
+    protected function _returnFile( $file )
+    {
+        /*
+         * Dejamos pasar a las imágenes de las librerías externas.
+         * 
+         * Cabeberas de ficheros CSS JS según extensión
+         * 
+         */
+        if (file_exists($file)) {
+            if (strpos(mime_content_type($file), 'image')!==false) {
+                return $this->_sendImage($file);
+            } else {
+                $this->_compress(
+                        $file,
+                        $this->_getFileExtension($file)
+                );
+            }
+        }
+    }
+    
     public function jsAction()
     {
         $jsFile = $this->_buildPath('/assets/js/');
-        $this->_compress($jsFile, "js");
+        $this->_returnFile( $jsFile );
     }
 
     public function cssAction()
     {
         $cssFile = $this->_buildPath('/assets/css/');
-        $this->_compress($cssFile, "css");
+        $this->_returnFile( $cssFile );
     }
 
     public function binAction()
@@ -195,19 +221,15 @@ class Klear_AssetsController extends Zend_Controller_Action
                 case "css":
                     $fileContentType = 'text/css';
                     break;
+                case "html":
+                    $fileContentType = 'text/html';
+                    break;
             }
 
             $response->setHeader('Content-type', $fileContentType);
             $response->setHeader('Content-length', strlen($data));
             $response->sendHeaders();
             echo $data;
-
-            // Antes de salvar, elimino todos los "tags" de este fichero
-            $cache->clean(
-                Zend_Cache::CLEANING_MODE_MATCHING_TAG,
-                array($hashTag)
-            );
-		   	      
         }
     }
 

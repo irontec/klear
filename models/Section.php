@@ -40,7 +40,6 @@ class Klear_Model_Section  implements Iterator {
 
 		$config = new Klear_Model_KConfigParser();
 		$config->setConfig($data);
-
 		$this->_name = $config->getProperty("title",true);
 		$this->_description = $config->getProperty("description",false);
 

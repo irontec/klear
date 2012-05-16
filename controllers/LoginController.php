@@ -43,8 +43,6 @@ class Klear_LoginController extends Zend_Controller_Action
         $jsonResponse->setModule('klear');
         $jsonResponse->setPlugin(false); // No requiere plugin
         $jsonResponse->addTemplate("/template/login/form", "klearForm");
-        $jsonResponse->addJsFile("");
-        $jsonResponse->addCssFile("");
         $jsonResponse->setData($data);
         $jsonResponse->attachView($this->view);
     }

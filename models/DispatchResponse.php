@@ -60,7 +60,7 @@ class Klear_Model_DispatchResponse
             $script = $js;
         }
 
-        $this->_jsFiles[crc32($js)] = $script;
+        $this->_jsFiles['jsFile_' . crc32($js)] = $script;
     }
 
     public function addJsArray($aJs)
@@ -70,7 +70,7 @@ class Klear_Model_DispatchResponse
 
     public function addCssFile($css)
     {
-        $this->_cssFiles[crc32($css)] = $css;
+        $this->_cssFiles['cssFile_' . crc32($css)] = $css;
     }
 
     public function addCssArray($aCss)

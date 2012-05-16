@@ -2,9 +2,11 @@
 	$.extend({
 
 	getStylesheet: function(url, id, media) {
-		var stylesheets = $("link[type='text/css']", jQuery("head"));
+		var stylesheets = $("link[type='text/css']", jQuery("head:first"));
+		
 		var id = id || "rand" + (Math.floor(Math.random()*10000));
-		var el = jQuery('link#'+id, jQuery('head'));
+		
+		var el = jQuery('link#'+id, jQuery('head:first'));
 		if (el.length>0) {
 			el.attr('href', url);
 		} else {
@@ -14,7 +16,7 @@
 		        type: 'text/css',
 		        rel: 'stylesheet',
 		        id: id
-		    }).appendTo('head');
+		    }).appendTo('head:first');
 		}		
 	},
 	removeStylesheet: function(id) {

@@ -125,7 +125,7 @@
 		
 		$.klear.request(options,
 						$.klear._doHelloSuccess,
-						$.klear._doErrorSuccess,
+						$.klear._doHelloError,
 						this
 		);
 	};

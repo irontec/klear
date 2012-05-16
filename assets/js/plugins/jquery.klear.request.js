@@ -302,6 +302,8 @@
                    
                 }
 
+                
+                
                 try {
                 $.ajax({
                         url: targetUrl,
@@ -318,7 +320,8 @@
                             }
                         },
                         error : function(r) {
-                            dfr.reject("Error downloading script ["+_script+"]");
+                        	dfr.reject("Error downloading script ["+_script+"]");
+                        	console.log("Error downloading script ["+_script+"]" , r);
                         }
                  });
                 } catch(e) {
@@ -342,6 +345,7 @@
             }
 
             for(var iden in css) {
+
                 $.getStylesheet(request_baseurl + css[iden],iden);
                 $("#" + iden).on("load",function() {
                     total--;

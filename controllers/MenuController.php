@@ -114,8 +114,6 @@ class Klear_MenuController extends Zend_Controller_Action
         $jsonResponse->addTemplate("/template/menu/type/sidebar", "klearSidebarMenu");
         $jsonResponse->addTemplate("/template/menu/type/headerbar", "klearHeaderbarMenu");
         $jsonResponse->addTemplate("/template/menu/type/footerbar", "klearFooterbarMenu");
-        $jsonResponse->addJsFile("");
-        $jsonResponse->addCssFile("");
         $jsonResponse->setData($data);
         $jsonResponse->attachView($this->view);
     }
