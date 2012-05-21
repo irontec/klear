@@ -16,7 +16,7 @@
 	->setIndent(4);
 	echo "\n";
 
-	echo $this->headLink()
+	$this->headLink()
 			->appendStylesheet($this->baseUrl('/klear/css/base/reset.css'))
 			->appendStylesheet($this->baseUrl('/klear/css/base/layout.css'))
 			->appendStylesheet($this->baseUrl('/klear/css/silk/silk-sprite.css'))
@@ -24,6 +24,13 @@
 			->appendStylesheet($this->baseUrl('/klear/css/base/klear.css'))
 			->headLink(array('rel' => 'shortcut icon','href' => $this->baseUrl('/images/favicon.ico')))
 			->setIndent(4);
+
+	if ($this->SiteConfig()->getIcons($this->baseUrl())) {
+	    $this->headLink()
+	        ->appendStylesheet($this->SiteConfig()->getIcons($this->baseUrl()));	    
+	}
+	
+	echo $this->headLink();
 	echo "\n";
 	$this->headScript()
 		->appendFile('//ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js')
