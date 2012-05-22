@@ -13,12 +13,6 @@ class Klear_AssetsController extends Zend_Controller_Action
     {
         $front = $this->getFrontController();
         $moduleDirectory = $front->getModuleDirectory($this->getRequest()->getParam('moduleName'));
-        
-        if (strpos($this->getRequest()->getParam("file"), 'translation/')!==false) {
-            $this->_jsModuleTranslation($moduleDirectory);
-            exit;
-        }
-        
         return $moduleDirectory . $base . $this->getRequest()->getParam("file");
     }
 
@@ -54,6 +48,27 @@ class Klear_AssetsController extends Zend_Controller_Action
         $this->_returnFile( $jsFile );
     }
 
+    public function cssExtendedAction()
+    {
+        $pluginClass = "Klear_Model_Css_";
+        $pluginName = $this->getRequest()->getParam('plugin');
+        $pluginParts = explode('-', $pluginName);
+        foreach ($pluginParts as $part) {
+            $pluginClass.= ucfirst($part);
+        }
+        if (!class_exists($pluginClass)) {
+            exit;
+        }
+        $plg = new $pluginClass;
+        if ($this->_getFileExtension($this->getRequest()->getParam('file')) == 'css') {
+            $file = $plg->getCssFile($this->getRequest()->getParam('file'));
+        }
+        if ($this->_getFileExtension($this->getRequest()->getParam('file')) == 'png') {
+            $file = $plg->getPngFile($this->getRequest()->getParam('file'));
+        }
+        $this->_returnFile( $file );
+    }
+    
     public function cssAction()
     {
         $cssFile = $this->_buildPath('/assets/css/');

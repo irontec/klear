@@ -78,6 +78,23 @@ class Klear_Bootstrap extends Zend_Application_Module_Bootstrap
 				)
 			)
 		);
+		
+		$router->addRoute(
+		        'klearCssExtended',
+		        $route = new Zend_Controller_Router_Route_Regex(
+		                '(default|klear[^/]*)/css-extended/(.*)/(.*)$',
+		                array(
+		                        'controller' => 'assets',
+		                        'action' => 'css-extended',
+		                        'module' => 'klear'
+		                ),
+		                array(
+		                        3 => 'file',
+		                        2 => 'plugin',
+		                        1 => 'moduleName'
+		                )
+		        )
+		);
 
 		/*
 		 * TODO: Preparar la expresión regular para que soporte más tipos de imágenes

@@ -11,9 +11,10 @@ class Klear_Model_SiteConfig
     
     // En caso de disponer de las dos variables en klear.yaml, custom tiene más peso
     protected $_jqueryUIPathTheme; // Nombre del tema de jQUeryUI epsecificado en klear/assets/css/jquery-ui-themes.yaml (google CDN)
+    
     protected $_jqueryUICustomTheme; // Ruta de la aplicación (public), hacia el tema custom de jQuery UI
 
-    protected $_icons;
+    protected $_cssExtended;
     
     protected $_langs = array();
 
@@ -30,8 +31,9 @@ class Klear_Model_SiteConfig
         }
         
         $this->_initJQueryUITheme($config);
-        $this->_initIcons($config);
-
+        
+        $this->_initCssExtended($config);
+        
         $this->_initKlearLanguage($config);
 
         if (isset($config->auth)) {
@@ -107,20 +109,13 @@ class Klear_Model_SiteConfig
         
     }
     
-    public function _initIcons(Zend_Config $config)
+    public function _initCssExtended(Zend_Config $config)
     {
-    
-        
-        if (isset($config->icons)) {
-            
-            if (isset($config->icons->iconPath)) {
-                
-                $this->_icons = $config->icons->iconPath;
-    
-            }
+        if ($config->cssExtended) {
+            $this->_cssExtended = $config->cssExtended; 
         }
     }
-
+    
     public function _initJQueryUITheme(Zend_Config $config)
     {
         
@@ -190,13 +185,9 @@ class Klear_Model_SiteConfig
         }
     }
 
-    public function getIcons($baseUrl) {
-        if (!empty($this->_icons)) {
-            return $baseUrl . $this->_icons;
-        }
+    public function getCssExtendedConfig() {
+        return $this->_cssExtended;
     }
-    
-    
     
     public function getAuthConfig()
     {

@@ -20,15 +20,11 @@
 			->appendStylesheet($this->baseUrl('/klear/css/base/reset.css'))
 			->appendStylesheet($this->baseUrl('/klear/css/base/layout.css'))
 			->appendStylesheet($this->baseUrl('/klear/css/silk/silk-sprite.css'))
+			->appendStylesheet($this->baseUrl('/klear/css-extended/silk-extended/silk-extended-sprite.css'))
 			->appendStylesheet($this->SiteConfig()->getJQueryUItheme($this->baseUrl()))
 			->appendStylesheet($this->baseUrl('/klear/css/base/klear.css'))
 			->headLink(array('rel' => 'shortcut icon','href' => $this->baseUrl('/images/favicon.ico')))
 			->setIndent(4);
-
-	if ($this->SiteConfig()->getIcons($this->baseUrl())) {
-	    $this->headLink()
-	        ->appendStylesheet($this->SiteConfig()->getIcons($this->baseUrl()));	    
-	}
 	
 	echo $this->headLink();
 	echo "\n";
