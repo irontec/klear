@@ -13,6 +13,10 @@ class Klear_AssetsController extends Zend_Controller_Action
     {
         $front = $this->getFrontController();
         $moduleDirectory = $front->getModuleDirectory($this->getRequest()->getParam('moduleName'));
+        if (strpos($this->getRequest()->getParam("file"), 'translation/')!==false) {
+            $this->_jsModuleTranslation($moduleDirectory);
+            exit;
+        }
         return $moduleDirectory . $base . $this->getRequest()->getParam("file");
     }
 
