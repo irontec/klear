@@ -141,6 +141,7 @@
 		var $sidebar = $('#sidebar');
 		$sidebar.empty();
 		$sidebar.accordion("destroy");
+		//$sidebar.resizable("destroy");
 		var $headerbar = $('#headerbar');
 		$headerbar.empty();
 		var $footerbar = $('#footerbar');
@@ -177,6 +178,12 @@
 				collapsible: true,
 				autoHeight: false
 			});
+
+			/*$sidebar.resizable({
+				animate: true,
+				handles: 'e'
+			});*/
+			
 			
 			$("li", $sidebar).on("mouseenter",function() {
 				$(this).addClass("ui-state-highlight");

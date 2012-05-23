@@ -134,6 +134,7 @@ body {
 .ui-scrollable-tabs .ui-tabs-nav-arrows li{list-style:none;position:relative;cursor:pointer;margin: 0.1em 0.07em; padding: 0.2em;display:none;z-index:1;height:35px;border-top:1px;border-bottom:0;background-image:none;}
 .ui-scrollable-tabs .ui-tabs-nav-arrows li a{display:block;padding:9px 3px 14px;outline:none;}
 
+
 .ui-tooltip {
     position:absolute;
     padding:1.3em;
@@ -318,3 +319,5 @@ PANEL
 .ui-icon.inline {
     float: left;
 }
+
+.ui-resizable-helper { border: 1px dotted gray; }
