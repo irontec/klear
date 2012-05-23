@@ -2,7 +2,7 @@
 
     $.klear = $.klear || {};
 
-    $.klear.cacheEnabled = true;
+    $.klear.cacheEnabled = false;
 
     $.klear.removeCache = function() {
         $.klear.loadedScripts = {};
@@ -180,7 +180,7 @@
                 var response = $.parseJSON(xhr.responseText);
             } catch(e) {
                 console.log(e);
-                //TODO: lanzar error...
+                //TODO: lanzar error genérico.
                 return;
             }
 
@@ -194,7 +194,7 @@
                 return;
             }
 
-            errorCallback.apply(context,arguments);
+            errorCallback.apply(context,[response]);
         };
 
 
@@ -321,7 +321,7 @@
                         },
                         error : function(r) {
                         	dfr.reject("Error downloading script ["+_script+"]");
-                        	console.log("Error downloading script ["+_script+"]" , r);
+                        	//console.log("Error downloading script ["+_script+"]" , r);
                         }
                  });
                 } catch(e) {

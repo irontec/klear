@@ -20,20 +20,6 @@ class Klear_ErrorController extends Zend_Controller_Action
         $errors = $this->_getParam('error_handler');
         
         
-        if ($this->getInvokeArg('displayExceptions') == true) {
-            $response = array('success' => false);
-            // Add exception error message
-	        $response['exception'] = $errors->exception->getMessage();
-
-	        // Send stack trace
-	        $response['trace'] = $errors->exception->getTrace();
-
-	        // Send request params
-	       //$response['request'] = $this->getRequest()->getParams();
-	        $this->view->response = $response;
-        }
-        
-        
         switch ($errors->type) {
             case Zend_Controller_Plugin_ErrorHandler::EXCEPTION_NO_ROUTE:
             case Zend_Controller_Plugin_ErrorHandler::EXCEPTION_NO_CONTROLLER:
@@ -54,7 +40,7 @@ class Klear_ErrorController extends Zend_Controller_Action
         
         if (strtolower(get_class($errors->exception)) == "soapfault") {
             $codeSpec = explode(":",$errors->exception->faultcode);  
-            var_dump($errors);exit;
+            
             if (sizeof($codeSpec) > 1) {
                 $code = $codeSpec[1];
             } else {
