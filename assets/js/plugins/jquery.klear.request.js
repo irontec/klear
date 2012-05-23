@@ -177,11 +177,14 @@
         var _errorResponse = function _errorResponse(xhr) {
 
             try {
-                var response = $.parseJSON(xhr.responseText);
+                
+            	var response = $.parseJSON(xhr.responseText);
+                
             } catch(e) {
-                console.log(e);
-                //TODO: lanzar error genérico.
-                return;
+                var response = {
+                		message : $.translate('Undefined Error', [__namespace__]),
+                		raw : xhr.responseText                		
+                }
             }
 
             if ( ( (response.mustLogIn) && (params.controller != 'login') ) ||
