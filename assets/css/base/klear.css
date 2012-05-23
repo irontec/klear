@@ -71,8 +71,8 @@ body {
 }
 
 #sidebar h2 {
-    padding:0.2em 0 0.2em 28px;
-    font-size:1.2em;
+    font-size: 1.05em;
+    padding: 0.3em 0 0.4em 28px;
 }
 
 #sidebar div {
@@ -86,10 +86,15 @@ body {
     padding: 0.5em;
     font-size:0.9em;
 }
+#sidebar li:not(.ui-state-highlight) {
+    border: 1px solid transparent;
+}
 
 #sidebar li a {
     text-decoration:none;
     margin-left:0.4em;
+    outline: none;
+    display: block;
 }
 
 #sidebar{
