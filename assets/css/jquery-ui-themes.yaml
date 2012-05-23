@@ -1,5 +1,5 @@
 production:
-  baseurl: http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.17/themes/%theme%/jquery-ui.css
+  baseurl: //ajax.googleapis.com/ajax/libs/jqueryui/1.8.17/themes/%theme%/jquery-ui.css
   themes:
     - base
     - black-tie
