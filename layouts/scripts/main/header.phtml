@@ -32,6 +32,7 @@
 		->appendFile('//ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js')
 		->appendFile('//ajax.aspnetcdn.com/ajax/jquery.templates/beta1/jquery.tmpl.min.js')
 		->appendFile('//ajax.googleapis.com/ajax/libs/jqueryui/1.8.18/jquery-ui.min.js')
+		->appendFile($this->baseUrl('klear/js/plugins/jquery.cookie.js'))
 		->appendFile($this->baseUrl('klear/js/plugins/jquery.scrollabletab.js'))
 		->appendFile($this->baseUrl('klear/js/plugins/jquery.ui.tooltip.js'))
 		->appendFile($this->baseUrl('klear/js/scripts/spin.min.js'))
@@ -60,55 +61,61 @@
 </head>
 <body rel='<?php echo $this->baseUrl('klear')?>'>
 <div id="wrapper">
-<div id="header">
-<?php /*
-    <span class="toolbar ui-widget-header ui-corner-all">
-        <button data-icon="ui-icon-person" data-text="false">Configuración de usuario</button>
-        <button data-icon="ui-icon-locked" data-text="false">Bloquear Pantalla</button>
-        <button data-icon="ui-icon-cancel" data-text="false">Salir</button>
+    <div id="header">
+        <div id="applicationLogo">
         <?php
-        if ($langs = $this->SiteConfig()->getLangs()):
-            echo '<span class="langs">';
-            foreach($langs as $_langIden => $lang) {
-                echo '<input type="radio" id="lang_'.$_langIden.'" name="lang" '.(($_langIden == $this->SiteConfig()->getLang())? ' checked="checked"':'') .' /><label for="lang_'.$_langIden.'">'.$lang.'</label>';
-            }
-            echo '</span>';
+        if ($this->SiteConfig()->getLogo()):
+            echo '<img src="'.$this->baseUrl($this->SiteConfig()->getLogo()).'" alt="'.$this->SiteConfig()->getName().'" />';
         endif;
         ?>
-    </span>
-*/?>
-    <?php
-        if ($this->SiteConfig()->getLogo()):
-            echo '<div id="logoApp"><img src="'.$this->baseUrl($this->SiteConfig()->getLogo()).'" alt="'.$this->SiteConfig()->getName().'" /></div>';
-        endif;
-    ?>
-    <h1>
-        <?php echo $this->SiteConfig()->getName()?>
-    </h1>
-    <h2>
-    <?php 
-        echo $this->translate("Klear based site");
-        $auth = Zend_Auth::getInstance();
-        if ($auth->hasIdentity()) {
-            echo ' [<a href="'.$this->url(array('controller' => 'index', 'action' => 'bye')).'" ';
-            echo 'title="' . $this->translate("logout") . '">';
-            echo $this->translate("logout") .'</a>]';
-        }
-    ?>
-    </h2>
-    <div id="headerbar">
+        </div>
+        <div id="applicationInfo">
+            <h1>
+                <?php echo $this->SiteConfig()->getName()?>
+            </h1>
+            <h2>
+            <?php 
+                echo $this->translate("Klear based site");
+            ?>
+            </h2>
+        </div>
+        <div id="applicationTools">
+          
+            <div id="headerToolsbar">
+            	
+            	<input type="checkbox" id="tabsPersist" />
+            	
+            	<label for="tabsPersist" title="<?php echo $this->translate("Remember opened main tabs.")?>">
+            	    <span class="ui-icon ui-icon-unlocked" ></span>
+            	</label>
+            	
+            	
+            	<input type="checkbox" id="logout" 
+            	    data-url="<?php echo $this->url(array('controller' => 'index', 'action' => 'bye')) ?>"
+            	/>
+            	<label for="logout" title="<?php echo $this->translate("logout")?>">
+            	    <span class="ui-icon ui-icon-power" ></span>
+            	</label>
+            	
+            </div>
+        
+        
+            <div id="headerLanguagebar">
+            <?php 
+            if ($langs = $this->SiteConfig()->getLangs()):
+                    echo '<span class="langSelector">';
+                    foreach($langs as $_langIden => $lang) {
+                        echo '<input type="radio" id="lang_'.$_langIden.'" value="'.$_langIden.'" name="lang" '.(($_langIden == $this->SiteConfig()->getLang()->getIden())? ' checked="checked"':'') .' /><label for="lang_'.$_langIden.'">'.$lang.'</label>';
+                    }
+                    echo '</span>';
+                endif;
+            ?>
+            </div>
+        
+
+        
+        
+        </div>
     </div>
-    <div id="headerLanguagebar">
-    <?php 
-    if ($langs = $this->SiteConfig()->getLangs()):
-            echo '<span class="langSelector">';
-            foreach($langs as $_langIden => $lang) {
-                echo '<input type="radio" id="lang_'.$_langIden.'" value="'.$_langIden.'" name="lang" '.(($_langIden == $this->SiteConfig()->getLang()->getIden())? ' checked="checked"':'') .' /><label for="lang_'.$_langIden.'">'.$lang.'</label>';
-            }
-            echo '</span>';
-        endif;
-    ?>
-    </div>
-</div>
 <div id="body">
 <div id="main">

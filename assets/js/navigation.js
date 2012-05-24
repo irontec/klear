@@ -149,6 +149,8 @@
 		
 		var self = this;
 		
+		
+		
 		$.klear._doMenuSuccess = function(response) {
 			
 			var navMenus = response.data.navMenus;
@@ -178,12 +180,6 @@
 				collapsible: true,
 				autoHeight: false
 			});
-
-			/*$sidebar.resizable({
-				animate: true,
-				handles: 'e'
-			});*/
-			
 			
 			$("li", $sidebar).on("mouseenter",function() {
 				$(this).addClass("ui-state-highlight");
@@ -201,7 +197,43 @@
 				$.klear.language = $(this).val();
 				$.klear.restart({'language': $(this).val()});
 			});
-			$( ".langSelector" ).show();
+			$( "#headerLanguagebar" ).show();
+			
+			$( "#headerToolsbar" ).buttonset();
+			
+			$( "#headerToolsbar > label" ).tooltip();
+
+			$( "#headerToolsbar > input" ).off('change').on('change', function(){
+				var $self = $(this);
+				if ($self.attr('id') == "logout" ) {
+					$.getJSON($self.data('url'), function(){
+						$sidebar.fadeOut();
+						$.klear.restart({}, true);
+					});
+				}
+				if ($self.attr('id') == "tabsPersist" ) {
+					var $self = $self.next('label');
+					if ($('.ui-icon', $self).hasClass('ui-icon-locked')) {
+						$('.ui-icon', $self).removeClass('ui-icon-locked');
+						$('.ui-icon', $self).addClass('ui-icon-unlocked');
+						$.klear.tabPersist.disable();
+					} else {
+						$('.ui-icon', $self).removeClass('ui-icon-unlocked');
+						$('.ui-icon', $self).addClass('ui-icon-locked');
+						$.klear.tabPersist.enable();
+					}
+				}
+				$( "#headerToolsbar" ).buttonset('refresh');
+			});
+
+			
+			$( "#headerToolsbar" ).show();
+			
+			if ($.klear.tabPersist.enabled()) {
+				$.klear.tabPersist.launch();
+				$("#tabsPersist").change();
+			}
+			
 		};
 		
 		$.klear._doMenuError = function(response) {
@@ -220,6 +252,56 @@
 			this
 		);
 		
+		$.klear.tabPersist = {
+			tabs: [],
+			add : function( iden ) {
+				for (var i in this.tabs ) {
+					if (this.tabs[i] == iden) return;
+				}
+				this.tabs.push(iden);
+				this.save();
+			},
+			remove : function( iden ) {
+				var tabs = [];
+				for (var i in this.tabs ) {
+					if (this.tabs[i] != iden) {
+						tabs.push(this.tabs[i]);
+					}
+				}
+				this.tabs = tabs;
+				this.save();
+			},
+			save : function() {
+				var jsTabs = JSON.stringify(this.tabs);
+				$.cookie('tabPersist', jsTabs, {expires: 1});
+			},
+			loadCookie : function(){
+				var tabs = JSON.parse($.cookie('tabPersist'));
+				for (var i in tabs ) {
+					this.tabs.push(tabs[i]);
+				}
+			},
+			launch : function() {
+				this.loadCookie();
+				for (var i in this.tabs ) {
+					var menuButton = this.tabs[i].replace(/#tabs-/, '#target-');
+					$(menuButton).trigger('mouseup');
+				}
+				if ($(menuButton).length>0) {
+					$(menuButton).parents('.ui-accordion-content').prev('h2').click();
+				}
+			},
+			enable : function(){
+				$.cookie('tabPersistEnabled', '1', {expires: 1});
+			}, 
+			disable : function(){
+				$.cookie('tabPersistEnabled', '0');
+			},
+			enabled : function() {
+				return $.cookie('tabPersistEnabled') == '1';
+			}
+		};
+		
 		$sidebar.add($headerbar).add($footerbar).on("mouseup","a.subsection", function(e) {
 			e.preventDefault();
 			e.stopPropagation();
@@ -236,6 +318,9 @@
 			var title = $(this).text()!=""? $(this).text():$(this).parent().attr('title');
 			
 			$.klear.canvas.tabs( "add", idContent, title);
+			
+			$.klear.tabPersist.add(idContent);
+			
 			
 		}).on("click",function(e) {
 			e.preventDefault();
@@ -367,6 +452,7 @@
 	                $(elem).klearModule("option","tabIndex",idx);
 	            });
 				
+				
 			},
 			select : function(event, ui) {
 				
@@ -382,13 +468,14 @@
 					//.klearModule("highlightOn");
 			},
 			remove: function(event, ui) {
-
+				
+				$.klear.tabPersist.remove($(ui.tab).attr('href'));
+				
 				$("li",$.klear.canvas).each(function(idx,elem) {
 	                $(elem).klearModule("option","tabIndex",idx);
 	            });
 				
 				$.klear.canvas.tabs('select', $.klear.canvas.tabs('option', 'selected'));
-				
 			}
 		});
 		/*
@@ -424,7 +511,13 @@
 		
 	};
 	
-	$.klear.restart = function(opts) {
+	$.klear.restart = function(opts, removetabs) {
+		var removetabs = removetabs || false;
+		if (removetabs == true) {
+			$("#tabsList li").each(function(idx,elem) {
+				$.klear.canvas.tabs('remove', idx);
+			});
+		}
 		$.klear.requestSearchTranslations();
 		$.klear.menu(true, opts);
 		$.klear.requestReloadTranslations();
@@ -468,7 +561,6 @@
 		
 		$.klear.start();
 		
-		setTimeout(function() {$("#target-brandList").trigger("mouseup");},2000);
 	});
 
 })(jQuery);

@@ -47,16 +47,11 @@ body {
 }
 
 #header {
-}
-
-#header #logoApp {
-    float:left;
-    width:180px;
-    margin:10px;
+	padding: 10px 15px;
 }
 
 #header h1, #header h2 {
-    padding: .5em .5em 0 0;
+    padding: .2em 0;
     text-align:right;
 }
 
@@ -194,6 +189,35 @@ div.ui-tabs-panel {
     padding: 0.1em 0.05em;
 }
 
+
+#applicationLogo {
+    float:left;
+}
+
+#applicationInfo, #applicationTools  {
+	text-align:right;
+}
+
+#applicationTools {
+	padding: 0.5em 0 0.2em 0;
+}
+
+#headerLanguagebar {
+	font-size: 0.8em;
+	display:none;
+}
+#headerToolsbar {
+	font-size: 0.7em;
+	padding: 0.8em 0;
+	display:none;
+}
+    
+#applicationTools .ui-buttonset {
+	margin-right: 0px;
+}
+
+
+
 #headerbar {
 
 }
@@ -206,7 +230,7 @@ div.ui-tabs-panel {
     right: 0;*/
 }
 
-#headerLanguagebar{
+/*#headerLanguagebar{
     float: right;
     margin: 15px 0 0;	
 }
@@ -215,6 +239,13 @@ div.ui-tabs-panel {
     font-size: 0.8em;
 	display:none;
 }
+
+#headerToolsbar{
+	display:none;
+    float: right;
+    margin: 15px 0 0;   
+}
+*/
 
 /*
 .klear-headerbar-menu li{
