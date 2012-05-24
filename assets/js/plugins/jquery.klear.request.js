@@ -2,7 +2,7 @@
 
     $.klear = $.klear || {};
 
-    $.klear.cacheEnabled = false;
+    $.klear.cacheEnabled = true;
 
     $.klear.removeCache = function() {
         $.klear.loadedScripts = {};
@@ -57,7 +57,7 @@
     		$.klear.requestTranslations.push($(this).attr('src'));
     	});
     };
-    
+
     $.klear.requestReloadTranslations = function(){
     	var l = $.klear.requestTranslations.length;
     	var done = {};
@@ -79,10 +79,10 @@
                  error : function(r) {}
     		});
     		nScr.push($.klear.requestTranslations[i]);
-    	} 
-    	$.klear.requestTranslations = nScr; 
+    	}
+    	$.klear.requestTranslations = nScr;
     };
-    
+
     $.klear.request = function(params,successCallback,errorCallback,context) {
 
         var caller = arguments;
@@ -258,13 +258,13 @@
             });
             return dfr.promise();
         };
-        
+
         var _checkScript = function(script) {
-        	
+
         	if (script.match(/js\/translation/)) {
         		$.klear.requestTranslations.push(script);
         	}
-        	
+
         };
 
         var _loadScripts = function(scripts) {
@@ -300,13 +300,13 @@
                 } else {
 
                    targetUrl = request_baseurl + _script;
-                   
+
                    _checkScript(targetUrl);
-                   
+
                 }
 
-                
-                
+
+
                 try {
                 $.ajax({
                         url: targetUrl,
