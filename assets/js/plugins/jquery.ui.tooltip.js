@@ -110,6 +110,10 @@ $.widget("ui.tooltip", {
 			of: target
 		}, this.options.position )).hide();
 		
+		if (parseInt(this.tooltip.css('left').replace(/px/, ''))+this.tooltip.width() > window.innerWidth) {
+			this.tooltip.css('left',(window.innerWidth - (this.tooltip.width() + this.tooltip.width()/2 )) + 'px');
+		}
+		
 		this.tooltip.attr("aria-hidden", "false");
 		target.attr("aria-describedby", this.tooltip.attr("id"));
 
