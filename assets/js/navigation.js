@@ -192,18 +192,23 @@
 			/*
 			 * 
 			 */
-			$( ".langSelector" ).buttonset();
-			$( ".langSelector > input" ).off('change').on('change', function(){
+			
+			
+			$toolsBar = $( "#headerToolsbar" ),
+			$langBar = $( "#headerLanguagebar" ),
+			$langSelector = $( ".langSelector" );
+			
+			$langSelector.buttonset();
+			$toolsBar.buttonset();
+
+			$( "label", $toolsBar ).tooltip();
+			
+			$( "input",  $langSelector).off('change').on('change', function(){
 				$.klear.language = $(this).val();
 				$.klear.restart({'language': $(this).val()});
 			});
-			$( "#headerLanguagebar" ).show();
 			
-			$( "#headerToolsbar" ).buttonset();
-			
-			$( "#headerToolsbar > label" ).tooltip();
-
-			$( "#headerToolsbar > input" ).off('change').on('change', function(){
+			$( "input", $toolsBar ).off('change').on('change', function(){
 				var $self = $(this);
 				if ($self.attr('id') == "logout" ) {
 					$.getJSON($self.data('url'), function(){
@@ -213,25 +218,24 @@
 				}
 				if ($self.attr('id') == "tabsPersist" ) {
 					var $self = $self.next('label');
-					if ($('.ui-icon', $self).hasClass('ui-icon-locked')) {
-						$('.ui-icon', $self).removeClass('ui-icon-locked');
-						$('.ui-icon', $self).addClass('ui-icon-unlocked');
+					var $icon = $('.ui-icon', $self);
+					if ($icon.hasClass('ui-icon-locked')) {
+						$icon.removeClass('ui-icon-locked').addClass('ui-icon-unlocked');
 						$.klear.tabPersist.disable();
 					} else {
-						$('.ui-icon', $self).removeClass('ui-icon-unlocked');
-						$('.ui-icon', $self).addClass('ui-icon-locked');
+						$icon.removeClass('ui-icon-unlocked').addClass('ui-icon-locked');
 						$.klear.tabPersist.enable();
 					}
 				}
-				$( "#headerToolsbar" ).buttonset('refresh');
+				$toolsBar.buttonset('refresh');
 			});
 
-			
-			$( "#headerToolsbar" ).show();
+			$langBar.show();
+			$toolsBar.show();
 			
 			if ($.klear.tabPersist.enabled()) {
 				$.klear.tabPersist.launch();
-				$("#tabsPersist").change();
+				$("#tabsPersist").next('label').click();
 			}
 			
 		};

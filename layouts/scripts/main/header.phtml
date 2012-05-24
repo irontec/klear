@@ -13,6 +13,7 @@
 	echo "\n";
 	echo $this->headMeta()
 	->appendHttpEquiv('Content-Type', 'text/html; charset=utf-8')
+	->setName('viewport', 'width=device-width, initial-scale=1.0')
 	->setIndent(4);
 	echo "\n";
 
@@ -57,6 +58,10 @@
 
 
 ?>
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+
 	<base href="<?php echo $this->serverUrl($this->baseUrl('klear')); ?>/" />
 </head>
 <body rel='<?php echo $this->baseUrl('klear')?>'>
