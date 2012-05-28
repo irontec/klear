@@ -2,7 +2,7 @@
 
     $.klear = $.klear || {};
 
-    $.klear.cacheEnabled = true;
+    $.klear.cacheEnabled = false;
 
     $.klear.removeCache = function() {
         $.klear.loadedScripts = {};
@@ -151,15 +151,16 @@
 
                 var tryOuts = 0;
                 (function tryAgain() {
-
+                	
                     if ( (false === response.plugin) || (typeof $.fn[response.plugin] == 'function' ) ) {
-
-                        successCallback.apply(context,[response]);
+                    	successCallback.apply(context,[response]);
                         return;
 
                    } else {
 
                        if (++tryOuts == 20) {
+                    	   
+                    	   
                            errorCallback.apply(context,[response.plugin + ' plugin not found']);
                            return;
                        } else {

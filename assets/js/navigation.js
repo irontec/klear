@@ -168,6 +168,22 @@
 			$footerbar.fadeIn();
 			
 			/*
+			 * Cargar 
+			 */
+			$.klear.request(
+				{
+					controller: 'error',
+					action:'list'
+				},
+				function(response) {
+					$.klear.addErrors(response.data);					
+				},
+				function() {
+					console.error("No se ha creado errors.yaml")
+				}
+					
+			);
+			/*
 			 * JQ Decorartors 
 			 */
 

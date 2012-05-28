@@ -249,9 +249,9 @@
             $.extend(dispatchData,this.options.dispatchOptions);
             
             if (typeof this.options.PreDispatchMethod == 'function') {
-            	console.log("executing preDispatch");
             	this.options.PreDispatchMethod.apply(this);           
             }
+            
             $.klear.request(dispatchData,this._parseDispatchResponse,this._errorResponse,this);
 
         },

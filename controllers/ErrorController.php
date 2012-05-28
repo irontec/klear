@@ -11,7 +11,48 @@ class Klear_ErrorController extends Zend_Controller_Action
 	                ->addActionContext('error', 'json')
 	                ->initContext('json');
 	    }
+	    
+	    $this->_helper->ContextSwitch()
+	        ->addActionContext('list', 'json')
+	        ->initContext('json');
 	            
+	}
+	
+	public function listAction()
+	{
+	    
+	    	    
+	    $file_path = 'klear.yaml://errors.yaml';
+	    
+	    /*
+	     * Carga configuración de la sección cargada según la request.
+	    */
+	    $config = new Zend_Config_Yaml(
+	            $file_path,
+	            APPLICATION_ENV,
+	            array(
+	                    "yamldecoder"=>"yaml_parse"
+	    
+	            )
+	    );
+
+	    foreach($config as $errorSection => $aErrors) {
+	        if (!$aErrors) continue;
+	        
+	        $parsedErrors = new Klear_Model_KConfigParser;
+	        $parsedErrors->setConfig($aErrors);
+	        
+            foreach($aErrors as $code => $msg) {
+	            $data[$code] = $parsedErrors->getProperty($code, false);
+	        }
+	    }
+	    
+	    $jsonResponse = new Klear_Model_DispatchResponse();
+	    $jsonResponse->setModule('klear');
+	    $jsonResponse->setPlugin(false); // no requiere plugin
+	    $jsonResponse->setData($data);
+	    $jsonResponse->attachView($this->view);
+	    
 	}
 
 	public function errorAction()
@@ -38,13 +79,16 @@ class Klear_ErrorController extends Zend_Controller_Action
         }
         
         if (strtolower(get_class($errors->exception)) == "soapfault") {
-            $codeSpec = explode(":",$errors->exception->faultcode);  
+
+            if (!$code = $errors->exception->faultcode) {
+                
+                $codeSpec = explode(":",$errors->exception->faultcode);  
             
-            if (sizeof($codeSpec) > 1) {
-                $code = $codeSpec[1];
-            } else {
-                $code = $errors->exception->faultcode;
+                if (sizeof($codeSpec) > 1) {
+                    $code = $codeSpec[1];
+                }                
             }
+            
             $this->view->code = $code;
             
         } else {
