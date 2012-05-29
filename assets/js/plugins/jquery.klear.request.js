@@ -2,7 +2,7 @@
 
     $.klear = $.klear || {};
 
-    $.klear.cacheEnabled = false;
+    $.klear.cacheEnabled = true;
 
     $.klear.removeCache = function() {
         $.klear.loadedScripts = {};
