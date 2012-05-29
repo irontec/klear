@@ -76,10 +76,10 @@ class Klear_Model_KConfigParser
 
     public function exists($path)
     {
-        $_segments = explode("->",$path);
+        $_segments = explode("->", $path);
         $ref = $this->_config;
 
-        foreach($_segments as $_segment) {
+        foreach ($_segments as $_segment) {
             if (!isset($ref->$_segment)) return false;
             $ref = $ref->$_segment;
         }
