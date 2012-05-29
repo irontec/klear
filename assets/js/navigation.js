@@ -416,7 +416,7 @@
 		$.klear.request(
 			{
 				controller: 'login',
-				action: 'index',
+				action: 'index'
 			},
 			$.klear._doLoginSuccess,
 			$.klear._doLoginSuccess,
