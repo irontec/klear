@@ -224,26 +224,32 @@
 				$.klear.restart({'language': $(this).val()});
 			});
 			
-			$( "input", $toolsBar ).off('change').on('change', function(){
+			$( "input#logout", $toolsBar ).off('change').on('change', function(){
 				var $self = $(this);
-				if ($self.attr('id') == "logout" ) {
-					$.getJSON($self.data('url'), function(){
-						$sidebar.fadeOut();
-						$.klear.restart({}, true);
-					});
+				$.getJSON($self.data('url'), function(){
+					$sidebar.fadeOut();
+					$.klear.restart({}, true);
+				});
+			});
+			
+			$( "input#tabsPersist", $toolsBar ).off('change').on('change', function(){
+				var $self = $(this);
+				if ($.klear.tabPersist.enabled()) {
+					$.klear.tabPersist.disable();
+				} else {
+					$.klear.tabPersist.enable();
 				}
-				if ($self.attr('id') == "tabsPersist" ) {
-					var $self = $self.next('label');
-					var $icon = $('.ui-icon', $self);
-					if ($icon.hasClass('ui-icon-locked')) {
-						$icon.removeClass('ui-icon-locked').addClass('ui-icon-unlocked');
-						$.klear.tabPersist.disable();
-					} else {
-						$icon.removeClass('ui-icon-unlocked').addClass('ui-icon-locked');
-						$.klear.tabPersist.enable();
-					}
+				$self.trigger('update-icon');
+			});
+			$( "input#tabsPersist", $toolsBar ).off('update-icon').on('update-icon', function(){
+				var $self = $(this).next('label');
+				var $icon = $('.ui-icon', $self);
+				if ($.klear.tabPersist.enabled()) {
+					$icon.removeClass('ui-icon-unlocked').addClass('ui-icon-locked');
+					$self.addClass('ui-state-active');
+				} else {
+					$icon.removeClass('ui-icon-locked').addClass('ui-icon-unlocked');
 				}
-				$toolsBar.buttonset('refresh');
 			});
 
 			$langBar.show();
@@ -251,7 +257,7 @@
 			
 			if ($.klear.tabPersist.enabled()) {
 				$.klear.tabPersist.launch();
-				$("#tabsPersist").next('label').click();
+				$("#tabsPersist").trigger('update-icon');
 			}
 			
 		};
@@ -293,16 +299,16 @@
 			},
 			save : function() {
 				var jsTabs = JSON.stringify(this.tabs);
-				$.cookie('tabPersist', jsTabs, {expires: 1});
+				localStorage.setItem('tabPersist', jsTabs);
 			},
-			loadCookie : function(){
-				var tabs = JSON.parse($.cookie('tabPersist'));
+			loadData : function(){
+				var tabs = JSON.parse(localStorage.getItem('tabPersist'));
 				for (var i in tabs ) {
 					this.tabs.push(tabs[i]);
 				}
 			},
 			launch : function() {
-				this.loadCookie();
+				this.loadData();
 				for (var i in this.tabs ) {
 					var menuButton = this.tabs[i].replace(/#tabs-/, '#target-');
 					$(menuButton).trigger('mouseup');
@@ -312,13 +318,13 @@
 				}
 			},
 			enable : function(){
-				$.cookie('tabPersistEnabled', '1', {expires: 1});
+				localStorage.setItem('tabPersistEnabled', '1');
 			}, 
 			disable : function(){
-				$.cookie('tabPersistEnabled', '0');
+				localStorage.setItem('tabPersistEnabled', '0');
 			},
 			enabled : function() {
-				return $.cookie('tabPersistEnabled') == '1';
+				return localStorage.getItem('tabPersistEnabled') == '1';
 			}
 		};
 		
@@ -454,6 +460,7 @@
 				
 				
 				var $tabLi = $(ui.tab).parent("li");
+				
 				$tabLi.klearModule({
 					ui: ui,
 					container : $.klear.canvas
@@ -534,9 +541,8 @@
 	$.klear.restart = function(opts, removetabs) {
 		var removetabs = removetabs || false;
 		if (removetabs == true) {
-			$("#tabsList li").each(function(idx,elem) {
-				$.klear.canvas.tabs('remove', idx);
-			});
+			$.klear.canvas.tabs('destroy');
+			$.klear.loadCanvas();
 		}
 		$.klear.requestSearchTranslations();
 		$.klear.menu(true, opts);
