@@ -24,7 +24,7 @@ class Klear_Model_KConfigParser
         Throw new Zend_Exception("Deprecated Method getPropertyML");
     }
 
-    public function getProperty($attribute, $required = false, $lang = false)
+    public function getProperty($attribute, $required = false, $lang = null)
     {
         if (!isset($this->_config->{$attribute})) {
             if ($required) {
@@ -33,41 +33,40 @@ class Klear_Model_KConfigParser
             return null;
         }
 
-        $currentSystemLanguage = Zend_Registry::get('currentSystemLanguage');
+        $configAttribute = $this->_config->{$attribute};
+        if ($this->_isMultilangProperty($configAttribute)) {
+            return $this->_getMultilangProperty($configAttribute, $lang);
+        }
+        return $configAttribute;
+    }
 
+    protected function _isMultilangProperty($attribute)
+    {
+        return is_object($attribute);
+    }
 
-        $_system_lang = $currentSystemLanguage->getLanguage(); // TO-DO: Recoger el idioma del Zend Registry?
-        if (false === $lang) {
-            $lang = $_system_lang;
+    protected function _getMultilangProperty($configAttribute, $lang = null)
+    {
+        if (is_null($lang)) {
+            $lang = Zend_Registry::get('currentSystemLanguage')->getLanguage();
+        }
+        if ((isset($configAttribute->i18n->{$lang}))) {
+            return $configAttribute->i18n->{$lang};
         }
 
-        /*
-         * El atributo tiene multi-idioma
-        */
-        if ( (is_object($this->_config->{$attribute})) && (isset($this->_config->{$attribute}->i18n->{$lang})) ) {
-
-            if (isset($this->_config->{$attribute}->i18n->{$lang})) {
-                return $this->_config->{$attribute}->i18n->{$lang};
-            }
-            //Si no tenemos el idioma deseado en el array, devolvemos el primer idioma
-            foreach ($this->_config->{$attribute}->i18n as $lang => $_data) {
-                return $_data;
-            }
+        $defaultLang = Zend_Registry::get('SystemDefaultLanguage')->getLanguage();
+        if (isset($configAttribute->i18n->{$defaultLang})) {
+            return $configAttribute->i18n->{$defaultLang};
         }
-        if ( (is_object($this->_config->{$attribute})) && !(isset($this->_config->{$attribute}->i18n->{$lang})) ) {
-            $lang = Zend_Registry::get('SystemDefaultLanguage')->getLanguage();
-            if (isset($this->_config->{$attribute}->i18n->{$lang})) {
-                return $this->_config->{$attribute}->i18n->{$lang};
-            } else {
-                foreach (Zend_Registry::get('SystemLanguages') as $lang) {
-                    if (isset($this->_config->{$attribute}->i18n->{$lang->getLanguage()})) {
-                        return $this->_config->{$attribute}->i18n->{$lang->getLanguage()};
-                    }
-                }
+
+        $allLanguages = Zend_Registry::get('SystemLanguages');
+        foreach ($allLanguages as $currentLanguage) {
+            if (isset($configAttribute->i18n->{$currentLanguage->getLanguage()})) {
+                return $configAttribute->i18n->{$currentLanguage->getLanguage()};
             }
         }
 
-        return $this->_config->{$attribute};
+        return $configAttribute;
     }
 
     public function getRaw()
@@ -88,4 +87,3 @@ class Klear_Model_KConfigParser
         return true;
     }
 }
-
