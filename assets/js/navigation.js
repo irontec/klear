@@ -226,7 +226,7 @@
 			
 			$( "input#logout", $toolsBar ).off('change').on('change', function(){
 				var $self = $(this);
-				$.getJSON($self.data('url'), function(){
+				$.getJSON($self.data('url'),{json:true}, function(){
 					$sidebar.fadeOut();
 					$.klear.restart({}, true);
 				});

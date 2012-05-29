@@ -12,6 +12,7 @@ class Klear_IndexController extends Zend_Controller_Action
     	$this->_helper->ContextSwitch()
     			->addActionContext('dispatch', 'json')
     			->addActionContext('hello', 'json')
+    			->addActionContext('bye', 'json')
     			->addActionContext('registertranslation', 'json')
     			->initContext('json');
 
@@ -32,7 +33,17 @@ class Klear_IndexController extends Zend_Controller_Action
         Zend_Layout::getMvcInstance()->disableLayout();
         Zend_Auth::getInstance()->clearIdentity();
         Zend_Session::forgetMe();
-        $this->_helper->redirector('index');
+        if ((bool)$this->getRequest()->getParam('json', false)) {
+            $jsonResponse = new Klear_Model_SimpleResponse();
+            $jsonResponse->setData(
+                    array(
+                            'success'=> true
+                    )
+            );
+            $jsonResponse->attachView($this->view);
+        } else {
+            $this->_helper->redirector('index');
+        }
     }
 
     public function helloAction()
