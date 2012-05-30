@@ -2,11 +2,17 @@
 
 class Klear_AssetsController extends Zend_Controller_Action
 {
+    protected $_defaultHeaders;
+
     public function init()
     {
         $this->_helper->layout->disableLayout();
         $this->_helper->getHelper('viewRenderer')->setNoRender();
 
+        $this->_defaultHeaders = array(
+                'Pragma' => 'public',
+                'Cache-control', 'maxage=' . 60*60*24*30 // ~1 Month
+        );
     }
 
     protected function _buildPath($base)
@@ -20,22 +26,20 @@ class Klear_AssetsController extends Zend_Controller_Action
         return $moduleDirectory . $base . $this->getRequest()->getParam("file");
     }
 
-    protected function _getFileExtension( $file )
+    protected function _getFileExtension($file)
     {
         $pathInfo = pathinfo($file);
         return $pathInfo['extension'];
     }
-    
-    protected function _returnFile( $file )
+
+    protected function _returnFile($file)
     {
         /*
          * Dejamos pasar a las imágenes de las librerías externas.
-         * 
-         * Cabeberas de ficheros CSS JS según extensión
-         * 
-         */
+        * Cabeceras de ficheros CSS JS según extensión
+        */
         if (file_exists($file)) {
-            if (strpos(mime_content_type($file), 'image')!==false) {
+            if (strpos(mime_content_type($file), 'image') !== false) {
                 return $this->_sendImage($file);
             } else {
                 $this->_compress(
@@ -45,11 +49,11 @@ class Klear_AssetsController extends Zend_Controller_Action
             }
         }
     }
-    
+
     public function jsAction()
     {
         $jsFile = $this->_buildPath('/assets/js/');
-        $this->_returnFile( $jsFile );
+        $this->_returnFile($jsFile);
     }
 
     public function cssExtendedAction()
@@ -57,26 +61,34 @@ class Klear_AssetsController extends Zend_Controller_Action
         $pluginClass = "Klear_Model_Css_";
         $pluginName = $this->getRequest()->getParam('plugin');
         $pluginParts = explode('-', $pluginName);
+
         foreach ($pluginParts as $part) {
             $pluginClass.= ucfirst($part);
         }
+
         if (!class_exists($pluginClass)) {
             exit;
         }
+
         $plg = new $pluginClass;
-        if ($this->_getFileExtension($this->getRequest()->getParam('file')) == 'css') {
-            $file = $plg->getCssFile($this->getRequest()->getParam('file'));
+
+        $fileParam = $this->getRequest()->getParam('file');
+        switch ($this->_getFileExtension) {
+            case 'css':
+                $file = $plg->getCssFile($fileParam);
+                break;
+            case 'png':
+                $file = $plg->getPngFile($fileParam);
+                break;
         }
-        if ($this->_getFileExtension($this->getRequest()->getParam('file')) == 'png') {
-            $file = $plg->getPngFile($this->getRequest()->getParam('file'));
-        }
-        $this->_returnFile( $file );
+
+        $this->_returnFile($file);
     }
-    
+
     public function cssAction()
     {
         $cssFile = $this->_buildPath('/assets/css/');
-        $this->_returnFile( $cssFile );
+        $this->_returnFile($cssFile);
     }
 
     public function binAction()
@@ -108,130 +120,86 @@ class Klear_AssetsController extends Zend_Controller_Action
         $image = new Imagick($file);
         $hash = $image->getImageSignature();
 
-        // TODO: Fix
-        /* FIXME: Fix what?? :S */
-        /* TOBEFIXED: Instanciate  Imagick on every image request?? very bad!!! :'( */
+        $response = $this->getResponse();
+
+        if ($this->_hashMatches($hash)) {
+            $response->setHttpResponseCode(304);
+            return;
+        }
+
+        /* FIXME: Try not to instanciate Imagick on every request */
         $format = 'image/' . strtolower($image->getImageFormat());
 
-        $response = $this->getResponse();
-        $request = $this->getRequest();
-
-        if (($request->getHeader('If-None-Match'))
-           && ($request->getHeader('If-None-Match') == $hash)) {
-            $response->setHttpResponseCode(304);
-                return;
-        }
-
+        $headers = array();
         if ("production" === APPLICATION_ENV) {
-            $response->setHeader('ETag', $hash);
+            $headers['ETag'] = $hash;
         }
+        $headers['Content-type'] = $format;
+        $headers['Content-length'] = filesize($file);
+        $this->_setHeaders($headers);
 
-        $response->setHeader('Cache-control', 'maxage=' . 60*60*24*30, true);
-        $response->setHeader('Content-type', $format);
-        $response->setHeader('Content-length', filesize($file));
         readFile($file);
+    }
+
+    protected function _hashMatches($hash)
+    {
+        $matchHash = $this->getRequest()->getHeader('If-None-Match');
+        if ($matchHash == $hash) {
+            return true;
+        }
+        return false;
     }
 
 
     protected function _sendRaw($file)
     {
+        $response = $this->getResponse();
 
         $lastModifiedTime = filemtime($file);
-
-        $response = $this->getResponse();
-        $request = $this->getRequest();
-
-        if (($request->getHeader('IF-MODIFIED-SINCE'))
-                && (strtotime($request->getHeader('IF-MODIFIED-SINCE')) == $lastModifiedTime)) {
+        if ($this->_isUnmodifiedFile($lastModifiedTime)) {
             $response->setHttpResponseCode(304);
             return;
         }
 
-        $response = $this->getResponse();
-        $request = $this->getRequest();
-
-
-
-        $response->setHeader('Pragma', 'public', true);
-        $response->setHeader('Cache-control', 'maxage=' . 60*60*24*30, true);
-
+        $headers = array();
         if ("production" === APPLICATION_ENV) {
-            $response->setHeader(
-                'Last-Modified',
-                gmdate('D, d M Y H:i:s', $lastModifiedTime) . ' GMT',
-                true
-            );
+            $headers['Last-Modified'] = gmdate('D, d M Y H:i:s', $lastModifiedTime) . ' GMT';
         }
-
         $finfo = new finfo(FILEINFO_MIME_TYPE);
-        $format = $finfo->file($file);
+        $headers['Content-type'] = $finfo->file($file);
+        $headers['Content-length'] = filesize($file);
+        $this->_setHeaders($headers);
 
-
-        $response->setHeader('Cache-control', 'maxage=' . 60*60*24*30, true);
-        $response->setHeader('Content-type', $format);
-        $response->setHeader('Content-length', filesize($file));
         readFile($file);
+    }
+
+    protected function _isUnmodifiedFile($lastModifiedTime)
+    {
+        $modifiedHeader = $this->getRequest()->getHeader('IF-MODIFIED-SINCE');
+        if ($modifiedHeader) {
+            if ($lastModifiedTime == strtotime($modifiedHeader)) {
+                return true;
+            }
+        }
+        return false;
     }
 
     public function _compress($file, $type)
     {
-        $lastModifiedTime = filemtime($file);
-
-        // La "firma" del fichero contendrá la fecha de última modificación
-        // $hashTag => Se aplica este tag a la cache para eliminar de la cache los ficheros viejos
-
-        $hashTag = str_replace(array("/",".","-"), "_", basename($file));
-        $hash = $hashTag . '__' . date('d_m_Y_H_i_s', $lastModifiedTime);
 
         $response = $this->getResponse();
-        $request = $this->getRequest();
 
-        if (($request->getHeader('IF-MODIFIED-SINCE'))
-           && (strtotime($request->getHeader('IF-MODIFIED-SINCE')) == $lastModifiedTime)) {
+        $lastModifiedTime = filemtime($file);
+        if ($this->_isUnmodifiedFile($lastModifiedTime)) {
             $response->setHttpResponseCode(304);
             return;
         }
 
         $this->getFrontController()->setParam('disableOutputBuffering', false);
 
-        $frontendOptions = array(
-            'lifetime' => null, // Forever! - mimetype is implicit in cache signature!
-            'memorize_headers' => array(
-                'content-type',
-                'content-length',
-                'pragma',
-                'cache-control',
-                'last-modified'
-            ),
-            'default_options' => array(
-                'tags'=>array($hashTag)
-            )
-        );
-
-        $backendOptions = array(
-            'cache_dir' => APPLICATION_PATH . '/cache/'
-        );
-
-        $cache = Zend_Cache::factory(
-            'Page',
-            'File',
-            $frontendOptions,
-            $backendOptions
-        );
-
+        $cache = $this->_getFileCache($file);
         if (!$cache->start()) {
             $data = $this->_getContents($file, $type);
-
-            $response->setHeader('Pragma', 'public', true);
-            $response->setHeader('Cache-control', 'maxage=' . 60*60*24*30, true);
-
-            if ("production" === APPLICATION_ENV) {
-                $response->setHeader(
-                    'Last-Modified',
-                    gmdate('D, d M Y H:i:s', $lastModifiedTime) . ' GMT',
-                    true
-                );
-            }
 
             switch(strtolower($type)) {
                 case "js":
@@ -245,11 +213,47 @@ class Klear_AssetsController extends Zend_Controller_Action
                     break;
             }
 
-            $response->setHeader('Content-type', $fileContentType);
-            $response->setHeader('Content-length', strlen($data));
-            $response->sendHeaders();
+            $headers = array();
+            if ("production" === APPLICATION_ENV) {
+                $headers['Last-Modified'] = gmdate('D, d M Y H:i:s', $lastModifiedTime) . ' GMT';
+            }
+            $headers['Content-type'] = $fileContentType;
+            $headers['Content-length'] = strlen($data);
+            $this->_setHeaders($headers);
+
             echo $data;
         }
+    }
+
+    protected function _getFileCache($file)
+    {
+        // $hashTag => Se aplica este tag a la cache para eliminar de la cache los ficheros viejos
+        $hashTag = str_replace(array("/",".","-"), "_", basename($file));
+
+        $frontendOptions = array(
+                'lifetime' => null, // Forever! - mimetype is implicit in cache signature!
+                'memorize_headers' => array(
+                        'content-type',
+                        'content-length',
+                        'pragma',
+                        'cache-control',
+                        'last-modified'
+                ),
+                'default_options' => array(
+                        'tags' => array($hashTag)
+                )
+        );
+
+        $backendOptions = array(
+                'cache_dir' => APPLICATION_PATH . '/cache/'
+        );
+
+        $cache = Zend_Cache::factory(
+                'Page',
+                'File',
+                $frontendOptions,
+                $backendOptions
+        );
     }
 
     protected function _getContents($file, $type)
@@ -270,27 +274,22 @@ class Klear_AssetsController extends Zend_Controller_Action
         }
         return $data;
     }
-    
-    public function _jsModuleTranslation($directory)
+
+    protected function _jsModuleTranslation($directory)
     {
         $transFile = $directory . '/languages/js-translations.php';
         $jsTranslations = array();
         if (file_exists($transFile)) {
             $jsTranslations = include $transFile;
         }
-        $response = $this->getResponse();
-        $response->setHeader('Pragma', 'public', true);
-        $response->setHeader('Cache-control', 'maxage=' . 60*60*24*30, true);
+
+        $headers = array();
         if ("production" === APPLICATION_ENV) {
-            $response->setHeader(
-                'Last-Modified',
-                gmdate('D, d M Y H:i:s', $lastModifiedTime) . ' GMT',
-                true
-            );
+            $headers['Last-Modified'] = gmdate('D, d M Y H:i:s', time()) . ' GMT';
         }
-        $fileContentType = 'application/x-javascript';
-        $response->setHeader('Content-type', $fileContentType);
-        $response->sendHeaders();
+        $headers['Content-type'] = 'application/x-javascript';
+        $this->_setHeaders($headers);
+
         $aLines = array();
         foreach ($jsTranslations as $literal) {
             $key = str_replace(array('\'', '"'), '', $literal);
@@ -307,6 +306,23 @@ class Klear_AssetsController extends Zend_Controller_Action
         echo implode(",\n\t", $aLines);
         echo "\n});";
     }
-    
+
+    protected function _setHeaders($headers)
+    {
+        $response = $this->getResponse();
+
+        foreach ($this->_defaultHeaders as $key => $value) {
+            if (!isset($headers[$key])) {
+                $response->setHeader($key, $value, true);
+            }
+        }
+
+        foreach ($headers as $key => $value) {
+            $response->setHeader($key, $value, true);
+        }
+
+        $response->sendHeaders();
+    }
+
 }
 
