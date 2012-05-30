@@ -73,7 +73,7 @@ class Klear_AssetsController extends Zend_Controller_Action
         $plg = new $pluginClass;
 
         $fileParam = $this->getRequest()->getParam('file');
-        switch ($this->_getFileExtension) {
+        switch ($this->_getFileExtension($fileParam)) {
             case 'css':
                 $file = $plg->getCssFile($fileParam);
                 break;
