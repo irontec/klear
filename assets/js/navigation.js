@@ -10,6 +10,8 @@
 	
 	$.klear = $.klear || {};
 	
+	var __namespace__ = 'klear.navigation';
+	
 	$.klear.checkDeps = function(dependencies,callback) {
 		
 		if (typeof callback._numberOfTries == 'undefined') {
@@ -82,6 +84,64 @@
 		
 		
 	};
+
+	
+	$.klear.klearDialog = function (msg, options) {
+		$.extend(options, {
+			icon: options.icon || 'ui-icon-info',
+            state: options.state || 'default',
+            text: msg || '',
+		});
+		var dialogSettings = {
+            title: '<span class="ui-icon inline dialogTitle '+options.icon+' "></span>'+options.titleText + "",
+            modal: true,
+            resizable: false,
+            close: function(ui) {
+                $(this).remove();
+            }
+        };
+		$.extend(dialogSettings, options);
+        var dialogTemplate = dialogSettings.template || 
+        	'<div class="ui-widget"><div class="ui-state-${state} ui-corner-all inlineMessage"><p><span class="ui-icon ${icon} inlineMessage-icon"></span>{{html text}}</p></div></div>';
+        var $parsedHtml = $.tmpl(dialogTemplate, dialogSettings);
+        $parsedHtml.dialog(dialogSettings);
+    };
+	
+	$.klear.klearMessage = function (msg, opts) {
+        var options = {
+    		type: 'msg',
+            icon: 'ui-icon-comment',
+            titleText: 'Klear Message Window'
+        };
+        var opts = opts || {};
+        $.extend(options, opts);
+        $.klear.klearDialog(msg, options);
+    };
+    
+    $.klear.klearWarn = function(msg, opts) {
+        var options = {
+            type: 'warn',
+            icon: 'ui-icon-info',
+            titleText: 'Klear Warning Window'
+        };
+        var opts = opts || {};
+        $.extend(options, opts);
+        $.klear.klearDialog(msg, options);
+    };
+    
+    $.klear.klearError = function(msg, opts) {
+        var options = {
+            type: 'error',
+            icon: 'ui-icon-alert',
+            state: 'highlight',
+            titleText: 'Klear Error Window'
+        };
+        var opts = opts || {}
+        $.extend(options, opts);
+        $.klear.klearDialog(msg, options);
+    };
+	
+
 	
 	/*
 	 * Hello Klear Server
@@ -170,6 +230,7 @@
 			/*
 			 * Cargar 
 			 */
+			
 			$.klear.request(
 				{
 					controller: 'error',
@@ -181,8 +242,8 @@
 				function() {
 					console.error("No se ha creado errors.yaml")
 				}
-					
 			);
+
 			/*
 			 * JQ Decorartors 
 			 */
@@ -554,7 +615,6 @@
 		 * Setting klear.baseurl value
 		 */
 		$.klear.baseurl = $.klear.baseurl || $("base").attr("href");
-		
 		$.klear.language = $('html').attr('lang');
 		/*
 		 * Setting klear canvas MAIN container.
@@ -571,6 +631,9 @@
 		 * 
 		 */
 		$.klear.hello();
+		/*
+		 * Global Bindings 
+		 */
 	};
 
 	
@@ -586,7 +649,7 @@
 	$(document).ready(function() {
 		
 		$.klear.start();
-		
+
 	});
 
 })(jQuery);

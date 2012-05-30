@@ -394,7 +394,6 @@
                     modal:true,
                     resizable: defaults.resizable,
                     klearPosition: this.getPanel() ,
-                    //klearPosition: $('#canvas') ,
                     open: function(ui) {
                         $(self.options.ui.tab).addClass("ui-state-disabled");
                     },

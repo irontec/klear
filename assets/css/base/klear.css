@@ -103,7 +103,7 @@ body {
     width: auto;
 }
 
-#canvas {
+#canvas, .canvas {
     min-height:700px;
     overflow:hidden;
     width:auto;
