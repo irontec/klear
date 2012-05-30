@@ -254,6 +254,7 @@ class Klear_AssetsController extends Zend_Controller_Action
                 $frontendOptions,
                 $backendOptions
         );
+        return $cache;
     }
 
     protected function _getContents($file, $type)
