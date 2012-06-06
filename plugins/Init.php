@@ -26,6 +26,7 @@ class Klear_Plugin_Init extends Zend_Controller_Plugin_Abstract
                                  ->getParam('bootstrap')
                                  ->getResource('modules')
                                  ->offsetGet('klear');
+        
     }
 
     /**
@@ -35,9 +36,12 @@ class Klear_Plugin_Init extends Zend_Controller_Plugin_Abstract
      */
     public function routeShutdown(Zend_Controller_Request_Abstract $request)
     {
+        
         if (!preg_match("/^klear/", $request->getModuleName())) {
             return;
         }
+        
+        
         $this->_initPlugin();
         $this->_initConfig();
         $this->_initLayout();

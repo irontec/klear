@@ -45,14 +45,8 @@ class Klear_Model_SiteConfig
         }
 
         $this->_initActionHelpers($config);
-    }
-
-    protected function _validate(Klear_Model_Language $language, Zend_Config $config)
-    {
-        if ($class = $config->langFilter) {
-            return $class::isAvailable($language);
-        }
-        return true;
+        
+        $this->_initDynamicClass($config);
     }
 
 
@@ -66,10 +60,7 @@ class Klear_Model_SiteConfig
                 $language = new Klear_Model_Language();
                 $language->setIden($_langIden);
                 $language->setConfig($lang);
-                if ($this->_validate($language, $config)) {
-                    $this->_langs[$language->getIden()] = $language;
-                }
-
+                $this->_langs[$language->getIden()] = $language;
             }
         }
 
@@ -158,6 +149,28 @@ class Klear_Model_SiteConfig
         }
 
     }
+    
+    protected function _initDynamicClass(Zend_Config $config) {
+            
+        if (!isset($config->dynamicConfigClass)) {
+            return;
+        }
+        $dynamicClassName = $config->dynamicConfigClass;
+        
+        $dynamic = new $dynamicClassName;
+        if (!is_subclass_of($dynamic, 'Klear_Model_Settings_Dynamic_Abstract')) {
+            
+            Throw new Exception('Dynamic class does not extend Klear_Model_Settings_Dynamic_Abstract');
+        }
+        
+        $dynamic->init();
+        
+        $this->_name = $dynamic->processSiteName($this->_name);
+        $this->_langs = $dynamic->processLangs($this->_langs);
+        
+        
+    }
+    
 
     public function getYear()
     {
@@ -208,4 +221,6 @@ class Klear_Model_SiteConfig
     {
         return $this->_authConfig;
     }
+    
+    
 }

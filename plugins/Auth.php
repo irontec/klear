@@ -47,11 +47,19 @@ class Klear_Plugin_Auth extends Zend_Controller_Plugin_Abstract
 
     protected function _initAuth(Zend_Controller_Request_Abstract $request)
     {
+        
+        $siteConfig = $this->_bootstrap->getOption('siteConfig');
+        
+        if (is_null($siteConfig)) {
 
-        if ( (false === ($authConfig = $this->_bootstrap->getOption('siteConfig')->getAuthConfig()) )   ||
+            return true;
+        }
+        
+        $authConfig = $siteConfig->getAuthConfig();
+     
+        if ( (false === $authConfig)   ||
             (!$authConfig->exists("adapter") )
             ) {
-
             // La instancia de klear no tiene autenticación
             return true;
         }
