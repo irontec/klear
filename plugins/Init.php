@@ -40,9 +40,12 @@ class Klear_Plugin_Init extends Zend_Controller_Plugin_Abstract
         }
         $this->_initPlugin();
         $this->_initConfig();
-        $this->_initLayout();        
+        $this->_initLayout();
         $this->_initErrorHandler();
         $this->_registerYamlStream();
+        $this->_initHooks();
+
+
     }
 
     /**
@@ -76,15 +79,15 @@ class Klear_Plugin_Init extends Zend_Controller_Plugin_Abstract
         $klearConfig = new Klear_Model_MainConfig();
         $klearConfig->setConfig($config);
 
-		$this->_bootstrap->setOptions(
+        $this->_bootstrap->setOptions(
             array(
-				"siteConfig" => $klearConfig->getSiteConfig(),
+                "siteConfig" => $klearConfig->getSiteConfig(),
                 "menu" => $klearConfig->getMenu(),
                 "headerMenu" => $klearConfig->getHeaderMenu(),
                 "footerMenu" => $klearConfig->getFooterMenu()
             )
-		);
-		
+        );
+
 
     }
 
@@ -119,5 +122,22 @@ class Klear_Plugin_Init extends Zend_Controller_Plugin_Abstract
     protected function _registerYamlStream() {
         stream_wrapper_register("klear.yaml", "Klear_Model_YamlStream");
     }
-    
+
+    protected function _initHooks()
+    {
+        $actionHelpers = $this->_bootstrap->getOption('siteConfig')->getActionHelpers();
+        if (sizeof($actionHelpers) > 0) {
+            foreach($actionHelpers as $actionHelper) {
+
+                Zend_Controller_Action_HelperBroker::addHelper(
+                    new $actionHelper()
+                );
+            }
+        }
+
+
+
+    }
+
+
 }
