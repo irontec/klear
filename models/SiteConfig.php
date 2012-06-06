@@ -167,7 +167,7 @@ class Klear_Model_SiteConfig
         
         $this->_name = $dynamic->processSiteName($this->_name);
         $this->_langs = $dynamic->processLangs($this->_langs);
-        
+        $this->_logo = $dynamic->processLogo($this->_logo);
         
     }
     
