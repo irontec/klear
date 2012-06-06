@@ -1,5 +1,5 @@
 ;(function($) {
-	
+
 	var uiDialogClasses =
 		'ui-dialog ' +
 		'ui-widget ' +
@@ -32,32 +32,32 @@
 		offset: true,
 		click: true
 	};
-	
+
 	var __namespace__ = "klear.moduleDialog";
-	
+
 	$.widget("klear.moduleDialog", $.ui.dialog, {
 		_superClass: $.ui.dialog.prototype,
 		_getKlearPosition: function() {
 			if (this.options.klearPosition) {
-				return $(this.options.klearPosition); 
+				return $(this.options.klearPosition);
 			}
-			
+
 			return document.body;
 		},
-		_makeDraggable : function() { 
+		_makeDraggable : function() {
 		    this.uiDialog.draggable({
 		        containment: this._getKlearPosition()
 		    });
-		    
+
 		},
 		_create: function() {
 			this.originalTitle = this.element.attr('title');
-			
+
 			/*
 			 * Klear Module Option
 			 */
 			this.options.isHidden = false;
-			
+
 			// #5742 - .attr() might return a DOMElement
 			if ( typeof this.originalTitle !== "string" ) {
 				this.originalTitle = "";
@@ -82,7 +82,7 @@
 					.attr('tabIndex', -1).css('outline', 0).keydown(function(event) {
 						if (options.closeOnEscape && !event.isDefaultPrevented() && event.keyCode &&
 							event.keyCode === $.ui.keyCode.ESCAPE) {
-							
+
 							self.close(event);
 							event.preventDefault();
 						}
@@ -183,13 +183,13 @@
 				uiDialog = self.uiDialog;
 
 			self.overlay = options.modal ? new $.ui.dialog.overlay(self) : null;
-			
+
 			self.overlay.$el.appendTo(this._getKlearPosition());
-			
+
 			self._size();
-			
+
 			self._position(options.position);
-			
+
 			uiDialog.show(options.show);
 			self.moveToTop(true);
 
@@ -225,10 +225,14 @@
 
 			return self;
 		},
+		getContext : function() {
+
+		    return this.element;
+		},
 		updateContent : function(content) {
 			$(this.element).slideUp(function() {
 				$(this).html(content).slideDown();
-			});		
+			});
 		},
 		updateTitle : function(title) {
 			$(".ui-dialog-title",this.uiDialogTitlebar).html(title);
@@ -236,22 +240,22 @@
 		setAsLoading : function() {
 			$(this.element).html('<br /><div class="loadingCircle"></div><div class="loadingCircle1"></div>');
 		}
-		
+
 	});
-	
-	
+
+
 	$.extend($.ui.dialog.overlay, {
-		
+
 		create: function(dialog) {
-			
-			
+
+
 			if ( (dialog.widgetName == 'klearModule') && ($(dialog.element).moduleDialog("option","klearPosition")) ) {
-				
+
 				var container = $(dialog.element).moduleDialog("option","klearPosition");
 			} else {
-				
+
 				var container = document;
-				
+
 			}
 			if (this.instances.length === 0) {
 				// prevent use of anchors and inputs
@@ -279,7 +283,7 @@
 					if (!$(container).is(":visible")) return;
 					if (dialog.options.closeOnEscape && !event.isDefaultPrevented() && event.keyCode &&
 						event.keyCode === $.ui.keyCode.ESCAPE) {
-						
+
 						dialog.close(event);
 						event.preventDefault();
 					}
@@ -289,12 +293,12 @@
 				$(window).bind('resize.dialog-overlay', $.ui.dialog.overlay.resize);
 			}
 
-			
+
 			// COmpatibilidad con overlays en los tabs
 			if (container == document) {
 				container = document.body;
 			}
-			
+
 			var $el = ( $('<div></div>').addClass('ui-widget-overlay'))
 				.appendTo(container)
 				.css({
@@ -302,15 +306,15 @@
 					height: this.height()
 				});
 
-		
+
 
 			this.instances.push($el);
 			return $el;
 		}
 	});
 
-	
-	
-	
-	
+
+
+
+
 })(jQuery);
