@@ -2,7 +2,7 @@
 
     $.klear = $.klear || {};
 
-    $.klear.cacheEnabled = false;
+    $.klear.cacheEnabled = true;
 
     $.klear.removeCache = function() {
         $.klear.loadedScripts = {};
@@ -151,7 +151,7 @@
 
                 var tryOuts = 0;
                 (function tryAgain() {
-                	
+
                     if ( (false === response.plugin) || (typeof $.fn[response.plugin] == 'function' ) ) {
                     	successCallback.apply(context,[response]);
                         return;
@@ -159,8 +159,8 @@
                    } else {
 
                        if (++tryOuts == 20) {
-                    	   
-                    	   
+
+
                            errorCallback.apply(context,[response.plugin + ' plugin not found']);
                            return;
                        } else {
@@ -178,13 +178,13 @@
         var _errorResponse = function _errorResponse(xhr) {
 
             try {
-                
+
             	var response = $.parseJSON(xhr.responseText);
-                
+
             } catch(e) {
                 var response = {
                 		message : $.translate('Undefined Error', [__namespace__]),
-                		raw : xhr.responseText                		
+                		raw : xhr.responseText
                 }
             }
 
