@@ -11,7 +11,7 @@ class Klear_AssetsController extends Zend_Controller_Action
 
         $this->_defaultHeaders = array(
                 'Pragma' => 'public',
-                'Cache-control', 'maxage=' . 60*60*24*30 // ~1 Month
+                'Cache-control' => 'maxage=' . 60*60*24*30 // ~1 Month
         );
     }
 
