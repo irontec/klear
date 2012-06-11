@@ -127,13 +127,18 @@ class Klear_Model_SiteConfig
                 $this->_jqueryUICustomTheme = $config->jqueryUI->path;
 
             } else {
-
+                
                 if (isset($config->jqueryUI->theme)) {
 
                     $themeParser = new Klear_Model_JQueryUIThemeParser;
 
                     $themeParser->init();
-
+                    
+                    // If configured, we can pass the parser, extra custom jQueryUI themes
+                    if (isset($config->jqueryUI->extraThemeFile)) {
+                        $themeParser->setLocalExtraConfigFile($config->jqueryUI->extraThemeFile);
+                    }
+                        
                     $this->_jqueryUIPathTheme = $themeParser->getPathForTheme($config->jqueryUI->theme);
 
                 } else {
@@ -163,7 +168,7 @@ class Klear_Model_SiteConfig
             Throw new Exception('Dynamic class does not extend Klear_Model_Settings_Dynamic_Abstract');
         }
         
-        $dynamic->init();
+        $dynamic->init($config);
         
         $this->_name = $dynamic->processSiteName($this->_name);
         $this->_langs = $dynamic->processLangs($this->_langs);

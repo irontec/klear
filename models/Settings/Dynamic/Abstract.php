@@ -8,7 +8,7 @@
  */
 abstract class Klear_Model_Settings_Dynamic_Abstract
 {
-    abstract public function init();
+    abstract public function init($siteConfig);
     
     public function processSiteName($sitename) {
         return $sitename;
