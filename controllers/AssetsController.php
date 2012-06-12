@@ -211,6 +211,9 @@ class Klear_AssetsController extends Zend_Controller_Action
                 case "html":
                     $fileContentType = 'text/html';
                     break;
+                case "htm":
+                    $fileContentType = 'text/html';
+                    break;
             }
 
             $headers = array();
