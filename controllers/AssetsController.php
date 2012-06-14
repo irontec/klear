@@ -3,9 +3,13 @@
 class Klear_AssetsController extends Zend_Controller_Action
 {
     protected $_defaultHeaders;
+    protected $_applyStrongCache;
 
     public function init()
     {
+
+        $this->_applyStrongCache = ("production" === APPLICATION_ENV);
+        
         $this->_helper->layout->disableLayout();
         $this->_helper->getHelper('viewRenderer')->setNoRender();
 
@@ -39,13 +43,18 @@ class Klear_AssetsController extends Zend_Controller_Action
         * Cabeceras de ficheros CSS JS según extensión
         */
         if (file_exists($file)) {
+
             if (strpos(mime_content_type($file), 'image') !== false) {
+
                 return $this->_sendImage($file);
+
             } else {
+
                 $this->_compress(
                         $file,
                         $this->_getFileExtension($file)
                 );
+
             }
         }
     }
@@ -131,7 +140,7 @@ class Klear_AssetsController extends Zend_Controller_Action
         $format = 'image/' . strtolower($image->getImageFormat());
 
         $headers = array();
-        if ("production" === APPLICATION_ENV) {
+        if ($this->_applyStrongCache) {
             $headers['ETag'] = $hash;
         }
         $headers['Content-type'] = $format;
@@ -162,7 +171,7 @@ class Klear_AssetsController extends Zend_Controller_Action
         }
 
         $headers = array();
-        if ("production" === APPLICATION_ENV) {
+        if ($this->_applyStrongCache) {
             $headers['Last-Modified'] = gmdate('D, d M Y H:i:s', $lastModifiedTime) . ' GMT';
         }
         $finfo = new finfo(FILEINFO_MIME_TYPE);
@@ -195,46 +204,46 @@ class Klear_AssetsController extends Zend_Controller_Action
             return;
         }
 
-        $this->getFrontController()->setParam('disableOutputBuffering', false);
+        $this->getFrontController()->setParam('disableOutputBuffering', true);
 
         $cache = $this->_getFileCache($file);
-        if (!$cache->start()) {
-            $data = $this->_getContents($file, $type);
+        file_put_contents('/tmp/froga0', "hola", FILE_APPEND);
 
-            switch(strtolower($type)) {
-                case "js":
-                    $fileContentType = 'application/x-javascript';
-                    break;
-                case "css":
-                    $fileContentType = 'text/css';
-                    break;
-                case "html":
-                    $fileContentType = 'text/html';
-                    break;
-                case "htm":
-                    $fileContentType = 'text/html';
-                    break;
-            }
+        $cache->start();
+        $data = $this->_getContents($file, $type);
 
-            $headers = array();
-            if ("production" === APPLICATION_ENV) {
-                $headers['Last-Modified'] = gmdate('D, d M Y H:i:s', $lastModifiedTime) . ' GMT';
-            }
-            $headers['Content-type'] = $fileContentType;
-            $headers['Content-length'] = strlen($data);
-            $this->_setHeaders($headers);
-
-            echo $data;
+        switch(strtolower($type)) {
+            case "js":
+                $fileContentType = 'application/x-javascript';
+                break;
+            case "css":
+                $fileContentType = 'text/css';
+                break;
+            case "html":
+            case "htm":
+                $fileContentType = 'text/html';
+                break;
         }
+
+        $headers = array();
+        if ($this->_applyStrongCache) {
+            $headers['Last-Modified'] = gmdate('D, d M Y H:i:s', $lastModifiedTime) . ' GMT';
+        }
+        $headers['Content-type'] = $fileContentType;
+        $headers['Content-length'] = strlen($data);
+
+        $this->_setHeaders($headers);
+
+        echo $data;
+        exit;
     }
 
     protected function _getFileCache($file)
     {
-        // $hashTag => Se aplica este tag a la cache para eliminar de la cache los ficheros viejos
-        $hashTag = str_replace(array("/",".","-"), "_", basename($file));
 
         $frontendOptions = array(
-                'lifetime' => null, // Forever! - mimetype is implicit in cache signature!
+                'lifetime' => null,
+                'debug_header' => false,
                 'memorize_headers' => array(
                         'content-type',
                         'content-length',
@@ -243,27 +252,38 @@ class Klear_AssetsController extends Zend_Controller_Action
                         'last-modified'
                 ),
                 'default_options' => array(
-                        'tags' => array($hashTag)
+                        'cache_with_session_variables' => true,
+                        'cache_with_cookie_variables' => true,
+                        'cache_with_post_variables' => true,
+                        'cache_with_get_variables' => true,
+                        'make_id_with_session_variables' => false,
+                        'make_id_with_cookie_variables' => false,
+                        'make_id_with_post_variables' => false,
+                        'make_id_with_get_variables' => false
                 )
         );
 
         $backendOptions = array(
                 'cache_dir' => APPLICATION_PATH . '/cache/'
         );
-
+        //         while(ob_get_level()) {
+        //             ob_end_clean();
+        //         }
         $cache = Zend_Cache::factory(
                 'Page',
                 'File',
                 $frontendOptions,
                 $backendOptions
         );
+
         return $cache;
     }
 
     protected function _getContents($file, $type)
     {
         $data = file_get_contents($file);
-        if ("production" === APPLICATION_ENV) {
+
+        if ($this->_applyStrongCache) {
             switch(strtolower($type)) {
                 case "js":
                     $minifier = new Iron_Minify_JsMin($data);
@@ -288,7 +308,7 @@ class Klear_AssetsController extends Zend_Controller_Action
         }
 
         $headers = array();
-        if ("production" === APPLICATION_ENV) {
+        if ($this->_applyStrongCache) {
             $headers['Last-Modified'] = gmdate('D, d M Y H:i:s', time()) . ' GMT';
         }
         $headers['Content-type'] = 'application/x-javascript';
