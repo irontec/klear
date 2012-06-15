@@ -87,6 +87,12 @@ class Klear_Model_YamlStream {
                 }
 
                 break;
+            case preg_match("/params\.(.*)/", $data[1], $result):
+
+                $request = Zend_Controller_Front::getInstance()->getRequest();
+                return $request->getParam($result[1],'');
+                
+                break;
             case ($data[1] == 'lang'):
                     // TODO: pickup language
                     return 'es';
