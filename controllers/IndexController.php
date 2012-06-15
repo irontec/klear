@@ -10,7 +10,6 @@ class Klear_IndexController extends Zend_Controller_Action
     {
         /* Initialize action controller here */
     	$this->_helper->ContextSwitch()
-    			->addActionContext('dispatch', 'json')
     			->addActionContext('hello', 'json')
     			->addActionContext('bye', 'json')
     			->addActionContext('registertranslation', 'json')
@@ -160,7 +159,6 @@ class Klear_IndexController extends Zend_Controller_Action
 
     	$this->_helper->layout->disableLayout();
     	$this->_helper->viewRenderer->setNoRender();
-
 
     	$file = $this->getRequest()->getParam("file");
 

@@ -9,13 +9,15 @@ class Klear_AssetsController extends Zend_Controller_Action
     {
 
         $this->_applyStrongCache = ("production" === APPLICATION_ENV);
+        $this->_applyStrongCache = true;
         
         $this->_helper->layout->disableLayout();
         $this->_helper->getHelper('viewRenderer')->setNoRender();
 
         $this->_defaultHeaders = array(
                 'Pragma' => 'public',
-                'Cache-control' => 'maxage=' . 60*60*24*30 // ~1 Month
+                'Cache-control' => 'maxage=' . 60*60*24*30, // ~1 Month
+                'Expires' => gmdate('D, d M Y H:i:s', (time() + 60*60*24*30)) . ' GMT'
         );
     }
 
@@ -207,35 +209,43 @@ class Klear_AssetsController extends Zend_Controller_Action
         $this->getFrontController()->setParam('disableOutputBuffering', true);
 
         $cache = $this->_getFileCache($file);
-        file_put_contents('/tmp/froga0', "hola", FILE_APPEND);
 
-        $cache->start();
-        $data = $this->_getContents($file, $type);
-
-        switch(strtolower($type)) {
-            case "js":
-                $fileContentType = 'application/x-javascript';
-                break;
-            case "css":
-                $fileContentType = 'text/css';
-                break;
-            case "html":
-            case "htm":
-                $fileContentType = 'text/html';
-                break;
+        $id = sha1($file);
+        
+        $raw = $cache->load($id);
+        $headers = $cache->load("headers" . $id); 
+        
+        if ( (false === $raw) || (false === $headers) ) {
+            
+            
+            $raw = $this->_getContents($file, $type);
+            
+            switch(strtolower($type)) {
+                case "js":
+                    $fileContentType = 'application/x-javascript';
+                    break;
+                case "css":
+                    $fileContentType = 'text/css';
+                    break;
+                case "html":
+                case "htm":
+                    $fileContentType = 'text/html';
+                    break;
+            }
+        
+            $headers = array();
+            if ($this->_applyStrongCache) {
+                $headers['Last-Modified'] = gmdate('D, d M Y H:i:s', $lastModifiedTime) . ' GMT';
+            }
+            $headers['Content-type'] = $fileContentType;
+            $headers['Content-length'] = mb_strlen($raw);
+            
+            $cache->save($raw, $id);
+            $cache->save($headers, 'headers' . $id);
         }
-
-        $headers = array();
-        if ($this->_applyStrongCache) {
-            $headers['Last-Modified'] = gmdate('D, d M Y H:i:s', $lastModifiedTime) . ' GMT';
-        }
-        $headers['Content-type'] = $fileContentType;
-        $headers['Content-length'] = strlen($data);
-
+        
         $this->_setHeaders($headers);
-
-        echo $data;
-        exit;
+        echo $raw;
     }
 
     protected function _getFileCache($file)
@@ -244,6 +254,8 @@ class Klear_AssetsController extends Zend_Controller_Action
         $frontendOptions = array(
                 'lifetime' => null,
                 'debug_header' => false,
+                'automatic_serialization' => true,
+                'master_files' => array($file),
                 'memorize_headers' => array(
                         'content-type',
                         'content-length',
@@ -266,11 +278,9 @@ class Klear_AssetsController extends Zend_Controller_Action
         $backendOptions = array(
                 'cache_dir' => APPLICATION_PATH . '/cache/'
         );
-        //         while(ob_get_level()) {
-        //             ob_end_clean();
-        //         }
+
         $cache = Zend_Cache::factory(
-                'Page',
+                'File',
                 'File',
                 $frontendOptions,
                 $backendOptions
