@@ -199,13 +199,8 @@
 		}
 		
 		var $sidebar = $('#sidebar');
-		$sidebar.empty();
-		$sidebar.accordion("destroy");
-		//$sidebar.resizable("destroy");
 		var $headerbar = $('#headerbar');
-		$headerbar.empty();
 		var $footerbar = $('#footerbar');
-		$footerbar.empty();
 		
 		var self = this;
 		
@@ -214,6 +209,12 @@
 		$.klear._doMenuSuccess = function(response) {
 			
 			var navMenus = response.data.navMenus;
+
+			$sidebar.empty();
+			$sidebar.accordion("destroy");
+			$headerbar.empty();
+			$footerbar.empty();
+
 			
 			$.tmpl('klearSidebarMenu', navMenus.sidebar).appendTo($sidebar);
 			
@@ -240,7 +241,7 @@
 					$.klear.addErrors(response.data);					
 				},
 				function() {
-					console.error("No se ha creado errors.yaml")
+					console.error("errors.yaml not found!")
 				}
 			);
 
@@ -442,7 +443,7 @@
 				modal: true,
 				draggable: false,
 				stack: true,
-				width:'40%',
+				width:'45%',
 				minHeigth:'350px',
 				dialogClass: 'loginDialog',
 				closeOnEscape: false,
@@ -452,6 +453,7 @@
 				}
 			});
 			
+			$("select",self.$loginForm).combobox();
 			$("input",self.$loginForm).removeAttr("disabled");
 			$("input[submit]",self.$loginForm).button();
 			$("input[text]:eq(0)").trigger("focusin").select();
@@ -620,6 +622,8 @@
 		 * Setting klear canvas MAIN container.
 		 */
 		$.klear.canvas = $("#canvas");
+		
+		
 		/*
 		 * Loading and binding main container
 		 */

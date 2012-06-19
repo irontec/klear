@@ -31,6 +31,7 @@ class Klear_IndexController extends Zend_Controller_Action
         Zend_Layout::getMvcInstance()->disableLayout();
         Zend_Auth::getInstance()->clearIdentity();
         Zend_Session::forgetMe();
+        
         if ((bool)$this->getRequest()->getParam('json', false)) {
             $jsonResponse = new Klear_Model_SimpleResponse();
             $jsonResponse->setData(

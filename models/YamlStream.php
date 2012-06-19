@@ -106,7 +106,7 @@ class Klear_Model_YamlStream {
     protected function _resolveVariables()
     {
         $this->_content = preg_replace_callback(
-            '/\$\{(.*)\}/',
+            '/\$\{([^\}]*)\}/',
             array($this,'_parseVariables'),
             $this->_content
         );

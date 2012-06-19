@@ -39,7 +39,6 @@ class Klear_Model_SiteConfig
         $this->_initKlearLanguage($config);
 
         if (isset($config->auth)) {
-
             $this->_authConfig = new Klear_Model_KConfigParser();
             $this->_authConfig->setConfig($config->auth);
         }
@@ -174,6 +173,9 @@ class Klear_Model_SiteConfig
         $this->_langs = $dynamic->processLangs($this->_langs);
         $this->_logo = $dynamic->processLogo($this->_logo);
         $this->_jqueryUIPathTheme = $dynamic->processjQueryUI($this->_jqueryUIPathTheme);
+
+        $this->_authConfig = $dynamic->processAuthConfig($this->_authConfig);
+        
     }
     
 

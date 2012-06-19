@@ -38,13 +38,21 @@
             	
             	var _parentWidth = $(self.element).parent().width();
             	
-            	var $tabs = self.element,
-					$parent = $tabs.wrap('<div></div>').parent().addClass('ui-scrollable-tabs ui-widget-content ui-corner-all'),
-					$nav = self.element.find(".ui-tabs-nav:first").removeClass('ui-corner-all'),
-					$arrowsNav = $('<ol class="ui-helper-reset ui-helper-clearfix ui-tabs-nav-arrows"></ol>').prependTo($parent),
-					$navPrev = $('<li class="ui-tabs-arrow-previous ui-state-default ui-widget-content" title="Previous"><a href="#"><span class="ui-icon ui-icon-carat-1-w">Previous tab</span></a></li>').prependTo($arrowsNav),
-                    $navNext = $('<li class="ui-tabs-arrow-next ui-state-default ui-widget-content" title="Next"><a href="#"><span class="ui-icon ui-icon-carat-1-e">Next tab</span></a></li>').appendTo($arrowsNav);
-					$.fn.reverse = [].reverse;
+            	var $tabs = self.element;
+            	
+            	if ($tabs.parent().is('.ui-scrollable-tabs')) {
+            		var $parent = $tabs.parent('.ui-scrollable-tabs');
+            		$("ol",$parent).remove();
+            	} else {
+            		var $parent = $tabs.wrap('<div></div>').parent().addClass('ui-scrollable-tabs ui-widget-content ui-corner-all');
+            	}
+            	
+            	var $nav = self.element.find(".ui-tabs-nav:first").removeClass('ui-corner-all'),
+				$arrowsNav = $('<ol class="ui-helper-reset ui-helper-clearfix ui-tabs-nav-arrows"></ol>').prependTo($parent),
+				$navPrev = $('<li class="ui-tabs-arrow-previous ui-state-default ui-widget-content" title="Previous"><a href="#"><span class="ui-icon ui-icon-carat-1-w">Previous tab</span></a></li>').prependTo($arrowsNav),
+                $navNext = $('<li class="ui-tabs-arrow-next ui-state-default ui-widget-content" title="Next"><a href="#"><span class="ui-icon ui-icon-carat-1-e">Next tab</span></a></li>').appendTo($arrowsNav);
+            	
+				$.fn.reverse = [].reverse;
 				
 				function _init()
 				{

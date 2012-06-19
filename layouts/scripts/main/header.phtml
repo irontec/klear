@@ -36,6 +36,7 @@
 		->appendFile($this->baseUrl('klear/js/plugins/jquery.cookie.js'))
 		->appendFile($this->baseUrl('klear/js/plugins/jquery.scrollabletab.js'))
 		->appendFile($this->baseUrl('klear/js/plugins/jquery.ui.tooltip.js'))
+		->appendFile($this->baseUrl('klear/js/plugins/jquery.ui.combobox.js'))
 		->appendFile($this->baseUrl('klear/js/scripts/spin.min.js'))
 		->setIndent(4);
 	
@@ -104,17 +105,17 @@
             	</label>
             	
             </div>
-        
-        
             <div id="headerLanguagebar">
             <?php 
             if ($langs = $this->SiteConfig()->getLangs()):
+                if (sizeof($langs) > 1) {
                     echo '<span class="langSelector">';
                     foreach($langs as $_langIden => $lang) {
                         echo '<input type="radio" id="lang_'.$_langIden.'" value="'.$_langIden.'" name="lang" '.(($_langIden == $this->SiteConfig()->getLang()->getIden())? ' checked="checked"':'') .' /><label for="lang_'.$_langIden.'">'.$lang.'</label>';
                     }
                     echo '</span>';
-                endif;
+                }
+            endif;
             ?>
             </div>
         

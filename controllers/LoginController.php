@@ -28,21 +28,41 @@ class Klear_LoginController extends Zend_Controller_Action
                         ->offsetGet('klear')
                         ->getOption('siteConfig');
         
+        $authConfig = $siteConfig->getAuthConfig();
+        
         $data = array(
-                    "title" => $siteConfig->getAuthConfig()->getProperty("title"),
-                    "description" =>$siteConfig->getAuthConfig()->getProperty("description")
+                    "title" => $authConfig->getProperty("title"),
+                    "description" => $authConfig->getProperty("description")
                 );
+        
+        $extraInfoLoaderClass = $authConfig->getProperty('loader', false);
+        if ($extraInfoLoaderClass) {
+            $extraInfo = new $extraInfoLoaderClass;
+            $extraInfo->init();
+            $data['extra'] = $extraInfo->getData();  
+        }
+        
         
         if ($error = $this->_helper->getHelper('FlashMessenger')->getMessages()) {
             $data['error'] = $error;
         }
+        
         
         Zend_Json::$useBuiltinEncoderDecoder = true;
 
         $jsonResponse = new Klear_Model_DispatchResponse;
         $jsonResponse->setModule('klear');
         $jsonResponse->setPlugin(false); // No requiere plugin
-        $jsonResponse->addTemplate("/template/login/form", "klearForm");
+        
+        $template = $authConfig->getProperty('template', false);
+        
+        if ($template) {
+            $jsonResponse->addTemplate($template, "klearForm");
+        } else {
+            $jsonResponse->addTemplate("/template/login/form", "klearForm");
+        }
+        
+        
         $jsonResponse->setData($data);
         $jsonResponse->attachView($this->view);
     }
