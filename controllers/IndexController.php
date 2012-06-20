@@ -83,7 +83,7 @@ class Klear_IndexController extends Zend_Controller_Action
 
             if (!in_array($str, $jsTranslations)) {
                 $jsTranslations[] = $str;
-                $this->_writeTranslationsFile($translationsFile, $jsTranslations);
+                $this->_writeTranslationsFile($translationFile, $jsTranslations);
             }
         }
 
