@@ -26,8 +26,9 @@ class Klear_IndexController extends Zend_Controller_Action
 
     public function byeAction()
     {
-        $this->_helper->viewRenderer->setNoRender(true);
-        Zend_Layout::getMvcInstance()->disableLayout();
+        $this->_helper->layout->disableLayout();
+        $this->_helper->viewRenderer->setNoRender();
+
         Zend_Auth::getInstance()->clearIdentity();
         Zend_Session::forgetMe();
 
@@ -46,35 +47,30 @@ class Klear_IndexController extends Zend_Controller_Action
 
     public function helloAction()
     {
-        // action body
-
         $this->_helper->layout->disableLayout();
         $this->_helper->viewRenderer->setNoRender();
 
-        /* Si el plugin de autenticación ha dejado en request
+        /*
+         * Si el plugin de autenticación ha dejado en request
          * algún mensaje de error, se lo dejamos en flashMessenger
-        * para que lo recoja loginController al re-servir el formulario
-        */
+         * para que lo recoja loginController al re-servir el formulario
+         */
         if ($this->getRequest()->getParam("loginError")) {
             $this->_helper->getHelper('FlashMessenger')->addMessage($this->getRequest()->getParam("loginError"));
         }
 
         $jsonResponse = new Klear_Model_SimpleResponse();
-
         $jsonResponse->setData(
             array(
                 'success'=> true
             )
         );
-
         $jsonResponse->attachView($this->view);
     }
 
 
     public function registertranslationAction()
     {
-        // action body
-
         $this->_helper->layout->disableLayout();
         $this->_helper->viewRenderer->setNoRender();
 
@@ -82,72 +78,69 @@ class Klear_IndexController extends Zend_Controller_Action
         $str = $this->getRequest()->getParam("str", false);
 
         if ($namespace && $str) {
-            list($type, $namespace) = explode("/", $this->getRequest()->getParam("namespace"), 2);
-            if ($namespace=='null') {
-                $namespace = 'default.default';
-            }
-            if (strpos($namespace, ".")) {
-                list($module, $plugin) = explode(".", $namespace, 2);
-            } else {
-                $plugin = null;
-                $module = $namespace;
-            }
-            list($module, $plugin) = explode(".", $namespace, 2);
-            $modules = Zend_Controller_Front::getInstance()->getControllerDirectory();
-            $mods = array_keys($modules);
-            $done = false;
-
-            foreach ($mods as $mod) {
-                if (strtolower($mod) == strtolower($module)) {
-                    $this->getRequest()->setModuleName($mod);
-                    $done = true;
-                    break;
-                }
-            }
-            if ($done === false) {
-                $this->getRequest()->setModuleName('default');
-            }
-            $bootstrap = $this->getFrontController()->getParam("bootstrap");
-            $klearBootstrap = $bootstrap->getResource('modules')->offsetGet('klear');
-            $siteLanguage = $klearBootstrap->getOption('siteConfig')->getLang();
-
-
-            $translationFile = implode(
-                DIRECTORY_SEPARATOR,
-                array(
-                    $this->getFrontController()->getModuleDirectory(),
-                    'languages',
-                    'js-translations.php'
-                )
-            );
-
-            if (!file_exists($translationFile)) {
-                $contents = array();
-                $fileContents = "<?php\n\n";
-                $fileContents .= "return " . var_export($contents, true) . ";\n";
-                file_put_contents($translationFile, $fileContents);
-            }
-
-            $jsTranslations = array();
+            $translationFile = $this->_getTranslationFilePath($namespace);
             $jsTranslations = include($translationFile);
 
             if (!in_array($str, $jsTranslations)) {
                 $jsTranslations[] = $str;
-                $fileContents = "<?php\n\n";
-                $fileContents .= "return " . var_export($jsTranslations, true) . ";\n";
-                file_put_contents($translationFile, $fileContents);
-
+                $this->_writeTranslationsFile($translationsFile, $jsTranslations);
             }
         }
-        $jsonResponse = new Klear_Model_SimpleResponse();
 
+        $jsonResponse = new Klear_Model_SimpleResponse();
         $jsonResponse->setData(
             array(
                 'success'=> true,
             )
         );
-
         $jsonResponse->attachView($this->view);
+    }
+
+    protected function _getTranslationFilePath($jsNamespace)
+    {
+        $module = $this->_getNamespaceModuleName($jsNamespace);
+        $this->getRequest()->setModuleName($module);
+
+        $translationFile = implode(
+            DIRECTORY_SEPARATOR,
+            array(
+                $this->getFrontController()->getModuleDirectory(),
+                'languages',
+                'js-translations.php'
+            )
+        );
+
+        if (!file_exists($translationFile)) {
+            $this->_writeTranslationsFile($translationFile, array());
+        }
+
+        return $translationFile;
+    }
+
+    protected function _getNamespaceModuleName($jsNamespace)
+    {
+        list($type, $namespace) = explode("/", $jsNamespace, 2);
+        if ($namespace == 'null') {
+            $namespace = 'default.default';
+        }
+        list($module, $plugin) = explode(".", $namespace, 2);
+
+        $modules = Zend_Controller_Front::getInstance()->getControllerDirectory();
+        $mods = array_keys($modules);
+
+        foreach ($mods as $mod) {
+            if (strtolower($mod) == strtolower($module)) {
+                return $mod;
+            }
+        }
+        return 'default';
+    }
+
+    protected function _writeTranslationsFile($translationFile, $contents)
+    {
+        $fileContents = "<?php\n\n";
+        $fileContents .= "return " . var_export($contents, true) . ";\n";
+        file_put_contents($translationFile, $fileContents);
     }
 
     /**
@@ -156,7 +149,6 @@ class Klear_IndexController extends Zend_Controller_Action
      */
     public function dispatchAction()
     {
-
         $this->_helper->layout->disableLayout();
         $this->_helper->viewRenderer->setNoRender();
 
