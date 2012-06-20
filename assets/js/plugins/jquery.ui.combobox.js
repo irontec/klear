@@ -10,16 +10,19 @@
 					wrapper = this.wrapper = $( "<span>" )
 						.addClass( "ui-combobox" )
 						.insertAfter( select );
+				
 				var width = 100;
 				
 				(function lazyWidthCalculator() {
 					this.counter = this.counter+1 || 1;
 					if ( (self.element.width() == 0) && (counter < 5) ) {
-						setTimeout(lazyWidthCalculator,25);
+						setTimeout(lazyWidthCalculator,1000);
 						return;
+					} else {
+						if (self.element.width() > 0) {
+							width = self.element.width();
+						}
 					}
-					
-					width = self.element.width();
 					wrapper.css('width',width + 'px');
 				})();
 				
@@ -77,8 +80,13 @@
 							}
 						}
 					})
-					.addClass( "ui-widget ui-widget-content ui-corner-left" )
-					.removeClass( "ui-corner-all" );
+					.addClass( "ui-widget ui-widget-content ui-corner-left" );
+				
+				setTimeout(function() {
+					// Todo a su debido tiempo ;)
+					input.removeClass( "ui-corner-all" ); 
+				},300);
+					
 
 				input.data( "autocomplete" )._renderItem = function( ul, item ) {
 					return $( "<li></li>" )
