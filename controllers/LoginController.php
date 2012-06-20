@@ -7,17 +7,15 @@ class Klear_LoginController extends Zend_Controller_Action
     public function init()
     {
         /* Initialize action controller here */
-    	$this->_helper->ContextSwitch()
-    			->addActionContext('index', 'json')
-    			->initContext('json');
+        $this->_helper->ContextSwitch()
+                ->addActionContext('index', 'json')
+                ->initContext('json');
 
-    	$this->_helper->layout->disableLayout();
-    	$this->_helper->viewRenderer->setNoRender();
-    	
-    	
+        $this->_helper->layout->disableLayout();
+        $this->_helper->viewRenderer->setNoRender();
     }
 
-    
+
     public function indexAction()
     {
 
@@ -27,42 +25,41 @@ class Klear_LoginController extends Zend_Controller_Action
                         ->getResource('modules')
                         ->offsetGet('klear')
                         ->getOption('siteConfig');
-        
+
         $authConfig = $siteConfig->getAuthConfig();
-        
+
         $data = array(
                     "title" => $authConfig->getProperty("title"),
                     "description" => $authConfig->getProperty("description")
                 );
-        
+
         $extraInfoLoaderClass = $authConfig->getProperty('loader', false);
         if ($extraInfoLoaderClass) {
             $extraInfo = new $extraInfoLoaderClass;
             $extraInfo->init();
-            $data['extra'] = $extraInfo->getData();  
+            $data['extra'] = $extraInfo->getData();
         }
-        
-        
+
+
         if ($error = $this->_helper->getHelper('FlashMessenger')->getMessages()) {
             $data['error'] = $error;
         }
-        
-        
+
+
         Zend_Json::$useBuiltinEncoderDecoder = true;
 
         $jsonResponse = new Klear_Model_DispatchResponse;
         $jsonResponse->setModule('klear');
         $jsonResponse->setPlugin(false); // No requiere plugin
-        
+
         $template = $authConfig->getProperty('template', false);
-        
+
         if ($template) {
             $jsonResponse->addTemplate($template, "klearForm");
         } else {
             $jsonResponse->addTemplate("/template/login/form", "klearForm");
         }
-        
-        
+
         $jsonResponse->setData($data);
         $jsonResponse->attachView($this->view);
     }

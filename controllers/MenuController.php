@@ -7,13 +7,13 @@ class Klear_MenuController extends Zend_Controller_Action
     public function init()
     {
         /* Initialize action controller here */
-    	$this->_helper->ContextSwitch()
-    			->addActionContext('index', 'json')
-    			->initContext('json');
-
+        $this->_helper->ContextSwitch()
+                ->addActionContext('index', 'json')
+                ->initContext('json');
     }
 
-    protected function _getHeaderMenu() {
+    protected function _getHeaderMenu()
+    {
         $klearHeaderMenu = array();
         foreach ($this->_klearBootstrap->getOption('headerMenu') as $section) {
             $tmpSection = array(
@@ -38,7 +38,8 @@ class Klear_MenuController extends Zend_Controller_Action
         return $klearHeaderMenu;
     }
 
-    protected function _getSidebarMenu() {
+    protected function _getSidebarMenu()
+    {
         $klearSidebarMenu = array();
         foreach ($this->_klearBootstrap->getOption('menu') as $section) {
             $tmpSection = array(
@@ -63,7 +64,8 @@ class Klear_MenuController extends Zend_Controller_Action
         return $klearSidebarMenu;
     }
 
-    protected function _getFooterMenu() {
+    protected function _getFooterMenu()
+    {
         $klearFooterMenu = array();
         foreach ($this->_klearBootstrap->getOption('footerMenu') as $section) {
             $tmpSection = array(

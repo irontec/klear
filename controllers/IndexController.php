@@ -9,14 +9,13 @@ class Klear_IndexController extends Zend_Controller_Action
     public function init()
     {
         /* Initialize action controller here */
-    	$this->_helper->ContextSwitch()
-    			->addActionContext('hello', 'json')
-    			->addActionContext('bye', 'json')
-    			->addActionContext('registertranslation', 'json')
-    			->initContext('json');
+        $this->_helper->ContextSwitch()
+                ->addActionContext('hello', 'json')
+                ->addActionContext('bye', 'json')
+                ->addActionContext('registertranslation', 'json')
+                ->initContext('json');
 
-    	$this->_auth = Zend_Auth::getInstance();
-
+        $this->_auth = Zend_Auth::getInstance();
     }
 
     public function indexAction()
@@ -31,13 +30,13 @@ class Klear_IndexController extends Zend_Controller_Action
         Zend_Layout::getMvcInstance()->disableLayout();
         Zend_Auth::getInstance()->clearIdentity();
         Zend_Session::forgetMe();
-        
+
         if ((bool)$this->getRequest()->getParam('json', false)) {
             $jsonResponse = new Klear_Model_SimpleResponse();
             $jsonResponse->setData(
-                    array(
-                            'success'=> true
-                    )
+                array(
+                    'success'=> true
+                )
             );
             $jsonResponse->attachView($this->view);
         } else {
@@ -114,12 +113,12 @@ class Klear_IndexController extends Zend_Controller_Action
 
 
             $translationFile = implode(
-                    DIRECTORY_SEPARATOR,
-                    array(
-                            $this->getFrontController()->getModuleDirectory(),
-                            'languages',
-                            'js-translations.php'
-                    )
+                DIRECTORY_SEPARATOR,
+                array(
+                    $this->getFrontController()->getModuleDirectory(),
+                    'languages',
+                    'js-translations.php'
+                )
             );
 
             if (!file_exists($translationFile)) {
@@ -143,9 +142,9 @@ class Klear_IndexController extends Zend_Controller_Action
         $jsonResponse = new Klear_Model_SimpleResponse();
 
         $jsonResponse->setData(
-                array(
-                        'success'=> true,
-                )
+            array(
+                'success'=> true,
+            )
         );
 
         $jsonResponse->attachView($this->view);
@@ -158,64 +157,58 @@ class Klear_IndexController extends Zend_Controller_Action
     public function dispatchAction()
     {
 
-    	$this->_helper->layout->disableLayout();
-    	$this->_helper->viewRenderer->setNoRender();
+        $this->_helper->layout->disableLayout();
+        $this->_helper->viewRenderer->setNoRender();
 
-    	$file = $this->getRequest()->getParam("file");
+        $file = $this->getRequest()->getParam("file");
 
-    	$file_path = 'klear.yaml://' . $file;
-
-
-    	/*
-    	 * Carga configuración de la sección cargada según la request.
-    	 */
-    	$config = new Zend_Config_Yaml(
-    			$file_path,
-    			APPLICATION_ENV,
-    	        array(
-    	                "yamldecoder"=>"yaml_parse"
-
-    	        )
-    	);
+        $filePath = 'klear.yaml://' . $file;
 
 
-    	// Cargamos el configurador de secciones por defecto
-    	$sectionConfig = new Klear_Model_SectionConfig;
-    	$sectionConfig->setConfig($config);
-    	if (!$sectionConfig->isValid()) {
-    		throw new Zend_Controller_Action_Exception($this->view->translate("Configuration error"));
-    		return;
-    	}
+        /*
+         * Carga configuración de la sección cargada según la request.
+         */
+        $config = new Zend_Config_Yaml(
+            $filePath,
+            APPLICATION_ENV,
+            array(
+                "yamldecoder"=>"yaml_parse"
+            )
+        );
 
-    	if (!$this->_auth->hasIdentity()) {
-    	    $this->_forward("hello", "index", "klear");
-    	    return;
-    	}
+        // Cargamos el configurador de secciones por defecto
+        $sectionConfig = new Klear_Model_SectionConfig;
+        $sectionConfig->setConfig($config);
+        if (!$sectionConfig->isValid()) {
+            throw new Zend_Controller_Action_Exception($this->view->translate("Configuration error"));
+            return;
+        }
 
-    	// Nos devuelve el configurador del módulo concreto instanciado.
-    	$moduleConfig = $sectionConfig->factoryModuleConfig();
+        if (!$this->_auth->hasIdentity()) {
+            $this->_forward("hello", "index", "klear");
+            return;
+        }
 
-    	$moduleConfig->setConfig($config);
+        // Nos devuelve el configurador del módulo concreto instanciado.
+        $moduleConfig = $sectionConfig->factoryModuleConfig();
 
-    	$moduleRouter = $moduleConfig->buildRouterConfig();
-		$moduleRouter->setParams($this->getRequest()->getParams());
+        $moduleConfig->setConfig($config);
 
-
-		$moduleRouter->resolveDispatch();
-
-    	//Así tendremos disponible la configuración del módulo en el controlador principal.
- 		$this->_forward(
- 		    $moduleRouter->getActionName(),
- 		    $moduleRouter->getControllerName(),
- 		    $moduleRouter->getModuleName(),
- 		    array(
- 		        "mainRouter"=>$moduleRouter,
- 		    )
- 		);
+        $moduleRouter = $moduleConfig->buildRouterConfig();
+        $moduleRouter->setParams($this->getRequest()->getParams());
 
 
+        $moduleRouter->resolveDispatch();
+
+        //Así tendremos disponible la configuración del módulo en el controlador principal.
+         $this->_forward(
+             $moduleRouter->getActionName(),
+             $moduleRouter->getControllerName(),
+             $moduleRouter->getModuleName(),
+             array(
+                 "mainRouter"=>$moduleRouter,
+             )
+         );
     }
-
-
 }
 
