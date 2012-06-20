@@ -602,9 +602,13 @@
 	};
 	
 	$.klear.restart = function(opts, removetabs) {
+		
+
 		var removetabs = removetabs || false;
 		if (removetabs == true) {
 			$.klear.canvas.tabs('destroy');
+			$("#canvasWrapper").html($.klear.baseCanvas);
+			$.klear.canvas = $("#canvas");
 			$.klear.loadCanvas();
 		}
 		$.klear.requestSearchTranslations();
@@ -618,9 +622,14 @@
 		 */
 		$.klear.baseurl = $.klear.baseurl || $("base").attr("href");
 		$.klear.language = $('html').attr('lang');
+		
+		
+		$.klear.baseCanvas = $("#canvasWrapper").html();
+		
 		/*
 		 * Setting klear canvas MAIN container.
 		 */
+		
 		$.klear.canvas = $("#canvas");
 		
 		

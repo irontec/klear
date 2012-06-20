@@ -36,16 +36,18 @@
             if (o.scrollable) {
 				//Add class to the parent so we can style it in css externally
             	
-            	var _parentWidth = $(self.element).parent().width();
             	
             	var $tabs = self.element;
             	
             	if ($tabs.parent().is('.ui-scrollable-tabs')) {
-            		var $parent = $tabs.parent('.ui-scrollable-tabs');
-            		$("ol",$parent).remove();
-            	} else {
-            		var $parent = $tabs.wrap('<div></div>').parent().addClass('ui-scrollable-tabs ui-widget-content ui-corner-all');
+            		$tabs.parent('.ui-scrollable-tabs').replaceWith($tabs);
             	}
+
+            	var _parentWidth = $tabs.parent().width();
+
+        	
+            	var $parent = $tabs.wrap('<div></div>').parent().addClass('ui-scrollable-tabs ui-widget-content ui-corner-all');
+            	
             	
             	var $nav = self.element.find(".ui-tabs-nav:first").removeClass('ui-corner-all'),
 				$arrowsNav = $('<ol class="ui-helper-reset ui-helper-clearfix ui-tabs-nav-arrows"></ol>').prependTo($parent),
