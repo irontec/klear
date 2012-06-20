@@ -377,7 +377,7 @@
             $.each($.param(req.data).split('&'),function(idx, val) {
             	var _item = val.split('=');
             	$("<input>")
-                	.attr("name",_item[0])
+                	.attr("name",decodeURIComponent(_item[0]))
                 	.attr("type","hidden")
                 	.val(_item[1])
                 	.appendTo(_theForm);	
