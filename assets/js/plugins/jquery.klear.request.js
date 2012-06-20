@@ -367,28 +367,37 @@
 
             //La petición se realizará sobre un iframe oculto, no se controla response
             var _name = 'ftarget' + Math.round(Math.random(1000,1000));
+            
+            var _iframe = $("<iframe />",{"name":_name}).hide();
+            
             var _theForm = $("<form />")
                                 .attr({action: req.action,method: req.type, target: _name});
 
-            for(var _idx in req.data) {
-                $("<input>")
-                    .attr("name",_idx)
-                    .attr("type","hidden")
-                    .val(req.data[_idx])
-                    .appendTo(_theForm);
-            }
-
+            
+            $.each($.param(req.data).split('&'),function(idx, val) {
+            	var _item = val.split('=');
+            	$("<input>")
+                	.attr("name",_item[0])
+                	.attr("type","hidden")
+                	.val(_item[1])
+                	.appendTo(_theForm);	
+            });
+            
+            _iframe.appendTo("body");
             _theForm
                 .appendTo('body')
                 .on('submit',function() {
                     var $self = $(this);
                     setTimeout(function() {
                         $self.remove();
-                    },10000);
+                        _iframe.remove();
+                    },100000);
                 })
                 .trigger('submit');
 
-            successCallback(true);
+            if (typeof successCallback == 'function') {
+            	successCallback(true);
+            }
 
             return false;
         }
