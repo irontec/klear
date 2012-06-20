@@ -33,7 +33,7 @@ class Klear_LoginController extends Zend_Controller_Action
                     "description" => $authConfig->getProperty("description")
                 );
 
-        $extraInfoLoaderClass = $authConfig->getProperty('loader', false);
+        $extraInfoLoaderClass = $authConfig->getProperty('loader');
         if ($extraInfoLoaderClass) {
             $extraInfo = new $extraInfoLoaderClass;
             $extraInfo->init();
@@ -52,7 +52,7 @@ class Klear_LoginController extends Zend_Controller_Action
         $jsonResponse->setModule('klear');
         $jsonResponse->setPlugin(false); // No requiere plugin
 
-        $template = $authConfig->getProperty('template', false);
+        $template = $authConfig->getProperty('template');
 
         if ($template) {
             $jsonResponse->addTemplate($template, "klearForm");

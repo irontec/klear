@@ -42,7 +42,7 @@ class Klear_ErrorController extends Zend_Controller_Action
             $parsedErrors->setConfig($aErrors);
 
             foreach ($aErrors as $code => $msg) {
-                $data[$code] = $parsedErrors->getProperty($code, false);
+                $data[$code] = $parsedErrors->getProperty($code);
             }
         }
 
