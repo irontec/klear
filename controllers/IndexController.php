@@ -26,9 +26,6 @@ class Klear_IndexController extends Zend_Controller_Action
 
     public function byeAction()
     {
-        $this->_helper->layout->disableLayout();
-        $this->_helper->viewRenderer->setNoRender();
-
         Zend_Auth::getInstance()->clearIdentity();
         Zend_Session::forgetMe();
 
@@ -47,9 +44,6 @@ class Klear_IndexController extends Zend_Controller_Action
 
     public function helloAction()
     {
-        $this->_helper->layout->disableLayout();
-        $this->_helper->viewRenderer->setNoRender();
-
         /*
          * Si el plugin de autenticación ha dejado en request
          * algún mensaje de error, se lo dejamos en flashMessenger
@@ -71,9 +65,6 @@ class Klear_IndexController extends Zend_Controller_Action
 
     public function registertranslationAction()
     {
-        $this->_helper->layout->disableLayout();
-        $this->_helper->viewRenderer->setNoRender();
-
         $namespace = $this->getRequest()->getParam("namespace", false);
         $str = $this->getRequest()->getParam("str", false);
 
