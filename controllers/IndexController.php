@@ -79,7 +79,7 @@ class Klear_IndexController extends Zend_Controller_Action
 
         if ($namespace && $str) {
             $translationFile = $this->_getTranslationFilePath($namespace);
-            $jsTranslations = include($translationFile);
+            $jsTranslations = $this->_getTranslationData($translationFile);
 
             if (!in_array($str, $jsTranslations)) {
                 $jsTranslations[] = $str;
@@ -101,7 +101,7 @@ class Klear_IndexController extends Zend_Controller_Action
         $module = $this->_getNamespaceModuleName($jsNamespace);
         $this->getRequest()->setModuleName($module);
 
-        $translationFile = implode(
+        $translationFilePath = implode(
             DIRECTORY_SEPARATOR,
             array(
                 $this->getFrontController()->getModuleDirectory(),
@@ -110,11 +110,7 @@ class Klear_IndexController extends Zend_Controller_Action
             )
         );
 
-        if (!file_exists($translationFile)) {
-            $this->_writeTranslationsFile($translationFile, array());
-        }
-
-        return $translationFile;
+        return $translationFilePath;
     }
 
     protected function _getNamespaceModuleName($jsNamespace)
@@ -134,6 +130,14 @@ class Klear_IndexController extends Zend_Controller_Action
             }
         }
         return 'default';
+    }
+
+    protected function _getTranslationData($translationFile)
+    {
+        if (file_exists($translationFile)) {
+            return include($translationFile);
+        }
+        return array();
     }
 
     protected function _writeTranslationsFile($translationFile, $contents)
