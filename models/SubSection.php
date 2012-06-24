@@ -5,23 +5,25 @@
 * @author jabi
 *
 */
-class Klear_Model_SubSection extends Klear_Model_Section {
+class Klear_Model_SubSection extends Klear_Model_Section
+{
+    protected $_mainFile;
+    protected $_class;
 
-	protected $_mainFile;
-	protected $_class;
+    public function setMainFile($file)
+    {
+        //TODO: Excepción cuando no exista el fichero
+        $this->_mainFile = $file;
+        return $this;
+    }
 
-	public function setMainFile($file) {
-		//TO-DO Excepción cuando no exista el fichero
-		$this->_mainFile = $file;
-		return $this;
-	}
+    public function getMainFile()
+    {
+        return $this->_mainFile;
+    }
 
-    public function getMainFile() {
-	    return $this->_mainFile;
-	}
-
-    public function getClass() {
-	    return $this->_class;
-	}
-
+    public function getClass()
+    {
+        return $this->_class;
+    }
 }

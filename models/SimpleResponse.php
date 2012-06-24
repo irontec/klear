@@ -10,30 +10,28 @@
  */
 class Klear_Model_SimpleResponse
 {
+    const RESPONSE_TYPE = 'simple';
+    protected $_data;
 
-	const RESPONSE_TYPE = 'simple';
-	protected $_data;
+    public function setData($data)
+    {
+        $this->_data = $data;
 
-	public function setData($data)
-	{
-		$this->_data = $data;
+        return $this;
+    }
 
-		return $this;
-	}
+    public function attachView(Zend_View $view)
+    {
+        $view->data = $this->_data;
+        $view->responseType = self::RESPONSE_TYPE;
 
-	public function attachView(Zend_View $view)
-	{
-		$view->data = $this->_data;
-		$view->responseType = self::RESPONSE_TYPE;
+        $auth = Zend_Auth::getInstance();
 
-		$auth = Zend_Auth::getInstance();
+        if (!$auth->hasIdentity()) {
 
-		if (!$auth->hasIdentity()) {
+            $view->mustLogIn = true;
+        }
 
-		    $view->mustLogIn = true;
-		}
-
-		return $this;
-	}
-
+        return $this;
+    }
 }
