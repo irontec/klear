@@ -4,17 +4,17 @@
  * @author jabi
  * Iterador que devuelve todos los elementos del menu principal Sections > Subsections
  *
+ * FIXME: Se están seteando propiedades que no están definidas (description, name, config)
  */
-class Klear_Model_Menu implements Iterator
+class Klear_Model_Menu implements \IteratorAggregate
 {
 
     protected $_siteConfig;
     protected $_sections = array();
-    protected $_position = 0;
 
-    public function __construct()
+    public function getIterator()
     {
-        $this->_position = 0;
+        return new \ArrayIterator($this->_sections);
     }
 
     public function setName($name)
@@ -54,35 +54,7 @@ class Klear_Model_Menu implements Iterator
                 ->setData($sectionData);
 
             $this->_sections[] = $section;
-
         }
-
         $this->_config = null;
-    }
-
-    public function rewind()
-    {
-        $this->_position = 0;
-    }
-
-    public function current()
-    {
-        return $this->_sections[$this->_position];
-    }
-
-    public function key()
-    {
-        return $this->_position;
-    }
-
-    public function next()
-    {
-        ++$this->_position;
-    }
-
-    public function valid()
-    {
-        return isset($this->_sections[$this->_position]);
-
     }
 }

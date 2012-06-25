@@ -5,7 +5,7 @@
 * @author jabi
 *
 */
-class Klear_Model_Section  implements Iterator
+class Klear_Model_Section  implements \IteratorAggregate
 {
 
     protected $_name;
@@ -15,9 +15,13 @@ class Klear_Model_Section  implements Iterator
     protected $_menu = null;
 
     protected $_subsections;
-    protected $_position = 0;
 
     protected $_skip = array();
+
+    public function getIterator()
+    {
+        return new \ArrayIterator($this->_subsections);
+    }
 
     public function setName($name)
     {
@@ -62,7 +66,6 @@ class Klear_Model_Section  implements Iterator
 
             $this->_subsections[] = $subsection;
         }
-
     }
 
     public function getName()
@@ -73,38 +76,5 @@ class Klear_Model_Section  implements Iterator
     public function getDescription()
     {
         return $this->_description;
-    }
-
-
-
-    public function __construct()
-    {
-        $this->_position = 0;
-    }
-
-    public function rewind()
-    {
-        $this->_position = 0;
-    }
-
-    public function current()
-    {
-        return $this->_subsections[$this->_position];
-    }
-
-    public function key()
-    {
-        return $this->_position;
-    }
-
-    public function next()
-    {
-        ++$this->_position;
-    }
-
-    public function valid()
-    {
-        return isset($this->_subsections[$this->_position]);
-
     }
 }

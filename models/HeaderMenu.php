@@ -2,16 +2,20 @@
 
 /**
  * @author lander
+ * FIXME: Se están seteando propiedades que no están definidas (description, name, config, etc.)
+ * FIXME: Parece que podría extender de Klear_Model_Menu
  */
-
-
-class Klear_Model_HeaderMenu implements Iterator
+class Klear_Model_HeaderMenu implements \IteratorAggregate
 {
 
     protected $_siteConfig;
     protected $_menuConfig;
     protected $_sections = array();
-    protected $_position = 0;
+
+    public function getIterator()
+    {
+        return new \ArrayIterator($this->_sections);
+    }
 
     public function setName($name)
     {
@@ -21,37 +25,6 @@ class Klear_Model_HeaderMenu implements Iterator
     public function setDescription($description)
     {
         $this->_description = $description;
-    }
-
-    public function __construct()
-    {
-        $this->_position = 0;
-    }
-
-    public function rewind()
-    {
-        $this->_position = 0;
-    }
-
-    public function current()
-    {
-        return $this->_sections[$this->_position];
-    }
-
-    public function key()
-    {
-        return $this->_position;
-    }
-
-    public function next()
-    {
-        ++$this->_position;
-    }
-
-    public function valid()
-    {
-        return isset($this->_sections[$this->_position]);
-
     }
 
     public function setConfig(Zend_Config $config)
@@ -93,10 +66,6 @@ class Klear_Model_HeaderMenu implements Iterator
         ->setName('')
         ->setData(new Zend_Config(array('title'=>'')));
         $this->_sections[] = $section;
-
-
-
-
     }
 
     protected function _parseKlearMenuLink($configKey)
@@ -112,7 +81,6 @@ class Klear_Model_HeaderMenu implements Iterator
                 $sections[$section] = array();
             }
         }
-
 
         foreach ($this->_menuConfig as $name => $sectionData) {
             if (array_key_exists($name, $sections)) {
@@ -149,13 +117,7 @@ class Klear_Model_HeaderMenu implements Iterator
                 ->setData($sectionData);
 
             $this->_sections[] = $section;
-
         }
-
         $this->_config = null;
     }
-
-
-
-
 }
