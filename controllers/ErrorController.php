@@ -5,7 +5,6 @@ class Klear_ErrorController extends Zend_Controller_Action
 
     public function init()
     {
-
         if ($this->_request->isXmlHttpRequest()) {
                 $this
                     ->_helper->ContextSwitch()
@@ -16,7 +15,6 @@ class Klear_ErrorController extends Zend_Controller_Action
         $this->_helper->ContextSwitch()
             ->addActionContext('list', 'json')
             ->initContext('json');
-
     }
 
     public function listAction()
@@ -35,14 +33,16 @@ class Klear_ErrorController extends Zend_Controller_Action
             )
         );
 
-        foreach ($config as $errorSection => $aErrors) {
-            if (!$aErrors) continue;
+        foreach ($config as $aErrors) {
+            if (!$aErrors) {
+                continue;
+            }
 
             $parsedErrors = new Klear_Model_KConfigParser;
             $parsedErrors->setConfig($aErrors);
 
-            foreach ($aErrors as $code => $msg) {
-                $data[$code] = $parsedErrors->getProperty($code);
+            foreach (array_keys($aErrors) as $errorKey) {
+                $data[$errorKey] = $parsedErrors->getProperty($errorKey);
             }
         }
 
@@ -89,13 +89,11 @@ class Klear_ErrorController extends Zend_Controller_Action
             }
 
             $this->view->code = $code;
-
         } else {
 
             $this->view->code  = $errors->exception->getCode();
         }
 
         $this->view->message = $errors->exception->getMessage();
-
     }
 }
