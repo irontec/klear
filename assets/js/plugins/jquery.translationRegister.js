@@ -1,4 +1,10 @@
-;(function($) {
+;(function reLoader() {
+	
+	if (typeof(jQuery) == 'undefined') {
+		setTimeout(reLoader,100);
+		return;
+	}
+	
 	$.extend({
 		translationRegister: function(_str, _namespace) {
 			$.klear.request(
@@ -15,4 +21,4 @@
 		}
 	});
 
-})(jQuery);
+})();

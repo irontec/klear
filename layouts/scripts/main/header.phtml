@@ -17,6 +17,13 @@
 	->setIndent(4);
 	echo "\n";
 
+	// Este base antes que el script!!!
+?>
+    <base href="<?php echo $this->serverUrl($this->baseUrl('klear')); ?>/" />
+    
+<?php
+	
+	
 	$this->headLink()
 			->appendStylesheet($this->baseUrl('/klear/css/base/reset.css'))
 			->appendStylesheet($this->baseUrl('/klear/css/base/layout.css'))
@@ -29,42 +36,27 @@
 	
 	echo $this->headLink();
 	echo "\n";
+	
 	$this->headScript()
-		->appendFile('//ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js')
-		->appendFile('//ajax.aspnetcdn.com/ajax/jquery.templates/beta1/jquery.tmpl.min.js')
-		->appendFile('//ajax.googleapis.com/ajax/libs/jqueryui/1.8.18/jquery-ui.min.js')
-		->appendFile($this->baseUrl('klear/js/plugins/jquery.cookie.js'))
-		->appendFile($this->baseUrl('klear/js/plugins/jquery.scrollabletab.js'))
-		->appendFile($this->baseUrl('klear/js/plugins/jquery.ui.tooltip.js'))
-		->appendFile($this->baseUrl('klear/js/plugins/jquery.ui.combobox.js'))
-		->appendFile($this->baseUrl('klear/js/scripts/spin.min.js'))
+		->appendFile($this->baseUrl('klear/js/plugins/yepnope.1.5.4-min.js'))
+		->appendFile($this->baseUrl('klear/js/loader.js'))
 		->setIndent(4);
 	
 	if ("development" === APPLICATION_ENV) {
 	    $this->headScript()
-	    ->appendFile($this->baseUrl('klear/js/plugins/jquery.translationRegister.js'))
-	    ->setIndent(4);
+	        ->appendFile($this->baseUrl('klear/js/plugins/jquery.translationRegister.js'))
+	        ->setIndent(4);
 	}
+	
+	echo $this->headScript();
+	
 	echo "\n";
-	echo $this->headScript()
-		->appendFile($this->baseUrl('klear/js/plugins/jquery.translate.js'))
-		->appendFile($this->baseUrl('klear/js/translation/jquery.klear.translation.js'))
-		->appendFile($this->baseUrl('default/js/translation/jquery.default.translation.js'))
-		->appendFile($this->baseUrl('klear/js/plugins/jquery.klear.request.js'))
-		->appendFile($this->baseUrl('klear/js/plugins/jquery.getStylesheet.js'))
-		->appendFile($this->baseUrl('klear/js/plugins/jquery.klear.module.js'))
-		->appendFile($this->baseUrl('klear/js/plugins/jquery.klear.module.dialog.js'))
-		->appendFile($this->baseUrl('klear/js/plugins/jquery.klear.errors.js'))
-		->appendFile($this->baseUrl('klear/js/navigation.js'))
-		->setIndent(4);
 
 
 ?>
 
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-
-	<base href="<?php echo $this->serverUrl($this->baseUrl('klear')); ?>/" />
 </head>
 <body rel='<?php echo $this->baseUrl('klear')?>'>
 <div id="wrapper">
