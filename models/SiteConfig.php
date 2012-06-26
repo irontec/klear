@@ -1,13 +1,11 @@
 <?php
 
-
 class Klear_Model_SiteConfig
 {
     protected $_year;
     protected $_name;
     protected $_lang;
     protected $_logo;
-
 
     // En caso de disponer de las dos variables en klear.yaml, custom tiene más peso
     protected $_jqueryUIPathTheme; // Nombre del tema de jQUeryUI epsecificado en klear/assets/css/jquery-ui-themes.yaml (google CDN)
@@ -44,7 +42,7 @@ class Klear_Model_SiteConfig
         }
 
         $this->_initActionHelpers($config);
-        
+
         $this->_initDynamicClass($config);
     }
 
@@ -126,18 +124,18 @@ class Klear_Model_SiteConfig
                 $this->_jqueryUICustomTheme = $config->jqueryUI->path;
 
             } else {
-                
+
                 if (isset($config->jqueryUI->theme)) {
 
                     $themeParser = new Klear_Model_JQueryUIThemeParser;
 
                     $themeParser->init();
-                    
+
                     // If configured, we can pass the parser, extra custom jQueryUI themes
                     if (isset($config->jqueryUI->extraThemeFile)) {
                         $themeParser->setLocalExtraConfigFile($config->jqueryUI->extraThemeFile);
                     }
-                        
+
                     $this->_jqueryUIPathTheme = $themeParser->getPathForTheme($config->jqueryUI->theme);
 
                 } else {
@@ -153,31 +151,31 @@ class Klear_Model_SiteConfig
         }
 
     }
-    
-    protected function _initDynamicClass(Zend_Config $config) {
-            
+
+    protected function _initDynamicClass(Zend_Config $config)
+    {
+
         if (!isset($config->dynamicConfigClass)) {
             return;
         }
         $dynamicClassName = $config->dynamicConfigClass;
-        
+
         $dynamic = new $dynamicClassName;
         if (!is_subclass_of($dynamic, 'Klear_Model_Settings_Dynamic_Abstract')) {
-            
+
             Throw new Exception('Dynamic class does not extend Klear_Model_Settings_Dynamic_Abstract');
         }
-        
+
         $dynamic->init($config);
-        
+
         $this->_name = $dynamic->processSiteName($this->_name);
         $this->_langs = $dynamic->processLangs($this->_langs);
         $this->_logo = $dynamic->processLogo($this->_logo);
         $this->_jqueryUIPathTheme = $dynamic->processjQueryUI($this->_jqueryUIPathTheme);
 
         $this->_authConfig = $dynamic->processAuthConfig($this->_authConfig);
-        
+
     }
-    
 
     public function getYear()
     {
@@ -207,8 +205,8 @@ class Klear_Model_SiteConfig
         return $this->_langs;
     }
 
-    public function getJQueryUItheme($baseUrl) {
-
+    public function getJQueryUItheme($baseUrl)
+    {
         if (!empty($this->_jqueryUICustomTheme)) {
             return $baseUrl . $this->_jqueryUICustomTheme;
         } else {
@@ -216,11 +214,13 @@ class Klear_Model_SiteConfig
         }
     }
 
-    public function getActionHelpers() {
+    public function getActionHelpers()
+    {
         return $this->_actionHelpers;
     }
 
-    public function getCssExtendedConfig() {
+    public function getCssExtendedConfig()
+    {
         return $this->_cssExtended;
     }
 
@@ -228,6 +228,4 @@ class Klear_Model_SiteConfig
     {
         return $this->_authConfig;
     }
-    
-    
 }

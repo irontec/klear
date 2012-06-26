@@ -10,14 +10,14 @@ class Klear_AssetsController extends Zend_Controller_Action
 
         $this->_applyStrongCache = ("production" === APPLICATION_ENV);
         $this->_applyStrongCache = true;
-        
+
         $this->_helper->layout->disableLayout();
         $this->_helper->getHelper('viewRenderer')->setNoRender();
 
         $this->_defaultHeaders = array(
-                'Pragma' => 'public',
-                'Cache-control' => 'maxage=' . 60*60*24*30, // ~1 Month
-                'Expires' => gmdate('D, d M Y H:i:s', (time() + 60*60*24*30)) . ' GMT'
+            'Pragma' => 'public',
+            'Cache-control' => 'maxage=' . 60*60*24*30, // ~1 Month
+            'Expires' => gmdate('D, d M Y H:i:s', (time() + 60*60*24*30)) . ' GMT'
         );
     }
 
@@ -53,10 +53,9 @@ class Klear_AssetsController extends Zend_Controller_Action
             } else {
 
                 $this->_compress(
-                        $file,
-                        $this->_getFileExtension($file)
+                    $file,
+                    $this->_getFileExtension($file)
                 );
-
             }
         }
     }
@@ -197,7 +196,6 @@ class Klear_AssetsController extends Zend_Controller_Action
 
     public function _compress($file, $type)
     {
-
         $response = $this->getResponse();
 
         $lastModifiedTime = filemtime($file);
@@ -211,15 +209,14 @@ class Klear_AssetsController extends Zend_Controller_Action
         $cache = $this->_getFileCache($file);
 
         $id = sha1($file);
-        
+
         $raw = $cache->load($id);
-        $headers = $cache->load("headers" . $id); 
-        
-        if ( (false === $raw) || (false === $headers) ) {
-            
-            
+        $headers = $cache->load("headers" . $id);
+
+        if ((false === $raw) || (false === $headers)) {
+
             $raw = $this->_getContents($file, $type);
-            
+
             switch(strtolower($type)) {
                 case "js":
                     $fileContentType = 'application/x-javascript';
@@ -232,58 +229,57 @@ class Klear_AssetsController extends Zend_Controller_Action
                     $fileContentType = 'text/html';
                     break;
             }
-        
+
             $headers = array();
             if ($this->_applyStrongCache) {
                 $headers['Last-Modified'] = gmdate('D, d M Y H:i:s', $lastModifiedTime) . ' GMT';
             }
             $headers['Content-type'] = $fileContentType;
             $headers['Content-length'] = mb_strlen($raw);
-            
+
             $cache->save($raw, $id);
             $cache->save($headers, 'headers' . $id);
         }
-        
+
         $this->_setHeaders($headers);
         echo $raw;
     }
 
     protected function _getFileCache($file)
     {
-
         $frontendOptions = array(
-                'lifetime' => null,
-                'debug_header' => false,
-                'automatic_serialization' => true,
-                'master_files' => array($file),
-                'memorize_headers' => array(
-                        'content-type',
-                        'content-length',
-                        'pragma',
-                        'cache-control',
-                        'last-modified'
-                ),
-                'default_options' => array(
-                        'cache_with_session_variables' => true,
-                        'cache_with_cookie_variables' => true,
-                        'cache_with_post_variables' => true,
-                        'cache_with_get_variables' => true,
-                        'make_id_with_session_variables' => false,
-                        'make_id_with_cookie_variables' => false,
-                        'make_id_with_post_variables' => false,
-                        'make_id_with_get_variables' => false
-                )
+            'lifetime' => null,
+            'debug_header' => false,
+            'automatic_serialization' => true,
+            'master_files' => array($file),
+            'memorize_headers' => array(
+                'content-type',
+                'content-length',
+                'pragma',
+                'cache-control',
+                'last-modified'
+            ),
+            'default_options' => array(
+                'cache_with_session_variables' => true,
+                'cache_with_cookie_variables' => true,
+                'cache_with_post_variables' => true,
+                'cache_with_get_variables' => true,
+                'make_id_with_session_variables' => false,
+                'make_id_with_cookie_variables' => false,
+                'make_id_with_post_variables' => false,
+                'make_id_with_get_variables' => false
+            )
         );
 
         $backendOptions = array(
-                'cache_dir' => APPLICATION_PATH . '/cache/'
+            'cache_dir' => APPLICATION_PATH . '/cache/'
         );
 
         $cache = Zend_Cache::factory(
-                'File',
-                'File',
-                $frontendOptions,
-                $backendOptions
+            'File',
+            'File',
+            $frontendOptions,
+            $backendOptions
         );
 
         return $cache;
@@ -330,9 +326,10 @@ class Klear_AssetsController extends Zend_Controller_Action
             $translateMethod = "translate";
             $value = $this->view->{$translateMethod}($literal);
             $value = str_replace(
-                    array('\\\'', '"'),
-                    array('\'', '\"'),
-                    $value);
+                array('\\\'', '"'),
+                array('\'', '\"'),
+                $value
+            );
             $aLines[] = '"'.$key.'" : "'.$value.'"';
         }
         echo "/*\n *\t[".$this->getRequest()->getParam('moduleName')."]\n *\tTranslation File\n */\n";
