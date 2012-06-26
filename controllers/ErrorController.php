@@ -41,9 +41,11 @@ class Klear_ErrorController extends Zend_Controller_Action
             $parsedErrors = new Klear_Model_KConfigParser;
             $parsedErrors->setConfig($aErrors);
 
-            foreach (array_keys($aErrors) as $errorKey) {
-                $data[$errorKey] = $parsedErrors->getProperty($errorKey);
+            
+            foreach ($aErrors as $code => $msg) {
+                $data[$code] = $parsedErrors->getProperty($code);
             }
+            
         }
 
         $jsonResponse = new Klear_Model_DispatchResponse();
