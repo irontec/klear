@@ -33,6 +33,8 @@ class Klear_ErrorController extends Zend_Controller_Action
             )
         );
 
+        $data = array();
+
         foreach ($config as $aErrors) {
             if (!$aErrors) {
                 continue;
@@ -41,11 +43,11 @@ class Klear_ErrorController extends Zend_Controller_Action
             $parsedErrors = new Klear_Model_KConfigParser;
             $parsedErrors->setConfig($aErrors);
 
-            
+
             foreach ($aErrors as $code => $msg) {
                 $data[$code] = $parsedErrors->getProperty($code);
             }
-            
+
         }
 
         $jsonResponse = new Klear_Model_DispatchResponse();
