@@ -47,16 +47,16 @@ class Klear_Plugin_Auth extends Zend_Controller_Plugin_Abstract
 
     protected function _initAuth(Zend_Controller_Request_Abstract $request)
     {
-        
+
         $siteConfig = $this->_bootstrap->getOption('siteConfig');
-        
+
         if (is_null($siteConfig)) {
 
             return true;
         }
-        
+
         $authConfig = $siteConfig->getAuthConfig();
-     
+
         if ( (false === $authConfig)   ||
             (!$authConfig->exists("adapter") )
             ) {
@@ -89,8 +89,5 @@ class Klear_Plugin_Auth extends Zend_Controller_Plugin_Abstract
                 $request->setParam('loginError', $messages['message']);
             }
         }
-
     }
-
-
 }
