@@ -1,5 +1,5 @@
 <?php
-class Klear_Action_Helper_Logger extends Zend_Controller_Action_Helper_Abstract
+class Klear_Controller_Helper_Logger extends Zend_Controller_Action_Helper_Abstract
 {
     protected $_logger;
 

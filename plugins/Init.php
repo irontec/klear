@@ -108,11 +108,8 @@ class Klear_Plugin_Init extends Zend_Controller_Plugin_Abstract
             );
         }
         $log = Zend_Log::factory($params);
-
-        Zend_Controller_Action_HelperBroker::addPath(realpath(__DIR__ . '/../controllers/helpers/'), 'Klear_Action_Helper');
-        include_once(__DIR__ . '/../controllers/helpers/Logger.php');
         Zend_Controller_Action_HelperBroker::addHelper(
-             new Klear_Action_Helper_Logger($log)
+             new Klear_Controller_Helper_Logger($log)
         );
     }
 

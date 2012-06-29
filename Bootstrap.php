@@ -145,4 +145,18 @@ class Klear_Bootstrap extends Zend_Application_Module_Bootstrap
             )
         );
     }
+protected function _initAutoload()
+{
+    $autoloader = new Zend_Application_Module_Autoloader(array(
+        'namespace' => 'Klear',
+        'basePath'  => __DIR__,
+    ));
+    $autoloader->addResourceType('actionhelpers', 'controllers/helpers/', 'Controller_Helper');
+
+    Zend_Controller_Action_HelperBroker::addPath(
+        __DIR__ . '/controllers/helpers', 
+        'Klear_Controller_Helper_');
+
+    return $autoloader;
+}
 }
