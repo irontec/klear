@@ -107,9 +107,10 @@ class Klear_Plugin_Init extends Zend_Controller_Plugin_Abstract
                 )
             );
         }
+
         $log = Zend_Log::factory($params);
         Zend_Controller_Action_HelperBroker::addHelper(
-             new Klear_Controller_Helper_Logger($log)
+             new Klear_Controller_Helper_Log($log)
         );
     }
 
@@ -150,6 +151,7 @@ class Klear_Plugin_Init extends Zend_Controller_Plugin_Abstract
     {
         $actionHelpers = $this->_bootstrap->getOption('siteConfig')->getActionHelpers();
         if (sizeof($actionHelpers) > 0) {
+
             foreach ($actionHelpers as $actionHelper) {
 
                 Zend_Controller_Action_HelperBroker::addHelper(
