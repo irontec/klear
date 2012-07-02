@@ -110,7 +110,7 @@ class Klear_Plugin_Init extends Zend_Controller_Plugin_Abstract
 
         $log = Zend_Log::factory($params);
         Zend_Controller_Action_HelperBroker::addHelper(
-             new Klear_Controller_Helper_Log($log)
+            new Klear_Controller_Helper_Log($log)
         );
     }
 

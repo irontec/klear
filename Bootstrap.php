@@ -157,7 +157,8 @@ class Klear_Bootstrap extends Zend_Application_Module_Bootstrap
 
         Zend_Controller_Action_HelperBroker::addPath(
             __DIR__ . '/controllers/helpers',
-            'Klear_Controller_Helper_');
+            'Klear_Controller_Helper_'
+        );
 
         return $autoloader;
     }
