@@ -105,7 +105,11 @@ class Klear_MenuController extends Zend_Controller_Action
         );
 
         $data = array();
+        
+        $currentKlearLanguage = Zend_Registry::get('currentSystemLanguage');
+        $data['jqLocale'] = $currentKlearLanguage->getjQLocale();
 
+        
         $data['navMenus'] = $availableMenuSites;
 
         Zend_Json::$useBuiltinEncoderDecoder = true;

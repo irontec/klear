@@ -210,6 +210,10 @@
 			
 			var navMenus = response.data.navMenus;
 
+			if (response.data.jqLocale) {
+				$.datepicker.setDefaults($.datepicker.regional[response.data.jqLocale]);
+			}
+			
 			$sidebar.empty();
 			$sidebar.accordion("destroy");
 			$headerbar.empty();
@@ -621,6 +625,7 @@
 		 * Setting klear.baseurl value
 		 */
 		$.klear.baseurl = $.klear.baseurl || $("base").attr("href");
+		
 		$.klear.language = $('html').attr('lang');
 		
 		

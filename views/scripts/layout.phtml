@@ -1,0 +1,5 @@
+<?php 
+// Evitamos el acceso raw a /klearMatrix/ u al resto de módulos de klear - por ejemplo - 
+    
+header("Location: " . $this->baseUrl());
+exit();
