@@ -65,14 +65,15 @@ class Klear_Plugin_Translator extends Zend_Controller_Plugin_Abstract
 
         foreach ($this->_directories as $moduleDirectory) {
 
-            $tranlationPath = implode(DIRECTORY_SEPARATOR, array(
-                    $moduleDirectory,
-                    'languages',
-                    (string) $this->_locale,
-                    (string) $this->_locale . '.mo'
-            ));
+            $translationPath = array(
+                $moduleDirectory,
+                'languages',
+                (string) $this->_locale,
+                (string) $this->_locale . '.mo'
+            );
+            $translationPath = implode(DIRECTORY_SEPARATOR, $translationPath);
 
-            if (!file_exists($tranlationPath)) {
+            if (!file_exists($translationPath)) {
                 continue;
             }
 
@@ -81,7 +82,7 @@ class Klear_Plugin_Translator extends Zend_Controller_Plugin_Abstract
                 $this->_translate = new Zend_Translate(
                     array(
                         'adapter' => 'Zend_Translate_Adapter_Gettext',
-                        'content' => $tranlationPath,
+                        'content' => $translationPath,
                     )
                 );
 
@@ -89,7 +90,7 @@ class Klear_Plugin_Translator extends Zend_Controller_Plugin_Abstract
 
             } else {
 
-                $this->_translate->getAdapter()->addTranslation(array('content' => $tranlationPath));
+                $this->_translate->getAdapter()->addTranslation(array('content' => $translationPath));
             }
         }
     }

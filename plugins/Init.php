@@ -29,7 +29,6 @@ class Klear_Plugin_Init extends Zend_Controller_Plugin_Abstract
      */
     public function routeShutdown(Zend_Controller_Request_Abstract $request)
     {
-
         if (!preg_match("/^klear/", $request->getModuleName())) {
             return;
         }
@@ -65,20 +64,20 @@ class Klear_Plugin_Init extends Zend_Controller_Plugin_Abstract
          * Cargamos la configuración
         */
         $this->_config = new Zend_Config_Yaml(
-                $this->_getConfigPath(),
-                APPLICATION_ENV
+            $this->_getConfigPath(),
+            APPLICATION_ENV
         );
 
         $klearConfig = new Klear_Model_MainConfig();
         $klearConfig->setConfig($this->_config);
 
         $this->_bootstrap->setOptions(
-                array(
-                        "siteConfig" => $klearConfig->getSiteConfig(),
-                        "menu" => $klearConfig->getMenu(),
-                        "headerMenu" => $klearConfig->getHeaderMenu(),
-                        "footerMenu" => $klearConfig->getFooterMenu()
-                )
+            array(
+                "siteConfig" => $klearConfig->getSiteConfig(),
+                "menu" => $klearConfig->getMenu(),
+                "headerMenu" => $klearConfig->getHeaderMenu(),
+                "footerMenu" => $klearConfig->getFooterMenu()
+            )
         );
     }
 

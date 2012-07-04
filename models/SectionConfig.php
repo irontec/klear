@@ -22,7 +22,7 @@ class Klear_Model_SectionConfig
     public function isValid()
     {
         return
-            method_exists($this->_moduleConfigClass , 'setConfig');
+            method_exists($this->_moduleConfigClass, 'setConfig');
     }
 
     public function factoryModuleConfig()
