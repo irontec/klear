@@ -8,9 +8,12 @@ class Klear_Model_SiteConfig
     protected $_logo;
 
     // En caso de disponer de las dos variables en klear.yaml, custom tiene más peso
-    protected $_jqueryUIPathTheme; // Nombre del tema de jQUeryUI epsecificado en klear/assets/css/jquery-ui-themes.yaml (google CDN)
 
-    protected $_jqueryUICustomTheme; // Ruta de la aplicación (public), hacia el tema custom de jQuery UI
+    // Nombre del tema de jQUeryUI especificado en klear/assets/css/jquery-ui-themes.yaml (google CDN)
+    protected $_jqueryUIPathTheme;
+
+    // Ruta de la aplicación (public), hacia el tema custom de jQuery UI
+    protected $_jqueryUICustomTheme;
 
     protected $_cssExtended;
 
@@ -83,7 +86,8 @@ class Klear_Model_SiteConfig
                 && (array_key_exists($session->currentSystemLanguage, $this->_langs)) ) {
             $lang = $session->currentSystemLanguage;
         }
-        if (!$lang){
+
+        if (!$lang) {
             $lang = $config->lang;
         }
 
@@ -117,7 +121,6 @@ class Klear_Model_SiteConfig
 
     public function _initJQueryUITheme(Zend_Config $config)
     {
-
         if (isset($config->jqueryUI)) {
 
             if (isset($config->jqueryUI->path)) {
@@ -141,20 +144,15 @@ class Klear_Model_SiteConfig
                 } else {
 
                     Throw new Zend_Exception("No existe una configuración de estilos válida");
-
                 }
-
             }
-
         } else {
             Throw new Zend_Exception("No existe una configuración de estilos válida");
         }
-
     }
 
     protected function _initDynamicClass(Zend_Config $config)
     {
-
         if (!isset($config->dynamicConfigClass)) {
             return;
         }
@@ -174,7 +172,6 @@ class Klear_Model_SiteConfig
         $this->_jqueryUIPathTheme = $dynamic->processjQueryUI($this->_jqueryUIPathTheme);
 
         $this->_authConfig = $dynamic->processAuthConfig($this->_authConfig);
-
     }
 
     public function getYear()

@@ -8,9 +8,16 @@ class Klear_Model_Language
     protected $_language;
     protected $_locale;
 
-    protected $_jQLocales = array('af','ar','ar-DZ','az','bg','bs','ca','cs','cy-GB','da','de','el','en-AU','en-GB','en-NZ','eo','es','et','eu','fa','fi','fo','fr','fr-CH','ge','gl','he','hi','hr','hu','hy','id','is','it','ja','kk','km','ko','lb','lt','lv','mk','ml','ms','nl','nl-BE','no','pl','pt','pt-BR','rm','ro','ru','sk','sl','sq','sr','sr-SR','sv','ta','th','tj','tr','uk','vi','zh-CN','zh-HK','zh-TW');
-    
-    
+    protected $_jQLocales = array(
+        'af', 'ar', 'ar-DZ', 'az', 'bg', 'bs', 'ca', 'cs', 'cy-GB', 'da', 'de',
+        'el', 'en-AU', 'en-GB', 'en-NZ', 'eo', 'es', 'et', 'eu', 'fa', 'fi',
+        'fo', 'fr', 'fr-CH', 'ge', 'gl', 'he', 'hi', 'hr', 'hu', 'hy', 'id',
+        'is', 'it', 'ja', 'kk', 'km', 'ko', 'lb', 'lt', 'lv', 'mk', 'ml', 'ms',
+        'nl', 'nl-BE', 'no', 'pl', 'pt', 'pt-BR', 'rm', 'ro', 'ru', 'sk', 'sl',
+        'sq', 'sr', 'sr-SR', 'sv', 'ta', 'th', 'tj', 'tr', 'uk', 'vi', 'zh-CN',
+        'zh-HK', 'zh-TW'
+    );
+
     public function __toString()
     {
         return $this->_title;
@@ -77,28 +84,25 @@ class Klear_Model_Language
     {
         return $this->_locale;
     }
-    
+
     public function getjQLocale()
     {
         // You will never work, just in case...
         if (isset($this->_jQLocales[$this->_locale])) {
             return $this->_locale;
         }
-    
+
         $locale = str_replace("_", "-", $this->_locale);
-        
-        if (in_array($locale,$this->_jQLocales)) {
+
+        if (in_array($locale, $this->_jQLocales)) {
             return $locale;
         }
-    
-        list($locale,) = explode("-",$locale,2);
-        if (in_array($locale,$this->_jQLocales)) {
+
+        list($locale,) = explode("-", $locale, 2);
+        if (in_array($locale, $this->_jQLocales)) {
             return $locale;
         }
-    
+
         return false;
-    
     }
-
-
 }
