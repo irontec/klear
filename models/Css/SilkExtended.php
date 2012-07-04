@@ -68,7 +68,7 @@ class Klear_Model_Css_SilkExtended //TODO klear_Model_Css_Abstract
         $xWidth = $yHeight = (int)$this->_size * (int)$x;
 
         $base = new Imagick();
-        $base->newImage($xWidth, $yHeight , new ImagickPixel('transparent'));
+        $base->newImage($xWidth, $yHeight, new ImagickPixel('transparent'));
         $base->setImageFormat('png32');
 
         $cssBuffer = "";
@@ -82,7 +82,7 @@ class Klear_Model_Css_SilkExtended //TODO klear_Model_Css_Abstract
                 }
                 $im = new Imagick($file);
 
-                $base->setImageColorspace($im->getImageColorspace() );
+                $base->setImageColorspace($im->getImageColorspace());
                 $base->compositeImage($im, $im->getImageCompose(), $xPos+1, $yPos+1);
 
                 $im->clear();
