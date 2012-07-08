@@ -1,0 +1,14 @@
+java -jar closure-compiler.jar --third_party \
+--js ../js/plugins/jquery.cookie.js \
+--js ../js/plugins/jquery.getStylesheet.js \
+--js ../js/plugins/jquery.klear.errors.js \
+--js ../js/plugins/jquery.klear.module.dialog.js \
+--js ../js/plugins/jquery.klear.module.js \
+--js ../js/plugins/jquery.klear.request.js \
+--js ../js/plugins/jquery.scrollabletab.js \
+--js ../js/plugins/jquery.translate.js \
+--js ../js/plugins/jquery.translationRegister.js \
+--js ../js/plugins/jquery.ui.combobox.js \
+--js ../js/plugins/jquery.ui.tooltip.js \
+--js ../js/scripts/spin.min.js \
+--js_output_file ../js/klear.compiled.js

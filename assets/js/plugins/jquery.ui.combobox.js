@@ -10,23 +10,20 @@
 					wrapper = this.wrapper = $( "<span>" )
 						.addClass( "ui-combobox" )
 						.insertAfter( select );
-				
-				var width = 100;
-				
 				(function lazyWidthCalculator() {
-					this.counter = this.counter+1 || 1;
-					if ( (self.element.width() == 0) && (counter < 5) ) {
+					if ( self.element && self.element.width() == 0 ) {
 						setTimeout(lazyWidthCalculator,1000);
 						return;
-					} else {
-						if (self.element.width() > 0) {
-							width = self.element.width();
-						}
 					}
-					wrapper.css('width',width + 'px');
+					wrapper.css('width',(self.element.outerWidth() + 25) + 'px');
 				})();
 				
-
+				wrapper.on('mouseenter',function() {
+					$("a",$(this)).css("opacity",1);
+				}).on('mouseleave',function() {
+					$("a",$(this)).css("opacity",0.5);
+				});
+				
 				input = $( "<input>" )
 					.appendTo( wrapper )
 					.val( value )
@@ -85,7 +82,7 @@
 				setTimeout(function() {
 					// Todo a su debido tiempo ;)
 					input.removeClass( "ui-corner-all" ); 
-				},300);
+				},500);
 					
 
 				input.data( "autocomplete" )._renderItem = function( ul, item ) {
@@ -105,7 +102,10 @@
 						},
 						text: false
 					})
-					.css('width', '25px')
+					.css({
+						'width': '25px',
+						'opacity': '0.5'
+					})
 					.removeClass( "ui-corner-all" )
 					.addClass( "ui-corner-right ui-combobox-toggle" )
 					.click(function() {
