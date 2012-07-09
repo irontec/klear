@@ -6,7 +6,8 @@ class Klear_Model_SiteConfig
     protected $_name;
     protected $_lang;
     protected $_logo;
-
+    protected $_timezone;
+    
     // En caso de disponer de las dos variables en klear.yaml, custom tiene más peso
 
     // Nombre del tema de jQUeryUI especificado en klear/assets/css/jquery-ui-themes.yaml (google CDN)
@@ -17,6 +18,8 @@ class Klear_Model_SiteConfig
 
     protected $_cssExtended;
 
+    
+    
     protected $_actionHelpers = array();
 
     protected $_langs = array();
@@ -39,6 +42,8 @@ class Klear_Model_SiteConfig
 
         $this->_initKlearLanguage($config);
 
+        $this->_initTimezone($config);
+        
         if (isset($config->auth)) {
             $this->_authConfig = new Klear_Model_KConfigParser();
             $this->_authConfig->setConfig($config->auth);
@@ -111,6 +116,18 @@ class Klear_Model_SiteConfig
         }
     }
 
+    
+    public function _initTimezone(Zend_Config $config)
+    {
+        if ($config->timezone) {
+            $this->_timezone = $config->timezone;
+            date_default_timezone_set($this->_timezone);
+        } else {
+            Throw new Exception("Timezone not specified in klear.yaml.");
+        }
+    }
+    
+    
 
     public function _initActionHelpers(Zend_Config $config)
     {
@@ -169,6 +186,7 @@ class Klear_Model_SiteConfig
         $this->_name = $dynamic->processSiteName($this->_name);
         $this->_langs = $dynamic->processLangs($this->_langs);
         $this->_logo = $dynamic->processLogo($this->_logo);
+        $this->_timezone = $dynamic->processTimezone($this->_timezone);
         $this->_jqueryUIPathTheme = $dynamic->processjQueryUI($this->_jqueryUIPathTheme);
 
         $this->_authConfig = $dynamic->processAuthConfig($this->_authConfig);

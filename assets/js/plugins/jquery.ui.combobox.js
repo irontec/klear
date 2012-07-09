@@ -103,16 +103,30 @@
 					})
 					.removeClass( "ui-corner-all" )
 					.addClass( "ui-corner-right ui-combobox-toggle" )
-					.click(function() {
+					.on('mouseup',function(e) {
+						console.log("in!");
+						$(input).val($.translate("loading",['klear']));
+						$(this).trigger("fire");
+						e.preventDefault();
+						e.stopPropagation();
+					})
+					.on('click',function(e) {
+						e.preventDefault();
+						e.stopPropagation();
+					})
+					.on('fire',function() {
+						console.log("fiure");
+						$(input).val('');
 						// close if already visible
 						if ( input.autocomplete( "widget" ).is( ":visible" ) ) {
 							input.autocomplete( "close" );
 							return;
 						}
-
+						
 						// work around a bug (likely same cause as #5265)
 						$( this ).trigger("focusout");
 
+						
 						// pass empty string as value to search for, displaying all results
 						input.autocomplete( "search", "" );
 						input.focus();

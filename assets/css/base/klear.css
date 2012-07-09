@@ -373,6 +373,9 @@ PANEL
 	padding: 0.3em;
 }
 
+.ui-datepicker {
+	box-shadow:#999 0px 10px 10px 10px;
+	}
 
 ul.ui-autocomplete {
 	box-shadow:#999 0px 10px 10px 10px;
