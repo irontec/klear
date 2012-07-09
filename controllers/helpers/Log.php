@@ -21,7 +21,7 @@ class Klear_Controller_Helper_Log extends Zend_Controller_Action_Helper_Abstract
 
     public function log($message, $priority = Zend_Log::INFO, $extras = null)
     {
-        return $this->_logger->log($message, $priority, $extras = null);
+        return $this->_logger->log($message, $priority, $extras);
     }
 
     public function direct($message, $priority = Zend_Log::INFO, $extras = null)

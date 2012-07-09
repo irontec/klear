@@ -27,17 +27,25 @@ class Klear_LoginController extends Zend_Controller_Action
                         ->getOption('siteConfig');
 
         $authConfig = $siteConfig->getAuthConfig();
-
+        
         $data = array(
                     "title" => $authConfig->getProperty("title"),
                     "description" => $authConfig->getProperty("description")
                 );
 
         $extraInfoLoaderClass = $authConfig->getProperty('loader');
+        
+        $this->_helper->log('new KlearLogin');
+        
+        
         if ($extraInfoLoaderClass) {
+            $this->_helper->log('KlearLogin with extraInfoClass:' . $extraInfoLoaderClass);
             $extraInfo = new $extraInfoLoaderClass;
             $extraInfo->init();
             $data['extra'] = $extraInfo->getData();
+        } else {
+            $this->_helper->log('klearLogin with no extraInfoLoaderClass');
+            
         }
 
 

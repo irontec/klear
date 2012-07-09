@@ -99,5 +99,10 @@ class Klear_ErrorController extends Zend_Controller_Action
         }
 
         $this->view->message = $errors->exception->getMessage();
+        
+        $this->_helper->log('Exception captured ['.$this->view->code.']: ' .$this->view->message, Zend_Log::ERR);
+        
+        
     }
+    
 }
