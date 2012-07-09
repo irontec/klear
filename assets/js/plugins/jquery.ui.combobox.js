@@ -18,11 +18,6 @@
 					wrapper.css('width',(self.element.outerWidth() + 25) + 'px');
 				})();
 				
-				wrapper.on('mouseenter',function() {
-					$("a",$(this)).css("opacity",1);
-				}).on('mouseleave',function() {
-					$("a",$(this)).css("opacity",0.5);
-				});
 				
 				input = $( "<input>" )
 					.appendTo( wrapper )
@@ -104,7 +99,7 @@
 					})
 					.css({
 						'width': '25px',
-						'opacity': '0.5'
+						'opacity': '0.8'
 					})
 					.removeClass( "ui-corner-all" )
 					.addClass( "ui-corner-right ui-combobox-toggle" )
