@@ -378,6 +378,8 @@ ul.ui-autocomplete {
 	box-shadow:#999 0px 10px 10px 10px;
 	border-top-right-radius: 0;
 	border-top-left-radius: 0;
+	max-height:400px;
+	overflow: auto;
 }
 
 
