@@ -1,7 +1,7 @@
 (function( $ ) {
 		$.widget( "ui.combobox", {
 			_create: function() {
-				
+
 				var input,
 					self = this,
 					select = this.element.hide(),
@@ -17,8 +17,8 @@
 					}
 					wrapper.css('width',(self.element.outerWidth() + 25) + 'px');
 				})();
-				
-				
+
+
 				input = $( "<input>" )
 					.appendTo( wrapper )
 					.val( value )
@@ -49,7 +49,7 @@
 							self._trigger( "selected", event, {
 								item: ui.item.option
 							});
-							
+
 						},
 						change: function( event, ui ) {
 							if ( !ui.item ) {
@@ -61,7 +61,7 @@
 										return false;
 									}
 								});
-								
+
 								if ( !valid ) {
 									// remove invalid value, as it didn't match anything
 									$( this ).val( "" );
@@ -73,12 +73,12 @@
 						}
 					})
 					.addClass( "ui-widget ui-widget-content ui-corner-left" );
-				
+
 				setTimeout(function() {
 					// Todo a su debido tiempo ;)
-					input.removeClass( "ui-corner-all" ); 
+					input.removeClass( "ui-corner-all" );
 				},500);
-					
+
 
 				input.data( "autocomplete" )._renderItem = function( ul, item ) {
 					return $( "<li></li>" )
@@ -104,7 +104,7 @@
 					.removeClass( "ui-corner-all" )
 					.addClass( "ui-corner-right ui-combobox-toggle" )
 					.on('mouseup',function(e) {
-						console.log("in!");
+
 						$(input).val($.translate("loading",['klear']));
 						$(this).trigger("fire");
 						e.preventDefault();
@@ -115,18 +115,18 @@
 						e.stopPropagation();
 					})
 					.on('fire',function() {
-						console.log("fiure");
+
 						$(input).val('');
 						// close if already visible
 						if ( input.autocomplete( "widget" ).is( ":visible" ) ) {
 							input.autocomplete( "close" );
 							return;
 						}
-						
+
 						// work around a bug (likely same cause as #5265)
 						$( this ).trigger("focusout");
 
-						
+
 						// pass empty string as value to search for, displaying all results
 						input.autocomplete( "search", "" );
 						input.focus();
