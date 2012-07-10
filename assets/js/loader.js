@@ -1,5 +1,5 @@
 (function() {
-	
+
 	var _base = document.getElementsByTagName('base')[0].getAttribute('href');
 
 	var _baseScripts = ['base!js/plugins/jquery.cookie.js',
@@ -16,20 +16,20 @@
  	 'base!js/plugins/jquery.klear.module.dialog.js',
  	 'base!js/plugins/jquery.klear.errors.js',
  	 'base!js/navigation.js'];
-	
+
 	var _baseScripts = [
 	                    'base!js/klear.compiled.js',
 	                    'base!js/translation/jquery.klear.translation.js',
 	                    'base!../default/js/translation/jquery.default.translation.js',
-	                	'base!js/navigation.js'	                	 
+	                	'base!js/navigation.js'
 	                    ];
 	var _scripts = [];
-	
-	yepnope.addPrefix('local', function(resourceObj) {  
-	    resourceObj.url =  _base + resourceObj.url;  
-	    return resourceObj;  
-	});  
-	
+
+	yepnope.addPrefix('local', function(resourceObj) {
+	    resourceObj.url =  _base + resourceObj.url;
+	    return resourceObj;
+	});
+
 	yepnope([
 	  {
 		  load: {
@@ -42,11 +42,11 @@
 			  if (!window.jQuery) {
 				  _scripts.push('base!js/libs/jquery.min.js');
 			  }
-			  
+
 			  if (!window.jQuery.template) {
 				  _scripts.push('base!js/libs/jquery.tmpl.min.js');
 			  }
-			  
+
 			  if (!window.jQuery.ui) {
 				  _scripts.push('base!js/libs/jquery-ui.min.js');
 				  _scripts.push('base!js/libs/jquery-ui-i18n.min.js');
