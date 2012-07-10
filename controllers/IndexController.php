@@ -110,13 +110,14 @@ class Klear_IndexController extends Zend_Controller_Action
         if ($namespace == 'null') {
             $namespace = 'default.default';
         }
-        list($module, $plugin) = explode(".", $namespace, 2);
+
+        $module = explode(".", $namespace, 2);
 
         $modules = Zend_Controller_Front::getInstance()->getControllerDirectory();
         $mods = array_keys($modules);
 
         foreach ($mods as $mod) {
-            if (strtolower($mod) == strtolower($module)) {
+            if (strtolower($mod) == strtolower($module[0])) {
                 return $mod;
             }
         }
