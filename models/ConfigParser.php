@@ -5,7 +5,7 @@
 * @author jabi
 *
 */
-class Klear_Model_KConfigParser
+class Klear_Model_ConfigParser
 {
     protected $_config;
 

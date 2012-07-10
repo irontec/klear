@@ -46,7 +46,7 @@ class Klear_Model_Section  implements \IteratorAggregate
     public function setData(Zend_Config $data)
     {
 
-        $config = new Klear_Model_KConfigParser();
+        $config = new Klear_Model_ConfigParser();
         $config->setConfig($data);
         $this->_name = $config->getRequiredProperty("title");
         $this->_description = $config->getProperty("description");

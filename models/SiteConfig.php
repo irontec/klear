@@ -45,7 +45,7 @@ class Klear_Model_SiteConfig
         $this->_initTimezone($config);
         
         if (isset($config->auth)) {
-            $this->_authConfig = new Klear_Model_KConfigParser();
+            $this->_authConfig = new Klear_Model_ConfigParser();
             $this->_authConfig->setConfig($config->auth);
         }
 
