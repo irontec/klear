@@ -35,6 +35,9 @@ class Klear_Model_MainConfig
 
     protected function _buildMenu(Zend_Config $config)
     {
+        if (!isset($config->menu) || !$config->menu instanceof Zend_Config) {
+            throw new \Zend_Exception('No menu configuration found in klear.yaml');
+        }
         $this->_menu = new Klear_Model_Menu;
         $this->_menu->setConfig($config->menu);
         $this->_menu->setSiteConfig($this->getSiteConfig());
@@ -100,6 +103,4 @@ class Klear_Model_MainConfig
     {
         return $this->_footerMenu;
     }
-    
-
 }

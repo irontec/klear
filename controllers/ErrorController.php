@@ -28,8 +28,7 @@ class Klear_ErrorController extends Zend_Controller_Action
             $filePath,
             APPLICATION_ENV,
             array(
-                "yamldecoder"=>"yaml_parse"
-
+                "yamldecoder" => "yaml_parse"
             )
         );
 

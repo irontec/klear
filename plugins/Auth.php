@@ -47,54 +47,44 @@ class Klear_Plugin_Auth extends Zend_Controller_Plugin_Abstract
 
     protected function _initAuth(Zend_Controller_Request_Abstract $request)
     {
-
         $siteConfig = $this->_bootstrap->getOption('siteConfig');
-
         if (is_null($siteConfig)) {
-
-            return true;
+            return;
         }
 
         $authConfig = $siteConfig->getAuthConfig();
 
-        if ( (false === $authConfig)   ||
-            (!$authConfig->exists("adapter") )
-            ) {
+        $logHelper = Zend_Controller_Action_HelperBroker::getStaticHelper('log');
+
+        if ((false === $authConfig) || !$authConfig->exists("adapter")) {
             // La instancia de klear no tiene autenticación
-            return true;
+            $logHelper->log('No auth adapter found.');
+            return;
         }
 
         $auth = Zend_Auth::getInstance();
 
-
         if ((bool)$request->getPost("klearLogin")) {
 
             $authAdapterName = $authConfig->getProperty("adapter");
-            
-            $logHelper = Zend_Controller_Action_HelperBroker::getStaticHelper ( 'log' );
-            
-            $logHelper->log('new auth adapter: ' . $authAdapterName);
-            
+            $logHelper->log('Auth adapter: ' . $authAdapterName);
+
             $authAdapter = new $authAdapterName($request);
-            $oResult = $auth->authenticate($authAdapter);
+            $authResult = $auth->authenticate($authAdapter);
 
-            if ($oResult->isValid()) {
+            if ($authResult->isValid()) {
 
-                
                 $authAdapter->saveStorage();
                 $session = new Zend_Session_Namespace('Zend_Auth');
-                $logHelper->log('User ' . $auth->getIdentity()->username .' ('.$auth->getIdentity()->class.') logged in');
+                $logHelper->log('User ' . $auth->getIdentity()->username .' (' . get_class($auth->getIdentity()) . ') logged in');
                 $session->setExpirationSeconds(86400);
                 if ($request->getParam('remember', '') == 'true') {
                     Zend_Session::rememberMe();
                 }
 
             } else {
-
-                $this->_username =
-                
                 $logHelper->log('invalid credentials for user ' . $request->getPost('username', ''));
-                $messages = $oResult->getMessages();
+                $messages = $authResult->getMessages();
                 $request->setParam('loginError', $messages['message']);
             }
         }

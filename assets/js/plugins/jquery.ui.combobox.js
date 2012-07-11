@@ -105,7 +105,7 @@
 					.addClass( "ui-corner-right ui-combobox-toggle" )
 					.on('mouseup',function(e) {
 
-						$(input).val($.translate("loading",['klear']));
+						$(input).val($.translate("Loading",['klear']));
 						$(this).trigger("fire");
 						e.preventDefault();
 						e.stopPropagation();

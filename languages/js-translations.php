@@ -7,4 +7,5 @@ return array (
   3 => 'Loading content',
   4 => 'Error downloading template [%s].',
   5 => 'Undefined Error',
+  6 => 'Loading',
 );
