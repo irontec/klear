@@ -96,17 +96,8 @@ class Klear_Auth_Adapter_Basic implements Zend_Auth_Adapter_Interface, \Klear_Au
 
     public function saveStorage()
     {
-        $oAuth = Zend_Auth::getInstance();
-        $storage = $oAuth->getStorage();
-        $identity = new \stdClass();
-        $identity->username = $this->_user->getLogin();
-        $identity->id = $this->_user->getId();
-        $vars = $this->_user->getSessionVars();
-        foreach ($vars as $key => $value) {
-            $identity->$key = $value;
-        }
-        $storage->write($identity);
+        $auth = Zend_Auth::getInstance();
+        $authStorage = $auth->getStorage();
+        $authStorage->write($this->_user);
     }
 }
-
-//EOF

@@ -21,8 +21,4 @@ interface Klear_Auth_Adapter_Interfaces_BasicUserModel
      */
     public function isActive();
 
-    /**
-     * @return array with vars that need to be stored in session
-     */
-    public function getSessionVars();
 }
