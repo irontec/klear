@@ -62,4 +62,11 @@ class Klear_Model_User implements Klear_Auth_Adapter_Interfaces_BasicUserModel
     {
         return $this->_email;
     }
+
+    public function __get($key)
+    {
+        if ($key === 'username') {
+            return $this->getLogin();
+        }
+    }
 }
