@@ -81,10 +81,7 @@
 			$el.data('noFocus', true);
 
 		}
-		
-		
 	};
-
 	
 	$.klear.klearDialog = function (msg, options) {
 		$.extend(options, {
@@ -100,7 +97,9 @@
                 $(this).remove();
             }
         };
+		
 		$.extend(dialogSettings, options);
+		
         var dialogTemplate = dialogSettings.template || 
         	'<div class="ui-widget"><div class="ui-state-${state} ui-corner-all inlineMessage"><p><span class="ui-icon ${icon} inlineMessage-icon"></span>{{html text}}</p></div></div>';
         var $parsedHtml = $.tmpl(dialogTemplate, dialogSettings);
@@ -148,16 +147,18 @@
 	 */
 	
 	$.klear.hello = function(option){
-		
 		var options = {
 				controller: 'index',
 				action: 'hello'
 		};
 		
 		switch(option) {
-			case 'setCallback':
+			case 'rememberCallback':
 				this.callback = arguments[1];
 				return;
+			break;
+			case 'setCallback':
+				this.callback = arguments[1];
 			break;
 			case 'options':
 				// completamos las opciones de klear.request con las enviadas como segundo parámetro
@@ -167,15 +168,13 @@
 		
 		var self = this;
 		$.klear._doHelloSuccess = function(response) {
-		
 			if (response.success && response.success === true) {
 				if (self.callback) {
 					self.callback();
 					self.callback = null;
 				} else {
-					$.klear.menu();
+		            $.klear.menu();
 				}
-
 			}
 		};
 		
@@ -248,6 +247,8 @@
 					console.error("errors.yaml not found!")
 				}
 			);
+
+			$.klear.keepAlive();
 
 			/*
 			 * JQ Decorartors 
@@ -430,6 +431,7 @@
 					this.$loginForm.fadeOut(function() {
 						$(this).dialog("destroy").remove();
 					});
+					
 				}
 				return;
 			break;
@@ -618,6 +620,7 @@
 		$.klear.requestSearchTranslations();
 		$.klear.menu(true, opts);
 		$.klear.requestReloadTranslations();
+
 	};
 	
 	$.klear.start = function() {
@@ -652,6 +655,16 @@
 		/*
 		 * Global Bindings 
 		 */
+		
+		$.klear.keepAlive = function() {
+			clearTimeout($.klear.keepAliveTimer);
+			$.klear.keepAliveTimer = setTimeout(function() {
+				$.klear.hello('setCallback',function() {
+					$.klear.keepAlive();
+				});
+			}, 300000);
+		};
+		
 	};
 
 	

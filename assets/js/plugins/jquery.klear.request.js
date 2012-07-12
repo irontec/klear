@@ -97,14 +97,14 @@
         	if (response == null) return;
             if ( (response.mustLogIn) && (params.controller != 'login') ) {
                 if (!params.isLogin) {
-                    $.klear.hello('setCallback', reCall);
+                    $.klear.hello('rememberCallback', reCall);
                 }
                 $.klear.login();
                 return;
             }
 
             $.klear.login('close');
-
+            
             switch(response.responseType) {
                 case 'dispatch':
                     return _parseDispatchResponse(response);
