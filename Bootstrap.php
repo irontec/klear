@@ -157,6 +157,7 @@ class Klear_Bootstrap extends Zend_Application_Module_Bootstrap
         );
 
         $autoloader->addResourceType('actionhelpers', 'controllers/helpers/', 'Controller_Helper');
+        $autoloader->addResourceType('adapters', 'adapters/auth/', 'Auth_Adapter');
 
         Zend_Controller_Action_HelperBroker::addPath(
             __DIR__ . '/controllers/helpers',
