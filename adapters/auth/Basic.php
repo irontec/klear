@@ -87,8 +87,9 @@ class Klear_Auth_Adapter_Basic implements \Klear_Auth_Adapter_KlearAuthInterface
                 $salt = '$5$' . $rounds . '$' . $salt . '$';
                 break;
 
-            case 'a2': //blowfish
+            case '2a': //blowfish
                 $salt = substr($hash, 0, 29);
+                var_dump($salt);exit();
                 break;
         }
 
