@@ -8,7 +8,8 @@ class Klear_Model_Mapper_Users implements Klear_Auth_Adapter_Interfaces_BasicUse
         $this->_dbTable = new Klear_Model_DbTable_Users();
     }
 
-    public function findByLogin($login) {
+    public function findByLogin($login) 
+    {
         $select = $this->_dbTable->select()->where('login = ?', $login);
         $row = $this->_dbTable->fetchRow($select);
         if ($row) {
