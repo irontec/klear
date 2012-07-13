@@ -76,7 +76,12 @@ class Klear_Plugin_Auth extends Zend_Controller_Plugin_Abstract
 
                 $authAdapter->saveStorage();
                 $session = new Zend_Session_Namespace('Zend_Auth');
-                $logHelper->log('User ' . $auth->getIdentity()->getLogin() .' (' . get_class($auth->getIdentity()) . ') logged in');
+
+                $logHelper->log(
+                    'User ' . $auth->getIdentity()->getLogin()
+                    .' (' . get_class($auth->getIdentity()) . ') logged in'
+                );
+
                 $session->setExpirationSeconds(86400);
                 if ($request->getParam('remember', '') == 'true') {
                     Zend_Session::rememberMe();
