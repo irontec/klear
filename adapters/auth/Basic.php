@@ -1,6 +1,6 @@
 <?php
 
-class Klear_Auth_Adapter_Basic implements Zend_Auth_Adapter_Interface, \Klear_Auth_Adapter_KlearAuthInterface
+class Klear_Auth_Adapter_Basic implements \Klear_Auth_Adapter_KlearAuthInterface
 {
     protected $_username;
     protected $_password;
@@ -21,13 +21,15 @@ class Klear_Auth_Adapter_Basic implements Zend_Auth_Adapter_Interface, \Klear_Au
         $this->_initUserMapper($authConfig);
     }
 
-    protected function _initUserMapper(Klear_Model_ConfigParser $authConfig)
+    protected function _initUserMapper(Klear_Model_ConfigParser $authConfig = null)
     {
-        if (!$authConfig->exists('userMapper')) {
-            throw new \Exception('Auth userMapper not provided');
+        if ($authConfig->exists('userMapper')) {
+            $userMapperName = $authConfig->getProperty('userMapper');
+        } else {
+            // TODO: Log auth fallback info message;
+            $userMapperName = '\Klear_Model_Mapper_Users';
         }
 
-        $userMapperName = $authConfig->getProperty('userMapper');
         $this->_userMapper = new $userMapperName;
 
         if (!$this->_userMapper instanceof Klear_Auth_Adapter_Interfaces_BasicUserMapper) {
