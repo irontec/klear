@@ -89,7 +89,6 @@ class Klear_Auth_Adapter_Basic implements \Klear_Auth_Adapter_KlearAuthInterface
 
             case '2a': //blowfish
                 $salt = substr($hash, 0, 29);
-                var_dump($salt);exit();
                 break;
         }
 
