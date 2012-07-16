@@ -63,11 +63,13 @@ class Klear_Auth_Adapter_Basic implements \Klear_Auth_Adapter_KlearAuthInterface
         }
     }
 
-    protected function _userHasValidCredentials(Klear_Auth_Adapter_Interfaces_BasicUserModel $user)
+    protected function _userHasValidCredentials(Klear_Auth_Adapter_Interfaces_BasicUserModel $user = null)
     {
-        $hash = $user->getPassword();
-        if ($user->isActive() && $this->_checkPassword($this->_password, $hash)) {
-            return true;
+        if (!is_null($user)) {
+            $hash = $user->getPassword();
+            if ($user->isActive() && $this->_checkPassword($this->_password, $hash)) {
+                return true;
+            }
         }
         return false;
     }
