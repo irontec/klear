@@ -1,20 +1,21 @@
 <?php
-
+/**
+ * TODO: Habría que definir X tipos de excepciones del propio Klear
+ *       que se capturasen en el ErrorController y enviasen al cliente
+ *       los codigos de error y mensajes necesarios.
+ *       example: throw new \KlearMatrix_Exception_MissingParameter('modelFile must be specified in ' . $this->_item->getType() . 'configuration', ###);
+ */
 class Klear_ErrorController extends Zend_Controller_Action
 {
 
     public function init()
     {
+        $contextSwitch = $this->_helper->ContextSwitch();
         if ($this->_request->isXmlHttpRequest()) {
-                $this
-                    ->_helper->ContextSwitch()
-                    ->addActionContext('error', 'json')
-                    ->initContext('json');
+            $contextSwitch->addActionContext('error', 'json');
         }
-
-        $this->_helper->ContextSwitch()
-            ->addActionContext('list', 'json')
-            ->initContext('json');
+        $contextSwitch->addActionContext('list', 'json');
+        $contextSwitch->initContext('json');
     }
 
     public function listAction()
@@ -59,9 +60,7 @@ class Klear_ErrorController extends Zend_Controller_Action
 
     public function errorAction()
     {
-
         $errors = $this->_getParam('error_handler');
-
         switch ($errors->type) {
             case Zend_Controller_Plugin_ErrorHandler::EXCEPTION_NO_ROUTE:
             case Zend_Controller_Plugin_ErrorHandler::EXCEPTION_NO_CONTROLLER:
@@ -80,28 +79,30 @@ class Klear_ErrorController extends Zend_Controller_Action
                 break;
         }
 
-        if (strtolower(get_class($errors->exception)) == "soapfault") {
+        $exceptionType = strtolower(get_class($errors->exception));
+        switch ($exceptionType)
+        {
+            case 'soapfault':
+                if (!$code = $errors->exception->faultcode) {
 
-            if (!$code = $errors->exception->faultcode) {
+                    $codeSpec = explode(":", $errors->exception->faultcode);
 
-                $codeSpec = explode(":", $errors->exception->faultcode);
-
-                if (sizeof($codeSpec) > 1) {
-                    $code = $codeSpec[1];
+                    if (sizeof($codeSpec) > 1) {
+                        $code = $codeSpec[1];
+                    }
                 }
-            }
-
-            $this->view->code = $code;
-        } else {
-
-            $this->view->code  = $errors->exception->getCode();
+                $this->view->code = $code;
+                $this->view->message = $errors->exception->getMessage();
+                break;
+            case 'klearmatrix_exception_file':
+                $this->view->error = true;
+                $this->view->error_number = $errors->exception->getCode();
+                $this->view->error_msg = $errors->exception->getMessage();
+                $this->view->message = $errors->exception->getMessage();
+                break;
         }
 
-        $this->view->message = $errors->exception->getMessage();
-
         $this->_helper->log('Exception captured ['.$this->view->code.']: ' .$this->view->message, Zend_Log::ERR);
-
-
     }
 
 }
