@@ -85,7 +85,7 @@ class Klear_Model_Language
         return $this->_locale;
     }
 
-    public function getjQLocale()
+    public function getJqLocale()
     {
         // You will never work, just in case...
         if (isset($this->_jQLocales[$this->_locale])) {
@@ -105,4 +105,16 @@ class Klear_Model_Language
 
         return false;
     }
+
+    public function toArray()
+    {
+        return array(
+            'iden' => $this->getIden(),
+            'language' => $this->getLanguage(),
+            'locale' => $this->getLocale(),
+            'title' => $this->getTitle(),
+            'jqLocale' => $this->getJqLocale()
+        );
+    }
+
 }
