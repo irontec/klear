@@ -36,6 +36,7 @@ class Klear_ErrorController extends Zend_Controller_Action
         $data = array();
 
         foreach ($config as $aErrors) {
+
             if (!$aErrors) {
                 continue;
             }
@@ -43,11 +44,9 @@ class Klear_ErrorController extends Zend_Controller_Action
             $parsedErrors = new Klear_Model_ConfigParser;
             $parsedErrors->setConfig($aErrors);
 
-
             foreach ($aErrors as $code => $msg) {
                 $data[$code] = $parsedErrors->getProperty($code);
             }
-
         }
 
         $jsonResponse = new Klear_Model_DispatchResponse();
@@ -61,6 +60,8 @@ class Klear_ErrorController extends Zend_Controller_Action
     public function errorAction()
     {
         $errors = $this->_getParam('error_handler');
+        $this->view->error = true;
+
         switch ($errors->type) {
             case Zend_Controller_Plugin_ErrorHandler::EXCEPTION_NO_ROUTE:
             case Zend_Controller_Plugin_ErrorHandler::EXCEPTION_NO_CONTROLLER:
@@ -74,7 +75,8 @@ class Klear_ErrorController extends Zend_Controller_Action
             default:
                 // application error
                 $this->getResponse()->setHttpResponseCode(500);
-                $this->view->message = $this->view->translate('Application error');
+//                 $this->view->message = $this->view->translate('Application error');
+                $this->view->message = $errors->exception->getMessage();
                 $this->view->code = 500;
                 break;
         }
@@ -92,12 +94,6 @@ class Klear_ErrorController extends Zend_Controller_Action
                     }
                 }
                 $this->view->code = $code;
-                $this->view->message = $errors->exception->getMessage();
-                break;
-            case 'klearmatrix_exception_file':
-                $this->view->error = true;
-                $this->view->error_number = $errors->exception->getCode();
-                $this->view->error_msg = $errors->exception->getMessage();
                 $this->view->message = $errors->exception->getMessage();
                 break;
         }
