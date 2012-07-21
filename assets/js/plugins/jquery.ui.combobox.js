@@ -18,7 +18,6 @@
 					wrapper.css('width',(self.element.outerWidth() + 25) + 'px');
 				})();
 
-
 				input = $( "<input>" )
 					.appendTo( wrapper )
 					.val( value )
@@ -70,6 +69,9 @@
 									return false;
 								}
 							}
+						},
+						close : function(event) {
+							
 						}
 					})
 					.addClass( "ui-widget ui-widget-content ui-corner-left" );
@@ -103,20 +105,15 @@
 					})
 					.removeClass( "ui-corner-all" )
 					.addClass( "ui-corner-right ui-combobox-toggle" )
-					.on('mouseup',function(e) {
-
-						$(input).val($.translate("Loading",['klear']));
-						$(this).trigger("fire");
-						e.preventDefault();
-						e.stopPropagation();
+					.on('mousedown',function(e) {
+						$(input).addClass("ui-state-disabled");
+					})
+					.on('mouseleave', function() {
+						$(input).removeClass("ui-state-disabled");
 					})
 					.on('click',function(e) {
-						e.preventDefault();
-						e.stopPropagation();
-					})
-					.on('fire',function() {
+						$(input).removeClass("ui-state-disabled");
 
-						$(input).val('');
 						// close if already visible
 						if ( input.autocomplete( "widget" ).is( ":visible" ) ) {
 							input.autocomplete( "close" );
@@ -132,7 +129,7 @@
 						input.focus();
 					});
 			},
-
+			
 			destroy: function() {
 				this.wrapper.remove();
 				this.element.show();

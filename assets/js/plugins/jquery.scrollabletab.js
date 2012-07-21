@@ -140,7 +140,9 @@
 						if($tabs.tabs('length')==1)
 						{
 							$tabs.find('li .ui-tabs-close').hide();
+							
 							$nav.removeClass('ui-tabs-closable')
+							$tabs.trigger('tabsselect');
 						}
 						
 						//If there are few tabs than no arrows need to be shown
