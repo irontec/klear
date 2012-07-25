@@ -41,6 +41,10 @@
  
 body {text-align: center;}
 
+body li {
+    text-align: left;
+}
+
 /* 
  * margin "auto" is to center this element (we set the width in a separate rule near the top of this styles sheet).
  * "text-align" is to reset the declaration from "body".
