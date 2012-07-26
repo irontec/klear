@@ -92,7 +92,9 @@ class Klear_Model_YamlStream
                 break;
 
             case ($data[1] == 'lang'):
-                    // TODO: pickup language
+                    if (Zend_Registry::isRegistered('currentSystemLanguage')) {
+                        return Zend_Registry::get('currentSystemLanguage')->getLanguage();
+                    }
                     return 'es';
                 break;
         }
