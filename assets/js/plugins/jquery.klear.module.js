@@ -259,15 +259,27 @@
             this.setAsloaded();
 
             var title = '<span class="ui-silk inline dialogTitle '+this._getTabIconClass()+' "></span>';
-
+            
+            var message;
+            if (arguments[0].message != undefined) {
+                message = arguments[0].message;
+            } else {
+                message = Array.prototype.join.call(message, '</em><br /><em>', [__namespace__]);
+            }
+            
+            var errorMessage = $.translate("Module registration error.", [__namespace__])
+                             + '<br /><br />' 
+                             + $.translate(
+                                 "Error: %s.", 
+                                 '<em>' + $message + '</em>'
+                             ); 
             this.showDialogError(
-                $.translate("Module registration error.", [__namespace__]) +
-                '<br /><br />' +
-                $.translate("Error: %s.", '<em>' + Array.prototype.join.call(arguments, '</em><br /><em>', [__namespace__])+ '</em>')
-            , {
-                title: $.translate("Klear Module Error", [__namespace__]) + ' - ' + title + '',
-                closeTab: this.options.tabIndex
-            });
+                errorMessage,
+                {
+                    title: $.translate("Klear Module Error", [__namespace__]) + ' - ' + title + '',
+                    closeTab: this.options.tabIndex
+                }
+            );
         },
 
         _parseDispatchResponse : function(response) {
