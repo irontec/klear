@@ -271,7 +271,7 @@
                              + '<br /><br />' 
                              + $.translate(
                                  "Error: %s.", 
-                                 '<em>' + $message + '</em>'
+                                 '<em>' + message + '</em>'
                              ); 
             this.showDialogError(
                 errorMessage,
