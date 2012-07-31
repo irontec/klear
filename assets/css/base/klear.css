@@ -2,6 +2,31 @@ body {
     font-family: Lucida Grande,Lucida Sans,Arial,sans-serif;
 }
 
+.initialLoader {
+	position:absolute;
+	margin:-12px 0 0 -125px;
+	width:250px;
+	height:24px;
+	left: 50%;
+	top:50%;
+	border:5px solid #ccc;
+	padding:5px;
+	
+}
+
+.initialLoader div {
+	position:relative;
+	width:0%;
+	height:100%;
+	line-height: 23px;
+	margin:0;
+	background:#666;
+	text-align:right;
+	color:#fff;
+	
+}
+
+
 .loginDialog .ui-dialog-titlebar-close {
     display:none;
 }

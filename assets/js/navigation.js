@@ -168,6 +168,7 @@
 		
 		var self = this;
 		$.klear._doHelloSuccess = function(response) {
+			
 			if (response.success && response.success === true) {
 				if (self.callback) {
 					self.callback();
@@ -181,6 +182,7 @@
 		$.klear._doHelloError = function(response) {
 			console.log(response);
 		};
+		
 		
 		$.klear.request(options,
 						$.klear._doHelloSuccess,
@@ -202,8 +204,6 @@
 		var $footerbar = $('#footerbar');
 		
 		var self = this;
-		
-		
 		
 		$.klear._doMenuSuccess = function(response) {
 			
@@ -441,7 +441,7 @@
 		var self = this;
 		
 		$.klear._doLoginSuccess = function(response) {
-				
+			
 			self.$loginForm = $.tmpl('klearForm', response.data);
 			
 			self.$loginForm.appendTo("#canvas").dialog({
@@ -487,6 +487,7 @@
 		$.klear._doLoginError = function(response) {
 			console.log(response);
 		};
+		
 		
 		$.klear.request(
 			{
