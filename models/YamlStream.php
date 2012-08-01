@@ -2,6 +2,7 @@
 
 /**
 * Class to be registered as a stream Wrapper for parsing yaml files
+* http://www.php.net/manual/en/class.streamwrapper.php
 * @author jabi
 *
 */
@@ -9,6 +10,10 @@ class Klear_Model_YamlStream
 {
     protected $_protocol = 'klear.yaml://';
 
+    /*
+     * _openedPath, se usa para guardar la ruta relativa al fichero que se está parseando,
+    * a partir de la cual, se cargan los incluidos (L.50)
+    */
     protected $_openedPath;
     protected $_file;
     protected $_position = 0;
@@ -17,10 +22,9 @@ class Klear_Model_YamlStream
     protected $_extraFiles = array();
 
     /*
-     * FIXME: Valor por defecto en atributo que está en la mitad
-     * FIXME: $options y $opened_path no se usan para nada
+     * http://www.php.net/manual/en/class.streamwrapper.php
      */
-    function stream_open($path, $mode = 'r', $options, &$opened_path)
+    function stream_open($path, $mode, $options, &$opened_path)
     {
         $baseFile = str_replace($this->_protocol, '', $path);
 
@@ -36,6 +40,7 @@ class Klear_Model_YamlStream
         }
 
         $this->_openedPath = dirname($file);
+        $opened_path = $this->_openedPath;
         $this->_file = $file;
 
         $fp = fopen($this->_file, 'r');

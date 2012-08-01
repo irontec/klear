@@ -11,7 +11,11 @@ class Klear_TemplateController extends Zend_Controller_Action
 
     public function menuAction()
     {
-        if ($type = $this->getRequest()->getParam("type")) {
+        $validMenus = array('footerbar','headerbar','info','sidebar');
+
+        if ( ($type = $this->getRequest()->getParam("type")) &&
+               (in_array($type, $validMenus)) ) {
+
             $this->_helper->viewRenderer('menu/' . $type);
         }
     }

@@ -105,11 +105,11 @@ class Klear_MenuController extends Zend_Controller_Action
         );
 
         $data = array();
-        
+
         $currentKlearLanguage = Zend_Registry::get('currentSystemLanguage');
         $data['jqLocale'] = $currentKlearLanguage->getjQLocale();
 
-        
+
         $data['navMenus'] = $availableMenuSites;
 
         Zend_Json::$useBuiltinEncoderDecoder = true;
@@ -120,6 +120,7 @@ class Klear_MenuController extends Zend_Controller_Action
         $jsonResponse->addTemplate("/template/menu/type/sidebar", "klearSidebarMenu");
         $jsonResponse->addTemplate("/template/menu/type/headerbar", "klearHeaderbarMenu");
         $jsonResponse->addTemplate("/template/menu/type/footerbar", "klearFooterbarMenu");
+        $jsonResponse->addTemplate("/template/menu/type/info", "klearInfoBar");
         $jsonResponse->setData($data);
         $jsonResponse->attachView($this->view);
     }

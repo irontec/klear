@@ -4,6 +4,7 @@ class Klear_Model_SiteConfig
 {
     protected $_year;
     protected $_sitename;
+    protected $_sitesubname;
     protected $_timezone;
 
     protected $_logo;
@@ -32,7 +33,7 @@ class Klear_Model_SiteConfig
         'disableMinifier',
         'disableAssetsCache',
         'cssExtended',
-        'actionHelpers'
+        'actionHelpers',
     );
 
     protected $_requiredParams = array(
@@ -49,12 +50,25 @@ class Klear_Model_SiteConfig
         $this->_initKlearLanguage($config);
         $this->_initTimezone($config);
 
+        $this->_initSiteSubName($config);
+
         if (isset($config->auth)) {
             $this->_authConfig = new Klear_Model_ConfigParser();
             $this->_authConfig->setConfig($config->auth);
         }
 
         $this->_initDynamicClass($config);
+    }
+
+    protected function _initSiteSubName(Zend_Config $config) {
+
+        if ($config->sitesubname) {
+            $subNameConfig = new Klear_Model_ConfigParser();
+            $subNameConfig->setConfig($config);
+            $this->_sitesubname = $subNameConfig->getProperty("sitesubname");
+        }
+
+
     }
 
     protected function _initRequiredParams(Zend_Config $config)
@@ -190,6 +204,7 @@ class Klear_Model_SiteConfig
         $dynamic->init($config);
 
         $this->_sitename = $dynamic->processSiteName($this->_sitename);
+        $this->_sitesubname = $dynamic->processSiteSubName($this->_sitesubname);
         $this->_langs = $dynamic->processLangs($this->_langs);
         $this->_logo = $dynamic->processLogo($this->_logo);
         $this->_timezone = $dynamic->processTimezone($this->_timezone);
@@ -206,6 +221,16 @@ class Klear_Model_SiteConfig
     public function getName()
     {
         return $this->_sitename;
+    }
+
+    public function getSiteName()
+    {
+        return $this->_sitename;
+    }
+
+    public function getSiteSubName()
+    {
+        return $this->_sitesubname;
     }
 
     public function getLang()

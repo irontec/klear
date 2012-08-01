@@ -202,6 +202,7 @@
 		var $sidebar = $('#sidebar');
 		var $headerbar = $('#headerbar');
 		var $footerbar = $('#footerbar');
+		var $infobar = $('#applicationInfo');
 		
 		var self = this;
 		
@@ -212,19 +213,24 @@
 			if (response.data.jqLocale) {
 				$.datepicker.setDefaults($.datepicker.regional[response.data.jqLocale]);
 			}
-			
+
 			$sidebar.empty();
 			$sidebar.accordion("destroy");
 			$headerbar.empty();
 			$footerbar.empty();
-
+			$infobar.empty();
 			
 			$.tmpl('klearSidebarMenu', navMenus.sidebar).appendTo($sidebar);
 			
 			$.tmpl('klearHeaderbarMenu', navMenus.headerbar).appendTo($headerbar);
 			
 			$.tmpl('klearFooterbarMenu', navMenus.footerbar).appendTo($footerbar);
-
+			
+			$.tmpl('klearInfoBar').appendTo($infobar);
+			
+			//Este template no lo queremos cacheado nunca
+			$.template['klearInfoBar'] = undefined;
+			
 			$sidebar.fadeIn();
 			
 			$headerbar.fadeIn();

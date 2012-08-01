@@ -6,7 +6,7 @@
 
 	$this->headTitle()->append("klear");
 	$this->headTitle()->append($this->SiteConfig()->getYear());
-	$this->headTitle()->prepend($this->SiteConfig()->getName());
+	$this->headTitle()->prepend($this->SiteConfig()->getSiteName());
 	$this->headTitle()->setSeparator(' :: ');
 
 	echo $this->headTitle();
@@ -20,10 +20,10 @@
 	// Este base antes que el script!!!
 ?>
     <base href="<?php echo $this->serverUrl($this->baseUrl('klear')); ?>/" />
-    
+
 <?php
-	
-	
+
+
 	$this->headLink()
 			->appendStylesheet($this->baseUrl('/klear/css/base/reset.css'))
 			->appendStylesheet($this->baseUrl('/klear/css/base/layout.css'))
@@ -33,23 +33,23 @@
 			->appendStylesheet($this->baseUrl('/klear/css/base/klear.css'))
 			->headLink(array('rel' => 'shortcut icon','href' => $this->baseUrl('/images/favicon.ico')))
 			->setIndent(4);
-	
+
 	echo $this->headLink();
 	echo "\n";
-	
+
 	$this->headScript()
 		->appendFile($this->baseUrl('klear/js/libs/yepnope.1.5.4-min.js'))
 		->appendFile($this->baseUrl('klear/js/loader.js'))
 		->setIndent(4);
-	
+
 	if ("development" === APPLICATION_ENV) {
 	    $this->headScript()
 	        ->appendFile($this->baseUrl('klear/js/plugins/jquery.translationRegister.js'))
 	        ->setIndent(4);
 	}
-	
+
 	echo $this->headScript();
-	
+
 	echo "\n";
 
 
@@ -64,41 +64,34 @@
         <div id="applicationLogo">
         <?php
         if ($this->SiteConfig()->getLogo()):
-            echo '<img src="'.$this->baseUrl($this->SiteConfig()->getLogo()).'" alt="'.$this->SiteConfig()->getName().'" />';
+            echo '<img src="'.$this->baseUrl($this->SiteConfig()->getLogo()).'" alt="'.$this->SiteConfig()->getSiteName().'" />';
         endif;
         ?>
         </div>
         <div id="applicationInfo">
-            <h1>
-                <?php echo $this->SiteConfig()->getName()?>
-            </h1>
-            <h2>
-            <?php 
-                echo $this->translate("Klear based site");
-            ?>
-            </h2>
+            <?php echo $this->Info()?>
         </div>
         <div id="applicationTools">
-          
+
             <div id="headerToolsbar">
-            	
+
             	<input type="checkbox" id="tabsPersist" />
-            	
+
             	<label for="tabsPersist" title="<?php echo $this->translate("Remember opened main tabs.")?>">
             	    <span class="ui-icon ui-icon-unlocked" ></span>
             	</label>
-            	
-            	
-            	<input type="checkbox" id="logout" 
+
+
+            	<input type="checkbox" id="logout"
             	    data-url="<?php echo $this->url(array('controller' => 'index', 'action' => 'bye')) ?>"
             	/>
             	<label for="logout" title="<?php echo $this->translate("logout")?>">
             	    <span class="ui-icon ui-icon-power" ></span>
             	</label>
-            	
+
             </div>
             <div id="headerLanguagebar">
-            <?php 
+            <?php
             if ($langs = $this->SiteConfig()->getLangs()):
                 if (sizeof($langs) > 1) {
                     echo '<span class="langSelector">';
@@ -110,10 +103,10 @@
             endif;
             ?>
             </div>
-        
 
-        
-        
+
+
+
         </div>
     </div>
 <div id="body">

@@ -14,6 +14,11 @@ abstract class Klear_Model_Settings_Dynamic_Abstract
         return $sitename;
     }
 
+    public function processSiteSubName($sitesubname)
+    {
+        return $sitesubname;
+    }
+
     public function processLogo($logo)
     {
         return $logo;
