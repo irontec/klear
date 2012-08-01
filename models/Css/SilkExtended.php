@@ -3,12 +3,6 @@ class Klear_Model_Css_SilkExtended //TODO klear_Model_Css_Abstract
 {
     /**
      *
-     * @var Klear_Model_SiteConfig
-     */
-    protected $_siteConfig;
-
-    /**
-     *
      * @var Zend_Config
      */
     protected $_config;
@@ -20,19 +14,18 @@ class Klear_Model_Css_SilkExtended //TODO klear_Model_Css_Abstract
     protected $_outputName = 'silk-extended-sprite';
     protected $_size = 18;
 
-    public function __construct()
+    public function __construct(Zend_Config $config)
     {
+        if (!$config) {
+            throw new Klear_Exception_MissingConfiguration('No extended css config found');
+        }
+
+        $this->_config = $config;
+
         $front = Zend_Controller_Front::getInstance();
-        $bootstrap = $front->getParam('bootstrap');
-        $klearBootstrap = $bootstrap->getResource('modules')->offsetGet('klear');
-        $this->_siteConfig = $klearBootstrap->getOption('siteConfig');
-        $this->_config = $this->_siteConfig->getCssExtendedConfig();
-
-        if (!$this->_config) exit;
-
         $this->_generate = $front->getRequest()->getParam('generate', false);
 
-        $this->_iconsPath = dirname(APPLICATION_PATH) . '/public' . $this->_config->get('silkExtendedIconPath');
+        $this->_iconsPath = dirname(APPLICATION_PATH) . '/public' . $config->silkExtendedIconPath;
         $this->_iconsCache = dirname($this->_iconsPath) . '/cache';
 
         $this->_getIcons();
@@ -88,9 +81,10 @@ class Klear_Model_Css_SilkExtended //TODO klear_Model_Css_Abstract
                 $im->clear();
                 $im->destroy();
 
-                $cssBuffer.="\n.ui-silk-". $data . "\n{\n";
-                $cssBuffer.="\tbackground-image: url(./".$this->_outputName.".png);background-position: -".$xPos."px -".$yPos."px;\n";
-                $cssBuffer.="}\n";
+                $cssBuffer .= "\n.ui-silk-". $data . "\n{\n";
+                $cssBuffer .= "\tbackground-image: url(./" . $this->_outputName . ".png);";
+                $cssBuffer .= "background-position: -".$xPos."px -".$yPos."px;\n";
+                $cssBuffer .= "}\n";
 
                 $xPos+=$this->_size;
                 $col++;
@@ -105,7 +99,6 @@ class Klear_Model_Css_SilkExtended //TODO klear_Model_Css_Abstract
 
         fwrite($cssFile, $cssBuffer);
         fclose($cssFile);
-
     }
 
     protected function _getIcons()
@@ -117,15 +110,13 @@ class Klear_Model_Css_SilkExtended //TODO klear_Model_Css_Abstract
         }
     }
 
-    public function getCssFile( $fileName )
+    public function getCssFile($fileName)
     {
         return $this->_iconsCache . "/" . $this->_outputName . ".css";
     }
 
-    public function getPngFile( $fileName )
+    public function getPngFile($fileName)
     {
         return $this->_iconsCache . "/" . $this->_outputName . ".png";
     }
-
-
 }

@@ -5,6 +5,9 @@ class Klear_AssetsController extends Zend_Controller_Action
     protected $_defaultHeaders;
     protected $_applyStrongCache;
 
+    /**
+     * @var Klear_Model_SiteConfig
+     */
     protected $_siteConfig;
 
     public function init()
@@ -80,14 +83,14 @@ class Klear_AssetsController extends Zend_Controller_Action
         $pluginParts = explode('-', $pluginName);
 
         foreach ($pluginParts as $part) {
-            $pluginClass.= ucfirst($part);
+            $pluginClass .= ucfirst($part);
         }
 
         if (!class_exists($pluginClass)) {
-            exit;
+            throw new Klear_Exception_Default('No Css class found');
         }
 
-        $plg = new $pluginClass;
+        $plg = new $pluginClass($this->_siteConfig->getCssExtendedConfig());
 
         $fileParam = $this->getRequest()->getParam('file');
         switch ($this->_getFileExtension($fileParam)) {
