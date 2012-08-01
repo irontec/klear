@@ -3,10 +3,16 @@
 class Klear_Model_SiteConfig
 {
     protected $_year;
-    protected $_name;
-    protected $_lang;
-    protected $_logo;
+    protected $_sitename;
     protected $_timezone;
+
+    protected $_logo;
+
+    protected $_disableMinifiers = false;
+    protected $_disableAssetsCache = false;
+
+    protected $_cssExtended;
+    protected $_actionHelpers = array();
 
     // En caso de disponer de las dos variables en klear.yaml, custom tiene más peso
 
@@ -16,32 +22,31 @@ class Klear_Model_SiteConfig
     // Ruta de la aplicación (public), hacia el tema custom de jQuery UI
     protected $_jqueryUICustomTheme;
 
-    protected $_cssExtended;
-
-
-
-    protected $_actionHelpers = array();
-
+    protected $_lang;
     protected $_langs = array();
 
     protected $_authConfig = false;
 
+    protected $_optionalParams = array(
+        'logo',
+        'disableMinifier',
+        'disableAssetsCache',
+        'cssExtended',
+        'actionHelpers'
+    );
+
+    protected $_requiredParams = array(
+        'year',
+        'sitename'
+    );
+
     public function setConfig(Zend_Config $config)
     {
-        // TODO: Control de errores, configuración mal seteada
-        $this->_year = $config->year;
-        $this->_name = $config->sitename;
-
-        if (isset($config->logo)) {
-            $this->_logo = $config->logo;
-        }
+        $this->_initRequiredParams($config);
+        $this->_initOptionalParams($config);
 
         $this->_initJQueryUITheme($config);
-
-        $this->_initCssExtended($config);
-
         $this->_initKlearLanguage($config);
-
         $this->_initTimezone($config);
 
         if (isset($config->auth)) {
@@ -49,11 +54,29 @@ class Klear_Model_SiteConfig
             $this->_authConfig->setConfig($config->auth);
         }
 
-        $this->_initActionHelpers($config);
-
         $this->_initDynamicClass($config);
     }
 
+    protected function _initRequiredParams(Zend_Config $config)
+    {
+        foreach ($this->_requiredParams as $param) {
+            if (!isset($config->$param)) {
+                throw new Klear_Exception_MissingConfiguration($param .  ' config is required');
+            }
+            $this->{'_' . $param} = $config->$param;
+        }
+        return $this;
+    }
+
+    protected function _initOptionalParams(Zend_Config $config)
+    {
+        foreach ($this->_optionalParams as $param) {
+            if (isset($config->$param) && $config->$param !== '') {
+                $this->{'_' . $param} = $config->$param;
+            }
+        }
+        return $this;
+    }
 
     protected function _initKlearLanguage(Zend_Config $config)
     {
@@ -109,30 +132,13 @@ class Klear_Model_SiteConfig
 
     }
 
-    public function _initCssExtended(Zend_Config $config)
-    {
-        if ($config->cssExtended) {
-            $this->_cssExtended = $config->cssExtended;
-        }
-    }
-
-
     public function _initTimezone(Zend_Config $config)
     {
         if ($config->timezone) {
             $this->_timezone = $config->timezone;
             date_default_timezone_set($this->_timezone);
         } else {
-            Throw new Exception("Timezone not specified in klear.yaml.");
-        }
-    }
-
-
-
-    public function _initActionHelpers(Zend_Config $config)
-    {
-        if ($config->actionHelpers) {
-            $this->_actionHelpers = $config->actionHelpers;
+            throw new Exception("Timezone not specified in klear.yaml.");
         }
     }
 
@@ -183,7 +189,7 @@ class Klear_Model_SiteConfig
 
         $dynamic->init($config);
 
-        $this->_name = $dynamic->processSiteName($this->_name);
+        $this->_sitename = $dynamic->processSiteName($this->_sitename);
         $this->_langs = $dynamic->processLangs($this->_langs);
         $this->_logo = $dynamic->processLogo($this->_logo);
         $this->_timezone = $dynamic->processTimezone($this->_timezone);
@@ -199,7 +205,7 @@ class Klear_Model_SiteConfig
 
     public function getName()
     {
-        return $this->_name;
+        return $this->_sitename;
     }
 
     public function getLang()
@@ -243,4 +249,16 @@ class Klear_Model_SiteConfig
     {
         return $this->_authConfig;
     }
+
+    public function assetsCacheDisabled()
+    {
+        return $this->_disableAssetsCache;
+    }
+
+    public function minifiersDisabled()
+    {
+        return $this->_disableMinifier;
+    }
+
+
 }

@@ -5,6 +5,8 @@ class Klear_AssetsController extends Zend_Controller_Action
     protected $_defaultHeaders;
     protected $_applyStrongCache;
 
+    protected $_siteConfig;
+
     public function init()
     {
 
@@ -19,6 +21,11 @@ class Klear_AssetsController extends Zend_Controller_Action
             'Cache-control' => 'maxage=' . 60*60*24*30, // ~1 Month
             'Expires' => gmdate('D, d M Y H:i:s', (time() + 60*60*24*30)) . ' GMT'
         );
+
+        $this->_siteConfig = $this->getInvokeArg('bootstrap')
+                                  ->getResource('modules')
+                                  ->offsetGet('klear')
+                                  ->getOption('siteConfig');
     }
 
     protected function _buildPath($base)
@@ -209,7 +216,6 @@ class Klear_AssetsController extends Zend_Controller_Action
         $cache = $this->_getFileCache($file);
 
         $id = sha1($file);
-
         $raw = $cache->load($id);
         $headers = $cache->load("headers" . $id);
 
@@ -247,6 +253,11 @@ class Klear_AssetsController extends Zend_Controller_Action
 
     protected function _getFileCache($file)
     {
+        $cacheBackend = 'File';
+        if ($this->_siteConfig->assetsCacheDisabled()) {
+            $cacheBackend = 'Black-Hole';
+        }
+
         $frontendOptions = array(
             'lifetime' => null,
             'debug_header' => false,
@@ -277,7 +288,7 @@ class Klear_AssetsController extends Zend_Controller_Action
 
         $cache = Zend_Cache::factory(
             'File',
-            'File',
+            $cacheBackend,
             $frontendOptions,
             $backendOptions
         );
@@ -288,6 +299,9 @@ class Klear_AssetsController extends Zend_Controller_Action
     protected function _getContents($file, $type)
     {
         $data = file_get_contents($file);
+        if ($this->_siteConfig->minifiersDisabled()) {
+            return $data;
+        }
 
         if ($this->_applyStrongCache) {
             switch(strtolower($type)) {
@@ -297,6 +311,9 @@ class Klear_AssetsController extends Zend_Controller_Action
                 case "css":
                     $minifier = new Iron_Minify_CssCompressor($data);
                     break;
+                case 'html':
+                case 'htm':
+                    return $data;
                 default:
                     throw new Zend_Exception("Minifier not properly called");
             }
