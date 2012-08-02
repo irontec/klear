@@ -282,7 +282,7 @@ class Klear_Model_SiteConfig
 
     public function minifiersDisabled()
     {
-        return $this->_disableMinifier;
+        return $this->_disableMinifiers;
     }
 
 
