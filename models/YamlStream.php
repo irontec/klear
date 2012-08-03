@@ -36,7 +36,7 @@ class Klear_Model_YamlStream
         }
 
         if ((!file_exists($file)) || (!is_readable($file))) {
-            throw new Zend_Exception('File not readable');
+            throw new Zend_Exception('File not readable: ' . $baseFile);
         }
 
         $this->_openedPath = dirname($file);
