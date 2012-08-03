@@ -71,6 +71,11 @@ class Klear_ErrorController extends Zend_Controller_Action
                 $this->getResponse()->setHttpResponseCode(404);
                 $this->view->message = $this->view->translate('Page not found');
                 $this->view->code = 404;
+
+                if (APPLICATION_ENV == 'development') {
+                    $this->view->file = $errors->exception->file;
+                    $this->view->line = $errors->exception->line;
+                }
                 break;
             default:
                 // application error
@@ -78,6 +83,11 @@ class Klear_ErrorController extends Zend_Controller_Action
 //                 $this->view->message = $this->view->translate('Application error');
                 $this->view->message = $errors->exception->getMessage();
                 $this->view->code = 500;
+
+                if (APPLICATION_ENV == 'development') {
+                    $this->view->file = $errors->exception->getFile();
+                    $this->view->line = $errors->exception->getLine();
+                }
                 break;
         }
 
