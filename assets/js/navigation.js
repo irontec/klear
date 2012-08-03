@@ -12,7 +12,7 @@
 	
 	var __namespace__ = 'klear.navigation';
 	
-	$.klear.checkDeps = function(dependencies,callback) {
+	$.klear.checkDeps = function(dependencies, callback) {
 		
 		if (typeof callback._numberOfTries == 'undefined') {
 			callback._numberOfTries = 0;
@@ -21,20 +21,21 @@
 		}
 		
 		if (!dependencies.length) {
-			throw "Dependecies parameter type.";
+			throw "Wrong dependencies parameter type.";
 		}
 		
-		if (callback._numberOfTries > 50) {
-			throw "JS Dependecy Timeout.";
+		if (callback._numberOfTries > 10) {
+			throw "JS Dependecy Timeout for: " + dependencies.join(', ');
 		}
+		
 		var depLength = dependencies.length;
-		for(var i=0;i<depLength;i++) {
+		for(var i=0; i < depLength; i++) {
 			
 			var segments = dependencies[i].split('.');
 			var prev = window;
-			for(var j=0; j<segments.length;j++) {
+			for(var j=0; j < segments.length; j++) {
 				if (typeof prev[segments[j]] == 'undefined') {
-					setTimeout(function() {callback($);},100);
+					setTimeout(function() {callback($);}, 100 * (callback._numberOfTries + 1));
 					return false;
 				} else {
 					prev = prev[segments[j]];
