@@ -125,3 +125,14 @@ body li {
  */
 
 * html #sidebar {margin-right: -4px;}
+
+/*
+PRESENTACION
+*/
+
+#contenedorInterno{
+	position: absolute;
+	bottom: 20px;
+	right: 20px;
+	opacity: 0.3;
+}
