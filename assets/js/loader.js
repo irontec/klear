@@ -27,7 +27,6 @@
 			}
 			
 			var _percentTarget = parseInt((100*_loader.target)/_loader.total);
-			
 			_loader.firstChild.innerHTML = _loader.curPercent + '%';
 			
 			if (_percentTarget >= _loader.curPercent) {

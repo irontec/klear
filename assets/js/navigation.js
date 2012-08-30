@@ -80,8 +80,8 @@
 				$_link.attr("href",prevHref);
 			},100);
 			$el.data('noFocus', true);
-
 		}
+
 	};
 	
 	$.klear.klearDialog = function (msg, options) {
@@ -422,7 +422,7 @@
 			$.klear.tabPersist.add(idContent);
 			
 			
-		}).on("click",function(e) {
+		}).on("click","a.subsection",function(e) {
 			e.preventDefault();
 			e.stopPropagation();
 		});
@@ -612,7 +612,6 @@
 			}
 		});
 		
-		
 	};
 	
 	$.klear.restart = function(opts, removetabs) {
@@ -686,6 +685,12 @@
 ;(function($) {
 	
 	$(document).ready(function() {
+		
+		$(document).on('contextmenu', 'a', function (e) {
+			e.preventDefault();
+			e.stopPropagation();
+			return false;
+		});
 		
 		$.klear.start();
 
