@@ -53,4 +53,15 @@ abstract class Klear_Model_Settings_Dynamic_Abstract
     {
         return $auth;
     }
+
+    public function processRawCss($rawCss)
+    {
+        return $rawCss;
+    }
+
+    public function processRawJavascripts($rawJavascripts)
+    {
+        return $rawJavascripts;
+    }
+
 }

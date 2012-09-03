@@ -235,7 +235,8 @@ class Klear_Model_SiteConfig
         $this->_logo = $dynamic->processLogo($this->_logo);
         $this->_timezone = $dynamic->processTimezone($this->_timezone);
         $this->_jqueryUIPathTheme = $dynamic->processjQueryUI($this->_jqueryUIPathTheme);
-
+        $this->_rawCss = $dynamic->processRawCss($this->_rawCss);
+        $this->_rawJavascripts = $dynamic->processRawJavascripts($this->_rawJavascripts);
         $this->_authConfig = $dynamic->processAuthConfig($this->_authConfig);
     }
 
