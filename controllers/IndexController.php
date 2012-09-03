@@ -50,6 +50,7 @@ class Klear_IndexController extends Zend_Controller_Action
          * para que lo recoja loginController al re-servir el formulario
          */
         if ($this->getRequest()->getParam("loginError")) {
+
             $this->_helper->getHelper('FlashMessenger')->addMessage($this->getRequest()->getParam("loginError"));
         }
 

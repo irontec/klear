@@ -50,6 +50,11 @@ body {
     margin-right:.2em;
 }
 
+.loginDialog div span.loader {
+    float: none;
+    margin-left:.2em;
+}
+
 .loginDialog .description {
     width:60%;
     padding:.7em;

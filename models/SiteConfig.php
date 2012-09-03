@@ -12,6 +12,9 @@ class Klear_Model_SiteConfig
     protected $_disableMinifiers = false;
     protected $_disableAssetsCache = false;
 
+    protected $_rawJavascripts = array();
+    protected $_rawCss = array();
+
     protected $_cssExtended;
     protected $_actionHelpers = array();
 
@@ -29,16 +32,16 @@ class Klear_Model_SiteConfig
     protected $_authConfig = false;
 
     protected $_optionalParams = array(
-        'logo',
-        'disableMinifier',
-        'disableAssetsCache',
-        'cssExtended',
-        'actionHelpers',
+            'logo',
+            'disableMinifier',
+            'disableAssetsCache',
+            'cssExtended',
+            'actionHelpers'
     );
 
     protected $_requiredParams = array(
-        'year',
-        'sitename'
+            'year',
+            'sitename'
     );
 
     public function setConfig(Zend_Config $config)
@@ -57,7 +60,11 @@ class Klear_Model_SiteConfig
             $this->_authConfig->setConfig($config->auth);
         }
 
+        $this->_initRawIncludes($config);
+
         $this->_initDynamicClass($config);
+
+
     }
 
     protected function _initSiteSubName(Zend_Config $config) {
@@ -96,7 +103,7 @@ class Klear_Model_SiteConfig
     {
         /*
          * Loading System Languages
-         */
+        */
         if (isset($config->langs)) {
             foreach ($config->langs as $_langIden => $lang) {
                 $language = new Klear_Model_Language();
@@ -110,7 +117,7 @@ class Klear_Model_SiteConfig
 
         /*
          * Resquested Language // SESSION Language
-         */
+        */
 
         $session = new Zend_Session_Namespace('UserSettings');
 
@@ -137,7 +144,7 @@ class Klear_Model_SiteConfig
 
         /*
          * Setting language Object
-         */
+        */
         $this->_lang = $this->_langs[$session->currentSystemLanguage];
 
         Zend_Registry::set('currentSystemLanguage', $this->_lang);
@@ -153,6 +160,25 @@ class Klear_Model_SiteConfig
             date_default_timezone_set($this->_timezone);
         } else {
             throw new Exception("Timezone not specified in klear.yaml.");
+        }
+    }
+
+    public function _initRawIncludes(Zend_Config $config)
+    {
+        if (!isset($config->raw)) {
+            return;
+        }
+
+        if (isset($config->raw->javascript)) {
+            foreach($config->raw->javascript as $script) {
+                $this->_rawJavascripts[] = $script;
+            }
+        }
+
+        if (isset($config->raw->css)) {
+            foreach($config->raw->css as $css) {
+                $this->_rawCss[] = $css;
+            }
         }
     }
 
@@ -285,5 +311,12 @@ class Klear_Model_SiteConfig
         return $this->_disableMinifiers;
     }
 
+    public function getRawJavascripts() {
+        return $this->_rawJavascripts;
+    }
+
+    public function getRawCss() {
+        return $this->_rawCss;
+    }
 
 }

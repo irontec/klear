@@ -34,12 +34,17 @@ class Klear_LoginController extends Zend_Controller_Action
 
         $this->_helper->log('new KlearLogin');
 
+        if ($error = $this->_helper->getHelper('FlashMessenger')->getMessages()) {
+            $data['error'] = array_shift($error);
+        }
 
         if ($extraInfoLoaderClass) {
 
             $this->_helper->log('KlearLogin with extraInfoClass:' . $extraInfoLoaderClass);
             $extraInfo = new $extraInfoLoaderClass;
-            $extraInfo->init();
+
+            $extraInfo->init($data);
+
             $data['extra'] = $extraInfo->getData();
 
         } else {
@@ -47,9 +52,6 @@ class Klear_LoginController extends Zend_Controller_Action
             $this->_helper->log('klearLogin with no extraInfoLoaderClass');
         }
 
-        if ($error = $this->_helper->getHelper('FlashMessenger')->getMessages()) {
-            $data['error'] = $error;
-        }
 
         Zend_Json::$useBuiltinEncoderDecoder = true;
 

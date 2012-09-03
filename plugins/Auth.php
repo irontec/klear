@@ -88,9 +88,14 @@ class Klear_Plugin_Auth extends Zend_Controller_Plugin_Abstract
                 }
 
             } else {
-                $logHelper->log('invalid credentials for user ' . $request->getPost('username', ''));
+
                 $messages = $authResult->getMessages();
-                $request->setParam('loginError', $messages['message']);
+
+                $logHelper->log('Invalid credentials for user ' . $request->getPost('username', ''));
+                $logHelper->log('LoginError: ' . print_r($messages, true));
+
+                $request->setParam('loginError', $messages);
+
             }
         }
     }

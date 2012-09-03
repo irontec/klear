@@ -34,6 +34,10 @@
 			->headLink(array('rel' => 'shortcut icon','href' => $this->baseUrl('/images/favicon.ico')))
 			->setIndent(4);
 
+	foreach ($this->SiteConfig()->getRawCss() as $_rawCss) {
+        $this->headLink()->appendStylesheet($this->baseUrl($_rawCss));
+    }
+
 	echo $this->headLink();
 	echo "\n";
 
@@ -41,6 +45,10 @@
 		->appendFile($this->baseUrl('klear/js/libs/yepnope.1.5.4-min.js'))
 		->appendFile($this->baseUrl('klear/js/loader.js'))
 		->setIndent(4);
+
+	foreach ($this->SiteConfig()->getRawJavascripts() as $_rawJs) {
+	    $this->headScript()->appendFile($this->baseUrl($_rawJs));
+	}
 
 	if ("development" === APPLICATION_ENV) {
 	    $this->headScript()

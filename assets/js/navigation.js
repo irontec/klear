@@ -238,6 +238,8 @@
 			
 			$footerbar.fadeIn();
 			
+			$(document).trigger("kMenuLoaded");
+			
 			/*
 			 * Cargar 
 			 */
@@ -248,7 +250,8 @@
 					action:'list'
 				},
 				function(response) {
-					$.klear.addErrors(response.data);					
+					$.klear.addErrors(response.data);
+					$(document).trigger("kErrorsLoaded");
 				},
 				function() {
 					console.error("errors.yaml not found!")
@@ -302,6 +305,8 @@
 				var $self = $(this);
 				$.getJSON($self.data('url'),{json:true}, function(){
 					$sidebar.fadeOut();
+					//custom klear events
+					$(document).trigger("kLogout");
 					$.klear.restart({}, true);
 				});
 			});
@@ -344,6 +349,8 @@
 			controller: 'menu',
 			action: 'index'
 		},options);
+		
+		$(document).trigger("kMenuStartLoad");
 		
 		$.klear.request(
 			settings,
@@ -433,13 +440,16 @@
 
 		switch(option) {
 			case 'close':
-				if (this.$loginForm) {
 				
+				if (this.$loginForm) {
 					this.$loginForm.fadeOut(function() {
 						$(this).dialog("destroy").remove();
 					});
+					// klear custom events
+					$(document).trigger("kAuthSuccess");
 					
 				}
+				
 				return;
 			break;
 		}
@@ -462,7 +472,7 @@
 				closeOnEscape: false,
 				open : function(event, ui) {
 					$("p.submit input",self.$loginForm).button();
-					$("input:eq(0)",self.$loginForm).trigger("focusin").select();
+					$("input[text]:eq(0)",self.$loginForm).trigger("focusin").select();
 				}
 			});
 			
