@@ -95,8 +95,8 @@ class Klear_Model_DispatchResponse
 
     public function attachView(Zend_View $view)
     {
-        $view->baseurl = $view->baseUrl($this->_module);
-        $view->cleanBaseurl = $view->baseUrl();
+        $view->baseurl = $view->serverUrl($view->baseUrl($this->_module));
+        $view->cleanBaseurl = $view->serverUrl($view->baseUrl());
         $view->templates = $this->_templates;
         $view->mainTemplate = $this->_mainTemplate;
         $view->scripts = $this->_jsFiles;
