@@ -1,5 +1,9 @@
 (function( $ ) {
-		$.widget( "ui.combobox", {
+	
+    var __namespace__ = "klear";
+    
+    
+	$.widget( "ui.combobox", {
 			_create: function() {
 
 				var input,
@@ -91,7 +95,7 @@
 
 				$( "<a>" )
 					.attr( "tabIndex", -1 )
-					.attr( "title", "Show All Items" )
+					.attr( "title", $.translate("Show All Items", [__namespace__]))
 					.appendTo( wrapper )
 					.button({
 						icons: {

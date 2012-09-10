@@ -1,3 +1,5 @@
+var console = window.console || { log : function() {}};
+
 (function() {
 
 	var _base = document.getElementsByTagName('base')[0].getAttribute('href');
@@ -67,7 +69,7 @@
  	 'base!js/plugins/jquery.klear.errors.js',
  	 'base!js/navigation.js'];
 
-	var _baseScripts = [
+	var _baseScripts2 = [
 	                    'base!js/klear.compiled.js',
 	                    'base!js/translation/jquery.klear.translation.js',
 	                    'base!../default/js/translation/jquery.default.translation.js',
@@ -87,7 +89,7 @@
 	  {
 		  load: {
 			  'jquery.min.js': 'timeout=1000!//ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js',
-			  'jquery.tmpl.min.js': 'timeout=1000!//ajax.aspnetcdn.com/ajax/jquery.templates/beta1/jquery.tmpl.min.js',
+			  'jquery.tmpl.min.js': 'timeout=1000!//ajax.aspnetcdn.com/ajax/jquery.templates/beta1/jquery.tmpl.js',
 			  'jquery-ui.min.js': 'timeout=1000!//ajax.googleapis.com/ajax/libs/jqueryui/1.8.18/jquery-ui.min.js',
 			  'jquery-ui-i18n.min.js': 'timeout=1000!//ajax.googleapis.com/ajax/libs/jqueryui/1.8.18/i18n/jquery-ui-i18n.min.js'
 		  },
