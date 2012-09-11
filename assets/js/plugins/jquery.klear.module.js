@@ -292,7 +292,7 @@
 
                 response.data.mainTemplate = response.mainTemplate;
             }
-console.log(this.element, response.plugin);
+
             $(this.element)[response.plugin]({
                 data: response.data
             });
