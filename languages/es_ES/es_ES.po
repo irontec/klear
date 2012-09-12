@@ -2,9 +2,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Klear\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-05-03 18:01+0100\n"
-"PO-Revision-Date: 2012-05-07 10:54+0100\n"
-"Last-Translator: Lander Ontoria <lander@irontec.com>\n"
+"POT-Creation-Date: 2012-09-12 18:29+0100\n"
+"PO-Revision-Date: 2012-09-12 18:30+0100\n"
+"Last-Translator: Javier Infante <jabi@irontec.com>\n"
 "Language-Team: Irontec-Klear <lander+klear@irontec.com>\n"
 "Language: \n"
 "MIME-Version: 1.0\n"
@@ -18,26 +18,13 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
 "X-Poedit-SearchPath-0: .\n"
 
-#: controllers/IndexController.php:177
-msgid "Configuration error"
-msgstr "Error de configuración"
-
-#: controllers/ErrorController.php:44
+#: controllers/ErrorController.php:72
 msgid "Page not found"
 msgstr "Página no encontrada"
 
-#: controllers/ErrorController.php:50
-msgid "Application error"
-msgstr "Error en la aplicación"
-
-#: layouts/scripts/main/header.phtml:90
-msgid "Klear based site"
-msgstr "Sitio basado en Klear"
-
-#: layouts/scripts/main/header.phtml:94
-#: layouts/scripts/main/header.phtml:95
-msgid "logout"
-msgstr "Descontectarse"
+#: controllers/IndexController.php:172
+msgid "Configuration error"
+msgstr "Error de configuración"
 
 #: views/scripts/template/login/form.phtml:17
 msgid "User"
@@ -51,35 +38,56 @@ msgstr "Contraseña"
 msgid "Authenticate"
 msgstr "Autenticarse"
 
-#: assets/js/plugins/jquery.klear.request.js:123
-msgid "Unknown response format in Simple Response"
-msgstr "Formato desconocido de respuesta en Simple Response"
+#: layouts/scripts/main/header.phtml:88
+msgid "Remember opened main tabs."
+msgstr "Recordar las pestañas de menú abiertas"
 
-#: assets/js/plugins/jquery.klear.request.js:137
-#: assets/js/plugins/jquery.klear.request.js:173
-#: assets/js/plugins/jquery.klear.module.js:264
+#: layouts/scripts/main/header.phtml:96
+msgid "logout"
+msgstr "Descontectarse"
+
+#: assets/js/klear.compiled.js:13
+#: assets/js/klear.compiled.js:27
 msgid "Module registration error."
 msgstr "Error registrando el módulo."
 
-#: assets/js/plugins/jquery.klear.request.js:251
-#, python-format
-msgid "Error downloading template [%s]."
-msgstr "Error descargando el template [%s]."
-
-#: assets/js/plugins/jquery.klear.module.js:266
+#: assets/js/klear.compiled.js:14
 #, python-format
 msgid "Error: %s."
 msgstr "Error: %s."
 
-#: assets/js/plugins/jquery.klear.module.js:268
+#: assets/js/klear.compiled.js:14
 msgid "Klear Module Error"
 msgstr "Error de Klear Module"
 
-#: assets/js/plugins/jquery.klear.module.js:328
+#: assets/js/klear.compiled.js:15
 msgid "This tab is locked."
 msgstr "La pestaña está bloqueada."
 
-#: assets/js/plugins/jquery.klear.module.js:604
+#: assets/js/klear.compiled.js:23
 msgid "Loading content"
 msgstr "Cargando contenido"
 
+#: assets/js/klear.compiled.js:28
+#, python-format
+msgid "Error downloading template [%s]."
+msgstr "Error descargando el template [%s]."
+
+#: assets/js/klear.compiled.js:32
+msgid "Unknown response format in Simple Response"
+msgstr "Formato desconocido de respuesta en Simple Response"
+
+#: assets/js/klear.compiled.js:32
+msgid "Undefined Error"
+msgstr "Error Indefinido"
+
+#: assets/js/klear.compiled.js:41
+#: assets/js/plugins/jquery.ui.combobox.js:98
+msgid "Show All Items"
+msgstr "Mostrar todos los elementos"
+
+#~ msgid "Application error"
+#~ msgstr "Error en la aplicación"
+
+#~ msgid "Klear based site"
+#~ msgstr "Sitio basado en Klear"
