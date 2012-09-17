@@ -21,8 +21,8 @@ class Klear_AssetsController extends Zend_Controller_Action
 
         $this->_defaultHeaders = array(
             'Pragma' => 'public',
-            'Cache-control' => 'maxage=' . 60*60*24*30, // ~1 Month
-            'Expires' => gmdate('D, d M Y H:i:s', (time() + 60*60*24*30)) . ' GMT'
+            'Cache-control' => 'maxage=' . 10, // ~1 minute (e-tag + Last-Modified header are still working!
+            'Expires' => gmdate('D, d M Y H:i:s', (time() + 10)) . ' GMT'
         );
 
         $this->_siteConfig = $this->getInvokeArg('bootstrap')
@@ -143,6 +143,7 @@ class Klear_AssetsController extends Zend_Controller_Action
         $response = $this->getResponse();
 
         if ($this->_hashMatches($hash)) {
+            $this->_setHeaders();
             $response->setHttpResponseCode(304);
             return;
         }
@@ -206,10 +207,12 @@ class Klear_AssetsController extends Zend_Controller_Action
 
     public function _compress($file, $type)
     {
+
         $response = $this->getResponse();
 
         $lastModifiedTime = filemtime($file);
         if ($this->_isUnmodifiedFile($lastModifiedTime)) {
+            $this->_setHeaders();
             $response->setHttpResponseCode(304);
             return;
         }
@@ -243,15 +246,17 @@ class Klear_AssetsController extends Zend_Controller_Action
             if ($this->_applyStrongCache) {
                 $headers['Last-Modified'] = gmdate('D, d M Y H:i:s', $lastModifiedTime) . ' GMT';
             }
+
+
             $headers['Content-type'] = $fileContentType;
             $headers['Content-length'] = mb_strlen($raw);
 
             $cache->save($raw, $id);
             $cache->save($headers, 'headers' . $id);
         }
-
         $this->_setHeaders($headers);
         echo $raw;
+
     }
 
     protected function _getFileCache($file)
@@ -358,7 +363,7 @@ class Klear_AssetsController extends Zend_Controller_Action
         echo "\n});";
     }
 
-    protected function _setHeaders($headers)
+    protected function _setHeaders($headers = array())
     {
         $response = $this->getResponse();
 
