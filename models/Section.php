@@ -18,6 +18,9 @@ class Klear_Model_Section  implements \IteratorAggregate
 
     protected $_skip = array();
 
+
+    protected $_default = false;
+
     public function getIterator()
     {
         return new \ArrayIterator($this->_subsections);
@@ -52,6 +55,7 @@ class Klear_Model_Section  implements \IteratorAggregate
         $this->_description = $config->getProperty("description");
 
         $this->_class = $config->getProperty("class");
+        $this->_default = (bool)$config->getProperty("default");
 
         if (!isset($data->submenus)) return;
 

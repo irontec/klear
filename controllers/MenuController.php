@@ -12,10 +12,10 @@ class Klear_MenuController extends Zend_Controller_Action
                 ->initContext('json');
     }
 
-    protected function _getHeaderMenu()
+    protected function _getMenu($menuName)
     {
-        $klearHeaderMenu = array();
-        foreach ($this->_klearBootstrap->getOption('headerMenu') as $section) {
+        $menu = array();
+        foreach ($this->_klearBootstrap->getOption($menuName) as $section) {
             $tmpSection = array(
                     'sectionId' => $section->getName(),
                     'sectionClass' => $section->getName(),
@@ -28,66 +28,32 @@ class Klear_MenuController extends Zend_Controller_Action
                         'sectionId' => $subsection->getMainFile(),
                         'sectionClass' => $subsection->getClass(),
                         'sectionName' => $subsection->getName(),
+                        'default' =>  $subsection->isDefault(),
                         'sectionDescription' => $subsection->getDescription(),
                         'sectionOpts' => array()
                 );
                 $tmpSection['subsections'][] = $tmpSubSection;
             }
-            $klearHeaderMenu['sections'][] = $tmpSection;
+            $menu['sections'][] = $tmpSection;
         }
-        return $klearHeaderMenu;
+        return $menu;
+    }
+
+
+
+    protected function _getHeaderMenu()
+    {
+        return $this->_getMenu('headerMenu');
     }
 
     protected function _getSidebarMenu()
     {
-        $klearSidebarMenu = array();
-        foreach ($this->_klearBootstrap->getOption('menu') as $section) {
-            $tmpSection = array(
-                    'sectionId' => $section->getName(),
-                    'sectionClass' => $section->getName(),
-                    'sectionName' => $section->getName(),
-                    'sectionDescription' => $section->getDescription(),
-                    'sectionOpts' => array()
-            );
-            foreach ($section as $subsection) {
-                $tmpSubSection = array(
-                        'sectionId' => $subsection->getMainFile(),
-                        'sectionClass' => $subsection->getClass(),
-                        'sectionName' => $subsection->getName(),
-                        'sectionDescription' => $subsection->getDescription(),
-                        'sectionOpts' => array()
-                );
-                $tmpSection['subsections'][] = $tmpSubSection;
-            }
-            $klearSidebarMenu['sections'][] = $tmpSection;
-        }
-        return $klearSidebarMenu;
+        return $this->_getMenu('menu');
     }
 
     protected function _getFooterMenu()
     {
-        $klearFooterMenu = array();
-        foreach ($this->_klearBootstrap->getOption('footerMenu') as $section) {
-            $tmpSection = array(
-                    'sectionId' => $section->getName(),
-                    'sectionClass' => $section->getName(),
-                    'sectionName' => $section->getName(),
-                    'sectionDescription' => $section->getDescription(),
-                    'sectionOpts' => array()
-            );
-            foreach ($section as $subsection) {
-                $tmpSubSection = array(
-                        'sectionId' => $subsection->getMainFile(),
-                        'sectionClass' => $subsection->getClass(),
-                        'sectionName' => $subsection->getName(),
-                        'sectionDescription' => $subsection->getDescription(),
-                        'sectionOpts' => array()
-                );
-                $tmpSection['subsections'][] = $tmpSubSection;
-            }
-            $klearFooterMenu['sections'][] = $tmpSection;
-        }
-        return $klearFooterMenu;
+        return $this->_getMenu('footerMenu');
     }
 
     public function indexAction()

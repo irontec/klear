@@ -26,4 +26,9 @@ class Klear_Model_SubSection extends Klear_Model_Section
     {
         return $this->_class;
     }
+
+    public function isDefault()
+    {
+        return $this->_default;
+    }
 }

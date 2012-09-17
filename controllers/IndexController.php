@@ -151,23 +151,9 @@ class Klear_IndexController extends Zend_Controller_Action
 
         $file = $this->getRequest()->getParam("file");
 
-        $filePath = 'klear.yaml://' . $file;
-
-
-        /*
-         * Carga configuración de la sección cargada según la request.
-         */
-        $config = new Zend_Config_Yaml(
-            $filePath,
-            APPLICATION_ENV,
-            array(
-                "yamldecoder"=>"yaml_parse"
-            )
-        );
-
         // Cargamos el configurador de secciones por defecto
         $sectionConfig = new Klear_Model_SectionConfig;
-        $sectionConfig->setConfig($config);
+        $sectionConfig->setFile($file);
         if (!$sectionConfig->isValid()) {
             throw new Zend_Controller_Action_Exception($this->view->translate("Configuration error"));
             return;
@@ -180,8 +166,6 @@ class Klear_IndexController extends Zend_Controller_Action
 
         // Nos devuelve el configurador del módulo concreto instanciado.
         $moduleConfig = $sectionConfig->factoryModuleConfig();
-
-        $moduleConfig->setConfig($config);
 
         $moduleRouter = $moduleConfig->buildRouterConfig();
         $moduleRouter->setParams($this->getRequest()->getParams());

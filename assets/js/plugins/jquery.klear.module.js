@@ -196,7 +196,6 @@
                 .on('click',function() {
                     $(_mainEnl).trigger("click");
             });
-
             var self = this;
 
             $(this.options.ui.tab).on('mouseup',function(event) {
@@ -260,11 +259,13 @@
 
             var title = '<span class="ui-silk inline dialogTitle '+this._getTabIconClass()+' "></span>';
             
-            var message;
-            if (arguments[0].message != undefined) {
+            var message = [];
+            
+            if (arguments[0] && arguments[0].message != undefined) {
                 message = arguments[0].message;
             } else {
-                message = Array.prototype.join.call(message, '</em><br /><em>', [__namespace__]);
+            	
+                message = Array.prototype.join.call(arguments, '</em><br /><em>', [__namespace__]);
             }
             
             var errorMessage = $.translate("Module registration error.", [__namespace__])

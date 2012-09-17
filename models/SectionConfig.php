@@ -12,6 +12,26 @@ class Klear_Model_SectionConfig
     // Nombre de la clase de configuración del módulo
     protected $_moduleConfigClass;
 
+    public function setFile($file)
+    {
+
+        $filePath = 'klear.yaml://' . $file;
+
+
+        /*
+         * Carga configuración de la sección cargada según la request.
+        */
+        $this->_config = new Zend_Config_Yaml(
+                $filePath,
+                APPLICATION_ENV,
+                array(
+                        "yamldecoder"=>"yaml_parse"
+                )
+        );
+
+        $this->setConfig($this->_config);
+    }
+
     public function setConfig(Zend_Config $config)
     {
         // TODO: Control de errores, configuración mal seteada
@@ -29,6 +49,7 @@ class Klear_Model_SectionConfig
     {
 
         $moduleConfig = new $this->_moduleConfigClass;
+        $moduleConfig->setConfig($this->_config);
         return $moduleConfig;
     }
 }

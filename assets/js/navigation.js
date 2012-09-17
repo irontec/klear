@@ -334,6 +334,8 @@
 			$langBar.show();
 			$toolsBar.show();
 			
+			$('a.subsection.autoplay:eq(0)').trigger('mouseup');
+			
 			if ($.klear.tabPersist.enabled()) {
 				$.klear.tabPersist.launch();
 				$("#tabsPersist").trigger('update-icon');
@@ -409,7 +411,9 @@
 			}
 		};
 		
-		$sidebar.add($headerbar).add($footerbar).on("mouseup","a.subsection", function(e) {
+		$sidebar.add($headerbar).add($footerbar);
+		
+		$('body').on("mouseup","a.subsection", function(e) {
 			e.preventDefault();
 			e.stopPropagation();
 			
@@ -433,6 +437,7 @@
 			e.preventDefault();
 			e.stopPropagation();
 		});
+		
 	};
 	
 	

@@ -310,6 +310,7 @@ div.ui-tabs-panel {
     margin: 0.2em 0 0.8em;
     text-align: center;
     width: 100%;
+    font-size:0.9em;
 }
 #footerbar ul li{
     cursor: pointer;
@@ -319,7 +320,12 @@ div.ui-tabs-panel {
     padding: 4px 0;
     position: relative;
 }
-#footerbar ul li a{ text-decoration:none; }
+
+#footerbar ul li a, #footerbar ul li a:hover, #footerbar ul li a:visited, #footerbar ul li a:active {
+	color: #333;
+	text-decoration:none;
+
+}
 
 /*
 LOADING PANEL
