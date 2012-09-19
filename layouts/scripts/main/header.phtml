@@ -22,7 +22,7 @@
     <base href="<?php echo $this->serverUrl($this->baseUrl('klear')); ?>/" />
 
 <?php
-
+	
 
 	$this->headLink()
 			->appendStylesheet($this->baseUrl('/klear/css/base/reset.css'))
@@ -45,7 +45,7 @@
 		->appendFile($this->baseUrl('klear/js/libs/yepnope.1.5.4-min.js'))
 		->appendFile($this->baseUrl('klear/js/loader.js'))
 		->setIndent(4);
-
+	
 	foreach ($this->SiteConfig()->getRawJavascripts() as $_rawJs) {
 	    $this->headScript()->appendFile($this->baseUrl($_rawJs));
 	}
