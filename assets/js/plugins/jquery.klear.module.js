@@ -305,8 +305,7 @@
         },
 
         reDispatch : function() {
-            this.setAsloading();
-            
+        	this.setAsloading();
             this.dispatch();
         },
 

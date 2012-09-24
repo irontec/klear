@@ -177,7 +177,9 @@ ul#tabsList {
     display:inline;
 }
 
-#tabsList li .ui-icon-close { float: right; margin: 0.4em 0.2em 0 0; cursor: pointer; }
+#tabsList li .ui-icon-close { float: right; margin: 0em 0.2em 0 0; cursor: pointer; }
+#tabsList li .ui-icon-arrowrefresh-1-w { float: right; margin: 1em -1em 0 0; cursor: pointer; }
+
 
  #tabsList li.ui-state-default a {
 /*    text-indent: -99999px;

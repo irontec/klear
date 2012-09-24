@@ -531,7 +531,9 @@
 		 */
 		
 		var tabTemplate = "<li title='#{label}'><span class='ui-silk'></span>"+
-			"<span class='ui-icon ui-icon-close'></span><a href='#{href}'>#{label}</a></li>";
+			"<span class='ui-icon ui-icon-close'></span>" +
+			"<span class='ui-icon ui-icon-arrowrefresh-1-w'></span>" + 
+			"<a href='#{href}'>#{label}</a></li>";
 		
 		$.klear.canvas.tabs({
 			tabTemplate: tabTemplate,
@@ -596,7 +598,7 @@
 				
 				$.klear.canvas.tabs('select', $.klear.canvas.tabs('option', 'selected'));
 			}
-		});
+		}).find( ".ui-tabs-nav" ).sortable({ axis: "x" });
 		/*
 		 * CLOSE
 		 */
@@ -605,26 +607,65 @@
 			$tab.klearModule("close");
 		});
 		
+		$( "#tabsList").on("click","span.ui-icon-arrowrefresh-1-w", function() {
+			var $tab = $(this).parent("li");
+			$tab.klearModule("reDispatch");
+		});
+		
+		
 		$(document).on("keydown",function(e) {
-			if(e.shiftKey && e.ctrlKey && e.which==87) {
+			
+			var keyActions = {
+				87 : {
+					key : 'w',
+					action : function(selectedTab) {
+						$.klear.canvas.tabs('remove', selectedTab);
+					}
+				},
+				88 : {
+					key : 'x',
+					action : function(selectedTab) {
+						$.klear.canvas.tabs('remove', selectedTab);
+					}
+				},
+				82 : {
+					key : 'r',
+					action : function(selectedTab) {
+						$li = $("#tabsList li:eq("+selectedTab+")");
+						$li.klearModule('reDispatch');
+					}
+				},
+				34 : {
+					key : 'rePag',
+					action : function(selectedTab) {
+						selectedTab++;
+						if (selectedTab>=$("#tabsList li").length) {
+							selectedTab = 0;	
+						}
+						$.klear.canvas.tabs('select', selectedTab);
+					}
+				},
+				33 : {
+					key : 'AvPag',
+					action : function(selectedTab) {
+						selectedTab--;
+						selectedTab = selectedTab<0 ? $("#tabsList li").length-1 : selectedTab ;
+						$.klear.canvas.tabs('select', selectedTab);
+					}					
+				}
+					
+			};
+			
+			console.log(e.which);
+			if(e.shiftKey && e.ctrlKey && keyActions[e.which]) { //w
 				e.preventDefault();
+				e.stopPropagation();
+				
 				var selectedTab = parseInt($.klear.canvas.tabs('option', 'selected'));
-				$.klear.canvas.tabs('remove', selectedTab);
+				keyActions[e.which]['action'](selectedTab);
+				return;
 			}
-			if(e.shiftKey && e.ctrlKey && e.which==34) {
-				e.preventDefault();
-				var selectedTab = parseInt($.klear.canvas.tabs('option', 'selected'));
-				selectedTab++;
-				selectedTab = selectedTab<$("#tabsList li").length ? selectedTab : 0;
-				$.klear.canvas.tabs('select', selectedTab);
-			}
-			if(e.shiftKey && e.ctrlKey && e.which==33) {
-				e.preventDefault();
-				var selectedTab = parseInt($.klear.canvas.tabs('option', 'selected'));
-				selectedTab--;
-				selectedTab = selectedTab<0 ? $("#tabsList li").length-1 : selectedTab ;
-				$.klear.canvas.tabs('select', selectedTab);
-			}
+			
 		});
 		
 	};
