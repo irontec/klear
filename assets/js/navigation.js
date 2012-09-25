@@ -652,11 +652,20 @@
 						selectedTab = selectedTab<0 ? $("#tabsList li").length-1 : selectedTab ;
 						$.klear.canvas.tabs('select', selectedTab);
 					}					
+				},
+				90 : { // z
+					key: 'z',
+					action: function(selectedTab) {
+						
+						$.klear.cacheEnabled = !$.klear.cacheEnabled;
+						console.log($.klear.cacheEnabled? "Cache habilitada":"Cache Deshabilitada");
+						
+					}
+					
 				}
 					
 			};
-			
-			console.log(e.which);
+
 			if(e.shiftKey && e.ctrlKey && keyActions[e.which]) { //w
 				e.preventDefault();
 				e.stopPropagation();
