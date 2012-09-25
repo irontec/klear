@@ -334,11 +334,19 @@
 			$langBar.show();
 			$toolsBar.show();
 			
-			$('a.subsection.autoplay:eq(0)').trigger('mouseup');
 			
+			//TODO: refactorizar tabPersist para que tenga consistencia con autoplay
 			if ($.klear.tabPersist.enabled()) {
-				$.klear.tabPersist.launch();
+				$.klear.tabPersist
+							.loadAutoPlay()
+							.loadData()
+							.launch();
 				$("#tabsPersist").trigger('update-icon');
+			} else {
+				// Autoplay es una forma de tabPersist
+				$.klear.tabPersist
+							.loadAutoPlay()
+							.launch();
 			}
 			
 		};
@@ -389,9 +397,17 @@
 				for (var i in tabs ) {
 					this.tabs.push(tabs[i]);
 				}
+				return this;
+			},
+			loadAutoPlay: function() {
+				if ($('a.subsection.autoplay:eq(0)').length == 1) {
+					this.tabs.push('#' + $('a.subsection.autoplay:eq(0)').attr("id"));	
+				}
+				return this;
+				
 			},
 			launch : function() {
-				this.loadData();
+
 				for (var i in this.tabs ) {
 					var menuButton = this.tabs[i].replace(/#tabs-/, '#target-');
 					$(menuButton).trigger('mouseup');
@@ -408,7 +424,7 @@
 			},
 			enabled : function() {
 				return localStorage.getItem('tabPersistEnabled') == '1';
-			}
+			}			
 		};
 		
 		$sidebar.add($headerbar).add($footerbar);
@@ -653,8 +669,8 @@
 						$.klear.canvas.tabs('select', selectedTab);
 					}					
 				},
-				90 : { // z
-					key: 'z',
+				67 : { // c
+					key: 'c',
 					action: function(selectedTab) {
 						
 						$.klear.cacheEnabled = !$.klear.cacheEnabled;
@@ -666,7 +682,7 @@
 					
 			};
 
-			if(e.shiftKey && e.ctrlKey && keyActions[e.which]) { //w
+			if(e.altKey && e.ctrlKey && keyActions[e.which]) { //w
 				e.preventDefault();
 				e.stopPropagation();
 				
