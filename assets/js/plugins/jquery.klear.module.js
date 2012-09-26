@@ -657,8 +657,8 @@
             
             	var $parsetHtml = $.tmpl(this.loadingTmpl.join(''), {
                     loadingText: $.translate("Loading content", [__namespace__]),
-                    loadingTextMain: $.translate("Carga del módulo Principal", [__namespace__]),
-            		loadingTextExtra: $.translate("Carga de módulos Secundarios", [__namespace__])
+                    loadingTextMain: $.translate("Loading Main Module", [__namespace__]),
+            		loadingTextExtra: $.translate("Loading Secondary modules", [__namespace__])
                 });
             	
             	_loadingItem = $parsetHtml;

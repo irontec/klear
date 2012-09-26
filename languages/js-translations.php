@@ -9,6 +9,6 @@ return array (
   5 => 'Undefined Error',
   6 => 'Loading',
   7 => 'Show All Items',
-  8 => 'Carga del módulo Principal',
-  9 => 'Carga de módulos Secundarios',
+  10 => 'Loading Main Module',
+  11 => 'Loading Secondary modules',
 );

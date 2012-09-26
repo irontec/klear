@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Klear\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-09-12 18:29+0100\n"
-"PO-Revision-Date: 2012-09-12 18:30+0100\n"
+"POT-Creation-Date: 2012-09-26 11:34+0100\n"
+"PO-Revision-Date: 2012-09-26 11:36+0100\n"
 "Last-Translator: Javier Infante <jabi@irontec.com>\n"
 "Language-Team: Irontec-Klear <lander+klear@irontec.com>\n"
 "Language: \n"
@@ -22,7 +22,7 @@ msgstr ""
 msgid "Page not found"
 msgstr "Página no encontrada"
 
-#: controllers/IndexController.php:172
+#: controllers/IndexController.php:158
 msgid "Configuration error"
 msgstr "Error de configuración"
 
@@ -39,15 +39,20 @@ msgid "Authenticate"
 msgstr "Autenticarse"
 
 #: layouts/scripts/main/header.phtml:88
+msgid "Collapse Menu."
+msgstr "Plegar/Replegar Menú"
+
+#: layouts/scripts/main/header.phtml:95
 msgid "Remember opened main tabs."
 msgstr "Recordar las pestañas de menú abiertas"
 
-#: layouts/scripts/main/header.phtml:96
+#: layouts/scripts/main/header.phtml:103
 msgid "logout"
 msgstr "Descontectarse"
 
-#: assets/js/klear.compiled.js:13
-#: assets/js/klear.compiled.js:27
+#: assets/js/klear.compiled.js:14
+#: assets/js/klear.compiled.js:29
+#: assets/js/klear.compiled.js:30
 msgid "Module registration error."
 msgstr "Error registrando el módulo."
 
@@ -64,24 +69,32 @@ msgstr "Error de Klear Module"
 msgid "This tab is locked."
 msgstr "La pestaña está bloqueada."
 
-#: assets/js/klear.compiled.js:23
+#: assets/js/klear.compiled.js:25
 msgid "Loading content"
 msgstr "Cargando contenido"
 
-#: assets/js/klear.compiled.js:28
+#: assets/js/klear.compiled.js:25
+msgid "Loading Main Module"
+msgstr "Cargando Módulo Principal"
+
+#: assets/js/klear.compiled.js:25
+msgid "Loading Secondary modules"
+msgstr "Cargando módulos Secundarios"
+
+#: assets/js/klear.compiled.js:31
 #, python-format
 msgid "Error downloading template [%s]."
 msgstr "Error descargando el template [%s]."
 
-#: assets/js/klear.compiled.js:32
+#: assets/js/klear.compiled.js:34
 msgid "Unknown response format in Simple Response"
 msgstr "Formato desconocido de respuesta en Simple Response"
 
-#: assets/js/klear.compiled.js:32
+#: assets/js/klear.compiled.js:35
 msgid "Undefined Error"
 msgstr "Error Indefinido"
 
-#: assets/js/klear.compiled.js:41
+#: assets/js/klear.compiled.js:44
 #: assets/js/plugins/jquery.ui.combobox.js:98
 msgid "Show All Items"
 msgstr "Mostrar todos los elementos"
