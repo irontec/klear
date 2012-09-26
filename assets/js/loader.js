@@ -69,7 +69,7 @@ var console = window.console || { log : function() {}};
  	 'base!js/plugins/jquery.klear.errors.js',
  	 'base!js/navigation.js'];
 
-	var _baseScripts = [
+	var _baseScripts1 = [
 	                    'base!js/klear.compiled.js',
 	                    'base!js/translation/jquery.klear.translation.js',
 	                    'base!../default/js/translation/jquery.default.translation.js',

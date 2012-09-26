@@ -83,6 +83,27 @@
         },
 
         _setOption: function(key, value) {
+        	
+        	
+        	if (key === 'mainModuleLoaded' && value) {
+        		this.setMainLoaded();
+        		return;
+        	}
+        	
+        	if (key === 'addToBeLoadedFile') { 
+        		
+        		this.totalToBeLoadedItems += value;
+                this.updateTotalLoadingItems();
+                return;
+            }
+        	
+        	if (key === 'addLoadedFile') {
+        		this.totalLoadedItems++;
+                this.updateCurrentLoadingItem();
+                return;
+            }
+        	
+        	
             $.Widget.prototype._setOption.apply(this, arguments);
         },
 
@@ -157,7 +178,6 @@
             screen : null,
             dialog : null,
             dispatchOptions : {},
-            loadingSelector : null,
             tabLock: false,
             parentScreen: false,
             moduleDialog: null,
@@ -250,7 +270,7 @@
             if (typeof this.options.PreDispatchMethod == 'function') {
             	this.options.PreDispatchMethod.apply(this);           
             }
-            
+
             $.klear.request(dispatchData,this._parseDispatchResponse,this._errorResponse,this);
 
         },
@@ -290,7 +310,6 @@
             $(this.options.panel).html('');
 
             if (response.mainTemplate) {
-
                 response.data.mainTemplate = response.mainTemplate;
             }
 
@@ -604,15 +623,42 @@
             this.updateLoader();
         },
 
-        loadingTmpl: '<div id="loadingTemplate" class="loadingPanel ui-widget-content ui-corner-all"><p>${loadingText}</p></div>',
-        
+        loadingTmpl : ['<div id="loadingTemplate" class="loadingPanel ui-widget-content ui-corner-all">',
+                       '<p>${loadingText}</p>',
+                       '<p class="extra main">${loadingTextMain}<span class="ui-icon ui-icon-circle-check inline"></span></p>',
+                       '<p class="extra">${loadingTextExtra}(<span class="current">0</span>/<span class="total">?</span>)<span class="ui-icon ui-icon-circle-check inline"></span></p>',
+                       '</div>'],
+        totalToBeLoadedItems : 0,
+        totalLoadedItems : 0,
+        updateTotalLoadingItems : function(total) {
+            var _panel = $(this.options.panel);
+            $(".loadingPanel",_panel).find(".total").html(this.totalToBeLoadedItems);
+        },
+        updateCurrentLoadingItem : function() {
+            var _panel = $(this.options.panel);
+            
+            if ((100*this.totalLoadedItems)/this.totalToBeLoadedItems > 20) {
+            	var _opacity = (100*this.totalLoadedItems)/this.totalToBeLoadedItems / 100;  
+            } else {
+            	var _opacity = ".2"; 
+            }
+            
+            $(".loadingPanel",_panel).find(".current").css("opacity",_opacity).html(this.totalLoadedItems);
+        },
+        setMainLoaded : function() {
+            var _panel = $(this.options.panel);
+            $(".loadingPanel",_panel).find("p.main").addClass("complete");
+
+        },
         updateLoader : function() {
 
             var _panel = $(this.options.panel);
             if ($(".loadingPanel",_panel).length == 0) {
             
-            	var $parsetHtml = $.tmpl(this.loadingTmpl, {
-                    loadingText: $.translate("Loading content", [__namespace__])
+            	var $parsetHtml = $.tmpl(this.loadingTmpl.join(''), {
+                    loadingText: $.translate("Loading content", [__namespace__]),
+                    loadingTextMain: $.translate("Carga del módulo Principal", [__namespace__]),
+            		loadingTextExtra: $.translate("Carga de módulos Secundarios", [__namespace__])
                 });
             	
             	_loadingItem = $parsetHtml;

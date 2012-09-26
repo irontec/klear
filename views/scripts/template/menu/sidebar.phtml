@@ -1,12 +1,12 @@
 {{each(sec,section) sections}}
-<h2>${section.sectionName}</h2>
+<h2><span class="textnode">${section.sectionName}</span></h2>
 <div>
 <ul>
 {{each(idx,subsection) section.subsections}}
 <li>
-<a class="subsection{{if (section.subsections[idx].default)}} autoplay{{/if}}" href="?" id="target-${subsection.sectionId}">
+<a title="${subsection.sectionName}{{if (subsection.sectionDescription)}}: &lt;em&gt;${subsection.sectionDescription}&lt;/em&gt;{{/if}}" class="subsection{{if (section.subsections[idx].default)}} autoplay{{/if}}" href="?" id="target-${subsection.sectionId}">
 <span class="ui-silk inline ${subsection.sectionClass}"></span>
-${subsection.sectionName}
+<span class="textnode">${subsection.sectionName}</span>
 </a>
 </li>
 {{/each}}

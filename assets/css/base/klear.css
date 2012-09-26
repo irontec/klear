@@ -6,11 +6,19 @@ body {
 	position:absolute;
 	margin:-12px 0 0 -125px;
 	width:250px;
-	height:24px;
 	left: 50%;
 	top:50%;
-	border:5px solid #ccc;
-	padding:5px;
+	
+    background-color: #1a1a1a;
+    height: 25px;
+    padding: 5px;
+   
+    -moz-border-radius: 5px;
+    -webkit-border-radius: 5px;
+    border-radius: 5px;
+    -moz-box-shadow: 0 1px 5px #000 inset, 0 1px 0 #444;
+    -webkit-box-shadow: 0 1px 5px #000 inset, 0 1px 0 #444;
+    box-shadow: 0 1px 5px #000 inset, 0 1px 0 #444;           
 	
 }
 
@@ -20,10 +28,16 @@ body {
 	height:100%;
 	line-height: 23px;
 	margin:0;
-	background:#666;
+	color: #dedede;
 	text-align:right;
-	color:#fff;
-	
+    background-color: #ff0000;
+    height: 100%;   
+    -moz-border-radius: 3px;
+    -webkit-border-radius: 3px;
+    border-radius: 3px;
+    -moz-box-shadow: 0 1px 0 rgba(255, 255, 255, .5) inset;
+    -webkit-box-shadow: 0 1px 0 rgba(255, 255, 255, .5) inset;
+    box-shadow: 0 1px 0 rgba(255, 255, 255, .5) inset;
 }
 
 
@@ -188,6 +202,7 @@ ul#tabsList {
     margin:0;
 }
 
+
 #tabsList li.ui-state-default span.ui-silk {
     display:block;
     float:left;
@@ -339,11 +354,14 @@ LOADING PANEL
     z-index:1001;
     font-size: 1.5em;
     left: 2em;
-    padding: 3em 2em 2.5em 3em;
+    padding: 3em 1.5em 1.5em 3em;
     position: absolute;
     top: 2em;
     width: 13%;
+    min-width: 200px;
+    
 }
+
 
 div.overlay {
     position:absolute;
@@ -356,6 +374,28 @@ div.overlay {
     margin: -0.5em 0 0 3em;
     background: transparent;
 }
+
+.loadingPanel p.extra {
+    color: #000;
+    font-size: 0.6em;
+    margin: 1.3em -2em -1em;
+    padding: 0;
+    opacity:0.2
+}
+
+.loadingPanel p.extra span.inline {
+    display:none;
+}
+
+.loadingPanel p.extra.complete {
+	color: #000;
+	opacity: 1;
+}
+
+.loadingPanel p.extra.complete span.inline {
+    display:inline;
+}
+
 .loadingPanel .spinner div {
     background:#000;
 }
@@ -377,7 +417,7 @@ PANEL
     min-height: 647px;
     padding: 0.5em;
     height: auto;
-    overflow: hidden;
+    overflow: auto;
     padding: 0.5em;
     position: relative;
 }

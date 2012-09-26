@@ -9,8 +9,6 @@
 #body {
 	margin-top: 0;
 	margin-bottom: 15px;
-	border-bottom: 1px solid #555;
-	border-top:1px solid #555;
 }
 
 /*
@@ -27,7 +25,7 @@
  * Unlike the first first column, this element does *not* need a width
  */
 
-#main {padding: 15px 0 15px 15px;}
+#main {padding: 0 0 15px 15px;}
 
 
 

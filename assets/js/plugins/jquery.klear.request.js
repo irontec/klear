@@ -92,7 +92,17 @@
 
         var request_baseurl = '';
         var clean_baseurl = '';
-
+        
+        if (context && context.element) {
+        	var loaderTrace = function(action, param) {
+        		var p = param || true;
+        		$(context.element).klearModule("option",action, p);
+        	};
+        } else {
+        	var loaderTrace = function() {};
+        }
+        var totalItems = 0;
+        
         var _parseResponse = function _parseResponse(response) {
         	if (response == null) return;
             if ( (response.mustLogIn) && (params.controller != 'login') ) {
@@ -104,10 +114,11 @@
             }
 
             $.klear.login('close');
+            loaderTrace("mainModuleLoaded");
             
             switch(response.responseType) {
                 case 'dispatch':
-                    return _parseDispatchResponse(response);
+                	return _parseDispatchResponse(response);
                 case 'simple':
                     return _parseSimpleResponse(response);
                 default:
@@ -142,10 +153,18 @@
             request_baseurl = response.baseurl;
             clean_baseurl = response.cleanBaseurl;
 
+            var doCount = function(object, iden) {
+            	var _len = 0;
+            	for(var iden in object) { 
+            		_len++;
+            	}
+            	return _len;
+            };
+
             $.when(
-                    _loadTemplates(response.templates),
-                    _loadCss(response.css),
-                    _loadScripts(response.scripts)
+                    _loadTemplates(response.templates, doCount(response.templates,'template')),
+                    _loadCss(response.css, doCount(response.css,'css')),
+                    _loadScripts(response.scripts, doCount(response.scripts,'scripts'))
 
             ).done( function(tmplReturn,scriptsReturn,cssReturn) {
 
@@ -202,13 +221,13 @@
         };
 
 
-        var _loadTemplates = function(templates) {
+        var _loadTemplates = function(templates, total) {
 
 
             var dfr = $.Deferred();
 
-            var total = 0;
-            for(var iden in templates) total++;
+            loaderTrace("addToBeLoadedFile", total);
+            
             if (total == 0) {
                 dfr.resolve();
                 return;
@@ -216,7 +235,8 @@
 
             var done = 0;
             var successCallback = function() {
-                total--;
+            	loaderTrace("addLoadedFile");
+            	total--;
                 done++;
                 if (total == 0) {
                     dfr.resolve(done);
@@ -227,8 +247,7 @@
 
             $.each(templates,function(tmplIden,tmplSrc) {
 
-                if ($.klear.cacheEnabled && undefined !== $.template[tmplIden]) {
-
+            	if ($.klear.cacheEnabled && undefined !== $.template[tmplIden]) {
                     successCallback();
                     return;
                 }
@@ -268,11 +287,11 @@
 
         };
 
-        var _loadScripts = function(scripts) {
+        var _loadScripts = function(scripts, total) {
 
             var dfr = $.Deferred();
-            var total = 0;
-            for(var iden in scripts) total++;
+            loaderTrace("addToBeLoadedFile", total);
+            
             if (total == 0) {
                 dfr.resolve();
                 return;
@@ -283,10 +302,12 @@
 
             $.each(scripts, function(iden, _script) {
                 if ($.klear.cacheEnabled && $.klear.loadedScripts[iden]) {
+                	loaderTrace("addLoadedFile");
                     total--;
                     return;
                 }
                 if ("" == _script) {
+                	loaderTrace("addLoadedFile");
                     total--;
                     return;
                 }
@@ -301,11 +322,9 @@
                 } else {
 
                    targetUrl = request_baseurl + _script;
-
                    _checkScript(targetUrl);
 
                 }
-
 
 
                 try {
@@ -317,6 +336,7 @@
                         async: true,
                         success: function() {
                             $.klear.loadedScripts[iden] = true;
+                            loaderTrace("addLoadedFile");
                             total--;
                             done++;
                             if (total == 0) {
@@ -339,10 +359,11 @@
             }
         };
 
-        var _loadCss = function(css) {
+        var _loadCss = function(css, total) {
             var dfr = $.Deferred();
-            var total = $(css).length;
-
+            
+            loaderTrace("addToBeLoadedFile", total);
+            
             if (total == 0) {
                 dfr.resolve();
                 return;
@@ -352,6 +373,7 @@
 
                 $.getStylesheet(request_baseurl + css[iden],iden);
                 $("#" + iden).on("load",function() {
+                	loaderTrace("addLoadedFile");
                     total--;
                     if (total == 0) {
                         dfr.resolve(true);
@@ -403,13 +425,13 @@
         }
 
         $.ajax({
-            url : req.action,
-               dataType:'json',
-               context : this,
-               data : req.data,
-               type : req.type,
-               success: _parseResponse,
-               error: _errorResponse
+        	url : req.action,
+        	dataType:'json',
+        	context : this,
+        	data : req.data,
+        	type : req.type,
+        	success: _parseResponse,
+        	error: _errorResponse
         });
     };
 
