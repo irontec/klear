@@ -46,7 +46,6 @@ class Klear_Plugin_Init extends Zend_Controller_Plugin_Abstract
     protected function _initAuthStorage()
     {
         $auth = Zend_Auth::getInstance();
-        $auth->setStorage(new Zend_Auth_Storage_Session('klear_auth'));
     }
 
     /**
