@@ -33,6 +33,7 @@ class Klear_Plugin_Init extends Zend_Controller_Plugin_Abstract
             return;
         }
 
+        $this->_initAuthStorage();
         $this->_initPlugin();
         $this->_initConfig();
         $this->_initLog();
@@ -40,6 +41,12 @@ class Klear_Plugin_Init extends Zend_Controller_Plugin_Abstract
         $this->_initErrorHandler();
         $this->_registerYamlStream();
         $this->_initHooks();
+    }
+
+    protected function _initAuthStorage()
+    {
+        $auth = Zend_Auth::getInstance();
+        $auth->setStorage(new Zend_Auth_Storage_Session('klear_auth'));
     }
 
     /**
@@ -107,7 +114,7 @@ class Klear_Plugin_Init extends Zend_Controller_Plugin_Abstract
             );
         }
 
-        
+
         $log = Zend_Log::factory($params);
         Zend_Controller_Action_HelperBroker::addHelper(
             new Klear_Controller_Helper_Log($log)
