@@ -33,19 +33,14 @@ class Klear_Plugin_Init extends Zend_Controller_Plugin_Abstract
             return;
         }
 
-        $this->_initAuthStorage();
         $this->_initPlugin();
         $this->_initConfig();
+        $this->_initAuthStorage();
         $this->_initLog();
         $this->_initLayout();
         $this->_initErrorHandler();
         $this->_registerYamlStream();
         $this->_initHooks();
-    }
-
-    protected function _initAuthStorage()
-    {
-        $auth = Zend_Auth::getInstance();
     }
 
     /**
@@ -99,6 +94,28 @@ class Klear_Plugin_Init extends Zend_Controller_Plugin_Abstract
             $configPath = $moduleConfig['file'];
         }
         return $configPath;
+    }
+
+    protected function _initAuthStorage()
+    {
+        $auth = Zend_Auth::getInstance();
+
+        $sessionName = 'klear_auth';
+
+        if (isset($this->_config->main->auth->session)) {
+            $authSession = $this->_config->main->auth->session;
+
+            // We don't want to change the session_name in this case
+            if (isset($authSession->disableChange) && $authSession->disableChange) {
+                return;
+            }
+
+            if (isset($authSession->name)) {
+                $sessionName = $authSession->name;
+            }
+        }
+
+        $auth->setStorage(new Zend_Auth_Storage_Session($sessionName));
     }
 
     protected function _initLog()
