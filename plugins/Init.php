@@ -106,7 +106,7 @@ class Klear_Plugin_Init extends Zend_Controller_Plugin_Abstract
             $authSession = $this->_config->main->auth->session;
 
             // We don't want to change the session_name in this case
-            if (isset($authSession->disableChange) && $authSession->disableChange) {
+            if (isset($authSession->disableChangeName) && $authSession->disableChangeName) {
                 return;
             }
 
