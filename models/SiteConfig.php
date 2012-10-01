@@ -67,7 +67,8 @@ class Klear_Model_SiteConfig
 
     }
 
-    protected function _initSiteSubName(Zend_Config $config) {
+    protected function _initSiteSubName(Zend_Config $config)
+    {
 
         if ($config->sitesubname) {
             $subNameConfig = new Klear_Model_ConfigParser();
@@ -170,13 +171,13 @@ class Klear_Model_SiteConfig
         }
 
         if (isset($config->raw->javascript)) {
-            foreach($config->raw->javascript as $script) {
+            foreach ($config->raw->javascript as $script) {
                 $this->_rawJavascripts[] = $script;
             }
         }
 
         if (isset($config->raw->css)) {
-            foreach($config->raw->css as $css) {
+            foreach ($config->raw->css as $css) {
                 $this->_rawCss[] = $css;
             }
         }
@@ -312,11 +313,13 @@ class Klear_Model_SiteConfig
         return $this->_disableMinifiers;
     }
 
-    public function getRawJavascripts() {
+    public function getRawJavascripts()
+    {
         return $this->_rawJavascripts;
     }
 
-    public function getRawCss() {
+    public function getRawCss()
+    {
         return $this->_rawCss;
     }
 
