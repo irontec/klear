@@ -267,7 +267,6 @@
                     type : 'get',
                     cache : true,
                     success: function(r) {
-
                         $.template(tmplIden, r);
                         successCallback();
                     },

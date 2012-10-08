@@ -73,9 +73,12 @@ class Klear_ErrorController extends Zend_Controller_Action
                 $this->view->code = 404;
 
                 if (APPLICATION_ENV == 'development') {
-                    $this->view->file = $errors->exception->getFile();
-                    $this->view->line = $errors->exception->getLine();
-                    $this->view->traceString = $errors->exception->getTraceAsString();
+                    if (isset($errors->exception->file)) {
+                        $this->view->file = $errors->exception->file;
+                    }
+                    if (isset($errors->exception->line)) {
+                        $this->view->line = $errors->exception->line;
+                    }
                 }
                 break;
             default:
@@ -88,7 +91,6 @@ class Klear_ErrorController extends Zend_Controller_Action
                 if (APPLICATION_ENV == 'development') {
                     $this->view->file = $errors->exception->getFile();
                     $this->view->line = $errors->exception->getLine();
-                    $this->view->traceString = $errors->exception->getTraceAsString();
                 }
                 break;
         }

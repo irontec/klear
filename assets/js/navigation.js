@@ -277,7 +277,7 @@
 						header: "ui-icon-circle-arrow-e",
 						headerSelected: "ui-icon-circle-arrow-s"
 				},
-				active: false,
+				active: true,
 				collapsible: true,
 				autoHeight: false
 			});
@@ -486,14 +486,14 @@
 	$.klear.toggleMenu = function() {
 		
 		if ($sidebar.data("seized")) {
-			$(".textnode", $sidebar).animate({fontSize:'1em'});
+			$(".textnode", $sidebar).stop().animate({opacity:'1',fontSize:'1em'});
 			$sidebar.animate({width:'300px'});
 			$("li",$sidebar).animate({padding:"0.5em"});
 			
 			$sidebar.data("seized",false);
 		} else {
 			
-			$(".textnode", $sidebar).animate({fontSize:'0em'});
+			$(".textnode", $sidebar).animate({fontSize:'0em',opacity:'0'});
 			$sidebar.animate({width:'50px'});
 			$("li",$sidebar).animate({padding:"0em"});
 			$sidebar.data("seized",true);
@@ -510,8 +510,6 @@
 	};
 	
 	$("body").on('click','a.toogleMenu',function(e) {
-		
-		console.log(typeof e);
 		if (e) {
 			e.preventDefault();
 			e.stopPropagation();

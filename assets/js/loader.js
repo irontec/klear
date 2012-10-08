@@ -51,10 +51,7 @@ var console = window.console || { log : function() {}};
 	})();
 	
 	
-	
-	
-	
-	var _baseScripts = ['base!js/plugins/jquery.cookie.js',
+	/*var _baseScripts = ['base!js/plugins/jquery.cookie.js',
 	 'base!js/plugins/jquery.scrollabletab.js',
  	 'base!js/plugins/jquery.ui.tooltip.js',
  	 'base!js/plugins/jquery.ui.combobox.js',
@@ -67,15 +64,17 @@ var console = window.console || { log : function() {}};
  	 'base!js/plugins/jquery.klear.module.js',
  	 'base!js/plugins/jquery.klear.module.dialog.js',
  	 'base!js/plugins/jquery.klear.errors.js',
- 	 'base!js/navigation.js'];
+ 	 'base!js/navigation.js'];*/
 
-	var _baseScripts1 = [
+	var _baseScripts = [
 	                    'base!js/klear.compiled.js',
 	                    'base!js/translation/jquery.klear.translation.js',
 	                    'base!../default/js/translation/jquery.default.translation.js',
-	                	'base!js/navigation.js'
-	                    ];
-	var _scripts = [];
+	                	'base!js/navigation.js',
+	                	'base!../klearMatrix/js/translation/jquery.klearmatrix.translation.js',
+	                    'base!../klearMatrix/js/klearMatrix.compiled.js'
+	                    ],
+		_scripts = [];
 
 	// El total de cargas serán los "base" + los 4 principales
 	_loader.total = _baseScripts.length + 4;
@@ -88,10 +87,10 @@ var console = window.console || { log : function() {}};
 	yepnope([
 	  {
 		  load: {
-			  'jquery.min.js': 'timeout=1000!//ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js',
+			  'jquery.min.js': 'timeout=1000!//ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js',
 			  'jquery.tmpl.min.js': 'timeout=1000!//ajax.aspnetcdn.com/ajax/jquery.templates/beta1/jquery.tmpl.js',
-			  'jquery-ui.min.js': 'timeout=1000!//ajax.googleapis.com/ajax/libs/jqueryui/1.8.18/jquery-ui.min.js',
-			  'jquery-ui-i18n.min.js': 'timeout=1000!//ajax.googleapis.com/ajax/libs/jqueryui/1.8.18/i18n/jquery-ui-i18n.min.js'
+			  'jquery-ui.min.js': 'timeout=1000!//ajax.googleapis.com/ajax/libs/jqueryui/1.8.23/jquery-ui.min.js',
+			  'jquery-ui-i18n.min.js': 'timeout=1000!//ajax.googleapis.com/ajax/libs/jqueryui/1.8.23/i18n/jquery-ui-i18n.min.js'
 		  },
 		  complete: function() {
 			  if ( (!window.jQuery) || (!window.jQuery.ui) || (!window.jQuery.tmpl) ) {

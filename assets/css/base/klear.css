@@ -136,13 +136,13 @@ body {
 }
 
 #sidebar{
-    padding: 15px 15px 0 0;
+    padding: 0px 15px 0 0;
     display: none;
 }
 
 #canvasWrapper {
     min-height: 700px;
-    padding: 15px 15px 15px 0;
+    padding: 0px 15px 15px 0;
     width: auto;
 }
 
@@ -240,11 +240,12 @@ div.ui-tabs-panel {
     float:left;
 }
 
-#applicationInfo, #applicationTools  {
+#applicationInfo {
 	text-align:right;
 }
 
-#applicationTools {
+#applicationTools  {
+	text-align:right;
 	padding: 0.5em 0 0.2em 0;
 }
 
