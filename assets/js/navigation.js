@@ -277,7 +277,7 @@
 						header: "ui-icon-circle-arrow-e",
 						headerSelected: "ui-icon-circle-arrow-s"
 				},
-				active: 0,
+				active: 1,
 				collapsible: true,
 				autoHeight: false
 			});
