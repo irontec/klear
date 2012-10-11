@@ -62,9 +62,8 @@ class Klear_Plugin_Auth extends Zend_Controller_Plugin_Abstract
             return;
         }
 
-        $auth = Zend_Auth::getInstance();
-
         if ((bool)$request->getPost("klearLogin")) {
+            $auth = Zend_Auth::getInstance();
 
             $authAdapterName = $authConfig->getProperty("adapter");
             $logHelper->log('Auth adapter: ' . $authAdapterName);

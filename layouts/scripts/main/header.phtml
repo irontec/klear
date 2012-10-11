@@ -4,61 +4,61 @@
 <?php
 
 
-	$this->headTitle()->append("klear");
-	$this->headTitle()->append($this->SiteConfig()->getYear());
-	$this->headTitle()->prepend($this->SiteConfig()->getSiteName());
-	$this->headTitle()->setSeparator(' :: ');
+    $this->headTitle()->append("klear");
+    $this->headTitle()->append($this->SiteConfig()->getYear());
+    $this->headTitle()->prepend($this->SiteConfig()->getSiteName());
+    $this->headTitle()->setSeparator(' :: ');
 
-	echo $this->headTitle();
-	echo "\n";
-	echo $this->headMeta()
-	->appendHttpEquiv('Content-Type', 'text/html; charset=utf-8')
-	->setName('viewport', 'width=device-width, initial-scale=1.0')
-	->setIndent(4);
-	echo "\n";
+    echo $this->headTitle();
+    echo "\n";
+    echo $this->headMeta()
+    ->appendHttpEquiv('Content-Type', 'text/html; charset=utf-8')
+    ->setName('viewport', 'width=device-width, initial-scale=1.0')
+    ->setIndent(4);
+    echo "\n";
 
-	// Este base antes que el script!!!
+    // Este base antes que el script!!!
 ?>
     <base href="<?php echo $this->serverUrl($this->baseUrl('klear')); ?>/" />
 
 <?php
 
 
-	$this->headLink()
-			->appendStylesheet($this->baseUrl('/klear/css/base/reset.css'))
-			->appendStylesheet($this->baseUrl('/klear/css/base/layout.css'))
-			->appendStylesheet($this->baseUrl('/klear/css/silk/silk-sprite.css'))
-			->appendStylesheet($this->baseUrl('/klear/css-extended/silk-extended/silk-extended-sprite.css'))
-			->appendStylesheet($this->SiteConfig()->getJQueryUItheme($this->baseUrl()))
-			->appendStylesheet($this->baseUrl('/klear/css/base/klear.css'))
-			->headLink(array('rel' => 'shortcut icon','href' => $this->baseUrl('/images/favicon.ico')))
-			->setIndent(4);
+    $this->headLink()
+            ->appendStylesheet($this->baseUrl('/klear/css/base/reset.css'))
+            ->appendStylesheet($this->baseUrl('/klear/css/base/layout.css'))
+            ->appendStylesheet($this->baseUrl('/klear/css/silk/silk-sprite.css'))
+            ->appendStylesheet($this->baseUrl('/klear/css-extended/silk-extended/silk-extended-sprite.css'))
+            ->appendStylesheet($this->SiteConfig()->getJQueryUItheme($this->baseUrl()))
+            ->appendStylesheet($this->baseUrl('/klear/css/base/klear.css'))
+            ->headLink(array('rel' => 'shortcut icon','href' => $this->baseUrl('/images/favicon.ico')))
+            ->setIndent(4);
 
-	foreach ($this->SiteConfig()->getRawCss() as $_rawCss) {
+    foreach ($this->SiteConfig()->getRawCss() as $_rawCss) {
         $this->headLink()->appendStylesheet($this->baseUrl($_rawCss));
     }
 
-	echo $this->headLink();
-	echo "\n";
+    echo $this->headLink();
+    echo "\n";
 
-	$this->headScript()
-		->appendFile($this->baseUrl('klear/js/libs/yepnope.1.5.4-min.js'))
-		->appendFile($this->baseUrl('klear/js/loader.js'))
-		->setIndent(4);
+    $this->headScript()
+        ->appendFile($this->baseUrl('klear/js/libs/yepnope.1.5.4-min.js'))
+        ->appendFile($this->baseUrl('klear/js/loader.js'))
+        ->setIndent(4);
 
-	foreach ($this->SiteConfig()->getRawJavascripts() as $_rawJs) {
-	    $this->headScript()->appendFile($this->baseUrl($_rawJs));
-	}
+    foreach ($this->SiteConfig()->getRawJavascripts() as $_rawJs) {
+        $this->headScript()->appendFile($this->baseUrl($_rawJs));
+    }
 
-	if ("development" === APPLICATION_ENV) {
-	    $this->headScript()
-	        ->appendFile($this->baseUrl('klear/js/plugins/jquery.translationRegister.js'))
-	        ->setIndent(4);
-	}
+    if ("development" === APPLICATION_ENV) {
+        $this->headScript()
+            ->appendFile($this->baseUrl('klear/js/plugins/jquery.translationRegister.js'))
+            ->setIndent(4);
+    }
 
-	echo $this->headScript();
+    echo $this->headScript();
 
-	echo "\n";
+    echo "\n";
 
 
 ?>
@@ -83,28 +83,28 @@
 
             <div id="headerToolsbar">
 
-            	<input type="checkbox" id="menuCollapse" />
-            	<label for="menuCollapse" title="<?php echo $this->translate("Collapse Menu.")?>">
-            	    <span class="ui-icon ui-icon-arrowthickstop-1-w" ></span>
-            	</label>
+                <input type="checkbox" id="menuCollapse" />
+                <label for="menuCollapse" title="<?php echo $this->translate("Collapse Menu.")?>">
+                    <span class="ui-icon ui-icon-arrowthickstop-1-w" ></span>
+                </label>
 
-            	<?php /* <input type="checkbox" id="languagePicker" />
-            	<label for="languagePicker" title="<?php echo $this->translate("Choose Language.")?>">
-            	    <span class="ui-icon ui-icon-flag" ></span>
-            	</label> */ ?>
+                <?php /* <input type="checkbox" id="languagePicker" />
+                <label for="languagePicker" title="<?php echo $this->translate("Choose Language.")?>">
+                    <span class="ui-icon ui-icon-flag" ></span>
+                </label> */ ?>
 
 
-            	<input type="checkbox" id="tabsPersist" />
-            	<label for="tabsPersist" title="<?php echo $this->translate("Remember opened main tabs.")?>">
-            	    <span class="ui-icon ui-icon-unlocked" ></span>
-            	</label>
+                <input type="checkbox" id="tabsPersist" />
+                <label for="tabsPersist" title="<?php echo $this->translate("Remember opened main tabs.")?>">
+                    <span class="ui-icon ui-icon-unlocked" ></span>
+                </label>
 
-            	<input type="checkbox" id="logout"
-            	    data-url="<?php echo $this->url(array('controller' => 'index', 'action' => 'bye')) ?>"
-            	/>
-            	<label for="logout" title="<?php echo $this->translate("logout")?>">
-            	    <span class="ui-icon ui-icon-power" ></span>
-            	</label>
+                <input type="checkbox" id="logout"
+                    data-url="<?php echo $this->url(array('controller' => 'index', 'action' => 'bye')) ?>"
+                />
+                <label for="logout" title="<?php echo $this->translate("logout")?>">
+                    <span class="ui-icon ui-icon-power" ></span>
+                </label>
 
             </div>
             <div id="headerLanguagebar">
@@ -112,7 +112,7 @@
             if ($langs = $this->SiteConfig()->getLangs()):
                 if (sizeof($langs) > 1) {
                     echo '<span class="langSelector">';
-                    foreach($langs as $_langIden => $lang) {
+                    foreach ($langs as $_langIden => $lang) {
                         echo '<input type="radio" id="lang_'.$_langIden.'" value="'.$_langIden.'" name="lang" '.(($_langIden == $this->SiteConfig()->getLang()->getIden())? ' checked="checked"':'') .' /><label for="lang_'.$_langIden.'">'.$lang.'</label>';
                     }
                     echo '</span>';
@@ -120,9 +120,6 @@
             endif;
             ?>
             </div>
-
-
-
 
         </div>
     </div>

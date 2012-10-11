@@ -173,13 +173,13 @@ class Klear_IndexController extends Zend_Controller_Action
 
         $moduleRouter->resolveDispatch();
 
-        //Así tendremos disponible la configuración del módulo en el controlador principal.
+        // Pasamos la configuración del módulo al controlador dentro del parámetro 'mainRouter'
          $this->_forward(
              $moduleRouter->getActionName(),
              $moduleRouter->getControllerName(),
              $moduleRouter->getModuleName(),
              array(
-                 "mainRouter"=>$moduleRouter,
+                 'mainRouter' => $moduleRouter,
              )
          );
     }
