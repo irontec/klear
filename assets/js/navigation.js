@@ -691,7 +691,7 @@
         
         $(document).on("keydown",function(e) {
             
-            var keyActions = {
+            var ctrlAltActions = {
                 87 : {
                     key : 'w',
                     action : function(selectedTab) {
@@ -735,19 +735,37 @@
                 77 : {
                     key: 'm',
                     action: $.klear.toggleMenu
-                }
+                },
                     
             };
+            
+            var altActions = {
+                37 : { //Disable alt + back arrow shortcut on browser
+                    key: 'backArrow',
+                    action: function() {
+                        return;
+                    }
+                }
+            };
 
-            if(e.altKey && e.ctrlKey && keyActions[e.which]) { //w
+            if (e.altKey && e.ctrlKey && ctrlAltActions[e.which]
+                || e.altKey && altActions[e.which]
+            ) {
                 e.preventDefault();
                 e.stopPropagation();
                 
                 var selectedTab = parseInt($.klear.canvas.tabs('option', 'selected'));
-                keyActions[e.which]['action'](selectedTab);
+
+                if (e.altKey && e.ctrlKey) {
+                    // Ctrl + Alt + Key
+                    keyActions[e.which]['action'](selectedTab);
+                } else {
+                    // Alt + Key
+                    altActions[e.which]['action'](selectedTab);
+                }
+            
                 return;
             }
-            
         });
         
     };
