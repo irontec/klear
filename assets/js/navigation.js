@@ -758,7 +758,7 @@
 
                 if (e.altKey && e.ctrlKey) {
                     // Ctrl + Alt + Key
-                    keyActions[e.which]['action'](selectedTab);
+                    ctrlAltActions[e.which]['action'](selectedTab);
                 } else {
                     // Alt + Key
                     altActions[e.which]['action'](selectedTab);
