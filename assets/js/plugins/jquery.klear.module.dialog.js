@@ -248,9 +248,9 @@
         create: function(dialog) {
 
 
-            if ( (dialog.widgetName == 'klearModule') && ($(dialog.element).moduleDialog("option","klearPosition")) ) {
+            if ( (dialog.widgetName == 'klearModule') && ($(dialog.element).moduleDialog("option", "klearPosition")) ) {
 
-                var container = $(dialog.element).moduleDialog("option","klearPosition");
+                var container = $(dialog.element).moduleDialog("option", "klearPosition");
             } else {
 
                 var container = document;
