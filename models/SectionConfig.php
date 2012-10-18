@@ -17,19 +17,43 @@ class Klear_Model_SectionConfig
 
         $filePath = 'klear.yaml://' . $file;
 
-
         /*
          * Carga configuración de la sección cargada según la request.
         */
-        $this->_config = new Zend_Config_Yaml(
-                $filePath,
-                APPLICATION_ENV,
-                array(
-                        "yamldecoder"=>"yaml_parse"
-                )
+        set_error_handler(
+            function($errno, $errstr, $errfile, $errline) use ($filePath) {
+                $this->_parseConfigErrorHandler($errno, $errstr, $errfile, $errline, $filePath);
+            },
+            E_WARNING
         );
 
+        $this->_config = new Zend_Config_Yaml(
+            $filePath,
+            APPLICATION_ENV,
+            array(
+                "yamldecoder" => "yaml_parse"
+            )
+        );
+
+        restore_error_handler();
+
         $this->setConfig($this->_config);
+    }
+
+    public function _parseConfigErrorHandler($errno, $errstr, $errfile, $errline, $filePath)
+    {
+        $contents = file($filePath);
+        $errorMessage = $errstr;
+        if (preg_match('/line (?<lineNumber>\d+)/', $errstr, $matches)) {
+            $errorContents = $contents[$matches['lineNumber'] - 2];
+            $errorContents .= '<strong class="errorLine">' . $contents[$matches['lineNumber'] - 1] . '</strong>';
+            $errorContents .= $contents[$matches['lineNumber']];
+
+            $errorMessage = 'Error parsing Yaml: <br /><pre>' . $errorContents . '</pre>';
+            throw new Exception($errorMessage, $errno);
+        }
+
+        return true;
     }
 
     public function setConfig(Zend_Config $config)
