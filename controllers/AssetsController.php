@@ -52,8 +52,8 @@ class Klear_AssetsController extends Zend_Controller_Action
     {
         /*
          * Dejamos pasar a las imágenes de las librerías externas.
-        * Cabeceras de ficheros CSS JS según extensión
-        */
+         * Cabeceras de ficheros CSS JS según extensión
+         */
         if (file_exists($file)) {
 
             if (strpos(mime_content_type($file), 'image') !== false) {
@@ -137,18 +137,18 @@ class Klear_AssetsController extends Zend_Controller_Action
     protected function _sendImage($file)
     {
         // TODO: Cachear propiedades de cada imagen?
+        // FIXME: Try not to instanciate Imagick on every request
         $image = new Imagick($file);
         $hash = $image->getImageSignature();
 
         $response = $this->getResponse();
 
         if ($this->_hashMatches($hash)) {
-            $this->_setHeaders();
+            $this->_sendHeaders();
             $response->setHttpResponseCode(304);
             return;
         }
 
-        /* FIXME: Try not to instanciate Imagick on every request */
         $format = 'image/' . strtolower($image->getImageFormat());
 
         $headers = array();
@@ -157,7 +157,7 @@ class Klear_AssetsController extends Zend_Controller_Action
         }
         $headers['Content-type'] = $format;
         $headers['Content-length'] = filesize($file);
-        $this->_setHeaders($headers);
+        $this->_sendHeaders($headers);
 
         readFile($file);
     }
@@ -189,7 +189,7 @@ class Klear_AssetsController extends Zend_Controller_Action
         $finfo = new finfo(FILEINFO_MIME_TYPE);
         $headers['Content-type'] = $finfo->file($file);
         $headers['Content-length'] = filesize($file);
-        $this->_setHeaders($headers);
+        $this->_sendHeaders($headers);
 
         readFile($file);
     }
@@ -207,13 +207,12 @@ class Klear_AssetsController extends Zend_Controller_Action
 
     public function _compress($file, $type)
     {
-
         $response = $this->getResponse();
 
         $lastModifiedTime = filemtime($file);
         if ($this->_isUnmodifiedFile($lastModifiedTime)) {
-            $this->_setHeaders();
             $response->setHttpResponseCode(304);
+            $this->_sendHeaders();
             return;
         }
 
@@ -222,12 +221,12 @@ class Klear_AssetsController extends Zend_Controller_Action
         $cache = $this->_getFileCache($file);
 
         $id = sha1($file);
-        $raw = $cache->load($id);
+        $fileContents = $cache->load($id);
         $headers = $cache->load("headers" . $id);
 
-        if ((false === $raw) || (false === $headers)) {
+        if ((false === $fileContents) || (false === $headers)) {
 
-            $raw = $this->_getContents($file, $type);
+            $fileContents = $this->_getContents($file, $type);
 
             switch(strtolower($type)) {
                 case "js":
@@ -249,14 +248,14 @@ class Klear_AssetsController extends Zend_Controller_Action
 
 
             $headers['Content-type'] = $fileContentType;
-            $headers['Content-length'] = mb_strlen($raw);
+            $headers['Content-length'] = mb_strlen($fileContents);
 
-            $cache->save($raw, $id);
+            $cache->save($fileContents, $id);
             $cache->save($headers, 'headers' . $id);
         }
-        $this->_setHeaders($headers);
-        echo $raw;
 
+        $this->_sendHeaders($headers);
+        echo $fileContents;
     }
 
     protected function _getFileCache($file)
@@ -343,7 +342,7 @@ class Klear_AssetsController extends Zend_Controller_Action
             $headers['Last-Modified'] = gmdate('D, d M Y H:i:s', time()) . ' GMT';
         }
         $headers['Content-type'] = 'application/x-javascript';
-        $this->_setHeaders($headers);
+        $this->_sendHeaders($headers);
 
         $aLines = array();
         foreach ($jsTranslations as $literal) {
@@ -363,7 +362,7 @@ class Klear_AssetsController extends Zend_Controller_Action
         echo "\n});";
     }
 
-    protected function _setHeaders($headers = array())
+    protected function _sendHeaders($headers = array())
     {
         $response = $this->getResponse();
 
