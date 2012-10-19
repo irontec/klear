@@ -345,17 +345,33 @@ class Klear_AssetsController extends Zend_Controller_Action
         $this->_sendHeaders($headers);
 
         $aLines = array();
+
+        if (Zend_Registry::isRegistered('Klear_Translate')) {
+
+            $translator = Zend_Registry::get('Klear_Translate');
+
+        } else {
+
+            //default translator
+            $translator = $this->view;
+        }
+
+        $translateMethod = "translate";
+
         foreach ($jsTranslations as $literal) {
+
             $key = str_replace(array('\'', '"'), '', $literal);
-            $translateMethod = "translate";
-            $value = $this->view->{$translateMethod}($literal);
+            $value = $translator->{$translateMethod}($literal);
+
             $value = str_replace(
                 array('\\\'', '"'),
                 array('\'', '\"'),
                 $value
             );
+
             $aLines[] = '"'.$key.'" : "'.$value.'"';
         }
+
         echo "/*\n *\t[".$this->getRequest()->getParam('moduleName')."]\n *\tTranslation File\n */\n";
         echo "$.addTranslation({\n\t";
         echo implode(",\n\t", $aLines);

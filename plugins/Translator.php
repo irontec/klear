@@ -77,7 +77,7 @@ class Klear_Plugin_Translator extends Zend_Controller_Plugin_Abstract
                 continue;
             }
 
-            if (!Zend_Registry::isRegistered('Zend_Translate')) {
+            if (!Zend_Registry::isRegistered('Klear_Translate')) {
 
                 $this->_translate = new Zend_Translate(
                     array(
@@ -86,7 +86,7 @@ class Klear_Plugin_Translator extends Zend_Controller_Plugin_Abstract
                     )
                 );
 
-                Zend_Registry::set('Zend_Translate', $this->_translate);
+                Zend_Registry::set('Klear_Translate', $this->_translate);
 
             } else {
 
