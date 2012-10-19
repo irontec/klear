@@ -346,22 +346,12 @@ class Klear_AssetsController extends Zend_Controller_Action
 
         $aLines = array();
 
-        if (Zend_Registry::isRegistered('Klear_Translate')) {
-
-            $translator = Zend_Registry::get('Klear_Translate');
-
-        } else {
-
-            //default translator
-            $translator = $this->view;
-        }
-
         $translateMethod = "translate";
 
         foreach ($jsTranslations as $literal) {
 
             $key = str_replace(array('\'', '"'), '', $literal);
-            $value = $translator->{$translateMethod}($literal);
+            $value = $this->view->{$translateMethod}($literal);
 
             $value = str_replace(
                 array('\\\'', '"'),

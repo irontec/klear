@@ -42,6 +42,10 @@ class Klear_Plugin_Translator extends Zend_Controller_Plugin_Abstract
         }
 
         $this->_initKlearTranslator();
+
+        $this->_front = Zend_Controller_Front::getInstance();
+        $bootstrap = $this->_front->getParam("bootstrap");
+        $view = $bootstrap->getResource('view')->getHelper('Translate')->setTranslator(Zend_Registry::get('Klear_Translate'));
     }
 
     protected function _initKlearTranslator()
@@ -81,7 +85,7 @@ class Klear_Plugin_Translator extends Zend_Controller_Plugin_Abstract
 
                 $this->_translate = new Zend_Translate(
                     array(
-                        'adapter' => 'Zend_Translate_Adapter_Gettext',
+                        'adapter' => 'Iron_Translate_Adapter_GettextKlear',
                         'content' => $translationPath,
                     )
                 );
