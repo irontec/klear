@@ -41,17 +41,19 @@ class Klear_Plugin_Translator extends Zend_Controller_Plugin_Abstract
             return;
         }
 
+        $this->_front = Zend_Controller_Front::getInstance();
         $this->_initKlearTranslator();
 
-        $this->_front = Zend_Controller_Front::getInstance();
         $bootstrap = $this->_front->getParam("bootstrap");
-        $view = $bootstrap->getResource('view')->getHelper('Translate')->setTranslator(Zend_Registry::get('Klear_Translate'));
+
+        if (Zend_Registry::isRegistered('Klear_Translate')) {
+
+            $bootstrap->getResource('view')->getHelper('Translate')->setTranslator(Zend_Registry::get('Klear_Translate'));
+        }
     }
 
     protected function _initKlearTranslator()
     {
-        $this->_front = Zend_Controller_Front::getInstance();
-
         $bootstrap = $this->_front->getParam("bootstrap")->getResource('modules')->offsetGet('klear');
 
         $this->_siteLanguage = $bootstrap->getOption('siteConfig')->getLang();

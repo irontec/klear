@@ -10,7 +10,7 @@ class Klear_Model_Language
 
     protected $_jQLocales = array(
         'af', 'ar', 'ar-DZ', 'az', 'bg', 'bs', 'ca', 'cs', 'cy-GB', 'da', 'de',
-        'el', 'en-AU', 'en-GB', 'en-NZ', 'eo', 'es', 'et', 'eu', 'fa', 'fi',
+        'el', 'en-AU', 'en', 'en-GB', 'en-NZ', 'eo', 'es', 'et', 'eu', 'fa', 'fi',
         'fo', 'fr', 'fr-CH', 'ge', 'gl', 'he', 'hi', 'hr', 'hu', 'hy', 'id',
         'is', 'it', 'ja', 'kk', 'km', 'ko', 'lb', 'lt', 'lv', 'mk', 'ml', 'ms',
         'nl', 'nl-BE', 'no', 'pl', 'pt', 'pt-BR', 'rm', 'ro', 'ru', 'sk', 'sl',
