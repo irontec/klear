@@ -46,7 +46,8 @@ class Klear_Plugin_Translator extends Zend_Controller_Plugin_Abstract
 
         $bootstrap = $this->_front->getParam("bootstrap");
 
-        if (Zend_Registry::isRegistered('Klear_Translate')) {
+        if (Zend_Registry::isRegistered('Klear_Translate')
+            && $bootstrap->getResource('view')) {
 
             $bootstrap->getResource('view')->getHelper('Translate')->setTranslator(Zend_Registry::get('Klear_Translate'));
         }
