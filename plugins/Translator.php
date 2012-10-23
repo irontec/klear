@@ -45,17 +45,21 @@ class Klear_Plugin_Translator extends Zend_Controller_Plugin_Abstract
             }
 
             if (!Zend_Registry::isRegistered(self::DEFAULT_REGISTRY_KEY)) {
-                $this->_translate = new Zend_Translate('Iron_Translate_Adapter_GettextKlear');
+
+                $this->_translate = new Zend_Translate(array(
+                    'adapter' => 'Iron_Translate_Adapter_GettextKlear',
+                    'content' => $translationPath)
+                );
 
                 Zend_Registry::set(self::DEFAULT_REGISTRY_KEY, $this->_translate);
 
                 $this->_setViewHelperTranslator($this->_translate);
+
+            } else {
+
+                $this->_translate->getAdapter()->addTranslation($translationPath);
             }
-
-            $this->_translate->getAdapter()->addTranslation($translationPath);
-
         }
-
     }
 
     protected function _getModuleDirectories()
