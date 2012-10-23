@@ -7,27 +7,12 @@
  */
 class Klear_Plugin_Translator extends Zend_Controller_Plugin_Abstract
 {
+    const DEFAULT_REGISTRY_KEY = 'Klear_Translate';
 
     /**
      * @var Zend_Controller_Front
      */
-    protected $_front;
-
-    /**
-     *
-     * @var Klear_Model_Language
-     */
-    protected $_siteLanguage;
-
-    /**
-     *
-     * @var Zend_Locale
-     */
-    protected $_locale;
-
-    protected $_directories = array();
-
-    protected $_klearBootstrap;
+    protected $_frontController;
 
     /**
      *
@@ -41,64 +26,89 @@ class Klear_Plugin_Translator extends Zend_Controller_Plugin_Abstract
             return;
         }
 
-        $this->_front = Zend_Controller_Front::getInstance();
         $this->_initKlearTranslator();
-
-        $bootstrap = $this->_front->getParam("bootstrap");
-
-        if (Zend_Registry::isRegistered('Klear_Translate')
-            && $bootstrap->getResource('view')) {
-
-            $bootstrap->getResource('view')->getHelper('Translate')->setTranslator(Zend_Registry::get('Klear_Translate'));
-        }
     }
 
     protected function _initKlearTranslator()
     {
-        $bootstrap = $this->_front->getParam("bootstrap")->getResource('modules')->offsetGet('klear');
+        $this->_frontController = Zend_Controller_Front::getInstance();
 
-        $this->_siteLanguage = $bootstrap->getOption('siteConfig')->getLang();
+        $locale = $this->_getLocale();
+        $moduleDirectories = $this->_getModuleDirectories();
 
-        $this->_locale = new Zend_Locale($this->_siteLanguage->getLocale());
+        foreach ($moduleDirectories as $moduleDirectory) {
 
-        $this->_directories[] = $this->_front->getModuleDirectory();
-
-        $requestModuleDirectory = $this->_front->getModuleDirectory($this->getRequest()->getParam('moduleName'));
-
-        if ( $requestModuleDirectory != $this->_front->getModuleDirectory()) {
-
-            $this->_directories[] = $requestModuleDirectory;
-        }
-
-        foreach ($this->_directories as $moduleDirectory) {
-
-            $translationPath = array(
-                $moduleDirectory,
-                'languages',
-                (string) $this->_locale,
-                (string) $this->_locale . '.mo'
-            );
-            $translationPath = implode(DIRECTORY_SEPARATOR, $translationPath);
+            $translationPath = $this->_getTranslationPath($moduleDirectory, $locale);
 
             if (!file_exists($translationPath)) {
                 continue;
             }
 
-            if (!Zend_Registry::isRegistered('Klear_Translate')) {
+            if (!Zend_Registry::isRegistered(self::DEFAULT_REGISTRY_KEY)) {
+                $this->_translate = new Zend_Translate('Iron_Translate_Adapter_GettextKlear');
 
-                $this->_translate = new Zend_Translate(
-                    array(
-                        'adapter' => 'Iron_Translate_Adapter_GettextKlear',
-                        'content' => $translationPath,
-                    )
-                );
+                Zend_Registry::set(self::DEFAULT_REGISTRY_KEY, $this->_translate);
 
-                Zend_Registry::set('Klear_Translate', $this->_translate);
-
-            } else {
-
-                $this->_translate->getAdapter()->addTranslation(array('content' => $translationPath));
+                $this->_setViewHelperTranslator($this->_translate);
             }
+
+            $this->_translate->getAdapter()->addTranslation($translationPath);
+
+        }
+
+    }
+
+    protected function _getModuleDirectories()
+    {
+        $moduleDirectories = array($this->_frontController->getModuleDirectory());
+
+        $requestModuleDirectory = $this->_frontController->getModuleDirectory($this->getRequest()->getModuleName());
+
+        if ($requestModuleDirectory != $this->_frontController->getModuleDirectory()) {
+
+            $moduleDirectories[] = $requestModuleDirectory;
+        }
+
+        return $moduleDirectories;
+    }
+
+    /**
+     * @return Zend_Locale
+     */
+    protected function _getLocale()
+    {
+        $klearBootstrap = $this->_frontController->getParam("bootstrap")->getResource('modules')->offsetGet('klear');
+        $siteLanguage = $klearBootstrap->getOption('siteConfig')->getLang();
+        return new Zend_Locale($siteLanguage->getLocale());
+    }
+
+    /**
+     * Returns translation file path
+     * @param unknown_type $moduleDirectory
+     * @param unknown_type $locale
+     * @return string
+     */
+    protected function _getTranslationPath($moduleDirectory, $locale)
+    {
+        $translationPath = array(
+                $moduleDirectory,
+                'languages',
+                (string) $locale,
+                (string) $locale . '.mo'
+        );
+        return implode(DIRECTORY_SEPARATOR, $translationPath);
+    }
+
+    /**
+     * Sets Klear Translator into instanced view
+     * @param unknown_type $translate
+     */
+    protected function _setViewHelperTranslator($translate)
+    {
+        $view = $this->_frontController->getParam("bootstrap")->getResource('view');
+        if ($view) {
+            $translateHelper = $view->getHelper('Translate');
+            $translateHelper->setTranslator($translate);
         }
     }
 }
