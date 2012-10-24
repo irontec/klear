@@ -257,25 +257,6 @@
 
             }
             if (this.instances.length === 0) {
-                // prevent use of anchors and inputs
-                // we use a setTimeout in case the overlay is created from an
-                // event that we're going to be cancelling (see #2804)
-                setTimeout(function() {
-                    return;
-                    // handle $(el).dialog().dialog('close') (see #4065)
-                    if ($.ui.dialog.overlay.instances.length) {
-                        $(container).bind($.ui.dialog.overlay.events, function(event) {
-
-                            if (!$(container).is(":visible")) return;
-                            // stop events if the z-index of the target is < the z-index of the overlay
-                            // we cannot return true when we don't want to cancel the event (#3523)
-                            if ($(event.target).zIndex() < $.ui.dialog.overlay.maxZ) {
-                                return false;
-                            }
-                        });
-                    }
-                }, 1);
-
                 // allow closing by pressing the escape key
                 $(container).bind('keydown.dialog-overlay', function(event) {
 
