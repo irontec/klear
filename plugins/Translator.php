@@ -46,18 +46,18 @@ class Klear_Plugin_Translator extends Zend_Controller_Plugin_Abstract
 
             if (!Zend_Registry::isRegistered(self::DEFAULT_REGISTRY_KEY)) {
 
-                $translate = new Zend_Translate(array(
+                $this->_translate = new Zend_Translate(array(
                     'adapter' => 'Iron_Translate_Adapter_GettextKlear',
                     'content' => $translationPath)
                 );
 
-                Zend_Registry::set(self::DEFAULT_REGISTRY_KEY, $translate);
+                Zend_Registry::set(self::DEFAULT_REGISTRY_KEY, $this->_translate);
 
-                $this->_setViewHelperTranslator($translate);
+                $this->_setViewHelperTranslator($this->_translate);
 
             } else {
 
-                $translate->getAdapter()->addTranslation($translationPath);
+                $this->_translate->getAdapter()->addTranslation($translationPath);
             }
         }
     }
@@ -105,9 +105,9 @@ class Klear_Plugin_Translator extends Zend_Controller_Plugin_Abstract
 
     /**
      * Sets Klear Translator into instanced view
-     * @param unknown_type $translate
+     * @param unknown_type $this->_translate
      */
-    protected function _setViewHelperTranslator($translate)
+    protected function _setViewHelperTranslator($this->_translate)
     {
         $view = $this->_frontController->getParam("bootstrap")->getResource('view');
 
@@ -115,7 +115,7 @@ class Klear_Plugin_Translator extends Zend_Controller_Plugin_Abstract
             throw new Exception('View Resource not initialized add "resources.view=[]"');
         }
 
-        $translateHelper = $view->getHelper('Translate');
-        $translateHelper->setTranslator($translate);
+        $this->_translateHelper = $view->getHelper('Translate');
+        $this->_translateHelper->setTranslator($this->_translate);
     }
 }
