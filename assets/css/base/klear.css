@@ -217,11 +217,6 @@ ul#tabsList {
     width: auto;
 }
 
-#tabsList li.ui-state-active span.ui-silk {
-    margin-right:-.2em;
-
-}
-
 #tabsList li.changed a:before {
     content: '*';
 }
