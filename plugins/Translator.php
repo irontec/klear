@@ -116,7 +116,7 @@ class Klear_Plugin_Translator extends Zend_Controller_Plugin_Abstract
             $this->_translateHelper->setTranslator($this->_translate);
         } else {
             $logHelper = Zend_Controller_Action_HelperBroker::getStaticHelper('log');
-            $logHelper->warn('No view resource detected');
+            $logHelper->warn('WARNING: No view resource detected. (resources.view[]="")');
         }
     }
 }
