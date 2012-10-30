@@ -53,7 +53,7 @@ class Klear_Plugin_Translator extends Zend_Controller_Plugin_Abstract
 
                 Zend_Registry::set(self::DEFAULT_REGISTRY_KEY, $this->_translate);
 
-                $this->_setViewHelperTranslator($this->_translate);
+                $this->_setViewHelperTranslator();
 
             } else {
 
@@ -107,7 +107,7 @@ class Klear_Plugin_Translator extends Zend_Controller_Plugin_Abstract
      * Sets Klear Translator into instanced view
      * @param unknown_type $translate
      */
-    protected function _setViewHelperTranslator($translate)
+    protected function _setViewHelperTranslator()
     {
         $view = $this->_frontController->getParam("bootstrap")->getResource('view');
 
