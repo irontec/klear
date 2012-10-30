@@ -111,11 +111,9 @@ class Klear_Plugin_Translator extends Zend_Controller_Plugin_Abstract
     {
         $view = $this->_frontController->getParam("bootstrap")->getResource('view');
 
-        if (!$view) {
-            throw new Exception('View Resource not initialized add "resources.view=[]"');
+        if ($view) {
+            $this->_translateHelper = $view->getHelper('Translate');
+            $this->_translateHelper->setTranslator($this->_translate);
         }
-
-        $this->_translateHelper = $view->getHelper('Translate');
-        $this->_translateHelper->setTranslator($this->_translate);
     }
 }
