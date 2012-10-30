@@ -24,12 +24,12 @@ class Klear_Controller_Helper_Log extends Zend_Controller_Action_Helper_Abstract
         return $this->_logger->log($message, $priority, $extras);
     }
 
-    public function warn($message, $extras)
+    public function warn($message, $extras = null)
     {
         return $this->log($message, Zend_Log::WARN, $extras);
     }
 
-    public function err($message, $extras)
+    public function err($message, $extras = null)
     {
         return $this->log($message, Zend_Log::ERR, $extras);
     }
