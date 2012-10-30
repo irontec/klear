@@ -105,9 +105,9 @@ class Klear_Plugin_Translator extends Zend_Controller_Plugin_Abstract
 
     /**
      * Sets Klear Translator into instanced view
-     * @param unknown_type $this->_translate
+     * @param unknown_type $translate
      */
-    protected function _setViewHelperTranslator($this->_translate)
+    protected function _setViewHelperTranslator($translate)
     {
         $view = $this->_frontController->getParam("bootstrap")->getResource('view');
 
