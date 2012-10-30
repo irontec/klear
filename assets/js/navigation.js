@@ -841,7 +841,7 @@
 ;(function($) {
     
     $(document).ready(function() {
-        
+    	
         $(document).on('contextmenu', 'a', function (e) {
             e.preventDefault();
             e.stopPropagation();

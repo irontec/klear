@@ -4,7 +4,6 @@ var console = window.console || { log : function() {}};
 
 	var _base = document.getElementsByTagName('base')[0].getAttribute('href');
 
-	
 	var _loadIndicator = document.createElement("div"); 
 	var _loader = document.createElement("div");
 	_loader.setAttribute("class","initialLoader");
@@ -83,23 +82,81 @@ var console = window.console || { log : function() {}};
 	    resourceObj.url =  _base + resourceObj.url;
 	    return resourceObj;
 	});
+	
+	
+	var _noCDN = document.getElementsByTagName('head')[0].getAttribute("rel") &&
+					document.getElementsByTagName('head')[0].getAttribute("rel") == 'noCDN';
 
+	yepnope.addPrefix('cdnCheck', function(resourceObj) {
+	    resourceObj.noexec = _noCDN;	    
+	    return resourceObj;
+	});
+	
+
+	
+	var _searchAndDestroy = function(realSrc) {
+		
+		var _primitive = function(realSrc,node,attr) {
+			var ifr = document.createElement("iframe");
+			
+			var _sc = document.getElementsByTagName( node );
+			for (var i=0; i<_sc.length; i++) {
+				var _cSc = _sc[i];
+				if (_cSc.getAttribute(attr) == realSrc) {
+					_cSc.setAttribute(attr, '');
+					_cSc.parentNode.removeChild(_cSc);
+					return;
+				}
+			}
+		};
+		setTimeout(function() {
+			_primitive(realSrc,'object','data');
+		},500);
+	};
+	
+	yepnope.errorTimeout = 4000;
+	
 	yepnope([
 	  {
 		  load: {
-			  'jquery.min.js': 'timeout=1000!//ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js',
-			  'jquery.tmpl.min.js': 'timeout=1000!//ajax.aspnetcdn.com/ajax/jquery.templates/beta1/jquery.tmpl.js',
-			  'jquery-ui.min.js': 'timeout=1000!//ajax.googleapis.com/ajax/libs/jqueryui/1.8.23/jquery-ui.min.js',
-			  'jquery-ui-i18n.min.js': 'timeout=1000!//ajax.googleapis.com/ajax/libs/jqueryui/1.8.23/i18n/jquery-ui-i18n.min.js'
+			  'jquery.min.js': 'timeout=1000!cdnCheck!//ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js',
+			  'jquery.tmpl.min.js': 'timeout=1000!cdnCheck!//ajax.aspnetcdn.com/ajax/jquery.templates/beta1/jquery.tmpl.js',
+			  'jquery-ui.min.js': 'timeout=1000!cdnCheck!//ajax.googleapis.com/ajax/libs/jqueryui/1.8.23/jquery-ui.min.js',
+			  'jquery-ui-i18n.min.js': 'timeout=1000!cdnCheck!//ajax.googleapis.com/ajax/libs/jqueryui/1.8.23/i18n/jquery-ui-i18n.min.js'
+		  },
+		  callback : function(url, i, idx) {
+			  switch(idx) {
+			  	case 'jquery.min.js':
+			  		if (!window.jQuery) {
+			  			_searchAndDestroy(url);
+			  		}
+			  		break;
+			  	case 'jquery.tmpl.min.js':
+			  		if (!window.jQuery || !window.jQuery.tmpl) {
+			  			_searchAndDestroy(url);
+			  		}
+			  		break;
+			  	case 'jquery-ui.min.js':
+			  		if (!window.jQuery || !window.jQuery.ui) {
+			  			_searchAndDestroy(url);
+			  		}
+			  		break;
+			  	case 'jquery-ui-i18n.min.js':
+			  		if (!window.jQuery || !window.jQuery.ui) {
+			  			_searchAndDestroy(url);
+			  		}
+			  		break;
+			  }
 		  },
 		  complete: function() {
-			  if ( (!window.jQuery) || (!window.jQuery.ui) || (!window.jQuery.tmpl) ) {
+
+			  if (window.jQuery && window.jQuery.ui && window.jQuery.tmpl) {
+				  _loader.target += 4;
+			  } else {
 				  _scripts.push('base!js/libs/jquery.min.js');
 				  _scripts.push('base!js/libs/jquery.tmpl.min.js');
 				  _scripts.push('base!js/libs/jquery-ui.min.js');
 				  _scripts.push('base!js/libs/jquery-ui-i18n.min.js');
-			  } else {
-				  _loader.target += 4;
 			  }
 			  
 			  yepnope([{

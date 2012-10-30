@@ -1,6 +1,10 @@
 <!doctype html>
 <html lang="<?php echo $this->SiteConfig()->getLang()->getLanguage();?>">
-<head>
+<head<?php
+if ($this->SiteConfig()->getDisableCDN()) {
+    echo ' rel="noCDN"';
+}
+?>>
 <?php
 
 

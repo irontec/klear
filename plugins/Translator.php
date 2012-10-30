@@ -94,12 +94,14 @@ class Klear_Plugin_Translator extends Zend_Controller_Plugin_Abstract
      */
     protected function _getTranslationPath($moduleDirectory, $locale)
     {
+
         $translationPath = array(
                 $moduleDirectory,
                 'languages',
-                (string) $locale,
-                (string) $locale . '.mo'
+                $locale->toString(),
+                $locale->toString() . '.mo'
         );
+
         return implode(DIRECTORY_SEPARATOR, $translationPath);
     }
 

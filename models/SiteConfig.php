@@ -11,6 +11,7 @@ class Klear_Model_SiteConfig
 
     protected $_disableMinifiers = false;
     protected $_disableAssetsCache = false;
+    protected $_disableCDN = false;
 
     protected $_rawJavascripts = array();
     protected $_rawCss = array();
@@ -36,7 +37,8 @@ class Klear_Model_SiteConfig
             'disableMinifier',
             'disableAssetsCache',
             'cssExtended',
-            'actionHelpers'
+            'actionHelpers',
+            'disableCDN'
     );
 
     protected $_requiredParams = array(
@@ -321,6 +323,11 @@ class Klear_Model_SiteConfig
     public function getRawCss()
     {
         return $this->_rawCss;
+    }
+
+    public function getDisableCDN()
+    {
+        return $this->_disableCDN;
     }
 
 }
