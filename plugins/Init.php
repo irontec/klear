@@ -65,8 +65,11 @@ class Klear_Plugin_Init extends Zend_Controller_Plugin_Abstract
          * Cargamos la configuración
         */
         $this->_config = new Zend_Config_Yaml(
-            $this->_getConfigPath(),
-            APPLICATION_ENV
+                $this->_getConfigPath(),
+                APPLICATION_ENV,
+                array(
+                        "yamldecoder" => "yaml_parse"
+                )
         );
 
         $klearConfig = new Klear_Model_MainConfig();
