@@ -26,22 +26,10 @@ class Klear_Model_YamlStream
      */
     function stream_open($path, $mode, $options, &$opened_path)
     {
-        $baseFile = str_replace($this->_protocol, '', $path);
+        $this->_loadFilepath($path);
 
-        // TODO: sanitize file param
-        $file = APPLICATION_PATH . '/configs/klear/' . trim($baseFile);
-
-        if (!preg_match("/\.yaml$/", $file)) {
-            $file .= '.yaml';
-        }
-
-        if ((!file_exists($file)) || (!is_readable($file))) {
-            throw new Zend_Exception('File not readable: ' . $baseFile);
-        }
-
-        $this->_openedPath = dirname($file);
+        $this->_openedPath = dirname($this->_file);
         $opened_path = $this->_openedPath;
-        $this->_file = $file;
 
         $fp = fopen($this->_file, 'r');
 
@@ -77,6 +65,24 @@ class Klear_Model_YamlStream
         // Uncomment for debug
         //file_put_contents("/tmp/last",$this->_content);
         return true;
+    }
+
+    protected function _loadFilepath($path)
+    {
+        $baseFile = str_replace($this->_protocol, '', $path);
+
+        // TODO: sanitize file param
+        $file = APPLICATION_PATH . '/configs/klear/' . trim($baseFile);
+
+        if (!preg_match("/\.yaml$/", $file)) {
+            $file .= '.yaml';
+        }
+
+        if ((!file_exists($file)) || (!is_readable($file))) {
+            throw new Zend_Exception('File not readable: ' . $baseFile);
+        }
+
+        $this->_file = $file;
     }
 
     protected function _parseVariables($data)
@@ -185,6 +191,12 @@ class Klear_Model_YamlStream
         $stat[7] = $stat['size'] = $this->_length;
 
         return $stat;
+    }
+
+    public function url_stat($path)
+    {
+        $this->_loadFilepath($path);
+        return stat($this->_file);
     }
 
 }

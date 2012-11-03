@@ -21,10 +21,15 @@ class Klear_Model_DispatchResponse
 
     public function addTemplate($tmpl, $iden = false, $module = '')
     {
-        if (false === $tmpl) return;
-        $iden = ($iden)? $iden : crc32($tmpl);
+        if (false === $tmpl) {
+            return;
+        }
 
-        if (! empty($module)) {
+        if (!$iden) {
+            $iden = crc32($tmpl);
+        }
+
+        if (!empty($module)) {
 
             $template = array(
                 'module' => $module,
@@ -48,7 +53,7 @@ class Klear_Model_DispatchResponse
 
     public function addJsFile($js, $module = '')
     {
-        if (! empty($module)) {
+        if (!empty($module)) {
 
             $script = array(
                 'module' => $module,

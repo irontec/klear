@@ -20,25 +20,47 @@ class Klear_Model_SectionConfig
         /*
          * Carga configuración de la sección cargada según la request.
         */
-        set_error_handler(
-            function($errno, $errstr, $errfile, $errline) use ($filePath) {
-                $this->_parseConfigErrorHandler($errno, $errstr, $errfile, $errline, $filePath);
-            },
-            E_WARNING
-        );
+        $cache = $this->_getCache($filePath);
+        $this->_config = $cache->load(md5($filePath));
 
-        $this->_config = new Zend_Config_Yaml(
-            $filePath,
-            APPLICATION_ENV,
-            array(
-                "yamldecoder" => "yaml_parse"
-            )
-        );
+        if (!$this->_config) {
 
-        restore_error_handler();
+            set_error_handler(
+                function($errno, $errstr, $errfile, $errline) use ($filePath) {
+                    $this->_parseConfigErrorHandler($errno, $errstr, $errfile, $errline, $filePath);
+                },
+                E_WARNING
+            );
+
+            $this->_config = new Zend_Config_Yaml(
+                $filePath,
+                APPLICATION_ENV,
+                array(
+                    "yamldecoder" => "yaml_parse"
+                )
+            );
+
+            restore_error_handler();
+
+            $cache->save($this->_config);
+        }
+
 
         $this->setConfig($this->_config);
     }
+
+    protected function _getCache($filePath)
+    {
+        $cacheManager = Zend_Controller_Front::getInstance()
+        ->getParam('bootstrap')
+        ->getResource('cachemanager');
+
+        $cache = $cacheManager->getCache('klearconfig');
+        $cache->setMasterFile($filePath);
+        return $cache;
+    }
+
+
 
     public function _parseConfigErrorHandler($errno, $errstr, $errfile, $errline, $filePath)
     {

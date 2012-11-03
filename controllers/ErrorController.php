@@ -25,13 +25,19 @@ class Klear_ErrorController extends Zend_Controller_Action
         /*
          * Carga configuración de la sección cargada según la request.
         */
-        $config = new Zend_Config_Yaml(
-            $filePath,
-            APPLICATION_ENV,
-            array(
-                "yamldecoder" => "yaml_parse"
-            )
-        );
+        $cache = $this->_getCache($filePath);
+        $config = $cache->load(md5($filePath));
+
+        if (!$config) {
+            $config = new Zend_Config_Yaml(
+                $filePath,
+                APPLICATION_ENV,
+                array(
+                    "yamldecoder" => "yaml_parse"
+                )
+            );
+            $cache->save($config);
+        }
 
         $data = array();
 
@@ -49,12 +55,20 @@ class Klear_ErrorController extends Zend_Controller_Action
             }
         }
 
-        $jsonResponse = new Klear_Model_DispatchResponse();
-        $jsonResponse->setModule('klear');
-        $jsonResponse->setPlugin(false); // no requiere plugin
+        $jsonResponse = Klear_Model_DispatchResponseFactory::build();
         $jsonResponse->setData($data);
         $jsonResponse->attachView($this->view);
+    }
 
+    protected function _getCache($filePath)
+    {
+        $cacheManager = Zend_Controller_Front::getInstance()
+        ->getParam('bootstrap')
+        ->getResource('cachemanager');
+
+        $cache = $cacheManager->getCache('klearconfig');
+        $cache->setMasterFile($filePath);
+        return $cache;
     }
 
     public function errorAction()

@@ -19,9 +19,35 @@ class Klear_Model_JQueryUIThemeParser
 
         if (file_exists($localFile)) {
 
-            $this->_localConfig = new Zend_Config_Yaml($localFile, APPLICATION_ENV);
+            $cache = $this->_getCache($localFile);
+            $this->_localConfig = $cache->load(md5($localFile));
+
+            if (!$this->_localConfig) {
+
+                $this->_localConfig = new Zend_Config_Yaml(
+                    $localFile,
+                    APPLICATION_ENV,
+                    array(
+                        "yamldecoder" => "yaml_parse"
+                    )
+                );
+
+                $cache->save($this->_localConfig);
+            }
+
             $this->_localBaseUrl = $this->_localConfig->baseurl;
         }
+    }
+
+    protected function _getCache($filePath)
+    {
+        $cacheManager = Zend_Controller_Front::getInstance()
+        ->getParam('bootstrap')
+        ->getResource('cachemanager');
+
+        $cache = $cacheManager->getCache('klearconfig');
+        $cache->setMasterFile($filePath);
+        return $cache;
     }
 
     public function init()
@@ -41,7 +67,21 @@ class Klear_Model_JQueryUIThemeParser
             Throw new Zend_Exception("No existe el fichero de configuración de estilos (jQuery UI)");
         }
 
-        $this->_config = new Zend_Config_Yaml($cssAssetsPath, APPLICATION_ENV);
+        $cache = $this->_getCache($cssAssetsPath);
+        $this->_config = $cache->load(md5($cssAssetsPath));
+
+        if (!$this->_config) {
+            $this->_config = new Zend_Config_Yaml(
+                $cssAssetsPath,
+                APPLICATION_ENV,
+                array(
+                    "yamldecoder" => "yaml_parse"
+                )
+            );
+
+            $cache->save($this->_config);
+        }
+
         $this->_baseUrl = $this->_config->baseurl;
     }
 

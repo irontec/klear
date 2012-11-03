@@ -34,6 +34,7 @@ class Klear_Plugin_Init extends Zend_Controller_Plugin_Abstract
         }
 
         $this->_initPlugin();
+        $this->_initCacheManager();
         $this->_initConfig();
         $this->_initAuthStorage();
         $this->_initLog();
@@ -55,6 +56,50 @@ class Klear_Plugin_Init extends Zend_Controller_Plugin_Abstract
                                  ->offsetGet('klear');
     }
 
+    protected function _initCacheManager()
+    {
+        $bootstrap = Zend_Controller_Front::getInstance()
+                        ->getParam('bootstrap');
+        $cacheManager = $bootstrap->getResource('cachemanager');
+
+        if (!$cacheManager) {
+            $cacheManager = new Zend_Cache_Manager();
+            $bootstrap->getContainer()->cachemanager = $cacheManager;
+        }
+
+        $frontend = array(
+            'name' => 'File',
+            'options' => array(
+                'master_files' => array(
+                    '/dev/null'
+                ),
+                'automatic_serialization' => true
+            )
+        );
+
+        if (!$cacheManager->hasCacheTemplate('klearconfig')) {
+
+            $cache = array(
+                'frontend' => $frontend,
+                'backend' => array(
+                    'name' => 'File',
+                    'options' => array(
+                        'cache_dir' => APPLICATION_PATH . '/cache'
+                    )
+                )
+            );
+
+            $cacheManager->setCacheTemplate('klearconfig', $cache);
+
+        } else {
+
+            $cacheManager->setTemplateOptions(
+                'klearconfig',
+                array('frontend' => $frontend)
+            );
+        }
+    }
+
     /**
      * Inicializa la configuración principal de Klear
      * y la almacena en el recurso de módulos del bootstrap
@@ -64,13 +109,23 @@ class Klear_Plugin_Init extends Zend_Controller_Plugin_Abstract
         /*
          * Cargamos la configuración
         */
-        $this->_config = new Zend_Config_Yaml(
-                $this->_getConfigPath(),
-                APPLICATION_ENV,
-                array(
+        $configFile = $this->_getConfigPath();
+
+        $cache = $this->_getCache($configFile);
+        $this->_config = $cache->load(md5($configFile));
+
+        if (!$this->_config) {
+
+            $this->_config = new Zend_Config_Yaml(
+                    $configFile,
+                    APPLICATION_ENV,
+                    array(
                         "yamldecoder" => "yaml_parse"
-                )
-        );
+                    )
+            );
+
+            $cache->save($this->_config);
+        }
 
         $klearConfig = new Klear_Model_MainConfig();
         $klearConfig->setConfig($this->_config);
@@ -83,6 +138,17 @@ class Klear_Plugin_Init extends Zend_Controller_Plugin_Abstract
                 "footerMenu" => $klearConfig->getFooterMenu()
             )
         );
+    }
+
+    protected function _getCache($filePath)
+    {
+        $cacheManager = Zend_Controller_Front::getInstance()
+        ->getParam('bootstrap')
+        ->getResource('cachemanager');
+
+        $cache = $cacheManager->getCache('klearconfig');
+        $cache->setMasterFile($filePath);
+        return $cache;
     }
 
     /**

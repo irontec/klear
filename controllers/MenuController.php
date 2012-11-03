@@ -70,23 +70,20 @@ class Klear_MenuController extends Zend_Controller_Action
             'footerbar'=> $this->_getFooterMenu()
         );
 
-        $data = array();
 
         $currentKlearLanguage = Zend_Registry::get('currentSystemLanguage');
+
+        $data = array();
         $data['jqLocale'] = $currentKlearLanguage->getjQLocale();
-
-
         $data['navMenus'] = $availableMenuSites;
 
-        Zend_Json::$useBuiltinEncoderDecoder = true;
+        $jsonResponse = Klear_Model_DispatchResponseFactory::build();
 
-        $jsonResponse = new Klear_Model_DispatchResponse;
-        $jsonResponse->setModule('klear');
-        $jsonResponse->setPlugin(false); // no requiere plugin
         $jsonResponse->addTemplate("/template/menu/type/sidebar", "klearSidebarMenu");
         $jsonResponse->addTemplate("/template/menu/type/headerbar", "klearHeaderbarMenu");
         $jsonResponse->addTemplate("/template/menu/type/footerbar", "klearFooterbarMenu");
         $jsonResponse->addTemplate("/template/menu/type/info", "klearInfoBar");
+
         $jsonResponse->setData($data);
         $jsonResponse->attachView($this->view);
     }

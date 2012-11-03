@@ -53,12 +53,7 @@ class Klear_LoginController extends Zend_Controller_Action
         }
 
 
-        Zend_Json::$useBuiltinEncoderDecoder = true;
-
-        $jsonResponse = new Klear_Model_DispatchResponse;
-        $jsonResponse->setModule('klear');
-        $jsonResponse->setPlugin(false); // No requiere plugin
-
+        $jsonResponse = Klear_Model_DispatchResponseFactory::build();
         $template = $authConfig->getProperty('template');
 
         if ($template) {
