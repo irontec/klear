@@ -47,6 +47,7 @@ class Klear_Plugin_Translator extends Zend_Controller_Plugin_Abstract
             if (!Zend_Registry::isRegistered(self::DEFAULT_REGISTRY_KEY)) {
 
                 $this->_translate = new Zend_Translate(array(
+					'disableNotices' => true,
                     'adapter' => 'Iron_Translate_Adapter_GettextKlear',
                     'content' => $translationPath)
                 );
