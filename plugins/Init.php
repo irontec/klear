@@ -73,7 +73,8 @@ class Klear_Plugin_Init extends Zend_Controller_Plugin_Abstract
                 'master_files' => array(
                     '/dev/null'
                 ),
-                'automatic_serialization' => true
+                'automatic_serialization' => true,
+                'lifetime' => null
             )
         );
 
