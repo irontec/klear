@@ -2,6 +2,14 @@
 
 class Klear_Bootstrap extends Zend_Application_Module_Bootstrap
 {
+
+    protected function _initJson()
+    {
+        // Hasta que se resuelve el tema de que Zend_config JSON_encodee bien....
+        Zend_Json::$useBuiltinEncoderDecoder = true;
+    }
+
+
     /**
      * Registramos los plugins necesarios para el correcto funcionamiento de Klear
      */
