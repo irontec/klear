@@ -22,7 +22,6 @@
 					wrapper.css('width',(self.element.outerWidth() + 25) + 'px');
 					$("a.ui-combobox-toggle",wrapper).css('left',(self.element.outerWidth() - 5) + 'px');
 				})();
-
 				input = $( "<input>" )
 					.appendTo( wrapper )
 					.val( value )
