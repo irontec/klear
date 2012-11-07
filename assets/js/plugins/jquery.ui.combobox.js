@@ -15,11 +15,12 @@
 						.addClass( "ui-combobox" )
 						.insertAfter( select );
 				(function lazyWidthCalculator() {
-					if ( self.element && self.element.width() == 0 ) {
+					if ( self.element && self.element.width() <=  0 ) {
 						setTimeout(lazyWidthCalculator,1000);
 						return;
 					}
 					wrapper.css('width',(self.element.outerWidth() + 25) + 'px');
+					$("a.ui-combobox-toggle",wrapper).css('left',(self.element.outerWidth() - 5) + 'px');
 				})();
 
 				input = $( "<input>" )
