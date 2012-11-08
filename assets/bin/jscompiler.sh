@@ -11,4 +11,5 @@ java -jar closure-compiler.jar --third_party \
 --js ../js/plugins/jquery.ui.combobox.js \
 --js ../js/plugins/jquery.ui.tooltip.js \
 --js ../js/scripts/spin.min.js \
+--js ../js/cacheScripts.js \
 --js_output_file ../js/klear.compiled.js

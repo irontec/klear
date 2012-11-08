@@ -7,6 +7,11 @@ class Klear_TemplateController extends Zend_Controller_Action
     {
         /* Initialize action controller here */
         $this->_helper->layout->disableLayout();
+
+
+        $this->_helper->ContextSwitch()
+            ->addActionContext('cache', 'json')
+            ->initContext('json');
     }
 
     public function menuAction()
@@ -20,6 +25,31 @@ class Klear_TemplateController extends Zend_Controller_Action
         }
     }
 
+
+
+    public function cacheAction()
+    {
+        $cacheTemplates = array(
+            "klearSidebarMenu" => "menu/sidebar",
+            "klearHeaderbarMenu" => "menu/headerbar",
+            "klearFooterbarMenu" => "menu/footerbar",
+        );
+
+        /**
+         * Cache them all!!
+         */
+
+        $templates = array();
+
+        $this->view->setBasePath($this->getFrontController()->getModuleDirectory() . '/views');
+
+        foreach ($cacheTemplates as $template => $action) {
+            $templates[$template] = $this->view->render('template/' .  $action . '.phtml');
+
+        }
+        $this->view->templates = $templates;
+
+    }
 
     public function loginAction()
     {
