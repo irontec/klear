@@ -68,7 +68,7 @@ class Klear_Plugin_Translator extends Zend_Controller_Plugin_Abstract
     {
         $moduleDirectories = array($this->_frontController->getModuleDirectory());
 
-        $requestModuleDirectory = $this->_frontController->getModuleDirectory($this->getRequest()->getModuleName());
+        $requestModuleDirectory = $this->_frontController->getModuleDirectory($this->getRequest()->getParam('moduleName'));
 
         if ($requestModuleDirectory != $this->_frontController->getModuleDirectory()) {
 
