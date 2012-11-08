@@ -55,6 +55,7 @@ class Klear_Plugin_Translator extends Zend_Controller_Plugin_Abstract
                 Zend_Registry::set(self::DEFAULT_REGISTRY_KEY, $this->_translate);
 
                 $this->_setViewHelperTranslator();
+                $this->_setActionHelperTranslator();
 
             } else {
 
@@ -120,5 +121,15 @@ class Klear_Plugin_Translator extends Zend_Controller_Plugin_Abstract
             $logHelper = Zend_Controller_Action_HelperBroker::getStaticHelper('log');
             $logHelper->warn('WARNING: No view resource detected. (resources.view[]="")');
         }
+    }
+
+    /**
+     * Sets Klear Translator into instanced view
+     */
+    protected function _setActionHelperTranslator()
+    {
+        Zend_Controller_Action_HelperBroker::addHelper(
+            new Klear_Controller_Helper_Translate($this->_translate)
+        );
     }
 }

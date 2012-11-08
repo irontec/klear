@@ -83,7 +83,7 @@ class Klear_ErrorController extends Zend_Controller_Action
 
                 // 404 error -- controller or action not found
                 $this->getResponse()->setHttpResponseCode(404);
-                $this->view->message = $this->view->translate('Page not found');
+                $this->view->message = $this->_helper->translate('Page not found');
                 $this->view->code = 404;
 
                 if (APPLICATION_ENV == 'development') {

@@ -346,12 +346,10 @@ class Klear_AssetsController extends Zend_Controller_Action
 
         $aLines = array();
 
-        $translateMethod = "translate";
-
         foreach ($jsTranslations as $literal) {
 
             $key = str_replace(array('\'', '"'), '', $literal);
-            $value = $this->view->{$translateMethod}($literal);
+            $value = $this->_helper->translate($literal);
 
             $value = str_replace(
                 array('\\\'', '"'),
