@@ -233,10 +233,9 @@
             $.template['klearInfoBar'] = undefined;
             
             $sidebar.fadeIn();
-            
             $headerbar.fadeIn();
-            
             $footerbar.fadeIn();
+            $infobar.fadeIn();
             
             $("a",$sidebar).tooltip();
             $("a",$headerbar).tooltip();
@@ -313,6 +312,7 @@
                 var $self = $(this);
                 $.getJSON($self.data('url'),{json:true}, function(){
                     $sidebar.fadeOut();
+                    $infobar.fadeOut();
                     //custom klear events
                     $(document).trigger("kLogout");
                     $.klear.restart({}, true);
@@ -554,14 +554,14 @@
                 closeOnEscape: false,
                 open : function(event, ui) {
                     $("p.submit input",self.$loginForm).button();
-                    $("input[text]:eq(0)",self.$loginForm).trigger("focusin").select();
+                    $("input:text:eq(0)",self.$loginForm).trigger("focusin").select();
                 }
             });
             
             $("select",self.$loginForm).combobox();
             $("input",self.$loginForm).removeAttr("disabled");
-            $("input[submit]",self.$loginForm).button();
-            $("input[text]:eq(0)").trigger("focusin").select();
+            $("input:submit",self.$loginForm).button();
+            $("input:text:eq(0)",self.$loginForm).trigger("focusin").select();
             
             if ($("div.loginError",self.$loginForm).length > 0) {
     
