@@ -46,10 +46,12 @@ class Klear_Plugin_Translator extends Zend_Controller_Plugin_Abstract
 
             if (!Zend_Registry::isRegistered(self::DEFAULT_REGISTRY_KEY)) {
 
-                $this->_translate = new Zend_Translate(array(
-					'disableNotices' => true,
-                    'adapter' => 'Iron_Translate_Adapter_GettextKlear',
-                    'content' => $translationPath)
+                $this->_translate = new Zend_Translate(
+                    array(
+                        'disableNotices' => true,
+                        'adapter' => 'Iron_Translate_Adapter_GettextKlear',
+                        'content' => $translationPath
+                    )
                 );
 
                 Zend_Registry::set(self::DEFAULT_REGISTRY_KEY, $this->_translate);
@@ -64,15 +66,21 @@ class Klear_Plugin_Translator extends Zend_Controller_Plugin_Abstract
         }
     }
 
+    /**
+     * Returns all used module's path. (Basically Klear module path and current module path)
+     * @return array
+     */
     protected function _getModuleDirectories()
     {
-        $moduleDirectories = array($this->_frontController->getModuleDirectory());
+        $moduleDirectories = array();
 
-        $requestModuleDirectory = $this->_frontController->getModuleDirectory($this->getRequest()->getParam('moduleName'));
+        $klearPath = $this->_frontController->getModuleDirectory();
+        $moduleDirectories[] = $klearPath;
 
-        if ($requestModuleDirectory != $this->_frontController->getModuleDirectory()) {
-
-            $moduleDirectories[] = $requestModuleDirectory;
+        $currentModule = $this->getRequest()->getParam('moduleName');
+        $requestModulePath = $this->_frontController->getModuleDirectory($currentModule);
+        if ($requestModulePath != $klearPath) {
+            $moduleDirectories[] = $requestModulePath;
         }
 
         return $moduleDirectories;
