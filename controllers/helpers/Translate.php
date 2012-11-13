@@ -36,7 +36,7 @@ class Klear_Controller_Helper_Translate extends Zend_Controller_Action_Helper_Ab
      * Example 2: translate('%1\$s + %2\$s', array($value1, $value2), $locale);
      *
      * @param  string $messageid Id of the message to be translated
-     * @return string|Fhecor_Controller_Action_Helper_Translate Translated message
+     * @return string|Klear_Controller_Action_Helper_Translate Translated message
      */
     public function translate($messageid = null)
     {
@@ -76,7 +76,7 @@ class Klear_Controller_Helper_Translate extends Zend_Controller_Action_Helper_Ab
      *
      * @param  Zend_Translate|Zend_Translate_Adapter $translate Instance of Zend_Translate
      * @throws Zend_Controller_Action_Exception When no or a false instance was set
-     * @return Fhecor_Controller_Action_Helper_Translate
+     * @return Klear_Controller_Action_Helper_Translate
      */
     public function setTranslator($translate)
     {
@@ -118,6 +118,7 @@ class Klear_Controller_Helper_Translate extends Zend_Controller_Action_Helper_Ab
      */
     public function setLocale($locale = null)
     {
+
         $translate = $this->getTranslator();
         if ($translate === null) {
             throw new Zend_Controller_Action_Exception(
