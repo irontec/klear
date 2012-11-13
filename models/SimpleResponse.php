@@ -23,7 +23,7 @@ class Klear_Model_SimpleResponse
     public function attachView(Zend_View $view)
     {
         $view->data = $this->_data;
-        $view->responseType = self::RESPONSE_TYPE;
+        $view->responseType = static::RESPONSE_TYPE;
 
         $auth = Zend_Auth::getInstance();
 

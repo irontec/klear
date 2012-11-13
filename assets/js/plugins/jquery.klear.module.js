@@ -25,12 +25,12 @@
      * Klear Module definition
      *
      * [jQuery UI Widget]
-     * 
-     */ 
-    
+     *
+     */
+
     var __namespace__ = 'klear.module';
-    
-    
+
+
     $.widget("klear.module", {
 
         /*
@@ -83,27 +83,27 @@
         },
 
         _setOption: function(key, value) {
-        	
-        	
+
+
         	if (key === 'mainModuleLoaded' && value) {
         		this.setMainLoaded();
         		return;
         	}
-        	
-        	if (key === 'addToBeLoadedFile') { 
-        		
+
+        	if (key === 'addToBeLoadedFile') {
+
         		this.totalToBeLoadedItems += value;
                 this.updateTotalLoadingItems();
                 return;
             }
-        	
+
         	if (key === 'addLoadedFile') {
         		this.totalLoadedItems++;
                 this.updateCurrentLoadingItem();
                 return;
             }
-        	
-        	
+
+
             $.Widget.prototype._setOption.apply(this, arguments);
         },
 
@@ -205,7 +205,7 @@
          */
 
         _initTab : function() {
-        	
+
         	if ((!this.options.menuLink)
                 || ($("span.ui-silk",this.options.menuLink).length <= 0)) {
                 return;
@@ -266,9 +266,9 @@
             };
 
             $.extend(dispatchData,this.options.dispatchOptions);
-            
+
             if (typeof this.options.PreDispatchMethod == 'function') {
-            	this.options.PreDispatchMethod.apply(this);           
+            	this.options.PreDispatchMethod.apply(this);
             }
 
             $.klear.request(dispatchData,this._parseDispatchResponse,this._errorResponse,this);
@@ -278,22 +278,22 @@
             this.setAsloaded();
 
             var title = '<span class="ui-silk inline dialogTitle '+this._getTabIconClass()+' "></span>';
-            
+
             var message = [];
-            
+
             if (arguments[0] && arguments[0].message != undefined) {
                 message = arguments[0].message;
             } else {
-            	
+
                 message = Array.prototype.join.call(arguments, '</em><br /><em>', [__namespace__]);
             }
-            
+
             var errorMessage = $.translate("Module registration error.", [__namespace__])
-                             + '<br /><br />' 
+                             + '<br /><br />'
                              + $.translate(
-                                 "Error: %s.", 
+                                 "Error: %s.",
                                  '<em>' + message + '</em>'
-                             ); 
+                             );
             this.showDialogError(
                 errorMessage,
                 {
@@ -306,7 +306,7 @@
         _parseDispatchResponse : function(response) {
 
             this.setAsloaded();
-            
+
             $(this.options.panel).html('');
 
             if (response.mainTemplate) {
@@ -316,9 +316,9 @@
             $(this.element)[response.plugin]({
                 data: response.data
             });
-            
+
             if (typeof this.options.PostDispatchMethod == 'function') {
-            	this.options.PostDispatchMethod.apply(this);           
+            	this.options.PostDispatchMethod.apply(this);
             }
 
         },
@@ -636,13 +636,13 @@
         },
         updateCurrentLoadingItem : function() {
             var _panel = $(this.options.panel);
-            
+
             if ((100*this.totalLoadedItems)/this.totalToBeLoadedItems > 20) {
-            	var _opacity = (100*this.totalLoadedItems)/this.totalToBeLoadedItems / 100;  
+            	var _opacity = (100*this.totalLoadedItems)/this.totalToBeLoadedItems / 100;
             } else {
-            	var _opacity = ".2"; 
+            	var _opacity = ".2";
             }
-            
+
             $(".loadingPanel",_panel).find(".current").css("opacity",_opacity).html(this.totalLoadedItems);
         },
         setMainLoaded : function() {
@@ -654,23 +654,23 @@
 
             var _panel = $(this.options.panel);
             if ($(".loadingPanel",_panel).length == 0) {
-            
+
             	var $parsetHtml = $.tmpl(this.loadingTmpl.join(''), {
                     loadingText: $.translate("Loading content", [__namespace__]),
                     loadingTextMain: $.translate("Loading Main Module", [__namespace__]),
             		loadingTextExtra: $.translate("Loading Secondary modules", [__namespace__])
                 });
-            	
+
             	_loadingItem = $parsetHtml;
-            	
+
                 _loadingItem
                     .removeAttr("id")
                     .spin({lines:8,length:18,width:4,radius:10,trail:100,speed:1.2})
                     .hide()
                     .appendTo(_panel);
-                
+
             } else {
-                var _loadingItem = $(".loadingPanel",_panel);  
+                var _loadingItem = $(".loadingPanel",_panel);
             }
 
             $("<div />").addClass("overlay")

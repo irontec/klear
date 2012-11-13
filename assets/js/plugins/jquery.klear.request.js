@@ -92,7 +92,7 @@
 
         var request_baseurl = '';
         var clean_baseurl = '';
-        
+
         if (context && context.element) {
         	var loaderTrace = function(action, param) {
         		var p = param || true;
@@ -102,7 +102,7 @@
         	var loaderTrace = function() {};
         }
         var totalItems = 0;
-        
+
         var _parseResponse = function _parseResponse(response) {
         	if (response == null) return;
             if ( (response.mustLogIn) && (params.controller != 'login') ) {
@@ -115,12 +115,14 @@
 
             $.klear.login('close');
             loaderTrace("mainModuleLoaded");
-            
             switch(response.responseType) {
                 case 'dispatch':
                 	return _parseDispatchResponse(response);
                 case 'simple':
                     return _parseSimpleResponse(response);
+                case 'redirect':
+                    window.location = response.data;
+                    break;
                 default:
                     errorCallback.apply(context,["Unknown response type"]);
                 break;
@@ -155,7 +157,7 @@
 
             var doCount = function(object, iden) {
             	var _len = 0;
-            	for(var iden in object) { 
+            	for(var iden in object) {
             		_len++;
             	}
             	return _len;
@@ -227,7 +229,7 @@
             var dfr = $.Deferred();
 
             loaderTrace("addToBeLoadedFile", total);
-            
+
             if (total == 0) {
                 dfr.resolve();
                 return;
@@ -290,7 +292,7 @@
 
             var dfr = $.Deferred();
             loaderTrace("addToBeLoadedFile", total);
-            
+
             if (total == 0) {
                 dfr.resolve();
                 return;
@@ -360,9 +362,9 @@
 
         var _loadCss = function(css, total) {
             var dfr = $.Deferred();
-            
+
             loaderTrace("addToBeLoadedFile", total);
-            
+
             if (total == 0) {
                 dfr.resolve();
                 return;
@@ -388,22 +390,22 @@
 
             //La petición se realizará sobre un iframe oculto, no se controla response
             var _name = 'ftarget' + Math.round(Math.random(1000,1000));
-            
+
             var _iframe = $("<iframe />",{"name":_name}).hide();
-            
+
             var _theForm = $("<form />")
                                 .attr({action: req.action,method: req.type, target: _name});
 
-            
+
             $.each($.param(req.data).split('&'),function(idx, val) {
             	var _item = val.split('=');
             	$("<input>")
                 	.attr("name",decodeURIComponent(_item[0]))
                 	.attr("type","hidden")
                 	.val(_item[1])
-                	.appendTo(_theForm);	
+                	.appendTo(_theForm);
             });
-            
+
             _iframe.appendTo("body");
             _theForm
                 .appendTo('body')
