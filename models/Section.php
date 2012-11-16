@@ -8,16 +8,19 @@
 class Klear_Model_Section  implements \IteratorAggregate
 {
 
+    use Klear_Model_Trait_Gettext;
+    
     protected $_name;
 
     protected $_description;
+    
+    protected $_notMultilangPropertyKeys = array();
 
     protected $_menu = null;
 
     protected $_subsections;
 
     protected $_skip = array();
-
 
     protected $_default = false;
 
@@ -51,9 +54,10 @@ class Klear_Model_Section  implements \IteratorAggregate
 
         $config = new Klear_Model_ConfigParser();
         $config->setConfig($data);
+        
         $this->_name = $config->getRequiredProperty("title");
         $this->_description = $config->getProperty("description");
-
+        
         $this->_class = $config->getProperty("class");
         $this->_default = (bool)$config->getProperty("default");
 
@@ -75,11 +79,11 @@ class Klear_Model_Section  implements \IteratorAggregate
 
     public function getName()
     {
-        return $this->_name;
+        return $this->_gettextCheck($this->_name);
     }
 
     public function getDescription()
     {
-        return $this->_description;
+        return $this->_gettextCheck($this->_description);
     }
 }
