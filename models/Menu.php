@@ -44,13 +44,13 @@ class Klear_Model_Menu implements \IteratorAggregate
 
     public function parse()
     {
-        foreach ($this->_config as $name => $sectionData) {
+        foreach ($this->_config as $sectionIden => $sectionData) {
 
             $section = new Klear_Model_Section;
 
             $section
                 ->setParentMenu($this)
-                ->setName($name)
+                ->setName($sectionIden)
                 ->setData($sectionData);
 
             $this->_sections[] = $section;
