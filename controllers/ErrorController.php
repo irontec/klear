@@ -95,32 +95,16 @@ class Klear_ErrorController extends Zend_Controller_Action
             default:
                 // application error
                 $this->getResponse()->setHttpResponseCode(500);
-//                 $this->view->message = $this->view->translate('Application error');
+//              $this->view->message = $this->view->translate('Application error');
                 $this->view->message = $errors->exception->getMessage();
                 $this->view->code = 500;
+                $this->view->exceptionCode = $errors->exception->getCode();
 
                 if (APPLICATION_ENV == 'development') {
                     $this->view->file = $errors->exception->getFile();
                     $this->view->line = $errors->exception->getLine();
                     $this->view->traceString = $errors->exception->getTraceAsString();
                 }
-                break;
-        }
-
-        $exceptionType = strtolower(get_class($errors->exception));
-        switch ($exceptionType)
-        {
-            case 'soapfault':
-                if (!$code = $errors->exception->faultcode) {
-
-                    $codeSpec = explode(":", $errors->exception->faultcode);
-
-                    if (sizeof($codeSpec) > 1) {
-                        $code = $codeSpec[1];
-                    }
-                }
-                $this->view->code = $code;
-                $this->view->message = $errors->exception->getMessage();
                 break;
         }
 
