@@ -276,10 +276,17 @@
                         header: "ui-icon-circle-arrow-e",
                         headerSelected: "ui-icon-circle-arrow-s"
                 },
-                active: 0,
                 collapsible: true,
                 autoHeight: false
             });
+            
+            // collapsible : true, hace que active: 0 no sea activo :S
+            // lanzamos evento a  mano
+            setTimeout(function() {
+            	if ($sidebar.accordion("option","active") === false) {
+            		$("#sidebar").accordion('activate',0);
+            	}
+            },700);
             
             $("li", $sidebar).on("mouseenter",function() {
                 $(this).addClass("ui-state-highlight");
