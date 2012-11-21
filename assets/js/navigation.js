@@ -493,8 +493,8 @@
     $.klear.toggleMenu = function() {
         
         if ($sidebar.data("seized")) {
-            $(".textnode", $sidebar).stop().animate({opacity:'1',fontSize:'1em'});
-            $sidebar.animate({width:'300px'});
+            $sidebar.animate({width: menuMeasures.getWidth() + 'px'});
+            $(".textnode", $sidebar).stop().animate({opacity:'1', 'font-size': menuMeasures.getFontSize()});
             $("li",$sidebar).animate({padding:"0.5em"});
             
             $sidebar.data("seized",false);
@@ -515,6 +515,41 @@
     $.klear.isMenuCollapsed = function() {
         return $("#sidebar").data("seized");
     };
+    
+    
+    var menuMeasures = {
+       		data : {
+       			normal : {
+       				fontsize : '1em',
+       				width: 300
+       			},
+       			small  : {
+       				fontsize : '0.70em',
+       				width: 180
+       			}
+       		},
+       		getFontSize : function() {
+       			return this.data[this.current]['fontsize'];
+       		}, 
+       		getWidth : function() {
+       			return this.data[this.current]['width'];
+       		}, 
+       		current : 'normal',
+       		loadSize : function() {
+       			
+       			if ($(window).width() < 1030) {
+       				menuMeasures.current = 'small';
+       			} else {
+       				menuMeasures.current = 'normal';
+       			}
+       			$sidebar.data("seized",! $sidebar.data("seized"));
+       			$.klear.toggleMenu();
+       		}
+    };
+    
+    $(window).on('resize', menuMeasures.loadSize);
+    $(document).on("kMenuLoaded", menuMeasures.loadSize);
+    
     
     $("body").on('click','a.toogleMenu',function(e) {
         if (e) {
