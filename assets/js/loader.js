@@ -77,18 +77,22 @@ var console = window.console || { log : function() {}};
     // El total de cargas serán los "base" + los 4 principales
     _loader.total = _baseScripts.length + 4;
 
+    var _noCDN = document.getElementsByTagName('head')[0].getAttribute("rel") &&
+    document.getElementsByTagName('head')[0].getAttribute("rel") == 'noCDN';
+
     yepnope.addPrefix('local', function(resourceObj) {
         resourceObj.url =  _base + resourceObj.url;
         return resourceObj;
     });
 
-
-    var _noCDN = document.getElementsByTagName('head')[0].getAttribute("rel") &&
-                    document.getElementsByTagName('head')[0].getAttribute("rel") == 'noCDN';
-
     yepnope.addPrefix('cdnCheck', function(resourceObj) {
-        resourceObj.noexec = _noCDN;
-        return resourceObj;
+    	if (_noCDN) {
+    		// Si estamos en un sistema "super seguro" que evita utilizar CDNs, evitamos también el preload
+    		resourceObj.url = 'about:blank;';
+    		resourceObj.noexec = true;
+    	}
+
+    	return resourceObj;
     });
 
 
