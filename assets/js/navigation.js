@@ -3,34 +3,34 @@
  */
 
 ;(function($) {
-    
+
     /*
      * setting / getting $.klear Namespace
      */
-    
+
     $.klear = $.klear || {};
-    
+
     var __namespace__ = 'klear.navigation';
-    
+
     $.klear.checkDeps = function(dependencies, callback) {
-        
+
         if (typeof callback._numberOfTries == 'undefined') {
             callback._numberOfTries = 0;
         } else {
             callback._numberOfTries++;
         }
-        
+
         if (!dependencies.length) {
             throw "Wrong dependencies parameter type.";
         }
-        
+
         if (callback._numberOfTries > 10) {
             throw "JS Dependecy Timeout for: " + dependencies.join(', ');
         }
-        
+
         var depLength = dependencies.length;
         for(var i=0; i < depLength; i++) {
-            
+
             var segments = dependencies[i].split('.');
             var prev = window;
             for(var j=0; j < segments.length; j++) {
@@ -44,14 +44,14 @@
         }
         return true;
     };
-    
+
     /*
      * Checking open in background Event:
      * control | middle click
      */
-    
+
     $.klear.checkNoFocusEvent = function(e, $el, $link) {
-        
+
         if(e.ctrlKey) {
             $el.data('noFocus', true);
             return;
@@ -67,12 +67,12 @@
                var button= (e.which < 2) ? "LEFT" :
                          ((e.which == 2) ? "MIDDLE" : "RIGHT");
         }
-        
+
         if (button == 'MIDDLE') {
-            
+
             e.stopPropagation();
             e.preventDefault();
-        
+
             var prevHref = $link.attr("href");
             $link.removeAttr("href");
             var $_link = $link;
@@ -83,7 +83,7 @@
         }
 
     };
-    
+
     $.klear.klearDialog = function (msg, options) {
         $.extend(options, {
             icon: options.icon || 'ui-icon-info',
@@ -98,15 +98,15 @@
                 $(this).remove();
             }
         };
-        
+
         $.extend(dialogSettings, options);
-        
-        var dialogTemplate = dialogSettings.template || 
+
+        var dialogTemplate = dialogSettings.template ||
             '<div class="ui-widget"><div class="ui-state-${state} ui-corner-all inlineMessage"><p><span class="ui-icon ${icon} inlineMessage-icon"></span>{{html text}}</p></div></div>';
         var $parsedHtml = $.tmpl(dialogTemplate, dialogSettings);
         $parsedHtml.dialog(dialogSettings);
     };
-    
+
     $.klear.klearMessage = function (msg, opts) {
         var options = {
             type: 'msg',
@@ -117,7 +117,7 @@
         $.extend(options, opts);
         $.klear.klearDialog(msg, options);
     };
-    
+
     $.klear.klearWarn = function(msg, opts) {
         var options = {
             type: 'warn',
@@ -128,7 +128,7 @@
         $.extend(options, opts);
         $.klear.klearDialog(msg, options);
     };
-    
+
     $.klear.klearError = function(msg, opts) {
         var options = {
             type: 'error',
@@ -140,19 +140,19 @@
         $.extend(options, opts);
         $.klear.klearDialog(msg, options);
     };
-    
 
-    
+
+
     /*
      * Hello Klear Server
      */
-    
+
     $.klear.hello = function(option){
         var options = {
                 controller: 'index',
                 action: 'hello'
         };
-        
+
         switch(option) {
             case 'rememberCallback':
                 this.callback = arguments[1];
@@ -166,10 +166,10 @@
                 $.extend(options,arguments[1]);
             break;
         }
-        
+
         var self = this;
         $.klear._doHelloSuccess = function(response) {
-            
+
             if (response.success && response.success === true) {
                 if (self.callback) {
                     self.callback();
@@ -179,12 +179,12 @@
                 }
             }
         };
-        
+
         $.klear._doHelloError = function(response) {
             console.log(response);
         };
-        
-        
+
+
         $.klear.request(options,
                         $.klear._doHelloSuccess,
                         $.klear._doHelloError,
@@ -193,22 +193,22 @@
     };
 
     $.klear.menu = function(force, options) {
-        
+
         var options = options || {};
-        
+
         if (this.loaded && typeof force == 'undefined') {
             return;
         }
-        
+
         var $sidebar = $('#sidebar');
         var $headerbar = $('#headerbar');
         var $footerbar = $('#footerbar');
         var $infobar = $('#applicationInfo');
-        
+
         var self = this;
-        
+
         $.klear._doMenuSuccess = function(response) {
-            
+
             var navMenus = response.data.navMenus;
 
             if (response.data.jqLocale) {
@@ -220,37 +220,37 @@
             $headerbar.empty();
             $footerbar.empty();
             $infobar.empty();
-            
+
             $.tmpl('klearSidebarMenu', navMenus.sidebar).appendTo($sidebar);
-            
+
             $.tmpl('klearHeaderbarMenu', navMenus.headerbar).appendTo($headerbar);
-            
+
             $.tmpl('klearFooterbarMenu', navMenus.footerbar).appendTo($footerbar);
-            
+
             $.tmpl('klearInfoBar').appendTo($infobar);
-            
+
             //Este template no lo queremos cacheado nunca
             $.template['klearInfoBar'] = undefined;
-            
+
             $sidebar.fadeIn();
             $headerbar.fadeIn();
             $footerbar.fadeIn();
             $infobar.fadeIn();
-            
+
             $("a",$sidebar).tooltip();
             $("a",$headerbar).tooltip();
             $("a",$footerbar).tooltip();
-            
+
             if (localStorage.getItem('toogleMenu') === true) {
                 $.klear.toggleMenu();
             }
-            
+
             $(document).trigger("kMenuLoaded");
-            
+
             /*
-             * Cargar 
+             * Cargar
              */
-            
+
             $.klear.request(
                 {
                     controller: 'error',
@@ -268,7 +268,7 @@
             $.klear.keepAlive();
 
             /*
-             * JQ Decorartors 
+             * JQ Decorartors
              */
 
             $sidebar.accordion({
@@ -279,7 +279,7 @@
                 collapsible: true,
                 autoHeight: false
             });
-            
+
             // collapsible : true, hace que active: 0 no sea activo :S
             // lanzamos evento a  mano
             setTimeout(function() {
@@ -287,34 +287,34 @@
             		$("#sidebar").accordion('activate',0);
             	}
             },700);
-            
+
             $("li", $sidebar).on("mouseenter",function() {
                 $(this).addClass("ui-state-highlight");
             }).on("mouseleave",function() {
                 $(this).removeClass("ui-state-highlight");
             });
-            
+
             self.loaded = true;
-            
+
             /*
-             * 
+             *
              */
-            
-            
+
+
             $toolsBar = $( "#headerToolsbar" ),
             $langBar = $( "#headerLanguagebar" ),
             $langSelector = $( ".langSelector" );
-            
+
             $langSelector.buttonset();
             $toolsBar.buttonset();
 
             $( "label", $toolsBar ).tooltip();
-            
+
             $( "input",  $langSelector).off('change').on('change', function(){
                 $.klear.language = $(this).val();
                 $.klear.restart({'language': $(this).val()});
             });
-            
+
             $( "input#logout", $toolsBar ).off('change').on('change', function(){
                 var $self = $(this);
                 $.getJSON($self.data('url'),{json:true}, function(){
@@ -325,7 +325,7 @@
                     $.klear.restart({}, true);
                 });
             });
-            
+
             $( "input#tabsPersist", $toolsBar ).off('change').on('change', function(){
                 var $self = $(this);
                 if ($.klear.tabPersist.enabled()) {
@@ -333,10 +333,10 @@
                 } else {
                     $.klear.tabPersist.enable();
                 }
-                
+
                 $self.trigger('update-icon');
             });
-            
+
             $( "input#tabsPersist", $toolsBar ).off('update-icon').on('update-icon', function(){
                 var $self = $(this).next('label');
                 var $icon = $('.ui-icon', $self);
@@ -351,7 +351,7 @@
             $( "#menuCollapse", $toolsBar ).off('change').on('change', function(){
                 $.klear.toggleMenu();
             });
-            
+
             $( "#menuCollapse", $toolsBar ).off('update-icon').on('update-icon', function(){
                 var $self = $(this).next('label');
                 var $icon = $('.ui-icon', $self);
@@ -362,12 +362,12 @@
                     $icon.removeClass('ui-icon-arrowthickstop-1-e').addClass('ui-icon-arrowthickstop-1-w');
                 }
             });
-            
-            
+
+
             $langBar.show();
             $toolsBar.show();
-            
-            
+
+
             //TODO: refactorizar tabPersist para que tenga consistencia con autoplay
             if ($.klear.tabPersist.enabled()) {
                 $.klear.tabPersist
@@ -381,27 +381,27 @@
                             .loadAutoPlay()
                             .launch();
             }
-            
+
         };
-        
+
         $.klear._doMenuError = function(response) {
             console.log(response);
         };
-        
+
         var settings = $.extend({
             controller: 'menu',
             action: 'index'
         },options);
-        
+
         $(document).trigger("kMenuStartLoad");
-        
+
         $.klear.request(
             settings,
             $.klear._doMenuSuccess,
             $.klear._doMenuSuccess,
             this
         );
-        
+
         $.klear.tabPersist = {
             tabs: [],
             add : function( iden ) {
@@ -434,10 +434,10 @@
             },
             loadAutoPlay: function() {
                 if ($('a.subsection.autoplay:eq(0)').length == 1) {
-                    this.tabs.push('#' + $('a.subsection.autoplay:eq(0)').attr("id"));    
+                    this.tabs.push('#' + $('a.subsection.autoplay:eq(0)').attr("id"));
                 }
                 return this;
-                
+
             },
             launch : function() {
 
@@ -451,72 +451,72 @@
             },
             enable : function(){
                 localStorage.setItem('tabPersistEnabled', '1');
-            }, 
+            },
             disable : function(){
                 localStorage.setItem('tabPersistEnabled', '0');
             },
             enabled : function() {
                 return localStorage.getItem('tabPersistEnabled') == '1';
-            }            
+            }
         };
-        
+
         $sidebar.add($headerbar).add($footerbar);
-        
+
         $('body').on("mouseup","a.subsection", function(e) {
             e.preventDefault();
             e.stopPropagation();
-            
+
             var iden = $(this).attr("id").replace(/^target-/,'');
-            
+
             $.klear.checkNoFocusEvent(e, $.klear.canvas, $(this));
-            
+
             if ($("#tabs-"+iden).length > 0) {
                 $.klear.canvas.tabs('select', '#tabs-'+iden);
                 return;
             }
             var idContent = "#tabs-" + iden;
             var title = $(this).text()!=""? $(this).text():$(this).parent().attr('title');
-            
+
             $.klear.canvas.tabs( "add", idContent, title);
-            
+
             $.klear.tabPersist.add(idContent);
-            
-            
+
+
         }).on("click","a.subsection",function(e) {
             e.preventDefault();
             e.stopPropagation();
         });
-        
+
     };
-    
+
     var $sidebar = $("#sidebar");
     $.klear.toggleMenu = function() {
-        
+
         if ($sidebar.data("seized")) {
             $sidebar.animate({width: menuMeasures.getWidth() + 'px'});
             $(".textnode", $sidebar).stop().animate({opacity:'1', 'font-size': menuMeasures.getFontSize()});
             $("li",$sidebar).animate({padding:"0.5em"});
-            
+
             $sidebar.data("seized",false);
         } else {
-            
+
             $(".textnode", $sidebar).animate({fontSize:'0em',opacity:'0'});
             $sidebar.animate({width:'50px'});
             $("li",$sidebar).animate({padding:"0em"});
             $sidebar.data("seized",true);
         }
-        
+
         localStorage.setItem('toogleMenu', $.klear.isMenuCollapsed());
         $( "#menuCollapse").trigger('update-icon');
 
-        
+
     };
-    
+
     $.klear.isMenuCollapsed = function() {
         return $("#sidebar").data("seized");
     };
-    
-    
+
+
     var menuMeasures = {
        		data : {
        			normal : {
@@ -530,13 +530,13 @@
        		},
        		getFontSize : function() {
        			return this.data[this.current]['fontsize'];
-       		}, 
+       		},
        		getWidth : function() {
        			return this.data[this.current]['width'];
-       		}, 
+       		},
        		current : 'normal',
        		loadSize : function() {
-       			
+
        			if ($(window).width() < 1030) {
        				menuMeasures.current = 'small';
        			} else {
@@ -546,11 +546,11 @@
        			$.klear.toggleMenu();
        		}
     };
-    
+
     $(window).on('resize', menuMeasures.loadSize);
     $(document).on("kMenuLoaded", menuMeasures.loadSize);
-    
-    
+
+
     $("body").on('click','a.toogleMenu',function(e) {
         if (e) {
             e.preventDefault();
@@ -558,33 +558,33 @@
         }
         $.klear.toggleMenu();
     });
-    
-    
+
+
     $.klear.login = function(option){
 
         switch(option) {
             case 'close':
-                
+
                 if (this.$loginForm) {
                     this.$loginForm.fadeOut(function() {
                         $(this).dialog("destroy").remove();
                     });
                     // klear custom events
                     $(document).trigger("kAuthSuccess");
-                    
+
                 }
-                
+
                 return;
             break;
         }
-        
-        
+
+
         var self = this;
-        
+
         $.klear._doLoginSuccess = function(response) {
-            
+
             self.$loginForm = $.tmpl('klearForm', response.data);
-            
+
             self.$loginForm.appendTo("#canvas").dialog({
                 resizable: false,
                 modal: true,
@@ -599,37 +599,37 @@
                     $("input:text:eq(0)",self.$loginForm).trigger("focusin").select();
                 }
             });
-            
+
             $("select",self.$loginForm).combobox();
             $("input",self.$loginForm).removeAttr("disabled");
             $("input:submit",self.$loginForm).button();
             $("input:text:eq(0)",self.$loginForm).trigger("focusin").select();
-            
+
             if ($("div.loginError",self.$loginForm).length > 0) {
-    
+
                 self.$loginForm.effect("shake",{times: 3},60);
             }
-            
+
             $("form",self.$loginForm.parent()).on('submit',function(e) {
-                
+
                 e.preventDefault();
                 e.stopPropagation();
                 $.klear.hello('options',{
                             post: $(this).serialize(),
                             isLogin: true
                 });
-                
+
                 $("input",self.$loginForm).attr("disabled","disabled");
             });
-            
-            
+
+
         };
-        
+
         $.klear._doLoginError = function(response) {
             console.log(response);
         };
-        
-        
+
+
         $.klear.request(
             {
                 controller: 'login',
@@ -639,21 +639,21 @@
             $.klear._doLoginSuccess,
             this
         );
-        
+
         return this;
-        
+
     };
 
     $.klear.loadCanvas = function(){
         /*
          * TABS
          */
-        
+
         var tabTemplate = "<li title='#{label}'><span class='ui-silk'></span>"+
             "<span class='ui-icon ui-icon-close'></span>" +
-            "<span class='ui-icon ui-icon-arrowrefresh-1-w'></span>" + 
+            "<span class='ui-icon ui-icon-arrowrefresh-1-w'></span>" +
             "<a href='#{href}'>#{label}</a></li>";
-        
+
         $.klear.canvas.tabs({
             tabTemplate: tabTemplate,
             scrollable: true,
@@ -666,14 +666,14 @@
                     $(this).data('noFocus', false)
                     backgroundTab = true;
                 }
-                
+
                 if (backgroundTab !== true) {
-                    $.klear.canvas.tabs('select', ui.index);    
+                    $.klear.canvas.tabs('select', ui.index);
                 }
-                
-                
+
+
                 var $tabLi = $(ui.tab).parent("li");
-                
+
                 $tabLi.klearModule({
                     ui: ui,
                     container : $.klear.canvas
@@ -681,39 +681,39 @@
 
                 // Se invoca custom event para actualizar objeto klear.module (si fuera necesario);
                 $.klear.canvas.trigger("tabspostadd",ui);
-                                
+
                 $tabLi.klearModule("dispatch");
-                
+
                 if (backgroundTab !== true) {
                     //$tabLi.klearModule("highlightOn");
                 }
-                
+
                 $("li",$.klear.canvas).each(function(idx,elem) {
                     $(elem).klearModule("option","tabIndex",idx);
                 });
-                
-                
+
+
             },
             select : function(event, ui) {
-                
+
                 $("#tabsList li").each(function(idx,elem) {
                     $(elem).klearModule("highlightOff");
                 });
-                
+
                 var $tabLi = $(ui.tab).parent("li");
-                
+
                 $tabLi
                     .klearModule("updateLoader");
                     //.klearModule("highlightOn");
             },
             remove: function(event, ui) {
-                
+
                 $.klear.tabPersist.remove($(ui.tab).attr('href'));
-                
+
                 $("li",$.klear.canvas).each(function(idx,elem) {
                     $(elem).klearModule("option","tabIndex",idx);
                 });
-                
+
                 $.klear.canvas.tabs('select', $.klear.canvas.tabs('option', 'selected'));
             }
         }).find( ".ui-tabs-nav" ).sortable({ axis: "x" });
@@ -724,15 +724,15 @@
             var $tab = $(this).parent("li");
             $tab.klearModule("close");
         });
-        
+
         $( "#tabsList").on("click","span.ui-icon-arrowrefresh-1-w", function() {
             var $tab = $(this).parent("li");
             $tab.klearModule("reDispatch");
         });
-        
-        
+
+
         $(document).on("keydown",function(e) {
-            
+
             var ctrlAltActions = {
                 87 : {
                     key : 'w',
@@ -751,8 +751,8 @@
                     key : 'rePag',
                     action : function(selectedTab) {
                         selectedTab++;
-                        if (selectedTab>=$("#tabsList li").length) {
-                            selectedTab = 0;    
+                        if (selectedTab >= $("#tabsList li").length) {
+                            selectedTab = 0;
                         }
                         $.klear.canvas.tabs('select', selectedTab);
                     }
@@ -763,24 +763,23 @@
                         selectedTab--;
                         selectedTab = selectedTab<0 ? $("#tabsList li").length-1 : selectedTab ;
                         $.klear.canvas.tabs('select', selectedTab);
-                    }                    
+                    }
                 },
                 67 : { // c
                     key: 'c',
                     action: function(selectedTab) {
-                        
                         $.klear.cacheEnabled = !$.klear.cacheEnabled;
                         console.log($.klear.cacheEnabled? "Cache Habilitada":"Cache Deshabilitada");
-                        
+
                     }
                 },
                 77 : {
                     key: 'm',
                     action: $.klear.toggleMenu
                 },
-                    
+
             };
-            
+
             var altActions = {
                 37 : { //Disable alt + back arrow shortcut on browser
                     key: 'backArrow',
@@ -795,7 +794,7 @@
             ) {
                 e.preventDefault();
                 e.stopPropagation();
-                
+
                 var selectedTab = parseInt($.klear.canvas.tabs('option', 'selected'));
 
                 if (e.altKey && e.ctrlKey) {
@@ -805,15 +804,15 @@
                     // Alt + Key
                     altActions[e.which]['action'](selectedTab);
                 }
-            
+
                 return;
             }
         });
-        
+
     };
-    
+
     $.klear.restart = function(opts, removetabs) {
-        
+
 
         var removetabs = removetabs || false;
         if (removetabs == true) {
@@ -827,40 +826,40 @@
         $.klear.requestReloadTranslations();
 
     };
-    
+
     $.klear.start = function() {
         /*
          * Setting klear.baseurl value
          */
         $.klear.baseurl = $.klear.baseurl || $("base").attr("href");
-        
+
         $.klear.language = $('html').attr('lang');
-        
-        
+
+
         $.klear.baseCanvas = $("#canvasWrapper").html();
-        
+
         /*
          * Setting klear canvas MAIN container.
          */
-        
+
         $.klear.canvas = $("#canvas");
-        
-        
+
+
         /*
          * Loading and binding main container
          */
         $.klear.loadCanvas();
         /*
          * Saying hello to server.
-         * 
+         *
          * - check user
-         * 
+         *
          */
         $.klear.hello();
         /*
-         * Global Bindings 
+         * Global Bindings
          */
-        
+
         $.klear.keepAlive = function() {
             clearTimeout($.klear.keepAliveTimer);
             $.klear.keepAliveTimer = setTimeout(function() {
@@ -869,29 +868,34 @@
                 });
             }, 300000);
         };
-        
+
     };
 
-    
+
 })(jQuery);
 
 
 /*
- * document ready Klear Launch 
+ * document ready Klear Launch
  */
 
 ;(function($) {
-    
+
     $(document).ready(function() {
-    	
+
         $(document).on('contextmenu', 'a', function (e) {
             e.preventDefault();
             e.stopPropagation();
             return false;
         });
-        
+
         $.klear.start();
 
+    });
+
+    $(window).on('beforeunload', function(e){
+        e.preventDefault();
+        return "Do you want really want to leave?";
     });
 
 })(jQuery);
