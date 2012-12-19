@@ -72,7 +72,7 @@ var console = window.console || { log : function() {}};
                         'base!../klearMatrix/js/translation/jquery.klearmatrix.translation.js',
                         'base!../klearMatrix/js/klearMatrix.compiled.js'
                         ];
-    _scripts = [];
+    var _scripts = [];
 
     // El total de cargas serán los "base" + los 4 principales
     _loader.total = _baseScripts.length + 4;
