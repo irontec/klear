@@ -9,7 +9,7 @@ class Klear_Model_SubSection extends Klear_Model_Section
 {
     protected $_mainFile;
     protected $_class;
-
+    
     public function setMainFile($file)
     {
         //TODO: Excepción cuando no exista el fichero
@@ -31,4 +31,30 @@ class Klear_Model_SubSection extends Klear_Model_Section
     {
         return $this->_default;
     }
+    
+    protected function _hasAccess()
+    {
+        $auth = Zend_Auth::getInstance();
+        
+        if (!$auth->hasIdentity()) {
+            return true;
+        }
+        
+        if (!isset($auth->getIdentity()->access)) {
+            return true;
+        }
+        
+        $acl = $auth->getIdentity()->access;
+        
+        if ($auth->getIdentity()->getAdministrator()) {
+            return true;
+        }
+        
+        if (is_array($acl) && in_array($this->_mainFile, $acl)) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+    
 }

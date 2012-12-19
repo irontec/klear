@@ -63,5 +63,10 @@ abstract class Klear_Model_Settings_Dynamic_Abstract
     {
         return $rawJavascripts;
     }
+    
+    public function processTimezone($timezone)
+    {
+        return $timezone;
+    }
 
 }

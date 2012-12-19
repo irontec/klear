@@ -53,7 +53,10 @@ class Klear_Model_Menu implements \IteratorAggregate
                 ->setName($sectionIden)
                 ->setData($sectionData);
 
-            $this->_sections[] = $section;
+            
+            if ($section->hasSubsections()==true) {
+                $this->_sections[] = $section;
+            }
         }
         $this->_config = null;
     }

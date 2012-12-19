@@ -15,6 +15,7 @@ class Klear_MenuController extends Zend_Controller_Action
     protected function _getMenu($menuName)
     {
         $menu = array();
+        
         foreach ($this->_klearBootstrap->getOption($menuName) as $section) {
             $tmpSection = array(
                     'sectionId' => $section->getName(),
