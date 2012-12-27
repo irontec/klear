@@ -1,1 +1,1 @@
-java -jar closure-stylesheets.jar ../klear/assets/css/base/reset.css ../klear/assets/css/base/layout.css ../klear/assets/css/base/klear.css --output_file ../klear/assets/css/base/klear.min.css
+java -jar closure-stylesheets.jar ../css/base/reset.css ../css/base/layout.css ../css/base/klear.css --output_file ../css/base/klear.min.css

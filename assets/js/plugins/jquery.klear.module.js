@@ -543,9 +543,7 @@
             });
             $parsetHtml.prependTo(this.options.panel);
             var _timeout = parseInt(options.timeout);
-            if (options.timeout<=0) {
-
-            } else {
+            if (options.timeout>0) {
                 window.setTimeout(function(){
                     $parsetHtml.fadeOut(function(){
                         $parsetHtml.remove();
@@ -687,6 +685,13 @@
                 $(this.options.ui.tab).removeClass("ui-state-disabled");
             }
 
+        }, 
+        updateTitle : function(title) {
+        	console.log(title, $(this.options.ui.tab));
+        	
+        	if (title && title != '')  {
+        		$(this.options.ui.tab).html(title);
+        	}
         }
 
     });

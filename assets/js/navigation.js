@@ -668,7 +668,8 @@
                 }
 
                 if (backgroundTab !== true) {
-                    $.klear.canvas.tabs('select', ui.index);
+                	$.klear.canvas.tabs('select', ui.index);
+                	$("html, body").animate({ scrollTop: 0 }, 600);
                 }
 
 
