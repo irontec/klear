@@ -35,6 +35,7 @@ $.widget("ui.tooltip", {
 	},
 	_init: function() {
 		var self = this;
+		this.showTimeout;
 		this.tooltip = $("<div></div>")
 			.attr("id", "ui-tooltip-" + increments++)
 			.attr("role", "tooltip")
@@ -90,7 +91,9 @@ $.widget("ui.tooltip", {
 			}, 13);
 		});
 		if (content) {
-			self._show(event, target, content);
+			self.showTimeout = setTimeout(function() {
+				self._show(event, target, content);
+			}, 350);
 		}
 	},
 	
@@ -131,6 +134,8 @@ $.widget("ui.tooltip", {
 		
 		if (this.options.disabled)
 			return;
+		
+		clearTimeout(this.showTimeout);
 		
 		current.removeAttr("aria-describedby");
 		this.tooltip.attr("aria-hidden", "true");
