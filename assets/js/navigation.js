@@ -892,11 +892,11 @@
 
         $.klear.start();
 
-    });
+        $(window).on('beforeunload', function(e){
+        	e.preventDefault();
+        	return $.translate('Do you want really want to leave?',[__namespace__]);
+        });
 
-    $(window).on('beforeunload', function(e){
-        e.preventDefault();
-        return "Do you want really want to leave?";
     });
 
 })(jQuery);
