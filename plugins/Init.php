@@ -71,7 +71,9 @@ class Klear_Plugin_Init extends Zend_Controller_Plugin_Abstract
             'name' => 'File',
             'options' => array(
                 'master_files' => array(
-                    '/dev/null'
+                //Este archivo es necesario porque 
+                //el constructor nos obliga a ello
+                    __DIR__ . '/fakeFile'
                 ),
                 'automatic_serialization' => true,
                 'lifetime' => null
