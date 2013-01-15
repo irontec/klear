@@ -9,21 +9,25 @@ class Klear_Model_Gettext
     public static function gettextCheck($string)
     {
         $pregMixed = preg_match_all(
-                    "|_\([\'\"](.*)[\'\"],[\s.]_\([\'\"](.*)[\'\"]\)|U",
-                    $string,
-                    $resultMixed,
-                    PREG_PATTERN_ORDER);
+            "|_\([\'\"](.*)[\'\"],[\s.]_\([\'\"](.*)[\'\"]\)|U",
+            $string,
+            $resultMixed,
+            PREG_PATTERN_ORDER
+        );
+
         $preg = preg_match_all(
-                "|_\([\'\"](.*)[\'\"]\)|U",
-                $string,
-                $result,
-                PREG_PATTERN_ORDER);
+            "|_\([\'\"](.*)[\'\"]\)|U",
+            $string,
+            $result,
+            PREG_PATTERN_ORDER
+        );
 
         $pregPlural = preg_match_all(
-                "|ngettext\([\'\"](.*)[\'\"],[\s][\'\"](.*)[\'\"],[\s](.*)\)|U",
-                $string,
-                $resultPlural,
-                PREG_PATTERN_ORDER);
+            "|ngettext\([\'\"](.*)[\'\"],[\s][\'\"](.*)[\'\"],[\s](.*)\)|U",
+            $string,
+            $resultPlural,
+            PREG_PATTERN_ORDER
+        );
 
         $translator = Zend_Registry::get(Klear_Plugin_Translator::DEFAULT_REGISTRY_KEY);
         if ($pregMixed == 1 && count($resultMixed) == 3) {
