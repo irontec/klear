@@ -1,12 +1,12 @@
 <?php
-trait Klear_Model_Trait_Gettext 
+class Klear_Model_Gettext
 {
     /**
      * Miramos "a lo gettext para traducirlo automáticamente"
-     * 
+     *
      * @param unknown_type $string
      */
-    protected function _gettextCheck($string)
+    public static function gettextCheck($string)
     {
         $pregMixed = preg_match_all(
                     "|_\([\'\"](.*)[\'\"],[\s.]_\([\'\"](.*)[\'\"]\)|U",
@@ -18,13 +18,13 @@ trait Klear_Model_Trait_Gettext
                 $string,
                 $result,
                 PREG_PATTERN_ORDER);
-        
+
         $pregPlural = preg_match_all(
                 "|ngettext\([\'\"](.*)[\'\"],[\s][\'\"](.*)[\'\"],[\s](.*)\)|U",
                 $string,
                 $resultPlural,
                 PREG_PATTERN_ORDER);
-        
+
         $translator = Zend_Registry::get(Klear_Plugin_Translator::DEFAULT_REGISTRY_KEY);
         if ($pregMixed == 1 && count($resultMixed) == 3) {
             $replace = array();
