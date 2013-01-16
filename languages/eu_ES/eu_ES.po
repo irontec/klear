@@ -3,8 +3,8 @@ msgstr ""
 "Project-Id-Version: Klear\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2012-05-03 18:01+0100\n"
-"PO-Revision-Date: 2012-05-07 11:01+0100\n"
-"Last-Translator: Lander Ontoria <lander@irontec.com>\n"
+"PO-Revision-Date: 2013-01-16 10:26+0100\n"
+"Last-Translator: Arkaitz <arkaitz@irontec.com>\n"
 "Language-Team: Irontec-Klear <lander+klear@irontec.com>\n"
 "Language: \n"
 "MIME-Version: 1.0\n"
@@ -82,4 +82,20 @@ msgstr "Fitxa hau blokeatuta dago."
 #: assets/js/plugins/jquery.klear.module.js:604
 msgid "Loading content"
 msgstr "Edukia kargatzen"
+
+#: assets/js/klear.compiled.js:25
+msgid "Loading Main Module"
+msgstr "Modulu printzipala kargatzen"
+
+#: assets/js/klear.compiled.js:25
+msgid "Loading Secondary modules"
+msgstr "Bigarren mailako moduluak kargatzen"
+
+#: layouts/scripts/main/header.phtml:88
+msgid "Collapse Menu."
+msgstr "Menua zabaldu/itxi"
+
+#: layouts/scripts/main/header.phtml:95
+msgid "Remember opened main tabs."
+msgstr "Irekitako lehioak gogoratu."
 
