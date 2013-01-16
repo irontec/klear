@@ -25,9 +25,9 @@ class Klear_View_Helper_Info extends Klear_View_Helper_Base
     protected function _resolveVariables($content)
     {
         return preg_replace_callback(
-                '/\$\{([^\}]*)\}/',
-                array($this, '_parseVariables'),
-                $content
+            '/\$\{([^\}]*)\}/',
+            array($this, '_parseVariables'),
+            $content
         );
     }
 
