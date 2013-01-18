@@ -8,6 +8,9 @@
  */
 class Klear_Model_Menu implements \IteratorAggregate
 {
+    protected $_name;
+    protected $_description;
+    protected $_config;
 
     protected $_siteConfig;
     protected $_sections = array();
@@ -53,8 +56,7 @@ class Klear_Model_Menu implements \IteratorAggregate
                 ->setName($sectionIden)
                 ->setData($sectionData);
 
-            
-            if ($section->hasSubsections()==true) {
+            if ($section->hasSubsections()) {
                 $this->_sections[] = $section;
             }
         }

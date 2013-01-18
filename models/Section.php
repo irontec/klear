@@ -20,7 +20,7 @@ class Klear_Model_Section  implements \IteratorAggregate
     protected $_skip = array();
 
     protected $_default = false;
-    
+
     public function getIterator()
     {
         return new \ArrayIterator($this->_subsections);
@@ -57,8 +57,10 @@ class Klear_Model_Section  implements \IteratorAggregate
 
         $this->_class = $config->getProperty("class");
         $this->_default = (bool)$config->getProperty("default");
-        
-        if (!isset($data->submenus) || empty($data->submenus)) return;
+
+        if (!isset($data->submenus) || empty($data->submenus)) {
+            return;
+        }
 
         foreach ($data->submenus as $file => $sectionData) {
 
@@ -69,8 +71,8 @@ class Klear_Model_Section  implements \IteratorAggregate
                 ->setParentMenu($this->_menu)
                 ->setMainFile($file)
                 ->setData($sectionData);
-            
-            
+
+
             if ($subsection->_hasAccess()) {
 
                 $this->_subsections[] = $subsection;
@@ -87,16 +89,14 @@ class Klear_Model_Section  implements \IteratorAggregate
     {
         return Klear_Model_Gettext::gettextCheck($this->_description);
     }
-    
+
     protected function _hasAccess()
     {
         return true;
     }
-    
+
     public function hasSubsections()
     {
-        return count($this->_subsections)>0;
+        return count($this->_subsections) > 0;
     }
-    
-    
 }
