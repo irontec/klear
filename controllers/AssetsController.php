@@ -80,31 +80,35 @@ class Klear_AssetsController extends Zend_Controller_Action
 
     public function cssExtendedAction()
     {
-        $pluginClass = "Klear_Model_Css_";
-        $pluginName = $this->getRequest()->getParam('plugin');
-        $pluginParts = explode('-', $pluginName);
+        $cssExtendedConfig = $this->_siteConfig->getCssExtendedConfig();
 
-        foreach ($pluginParts as $part) {
-            $pluginClass .= ucfirst($part);
+        if ($cssExtendedConfig) {
+
+            $pluginClass = "Klear_Model_Css_";
+            $pluginName = $this->getRequest()->getParam('plugin');
+            $pluginParts = explode('-', $pluginName);
+
+            foreach ($pluginParts as $part) {
+                $pluginClass .= ucfirst($part);
+            }
+
+            if (!class_exists($pluginClass)) {
+                throw new Klear_Exception_Default('No Css class found');
+            }
+
+            $plg = new $pluginClass($cssExtendedConfig);
+            $fileParam = $this->getRequest()->getParam('file');
+            switch ($this->_getFileExtension($fileParam)) {
+                case 'css':
+                    $file = $plg->getCssFile($fileParam);
+                    break;
+                case 'png':
+                    $file = $plg->getPngFile($fileParam);
+                    break;
+            }
+
+            $this->_returnFile($file);
         }
-
-        if (!class_exists($pluginClass)) {
-            throw new Klear_Exception_Default('No Css class found');
-        }
-
-        $plg = new $pluginClass($this->_siteConfig->getCssExtendedConfig());
-
-        $fileParam = $this->getRequest()->getParam('file');
-        switch ($this->_getFileExtension($fileParam)) {
-            case 'css':
-                $file = $plg->getCssFile($fileParam);
-                break;
-            case 'png':
-                $file = $plg->getPngFile($fileParam);
-                break;
-        }
-
-        $this->_returnFile($file);
     }
 
     public function cssAction()
