@@ -46,6 +46,7 @@
         },
         _makeDraggable : function() {
             this.uiDialog.draggable({
+            	handle: '.ui-dialog-titlebar',
                 containment: this._getKlearPosition()
             });
 
@@ -167,7 +168,7 @@
             if (options.resizable && $.fn.resizable) {
                 self._makeResizable();
             }
-
+           
             self._createButtons(options.buttons);
             self._isOpen = false;
 
@@ -175,7 +176,54 @@
                 uiDialog.bgiframe();
             }
         },
-        open: function() {
+    	close: function(event) {
+    		var self = this,
+    			maxZ, thisZ;
+    		
+    		this._getKlearPosition().css("overflow","auto");
+    		
+    		var _uniqueIden = this._getKlearPosition().attr("id");
+            $(window).off("scroll."+_uniqueIden);
+            		
+    		if (false === self._trigger('beforeClose', event)) {
+    			return;
+    		}
+
+    		if (self.overlay) {
+    			self.overlay.destroy();
+    		}
+    		self.uiDialog.unbind('keypress.ui-dialog');
+
+    		self._isOpen = false;
+
+    		if (self.options.hide) {
+    			self.uiDialog.hide(self.options.hide, function() {
+    				self._trigger('close', event);
+    			});
+    		} else {
+    			self.uiDialog.hide();
+    			self._trigger('close', event);
+    		}
+
+    		$.ui.dialog.overlay.resize();
+
+    		// adjust the maxZ to allow other modal dialogs to continue to work (see #4309)
+    		if (self.options.modal) {
+    			maxZ = 0;
+    			$('.ui-dialog').each(function() {
+    				if (this !== self.uiDialog[0]) {
+    					thisZ = $(this).css('z-index');
+    					if(!isNaN(thisZ)) {
+    						maxZ = Math.max(maxZ, thisZ);
+    					}
+    				}
+    			});
+    			$.ui.dialog.maxZ = maxZ;
+    		}
+
+    		return self;
+    	},
+		open: function() {
             if (this._isOpen) { return; }
 
             var self = this,
@@ -185,13 +233,33 @@
             self.overlay = options.modal ? new $.ui.dialog.overlay(self) : null;
 
             self.overlay.$el.appendTo(this._getKlearPosition());
-
+            this._getKlearPosition().css("overflow","hidden");
+            
             self._size();
 
             self._position(options.position);
 
             uiDialog.show(options.show);
             self.moveToTop(true);
+            
+            
+            var curScroll = $(window).scrollTop();
+            
+            
+            var _uniqueIden = this._getKlearPosition().attr("id");
+            $(window).on("scroll."+_uniqueIden,function() {
+            	
+            	var _offset = $(window).scrollTop()-curScroll;
+            	curScroll = $(window).scrollTop();
+            	var symbol = (_offset<0)? '-=':'+=';
+            	$(self.uiDialog).animate({top:symbol+Math.abs(_offset)+'px'},{duration:350, complete: function() {
+            		if (parseFloat($(this).css("top")) < 0) {
+            			$(this).css("top","0px");
+            		}
+            		
+            	}});
+            	
+            });
 
             // prevent tabbing out of modal dialogs
             if ( options.modal ) {
@@ -226,12 +294,19 @@
             return self;
         },
         getContext : function() {
-
             return this.element;
         },
         updateContent : function(content) {
-            $(this.element).slideUp(function() {
-                $(this).html(content).slideDown();
+        	var self = this;
+        	var initialHeight = $(self.element).height();
+        	
+            $(this.element).slideUp('fast',function() {
+            
+            	$(this).html(content);
+            	var _offset = ($(this).height() - initialHeight)/2;
+            	$(self.uiDialog).stop().animate({top:'-='+_offset+'px'});
+            	$(this).slideDown();
+            	
             });
         },
         updateTitle : function(title) {

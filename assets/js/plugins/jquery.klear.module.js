@@ -416,9 +416,9 @@
                 this.options.moduleDialog = $parsedHtml;
                 this.options.moduleDialog.moduleDialog({
                     position: {
-                        my: 'center top',
+                        my: 'center bottom',
                         at: 'center center',
-                        collision: 'fit'
+                        collision: 'none'                        
                     },
                     buttons : defaults.buttons,
                     title: title,
