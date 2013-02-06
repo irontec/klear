@@ -26,8 +26,8 @@ class Klear_LoginController extends Zend_Controller_Action
         $authConfig = $siteConfig->getAuthConfig();
 
         $data = array(
-                    "title" => $authConfig->getProperty("title"),
-                    "description" => $authConfig->getProperty("description")
+                    "title" =>Klear_Model_Gettext::gettextCheck($authConfig->getProperty("title")),
+                    "description" => Klear_Model_Gettext::gettextCheck($authConfig->getProperty("description"))
                 );
 
         $extraInfoLoaderClass = $authConfig->getProperty('loader');

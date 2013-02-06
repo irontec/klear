@@ -260,7 +260,8 @@ class Klear_Model_SiteConfig
 
     public function getSiteSubName()
     {
-        return $this->_sitesubname;
+        return Klear_Model_Gettext::gettextCheck($this->_sitesubname);
+
     }
 
     public function getLang()
