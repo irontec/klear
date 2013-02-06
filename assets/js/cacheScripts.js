@@ -6,6 +6,7 @@
 
 	$.klear = $.klear || {};
 	$.klear.baseurl = $.klear.baseurl || $("base").attr("href");
+	$.klear.loadedTemplates = $.klear.loadedTemplates || {};
 	
 	$.ajax({
 		url : $.klear.baseurl +'../klear/template/cache',
@@ -17,6 +18,8 @@
       		}
       		for(var tmplIden in response.templates) {
       			 $.template(tmplIden, response.templates[tmplIden]);
+                 $.klear.loadedTemplates[tmplIden] = true;
+
       		}
       		
       	}

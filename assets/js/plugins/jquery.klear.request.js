@@ -6,6 +6,7 @@
 
     $.klear.removeCache = function() {
         $.klear.loadedScripts = {};
+        $.klear.loadedTemplates = {};
     };
 
     $.klear.errorCodes = {
@@ -249,7 +250,7 @@
 
             $.each(templates,function(tmplIden,tmplSrc) {
 
-            	if ($.klear.cacheEnabled && undefined !== $.template[tmplIden]) {
+            	if ($.klear.cacheEnabled && $.klear.loadedTemplates[tmplIden]) {
                     successCallback();
                     return;
                 }
@@ -270,6 +271,7 @@
                     cache : true,
                     success: function(r) {
                         $.template(tmplIden, r);
+                        $.klear.loadedTemplates[tmplIden] = true;
                         successCallback();
                     },
                     error : function(r) {

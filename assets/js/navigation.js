@@ -824,6 +824,7 @@
         }
         $.klear.requestSearchTranslations();
         $.klear.menu(true, opts);
+        $.klear.loadedTemplates = {};
         $.klear.requestReloadTranslations();
 
     };

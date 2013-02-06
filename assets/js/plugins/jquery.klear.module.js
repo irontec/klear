@@ -22,6 +22,14 @@
     $.klear.loadedScripts = {};
 
     /*
+     * loaded Templates Object
+     *
+     */
+
+    $.klear.loadedTemplates = {};
+
+    
+    /*
      * Klear Module definition
      *
      * [jQuery UI Widget]
