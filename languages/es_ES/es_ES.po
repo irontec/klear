@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Klear\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-09-26 11:34+0100\n"
-"PO-Revision-Date: 2012-09-26 11:36+0100\n"
+"POT-Creation-Date: 2013-02-07 11:42+0100\n"
+"PO-Revision-Date: 2013-02-07 11:42+0100\n"
 "Last-Translator: Javier Infante <jabi@irontec.com>\n"
 "Language-Team: Irontec-Klear <lander+klear@irontec.com>\n"
 "Language: \n"
@@ -18,13 +18,25 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
 "X-Poedit-SearchPath-0: .\n"
 
-#: controllers/ErrorController.php:72
+#: controllers/ErrorController.php:86
 msgid "Page not found"
 msgstr "Página no encontrada"
 
 #: controllers/IndexController.php:158
 msgid "Configuration error"
 msgstr "Error de configuración"
+
+#: layouts/scripts/main/header.phtml:91
+msgid "Collapse Menu."
+msgstr "Plegar/Replegar Menú"
+
+#: layouts/scripts/main/header.phtml:102
+msgid "Remember opened main tabs."
+msgstr "Recordar las pestañas de menú abiertas"
+
+#: layouts/scripts/main/header.phtml:109
+msgid "logout"
+msgstr "Descontectarse"
 
 #: views/scripts/template/login/form.phtml:17
 msgid "User"
@@ -38,63 +50,55 @@ msgstr "Contraseña"
 msgid "Authenticate"
 msgstr "Autenticarse"
 
-#: layouts/scripts/main/header.phtml:88
-msgid "Collapse Menu."
-msgstr "Plegar/Replegar Menú"
+#: assets/js/navigation.js:900
+msgid "Do you really want to leave?"
+msgstr "¿Está seguro de que quiere abandonar esta página?"
 
-#: layouts/scripts/main/header.phtml:95
-msgid "Remember opened main tabs."
-msgstr "Recordar las pestañas de menú abiertas"
-
-#: layouts/scripts/main/header.phtml:103
-msgid "logout"
-msgstr "Descontectarse"
-
-#: assets/js/klear.compiled.js:14
-#: assets/js/klear.compiled.js:29
-#: assets/js/klear.compiled.js:30
+#: assets/js/klear.compiled.js:16
+#: assets/js/klear.compiled.js:31
+#: assets/js/klear.compiled.js:32
 msgid "Module registration error."
 msgstr "Error registrando el módulo."
 
-#: assets/js/klear.compiled.js:14
+#: assets/js/klear.compiled.js:16
 #, python-format
 msgid "Error: %s."
 msgstr "Error: %s."
 
-#: assets/js/klear.compiled.js:14
+#: assets/js/klear.compiled.js:16
 msgid "Klear Module Error"
 msgstr "Error de Klear Module"
 
-#: assets/js/klear.compiled.js:15
+#: assets/js/klear.compiled.js:17
 msgid "This tab is locked."
 msgstr "La pestaña está bloqueada."
 
-#: assets/js/klear.compiled.js:25
+#: assets/js/klear.compiled.js:27
 msgid "Loading content"
 msgstr "Cargando contenido"
 
-#: assets/js/klear.compiled.js:25
+#: assets/js/klear.compiled.js:27
 msgid "Loading Main Module"
 msgstr "Cargando Módulo Principal"
 
-#: assets/js/klear.compiled.js:25
+#: assets/js/klear.compiled.js:27
 msgid "Loading Secondary modules"
 msgstr "Cargando módulos Secundarios"
 
-#: assets/js/klear.compiled.js:31
+#: assets/js/klear.compiled.js:33
 #, python-format
 msgid "Error downloading template [%s]."
 msgstr "Error descargando el template [%s]."
 
-#: assets/js/klear.compiled.js:34
+#: assets/js/klear.compiled.js:37
 msgid "Unknown response format in Simple Response"
 msgstr "Formato desconocido de respuesta en Simple Response"
 
-#: assets/js/klear.compiled.js:35
+#: assets/js/klear.compiled.js:37
 msgid "Undefined Error"
 msgstr "Error Indefinido"
 
-#: assets/js/klear.compiled.js:44
+#: assets/js/klear.compiled.js:48
 #: assets/js/plugins/jquery.ui.combobox.js:98
 msgid "Show All Items"
 msgstr "Mostrar todos los elementos"
