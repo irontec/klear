@@ -180,11 +180,13 @@
     		var self = this,
     			maxZ, thisZ;
     		
-    		this._getKlearPosition().css("overflow","auto");
-    		
-    		var _uniqueIden = this._getKlearPosition().attr("id");
-            $(window).off("scroll."+_uniqueIden);
-            		
+    		var parentDialog = this._getKlearPosition();
+    		var _uniqueIden = parentDialog.attr("id");
+            
+    		$(window).off("scroll."+_uniqueIden);
+            
+        	parentDialog.css("overflow","auto");
+            
     		if (false === self._trigger('beforeClose', event)) {
     			return;
     		}
@@ -220,7 +222,9 @@
     			});
     			$.ui.dialog.maxZ = maxZ;
     		}
-
+    		
+    		
+    		
     		return self;
     	},
 		open: function() {
@@ -233,7 +237,11 @@
             self.overlay = options.modal ? new $.ui.dialog.overlay(self) : null;
 
             self.overlay.$el.appendTo(this._getKlearPosition());
-            this._getKlearPosition().css("overflow","hidden");
+            
+            var parentDialog = this._getKlearPosition();
+            var _uniqueIden = parentDialog.attr("id");
+            
+            parentDialog.css("overflow","hidden");
             
             self._size();
 
@@ -245,10 +253,7 @@
             
             var curScroll = $(window).scrollTop();
             
-            
-            var _uniqueIden = this._getKlearPosition().attr("id");
             $(window).on("scroll."+_uniqueIden,function() {
-            	
             	var _offset = $(window).scrollTop()-curScroll;
             	curScroll = $(window).scrollTop();
             	var symbol = (_offset<0)? '-=':'+=';
@@ -256,7 +261,6 @@
             		if (parseFloat($(this).css("top")) < 0) {
             			$(this).css("top","0px");
             		}
-            		
             	}});
             	
             });
@@ -299,13 +303,17 @@
         updateContent : function(content) {
         	var self = this;
         	var initialHeight = $(self.element).height();
-        	
+        	self._getKlearPosition().css("overflow","hidden");
             $(this.element).slideUp('fast',function() {
-            
+            	
             	$(this).html(content);
             	var _offset = ($(this).height() - initialHeight)/2;
             	$(self.uiDialog).stop().animate({top:'-='+_offset+'px'});
-            	$(this).slideDown();
+            	$(this).slideDown(function() {
+            		//Corregimos posición con el nuevo tamaño
+            		$(window).trigger("scroll."+self._getKlearPosition().attr("id"));	
+            	});
+            	
             	
             });
         },
