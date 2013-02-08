@@ -271,6 +271,9 @@
              * JQ Decorartors
              */
 
+            
+            var sideBarOffset = $sidebar.offset();
+            
             $sidebar.accordion({
                 icons : {
                         header: "ui-icon-circle-arrow-e",
@@ -279,14 +282,21 @@
                 collapsible: true,
                 autoHeight: false
             });
-
-            // collapsible : true, hace que active: 0 no sea activo :S
-            // lanzamos evento a  mano
-            setTimeout(function() {
-            	if ($sidebar.accordion("option","active") === false) {
-            		$("#sidebar").accordion('activate',0);
+            
+            $sidebar.on('reposition', function() {
+            	if (!$(this).is(":visible")) {
+            		return;
             	}
-            },700);
+            	
+            	var _target = $(window).scrollTop();
+            	if (_target < sideBarOffset.top) {
+            		_target = 0;
+            	} else {
+            		_target -= sideBarOffset.top;
+            	}
+            	$(this).stop().animate({'marginTop': _target + 'px'}, {duration:1100, easing: 'easeInQuad'});
+            	
+            });
 
             $("li", $sidebar).on("mouseenter",function() {
                 $(this).addClass("ui-state-highlight");
@@ -445,9 +455,22 @@
                     var menuButton = this.tabs[i].replace(/#tabs-/, '#target-');
                     $(menuButton).trigger('mouseup');
                 }
+                
+                
+                // Seleccionamos el tab del ultimo menú principal seleccionado 
                 if ($(menuButton).length>0) {
-                    $(menuButton).parents('.ui-accordion-content').prev('h2').click();
+                   	
+                	var _parent = $(menuButton).parents('div:eq(0)');
+                   	
+                	if (_parent.is(".ui-accordion-content")) {
+                   		var _idx = $("h2",$sidebar).index(_parent.prev('h2'));
+                   		if ($("#sidebar").accordion('option','active') != _idx) {
+                   			$("#sidebar").accordion('option','active', _idx);
+                   		}
+                   	}
                 }
+                
+                
             },
             enable : function(){
                 localStorage.setItem('tabPersistEnabled', '1');
@@ -900,6 +923,10 @@
         	return $.translate('Do you really want to leave?', __namespace__);
         });
 
+        
+        $(window).on("scroll", function() {
+        	$("#sidebar").trigger("reposition");
+        });
     });
 
 })(jQuery);
