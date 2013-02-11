@@ -35,6 +35,7 @@ if ($this->SiteConfig()->getDisableCDN()) {
             ->appendStylesheet($this->baseUrl('/klear/css-extended/silk-extended/silk-extended-sprite.css'))
             ->appendStylesheet($this->SiteConfig()->getJQueryUItheme($this->baseUrl()))
             ->appendStylesheet($this->baseUrl('/klear/css/base/klear.css'))
+            ->appendStylesheet($this->baseUrl('/klear/css/base/selectBoxIt.css'))
             ->headLink(array('rel' => 'shortcut icon','href' => $this->baseUrl('/images/favicon.ico')))
             ->setIndent(4);
 

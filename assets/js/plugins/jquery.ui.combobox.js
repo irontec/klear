@@ -19,9 +19,12 @@
 						setTimeout(lazyWidthCalculator,1000);
 						return;
 					}
-					wrapper.css('width',(self.element.outerWidth() + 25) + 'px');
+					wrapper.css('width',(self.element.outerWidth() + 20) + 'px');
 					$("a.ui-combobox-toggle",wrapper).css('left',(self.element.outerWidth() - 5) + 'px');
 				})();
+				
+				console.log("Combobox is deprecated. use selectBoxIt instead!");
+				
 				input = $( "<input>" )
 					.appendTo( wrapper )
 					.val( value )
@@ -69,6 +72,7 @@
 									// remove invalid value, as it didn't match anything
 									$( this ).val( "" );
 									select.val( "" );
+									input.val( "" );
 									input.data( "autocomplete" ).term = "";
 									return false;
 								}
@@ -78,7 +82,11 @@
 							
 						}
 					})
+					.on("focusin",function() {
+						$(this).autocomplete( "search", "" );
+					})
 					.addClass( "ui-widget ui-widget-content ui-corner-left" );
+					
 
 				setTimeout(function() {
 					// Todo a su debido tiempo ;)

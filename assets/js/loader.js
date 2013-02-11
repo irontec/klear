@@ -52,7 +52,7 @@ var console = window.console || { log : function() {}};
 //    var _baseScripts = ['base!js/plugins/jquery.cookie.js',
 //     'base!js/plugins/jquery.scrollabletab.js',
 //      'base!js/plugins/jquery.ui.tooltip.js',
-//      'base!js/plugins/jquery.ui.combobox.js',
+//      'base!js/plugins/jquery.selectBoxIt.js',
 //      'base!js/scripts/spin.min.js',
 //      'base!js/plugins/jquery.getStylesheet.js',
 //      'base!js/plugins/jquery.translate.js',

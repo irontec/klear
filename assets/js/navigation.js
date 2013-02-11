@@ -623,7 +623,7 @@
                 }
             });
 
-            $("select",self.$loginForm).combobox();
+            $("select",self.$loginForm).selectBoxIt({theme: "jqueryui"});
             $("input",self.$loginForm).removeAttr("disabled");
             $("input:submit",self.$loginForm).button();
             $("input:text:eq(0)",self.$loginForm).trigger("focusin").select();
