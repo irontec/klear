@@ -294,7 +294,7 @@
             	} else {
             		_target -= sideBarOffset.top;
             	}
-            	$(this).stop().animate({'marginTop': _target + 'px'}, {duration:1100, easing: 'easeInQuad'});
+            	$(this).css({'marginTop': _target + 'px'});
             	
             });
 
