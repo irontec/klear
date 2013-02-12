@@ -294,7 +294,7 @@
             	} else {
             		_target -= sideBarOffset.top;
             	}
-            	$(this).css({'marginTop': _target + 'px'});
+            	$(this).animate({'marginTop': _target + 'px'}, 900, 'easeOutQuad');
             	
             });
 
@@ -923,9 +923,14 @@
         	return $.translate('Do you really want to leave?', __namespace__);
         });
 
-        
+
+        var scrollInterval;
         $(window).on("scroll", function() {
-        	$("#sidebar").trigger("reposition");
+        	clearInterval(scrollInterval);
+        	scrollInterval = setTimeout(function() {
+        		$("#sidebar").trigger("reposition");	
+        	},350)
+        	
         });
     });
 
