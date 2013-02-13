@@ -3,13 +3,15 @@
 class Klear_MenuController extends Zend_Controller_Action
 {
     protected $_klearBootstrap;
-
+	protected $_auth;
+	
     public function init()
     {
         /* Initialize action controller here */
         $this->_helper->ContextSwitch()
                 ->addActionContext('index', 'json')
                 ->initContext('json');
+        $this->_auth = Zend_Auth::getInstance();
     }
 
     protected function _getMenu($menuName)
@@ -59,6 +61,12 @@ class Klear_MenuController extends Zend_Controller_Action
 
     public function indexAction()
     {
+    	
+    	if (!$this->_auth->hasIdentity()) {
+            $this->_forward("hello", "index", "klear");
+            return;
+        }
+    	
         $this->_helper->layout->disableLayout();
         $this->_helper->viewRenderer->setNoRender();
 

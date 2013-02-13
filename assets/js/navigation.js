@@ -153,6 +153,8 @@
                 action: 'hello'
         };
 
+        this.callback = false;
+        
         switch(option) {
             case 'rememberCallback':
                 this.callback = arguments[1];
@@ -163,24 +165,26 @@
             break;
             case 'options':
                 // completamos las opciones de klear.request con las enviadas como segundo parámetro
-                $.extend(options,arguments[1]);
+            	$.extend(options,arguments[1]);
             break;
         }
-
         var self = this;
+        
         $.klear._doHelloSuccess = function(response) {
-
             if (response.success && response.success === true) {
-                if (self.callback) {
-                    self.callback();
-                    self.callback = null;
+                if (typeof self.callback == 'function') {
+                	// Existe un bug en determinados navegadores
+                	// La petición se reenvia "demasiado pronto", y hay que recargar
+                	setTimeout(self.callback, 250);
                 } else {
+                	
                     $.klear.menu();
                 }
             }
         };
 
         $.klear._doHelloError = function(response) {
+
             console.log(response);
         };
 
@@ -193,10 +197,13 @@
     };
 
     $.klear.menu = function(force, options) {
-
         var options = options || {};
+        
+        if (force === true) {
+        	this.loaded = false;
+        } 
 
-        if (this.loaded && typeof force == 'undefined') {
+        if (this.loaded) {
             return;
         }
 
@@ -835,17 +842,19 @@
 
     };
 
+    $.klear.removeTabs = function() {
+        $.klear.canvas.tabs('destroy');
+        $("#canvasWrapper").html($.klear.baseCanvas);
+        $.klear.canvas = $("#canvas");
+        $.klear.loadCanvas();
+    };
+    
     $.klear.restart = function(opts, removetabs) {
-
-
-        var removetabs = removetabs || false;
-        if (removetabs == true) {
-            $.klear.canvas.tabs('destroy');
-            $("#canvasWrapper").html($.klear.baseCanvas);
-            $.klear.canvas = $("#canvas");
-            $.klear.loadCanvas();
-        }
+    	if (removetabs === true) {
+    		$.klear.removeTabs();		
+    	}
         $.klear.requestSearchTranslations();
+        
         $.klear.menu(true, opts);
         $.klear.loadedTemplates = {};
         $.klear.requestReloadTranslations();
