@@ -463,6 +463,11 @@ strong.errorLine {
     color: #800;
 }
 
+input, textarea {
+	padding: 0.15em 0.25em;
+}
+
+
 @media screen and (max-width: 680px){
     #canvasWrapper {
         float:left;
@@ -473,3 +478,4 @@ strong.errorLine {
         width: 98%;
     }
 }
+
