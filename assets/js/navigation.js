@@ -761,86 +761,87 @@
             $tab.klearModule("reDispatch");
         });
 
-
-        $(document).on("keydown",function(e) {
-
-            var ctrlAltActions = {
-                87 : {
-                    key : 'w',
-                    action : function(selectedTab) {
-                        $.klear.canvas.tabs('remove', selectedTab);
-                    }
-                },
-                82 : {
-                    key : 'r',
-                    action : function(selectedTab) {
-                        $li = $("#tabsList li:eq("+selectedTab+")");
-                        $li.klearModule('reDispatch');
-                    }
-                },
-                34 : {
-                    key : 'rePag',
-                    action : function(selectedTab) {
-                        selectedTab++;
-                        if (selectedTab >= $("#tabsList li").length) {
-                            selectedTab = 0;
-                        }
-                        $.klear.canvas.tabs('select', selectedTab);
-                    }
-                },
-                33 : {
-                    key : 'AvPag',
-                    action : function(selectedTab) {
-                        selectedTab--;
-                        selectedTab = selectedTab<0 ? $("#tabsList li").length-1 : selectedTab ;
-                        $.klear.canvas.tabs('select', selectedTab);
-                    }
-                },
-                67 : { // c
-                    key: 'c',
-                    action: function(selectedTab) {
-                        $.klear.cacheEnabled = !$.klear.cacheEnabled;
-                        console.log($.klear.cacheEnabled? "Cache Habilitada":"Cache Deshabilitada");
-
-                    }
-                },
-                77 : {
-                    key: 'm',
-                    action: $.klear.toggleMenu
-                },
-
-            };
-
-            var altActions = {
-                37 : { //Disable alt + back arrow shortcut on browser
-                    key: 'backArrow',
-                    action: function() {
-                        return;
-                    }
-                }
-            };
-
-            if (e.altKey && e.ctrlKey && ctrlAltActions[e.which]
-                || e.altKey && altActions[e.which]
-            ) {
-                e.preventDefault();
-                e.stopPropagation();
-
-                var selectedTab = parseInt($.klear.canvas.tabs('option', 'selected'));
-
-                if (e.altKey && e.ctrlKey) {
-                    // Ctrl + Alt + Key
-                    ctrlAltActions[e.which]['action'](selectedTab);
-                } else {
-                    // Alt + Key
-                    altActions[e.which]['action'](selectedTab);
-                }
-
-                return;
-            }
-        });
-
     };
+    
+    
+    $(document).on("keydown",function(e) {
+
+        var ctrlAltActions = {
+            87 : {
+                key : 'w',
+                action : function(selectedTab) {
+                    $.klear.canvas.tabs('remove', selectedTab);
+                }
+            },
+            82 : {
+                key : 'r',
+                action : function(selectedTab) {
+                    $li = $("#tabsList li:eq("+selectedTab+")");
+                    $li.klearModule('reDispatch');
+                }
+            },
+            34 : {
+                key : 'rePag',
+                action : function(selectedTab) {
+                    selectedTab++;
+                    if (selectedTab >= $("#tabsList li").length) {
+                        selectedTab = 0;
+                    }
+                    $.klear.canvas.tabs('select', selectedTab);
+                }
+            },
+            33 : {
+                key : 'AvPag',
+                action : function(selectedTab) {
+                    selectedTab--;
+                    selectedTab = selectedTab<0 ? $("#tabsList li").length-1 : selectedTab ;
+                    $.klear.canvas.tabs('select', selectedTab);
+                }
+            },
+            67 : { // c
+                key: 'c',
+                action: function(selectedTab) {
+                    $.klear.cacheEnabled = !$.klear.cacheEnabled;
+                    console.log($.klear.cacheEnabled? "Cache Habilitada":"Cache Deshabilitada");
+
+                }
+            },
+            77 : {
+                key: 'm',
+                action: $.klear.toggleMenu
+            },
+
+        };
+
+        var altActions = {
+            37 : { //Disable alt + back arrow shortcut on browser
+                key: 'backArrow',
+                action: function() {
+                    return;
+                }
+            }
+        };
+
+        if (e.altKey && e.ctrlKey && ctrlAltActions[e.which]
+            || e.altKey && altActions[e.which]
+        ) {
+            e.preventDefault();
+            e.stopPropagation();
+
+            var selectedTab = parseInt($.klear.canvas.tabs('option', 'selected'));
+
+            if (e.altKey && e.ctrlKey) {
+                // Ctrl + Alt + Key
+                ctrlAltActions[e.which]['action'](selectedTab);
+            } else {
+                // Alt + Key
+                altActions[e.which]['action'](selectedTab);
+            }
+
+            return;
+        }
+    });
+
 
     $.klear.removeTabs = function() {
         $.klear.canvas.tabs('destroy');
