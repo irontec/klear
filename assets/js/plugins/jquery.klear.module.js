@@ -695,8 +695,6 @@
 
         }, 
         updateTitle : function(title) {
-        	console.log(title, $(this.options.ui.tab));
-        	
         	if (title && title != '')  {
         		$(this.options.ui.tab).html(title);
         	}

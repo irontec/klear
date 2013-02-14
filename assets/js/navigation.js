@@ -500,14 +500,22 @@
 
             $.klear.checkNoFocusEvent(e, $.klear.canvas, $(this));
 
+            var tabTitle = $(this).text()!=""? $(this).text():$(this).parent().attr('title');
+            
             if ($("#tabs-"+iden).length > 0) {
-                $.klear.canvas.tabs('select', '#tabs-'+iden);
+                ;
+                //Actualizo su título, por si acaso soy una opción externa con un título "disfrazado"
+                $.klear.canvas
+                		.tabs('select', '#tabs-'+iden)
+                		.find(".ui-tabs-selected:eq(0)")
+                			.klearModule("updateTitle", tabTitle);
+                
                 return;
             }
             var idContent = "#tabs-" + iden;
-            var title = $(this).text()!=""? $(this).text():$(this).parent().attr('title');
+            
 
-            $.klear.canvas.tabs( "add", idContent, title);
+            $.klear.canvas.tabs( "add", idContent, tabTitle);
 
             $.klear.tabPersist.add(idContent);
 
@@ -736,6 +744,8 @@
                 $tabLi
                     .klearModule("updateLoader");
                     //.klearModule("highlightOn");
+                
+                return $tabLi;
             },
             remove: function(event, ui) {
 
