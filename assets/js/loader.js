@@ -161,7 +161,7 @@
                     _scripts.push('base!js/libs/jquery.tmpl.min.js');
                     _scripts.push('other!base!js/libs/jquery-ui.min.js');
                     _scripts.push('ie!base!js/libs/ie-jquery-ui.js');
-                    _scripts.push('base!js/libs/jquery-ui-i18n.min.js?deabajo');
+                    _scripts.push('base!js/libs/jquery-ui-i18n.min.js');
                 }
 
                 yepnope([{
