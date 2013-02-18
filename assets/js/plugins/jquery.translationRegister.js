@@ -1,6 +1,6 @@
 ;(function reLoader() {
 	
-	if (typeof(jQuery) == 'undefined') {
+	if ((typeof(jQuery) == 'undefined') || (typeof(jQuery.klear) == 'undefined') ) {
 		setTimeout(reLoader,100);
 		return;
 	}
