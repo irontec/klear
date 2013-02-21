@@ -93,20 +93,20 @@
         _setOption: function(key, value) {
 
 
-        	if (key === 'mainModuleLoaded' && value) {
-        		this.setMainLoaded();
-        		return;
-        	}
+            if (key === 'mainModuleLoaded' && value) {
+                this.setMainLoaded();
+                return;
+            }
 
-        	if (key === 'addToBeLoadedFile') {
+            if (key === 'addToBeLoadedFile') {
 
-        		this.totalToBeLoadedItems += value;
+                this.totalToBeLoadedItems += value;
                 this.updateTotalLoadingItems();
                 return;
             }
 
-        	if (key === 'addLoadedFile') {
-        		this.totalLoadedItems++;
+            if (key === 'addLoadedFile') {
+                this.totalLoadedItems++;
                 this.updateCurrentLoadingItem();
                 return;
             }
@@ -214,7 +214,7 @@
 
         _initTab : function() {
 
-        	if ((!this.options.menuLink)
+            if ((!this.options.menuLink)
                 || ($("span.ui-silk",this.options.menuLink).length <= 0)) {
                 return;
             }
@@ -276,7 +276,7 @@
             $.extend(dispatchData,this.options.dispatchOptions);
 
             if (typeof this.options.PreDispatchMethod == 'function') {
-            	this.options.PreDispatchMethod.apply(this);
+                this.options.PreDispatchMethod.apply(this);
             }
 
             $.klear.request(dispatchData,this._parseDispatchResponse,this._errorResponse,this);
@@ -326,13 +326,13 @@
             });
 
             if (typeof this.options.PostDispatchMethod == 'function') {
-            	this.options.PostDispatchMethod.apply(this);
+                this.options.PostDispatchMethod.apply(this);
             }
 
         },
 
         reDispatch : function() {
-        	this.setAsloading();
+            this.setAsloading();
             this.dispatch();
         },
 
@@ -417,6 +417,9 @@
                     '<span class="ui-silk inline dialogTitle '+iconClass+' "></span>'+this.options.title + '';
             }
 
+            var width = options.width || 300
+            var height = options.height || 160;
+
             var closeTab = ((options.closeTab==0)||(options.closeTab))? options.closeTab.toString() : false;
 
             if (dialogType == 'moduleDialog') {
@@ -431,6 +434,8 @@
                     buttons : defaults.buttons,
                     title: title,
                     modal:true,
+                    width: width,
+                    height: height,
                     resizable: defaults.resizable,
                     klearPosition: this.getPanel() ,
                     open: function(ui) {
@@ -644,9 +649,9 @@
             var _panel = $(this.options.panel);
 
             if ((100*this.totalLoadedItems)/this.totalToBeLoadedItems > 20) {
-            	var _opacity = (100*this.totalLoadedItems)/this.totalToBeLoadedItems / 100;
+                var _opacity = (100*this.totalLoadedItems)/this.totalToBeLoadedItems / 100;
             } else {
-            	var _opacity = ".2";
+                var _opacity = ".2";
             }
 
             $(".loadingPanel",_panel).find(".current").css("opacity",_opacity).html(this.totalLoadedItems);
@@ -661,13 +666,13 @@
             var _panel = $(this.options.panel);
             if ($(".loadingPanel",_panel).length == 0) {
 
-            	var $parsetHtml = $.tmpl(this.loadingTmpl.join(''), {
+                var $parsetHtml = $.tmpl(this.loadingTmpl.join(''), {
                     loadingText: $.translate("Loading content", [__namespace__]),
                     loadingTextMain: $.translate("Loading Main Module", [__namespace__]),
-            		loadingTextExtra: $.translate("Loading Secondary modules", [__namespace__])
+                    loadingTextExtra: $.translate("Loading Secondary modules", [__namespace__])
                 });
 
-            	_loadingItem = $parsetHtml;
+                _loadingItem = $parsetHtml;
 
                 _loadingItem
                     .removeAttr("id")
@@ -693,11 +698,11 @@
                 $(this.options.ui.tab).removeClass("ui-state-disabled");
             }
 
-        }, 
+        },
         updateTitle : function(title) {
-        	if (title && title != '')  {
-        		$(this.options.ui.tab).html(title);
-        	}
+            if (title && title != '')  {
+                $(this.options.ui.tab).html(title);
+            }
         }
 
     });
