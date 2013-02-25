@@ -16,9 +16,11 @@ if ($this->SiteConfig()->getDisableCDN()) {
     echo $this->headTitle();
     echo "\n";
     echo $this->headMeta()
-    ->appendHttpEquiv('Content-Type', 'text/html; charset=utf-8')
-    ->setName('viewport', 'width=device-width, initial-scale=1.0')
-    ->setIndent(4);
+        ->appendHttpEquiv('Content-Type', 'text/html; charset=utf-8')
+        ->setName('viewport', 'width=device-width, initial-scale=1.0')
+        ->setName('author', 'Irontec')
+        ->setName('generator', 'Klear')
+        ->setIndent(4);
     echo "\n";
 
     // Este base antes que el script!!!

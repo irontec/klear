@@ -6,7 +6,8 @@ class Klear_Model_SiteConfig
     protected $_sitename;
     protected $_sitesubname;
     protected $_timezone;
-
+    protected $_signature = 'Klear :: Irontec';
+    
     protected $_logo;
 
     protected $_disableMinifiers = false;
@@ -38,7 +39,8 @@ class Klear_Model_SiteConfig
             'disableAssetsCache',
             'cssExtended',
             'actionHelpers',
-            'disableCDN'
+            'disableCDN',
+            'signature'
     );
 
     protected $_requiredParams = array(
@@ -241,6 +243,8 @@ class Klear_Model_SiteConfig
         $this->_rawCss = $dynamic->processRawCss($this->_rawCss);
         $this->_rawJavascripts = $dynamic->processRawJavascripts($this->_rawJavascripts);
         $this->_authConfig = $dynamic->processAuthConfig($this->_authConfig);
+        $this->_year = $dynamic->processYear($this->_year);
+        $this->_signature = $dynamic->processSignature($this->_signature);
     }
 
     public function getYear()
@@ -329,6 +333,11 @@ class Klear_Model_SiteConfig
     public function getDisableCDN()
     {
         return $this->_disableCDN;
+    }
+    
+    public function getSignature()
+    {
+        return $this->_signature;
     }
 
 }

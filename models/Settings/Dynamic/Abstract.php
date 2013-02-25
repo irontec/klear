@@ -69,4 +69,11 @@ abstract class Klear_Model_Settings_Dynamic_Abstract
         return $timezone;
     }
 
+    
+    public function processSignature($signature)
+    {
+        return $signature;
+    }
+    
+
 }
