@@ -87,30 +87,7 @@ if ($this->SiteConfig()->getDisableCDN()) {
         <div id="applicationTools">
 
             <div id="headerToolsbar">
-
-                <input type="checkbox" id="menuCollapse" />
-                <label for="menuCollapse" title="<?php echo $this->translate("Collapse Menu.")?>">
-                    <span class="ui-icon ui-icon-arrowthickstop-1-w" ></span>
-                </label>
-
-                <?php /* <input type="checkbox" id="languagePicker" />
-                <label for="languagePicker" title="<?php echo $this->translate("Choose Language.")?>">
-                    <span class="ui-icon ui-icon-flag" ></span>
-                </label> */ ?>
-
-
-                <input type="checkbox" id="tabsPersist" />
-                <label for="tabsPersist" title="<?php echo $this->translate("Remember opened main tabs.")?>">
-                    <span class="ui-icon ui-icon-unlocked" ></span>
-                </label>
-
-                <input type="checkbox" id="logout"
-                    data-url="<?php echo $this->url(array('controller' => 'index', 'action' => 'bye')) ?>"
-                />
-                <label for="logout" title="<?php echo $this->translate("logout")?>">
-                    <span class="ui-icon ui-icon-power" ></span>
-                </label>
-
+                <?php echo $this->Toolsbar();?>
             </div>
             <div id="headerLanguagebar">
             <?php

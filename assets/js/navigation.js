@@ -319,9 +319,10 @@
 
 
             $toolsBar = $( "#headerToolsbar" ),
-            $langBar = $( "#headerLanguagebar" ),
-            $langSelector = $( ".langSelector" );
+            	$langBar = $( "#headerLanguagebar" ),
+            	$langSelector = $( ".langSelector" );
 
+            $toolsBar.html(navMenus.toolsbar);
             $langSelector.buttonset();
             $toolsBar.buttonset();
 

@@ -124,7 +124,7 @@
             load: {
                 'jquery.min.js': 'timeout=1000!cdnCheck!//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js',
                 'jquery.tmpl.min.js': 'timeout=1000!cdnCheck!//ajax.aspnetcdn.com/ajax/jquery.templates/beta1/jquery.tmpl.js',
-                'jquery-ui.min.js': 'other!timeout=1000!ielt10!cdnCheck!//ajax.googleapis.com/ajax/libs/jqueryui/1.8.24/jquery-ui.min.js',
+                'jquery-ui.min.js': 'other!timeout=1000!cdnCheck!//ajax.googleapis.com/ajax/libs/jqueryui/1.8.24/jquery-ui.min.js',
                 'jquery-ui.min.js': 'ielt10!cdnCheck!base!js/libs/ie-jquery-ui.js',
                 'jquery-ui-i18n.min.js': 'timeout=1000!cdnCheck!//ajax.googleapis.com/ajax/libs/jqueryui/1.8.24/i18n/jquery-ui-i18n.min.js'
             },
@@ -160,7 +160,7 @@
                     _scripts.push('base!js/libs/jquery.min.js');
                     _scripts.push('base!js/libs/jquery.tmpl.min.js');
                     _scripts.push('other!base!js/libs/jquery-ui.min.js');
-                    _scripts.push('ie!base!js/libs/ie-jquery-ui.js');
+                    _scripts.push('base!ielt10!js/libs/ie-jquery-ui.js?fucker');
                     _scripts.push('base!js/libs/jquery-ui-i18n.min.js');
                 }
 

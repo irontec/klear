@@ -42,7 +42,10 @@ class Klear_MenuController extends Zend_Controller_Action
         return $menu;
     }
 
-
+    protected function _getToolsbar()
+    {
+        return $this->view->Toolsbar();
+    }
 
     protected function _getHeaderMenu()
     {
@@ -76,6 +79,7 @@ class Klear_MenuController extends Zend_Controller_Action
         $availableMenuSites = array(
             'sidebar'=> $this->_getSidebarMenu(),
             'headerbar'=> $this->_getHeaderMenu(),
+            'toolsbar'=> $this->_getToolsbar(),
             'footerbar'=> $this->_getFooterMenu()
         );
 
