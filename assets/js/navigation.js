@@ -301,7 +301,7 @@
             	} else {
             		_target -= sideBarOffset.top;
             	}
-            	$(this).animate({'marginTop': _target + 'px'}, 900, 'easeOutQuad');
+            	$(this).stop().animate({'marginTop': _target + 'px'}, 0, 'easeOutQuad');
             	
             });
 
@@ -947,10 +947,11 @@
 
         var scrollInterval;
         $(window).on("scroll", function() {
-        	clearInterval(scrollInterval);
+        	/*clearInterval(scrollInterval);
         	scrollInterval = setTimeout(function() {
         		$("#sidebar").trigger("reposition");	
-        	},350)
+        	},350)*/
+        	$("#sidebar").trigger("reposition");
         	
         });
     });
