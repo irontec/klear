@@ -49,22 +49,22 @@
     })();
 
 
-//    var _baseScripts = ['base!js/plugins/jquery.cookie.js',
-//     'base!js/plugins/jquery.scrollabletab.js',
-//      'base!js/plugins/jquery.ui.tooltip.js',
-//      'base!js/plugins/jquery.selectBoxIt.js',
-//      'base!js/scripts/spin.min.js',
-//      'base!js/plugins/jquery.getStylesheet.js',
-//      'base!js/plugins/jquery.translate.js',
-//      'base!js/translation/jquery.klear.translation.js',
-//      'base!../default/js/translation/jquery.default.translation.js',
-//      'base!js/plugins/jquery.klear.request.js',
-//      'base!js/plugins/jquery.klear.module.js',
-//      'base!js/plugins/jquery.klear.module.dialog.js',
-//      'base!js/plugins/jquery.klear.errors.js',
-//      'base!js/navigation.js'];
+    var _baseScripts = ['base!js/plugins/jquery.cookie.js',
+     'base!js/plugins/jquery.scrollabletab.js',
+      'base!js/plugins/jquery.ui.tooltip.js',
+      'base!js/plugins/jquery.selectBoxIt.js',
+      'base!js/scripts/spin.min.js',
+      'base!js/plugins/jquery.getStylesheet.js',
+      'base!js/plugins/jquery.translate.js',
+      'base!js/translation/jquery.klear.translation.js',
+      'base!../default/js/translation/jquery.default.translation.js',
+      'base!js/plugins/jquery.klear.request.js',
+      'base!js/plugins/jquery.klear.module.js',
+      'base!js/plugins/jquery.klear.module.dialog.js',
+      'base!js/plugins/jquery.klear.errors.js',
+      'base!js/navigation.js'];
 
-    var _baseScripts = [
+    var _baseScripts2 = [
                         'base!js/klear.compiled.js',
                         'base!js/translation/jquery.klear.translation.js',
                         'base!../default/js/translation/jquery.default.translation.js',
@@ -88,7 +88,7 @@
     yepnope.addPrefix('cdnCheck', function(resourceObj) {
     	if (_noCDN) {
     		// Si estamos en un sistema "super seguro" que evita utilizar CDNs, evitamos también el preload
-    		resourceObj.url = 'about:blank;';
+    		resourceObj.url = 'about:blank';
     		resourceObj.noexec = true;
     	}
 
@@ -100,8 +100,6 @@
     var _seekAndDestroy = function(realSrc) {
 
         var _primitive = function(realSrc,node,attr) {
-            var ifr = document.createElement("iframe");
-
             var _sc = document.getElementsByTagName( node );
             for (var i=0; i<_sc.length; i++) {
                 var _cSc = _sc[i];
@@ -117,7 +115,7 @@
         },500);
     };
 
-    yepnope.errorTimeout = 4000;
+    yepnope['errorTimeout'] = 3500;
 
     yepnope([
         {
@@ -160,7 +158,7 @@
                     _scripts.push('base!js/libs/jquery.min.js');
                     _scripts.push('base!js/libs/jquery.tmpl.min.js');
                     _scripts.push('other!base!js/libs/jquery-ui.min.js');
-                    _scripts.push('base!ielt10!js/libs/ie-jquery-ui.js?fucker');
+                    _scripts.push('base!ielt10!js/libs/ie-jquery-ui.js');
                     _scripts.push('base!js/libs/jquery-ui-i18n.min.js');
                 }
 

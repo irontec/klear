@@ -820,7 +820,7 @@
             77 : {
                 key: 'm',
                 action: $.klear.toggleMenu
-            },
+            }
 
         };
 
