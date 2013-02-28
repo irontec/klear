@@ -315,7 +315,7 @@
 
                     newPos = 10;
                 }
-                $(self.uiDialog).stop().animate({top: newPost+'px'});
+                $(self.uiDialog).stop().animate({top: newPos+'px'});
                 $(this).slideDown(function() {
                     //Corregimos posición con el nuevo tamaño
                     $(window).trigger("scroll."+self._getKlearPosition().attr("id"));
