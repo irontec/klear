@@ -1,10 +1,9 @@
 <?php
-
 class Klear_MenuController extends Zend_Controller_Action
 {
     protected $_klearBootstrap;
-	protected $_auth;
-	
+    protected $_auth;
+
     public function init()
     {
         /* Initialize action controller here */
@@ -17,7 +16,7 @@ class Klear_MenuController extends Zend_Controller_Action
     protected function _getMenu($menuName)
     {
         $menu = array();
-        
+
         foreach ($this->_klearBootstrap->getOption($menuName) as $section) {
             $tmpSection = array(
                     'sectionId' => $section->getName(),
@@ -64,12 +63,11 @@ class Klear_MenuController extends Zend_Controller_Action
 
     public function indexAction()
     {
-    	
-    	if (!$this->_auth->hasIdentity()) {
+        if (!$this->_auth->hasIdentity()) {
             $this->_forward("hello", "index", "klear");
             return;
         }
-    	
+
         $this->_helper->layout->disableLayout();
         $this->_helper->viewRenderer->setNoRender();
 
@@ -82,7 +80,6 @@ class Klear_MenuController extends Zend_Controller_Action
             'toolsbar'=> $this->_getToolsbar(),
             'footerbar'=> $this->_getFooterMenu()
         );
-
 
         $currentKlearLanguage = Zend_Registry::get('currentSystemLanguage');
 
@@ -100,6 +97,4 @@ class Klear_MenuController extends Zend_Controller_Action
         $jsonResponse->setData($data);
         $jsonResponse->attachView($this->view);
     }
-
 }
-
