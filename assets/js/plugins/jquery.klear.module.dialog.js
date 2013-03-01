@@ -246,23 +246,17 @@
 
             self._size();
             self._position(options.position);
+            uiDialog.css("top", this._getNewPosition() + "px");
 
             $(self.element).css("height","auto");
-            
+
             uiDialog.show(options.show);
             self.moveToTop(true);
 
-            var curScroll = $(window).scrollTop();
-
             $(window).on("scroll."+_uniqueIden,function() {
 
-                var _offset = $(window).scrollTop()-curScroll;
-                curScroll = $(window).scrollTop();
-                var symbol = (_offset<0)? '-=':'+=';
-                var newPos = ($(window).scrollTop() + $(self.uiDialog).parent().offset().top - $(self.uiDialog).height()/2) ;
-                if (newPos < 10) {
-                    newPos = 10;
-                }
+                var newPos = self._getNewPosition();
+
                 $(self.uiDialog).stop().animate({top:Math.abs(newPos)+'px'},{duration:350, complete: function() {
                     if (parseFloat($(this).css("top")) < 0) {
                         $(this).css("top","0px");
@@ -306,26 +300,21 @@
             return this.element;
         },
         updateContent : function(content) {
+
             var self = this;
-            
+
             self._getKlearPosition().css("overflow","hidden");
-            
+
             $(this.element).slideUp('fast',function() {
 
                 $(this).html(content).css("height","auto");
-                var newPos = ($(window).scrollTop() + $(self.uiDialog).parent().offset().top - $(self.uiDialog).height()/2) ;
-                if (newPos < 10) {
-                    newPos = 10;
-                }
+                var newPos = self._getNewPosition();
 
-                
                 $(this).slideDown(function() {
-                	$(self.uiDialog).stop().animate({top: newPos+'px'});
+                    $(self.uiDialog).stop().animate({top: newPos+'px'});
                     //Corregimos posición con el nuevo tamaño
                     $(window).trigger("scroll."+self._getKlearPosition().attr("id"));
                 });
-
-
             });
         },
         updateTitle : function(title) {
@@ -333,14 +322,22 @@
         },
         setAsLoading : function() {
             $(this.element).html('<br /><div class="loadingCircle"></div><div class="loadingCircle1"></div>');
-        }
+        },
+        _getNewPosition: function () {
+
+            var newPos = ($(window).scrollTop() + this._getKlearPosition().offset().top - $(this.uiDialog).height()/2) ;
+            if (newPos < 10) {
+                newPos = 10;
+            }
+
+            return newPos;
+        },
     });
 
 
     $.extend($.ui.dialog.overlay, {
 
         create: function(dialog) {
-
 
             if ( (dialog.widgetName == 'klearModule') && ($(dialog.element).moduleDialog("option", "klearPosition")) ) {
 
@@ -379,8 +376,6 @@
                     width: this.width(),
                     height: this.height()
                 });
-
-
 
             this.instances.push($el);
             return $el;
