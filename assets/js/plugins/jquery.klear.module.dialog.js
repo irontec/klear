@@ -331,7 +331,7 @@
             }
 
             return newPos;
-        },
+        }
     });
 
 
