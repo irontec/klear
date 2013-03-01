@@ -99,12 +99,22 @@ class Klear_ErrorController extends Zend_Controller_Action
                 $this->view->message = $errors->exception->getMessage();
                 $this->view->code = 500;
                 $this->view->exceptionCode = $errors->exception->getCode();
-
+                
+                
                 if (APPLICATION_ENV == 'development') {
                     $this->view->file = $errors->exception->getFile();
                     $this->view->line = $errors->exception->getLine();
                     $this->view->traceString = $errors->exception->getTraceAsString();
+                } else {
+                    // Si no estamos en desarrollo, y no tenemo ćodigo de excepción, es probable
+                    // que estemos ante un error de PHP. (lo ocultamos ;) 
+                    if ($this->view->exceptionCode == 0) {
+                        $this->view->message = $this->_helper->translate('Undefined error');
+                    }
+                    
                 }
+                
+                
                 break;
         }
 
