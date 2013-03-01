@@ -99,6 +99,7 @@
                 uiDialogContent = self.element
                     .show()
                     .removeAttr('title')
+                    .css('height','auto ')
                     .addClass(
                         'ui-dialog-content ' +
                         'ui-widget-content')
@@ -244,9 +245,10 @@
             parentDialog.css("overflow","hidden");
 
             self._size();
-
             self._position(options.position);
 
+            $(self.element).css("height","auto");
+            
             uiDialog.show(options.show);
             self.moveToTop(true);
 
@@ -305,7 +307,6 @@
         },
         updateContent : function(content) {
             var self = this;
-            var initialHeight = $(self.element).height();
             
             self._getKlearPosition().css("overflow","hidden");
             
