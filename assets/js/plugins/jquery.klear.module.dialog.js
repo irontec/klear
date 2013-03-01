@@ -306,17 +306,20 @@
         updateContent : function(content) {
             var self = this;
             var initialHeight = $(self.element).height();
+            
             self._getKlearPosition().css("overflow","hidden");
+            
             $(this.element).slideUp('fast',function() {
 
-                $(this).html(content);
+                $(this).html(content).css("height","auto");
                 var newPos = ($(window).scrollTop() + $(self.uiDialog).parent().offset().top - $(self.uiDialog).height()/2) ;
                 if (newPos < 10) {
-
                     newPos = 10;
                 }
-                $(self.uiDialog).stop().animate({top: newPos+'px'});
+
+                
                 $(this).slideDown(function() {
+                	$(self.uiDialog).stop().animate({top: newPos+'px'});
                     //Corregimos posición con el nuevo tamaño
                     $(window).trigger("scroll."+self._getKlearPosition().attr("id"));
                 });
