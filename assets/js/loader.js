@@ -1,4 +1,4 @@
-//var console = window.console || { log : function() {}};
+var console = window.console || { log : function() {}};
 
 (function() {
     var _base = document.getElementsByTagName('base')[0].getAttribute('href');
@@ -13,6 +13,7 @@
     _loader.total = 0;
 
     (function lazyLoader() {
+    	
         if (!document.getElementsByTagName('body')[0]) {
             setTimeout(lazyLoader,10);
             return;
@@ -21,11 +22,10 @@
         document.getElementsByTagName('body')[0].appendChild(_loader);
 
         _loader.interval = setInterval(function() {
-
             if (_loader.total == 0) {
                 return;
             }
-
+            
             var _percentTarget = parseInt((100*_loader.target)/_loader.total);
             _loader.firstChild.innerHTML = _loader.curPercent + '%';
 
@@ -33,7 +33,6 @@
                 _loader.curPercent++;
 
                 _loader.firstChild.style.width = _loader.curPercent + '%';
-
 
                 if (_loader.curPercent == 100) {
                     clearInterval(_loader.interval);
@@ -44,27 +43,27 @@
 
                 }
             }
-        },5);
+        },2);
 
     })();
 
 
-    var _baseScripts = ['base!js/plugins/jquery.cookie.js',
-     'base!js/plugins/jquery.scrollabletab.js',
-      'base!js/plugins/jquery.ui.tooltip.js',
-      'base!js/plugins/jquery.selectBoxIt.js',
-      'base!js/scripts/spin.min.js',
-      'base!js/plugins/jquery.getStylesheet.js',
-      'base!js/plugins/jquery.translate.js',
-      'base!js/translation/jquery.klear.translation.js',
-      'base!../default/js/translation/jquery.default.translation.js',
-      'base!js/plugins/jquery.klear.request.js',
-      'base!js/plugins/jquery.klear.module.js',
-      'base!js/plugins/jquery.klear.module.dialog.js',
-      'base!js/plugins/jquery.klear.errors.js',
-      'base!js/navigation.js'];
+//    var _baseScripts = ['base!js/plugins/jquery.cookie.js',
+//      'base!js/plugins/jquery.scrollabletab.js',
+//      'base!js/plugins/jquery.ui.tooltip.js',
+//      'base!js/plugins/jquery.selectBoxIt.js',
+//      'base!js/scripts/spin.min.js',
+//      'base!js/plugins/jquery.getStylesheet.js',
+//      'base!js/plugins/jquery.translate.js',
+//      'base!js/translation/jquery.klear.translation.js',
+//      'base!../default/js/translation/jquery.default.translation.js',
+//      'base!js/plugins/jquery.klear.request.js',
+//      'base!js/plugins/jquery.klear.module.js',
+//      'base!js/plugins/jquery.klear.module.dialog.js',
+//      'base!js/plugins/jquery.klear.errors.js',
+//      'base!js/navigation.js'];
 
-    var _baseScripts2 = [
+    var _baseScripts = [
                         'base!js/klear.compiled.js',
                         'base!js/translation/jquery.klear.translation.js',
                         'base!../default/js/translation/jquery.default.translation.js',
@@ -80,7 +79,7 @@
     var _noCDN = document.getElementsByTagName('head')[0].getAttribute("rel") &&
     document.getElementsByTagName('head')[0].getAttribute("rel") == 'noCDN';
 
-    yepnope.addPrefix('local', function(resourceObj) {
+    yepnope.addPrefix('base', function(resourceObj) {
         resourceObj.url =  _base + resourceObj.url;
         return resourceObj;
     });
@@ -123,7 +122,7 @@
                 'jquery.min.js': 'timeout=1000!cdnCheck!//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js',
                 'jquery.tmpl.min.js': 'timeout=1000!cdnCheck!//ajax.aspnetcdn.com/ajax/jquery.templates/beta1/jquery.tmpl.js',
                 'jquery-ui.min.js': 'other!timeout=1000!cdnCheck!//ajax.googleapis.com/ajax/libs/jqueryui/1.8.24/jquery-ui.min.js',
-                'jquery-ui.min.js': 'ielt10!cdnCheck!base!js/libs/ie-jquery-ui.js',
+                'ie-jquery-ui.min.js': 'ielt10!cdnCheck!base!js/libs/ie-jquery-ui.js',
                 'jquery-ui-i18n.min.js': 'timeout=1000!cdnCheck!//ajax.googleapis.com/ajax/libs/jqueryui/1.8.24/i18n/jquery-ui-i18n.min.js'
             },
             callback : function(url, i, idx) {
@@ -139,6 +138,11 @@
                         }
                         break;
                     case 'jquery-ui.min.js':
+                        if (!window.jQuery || !window.jQuery.ui) {
+                            _seekAndDestroy(url);
+                        }
+                        break;
+                    case 'ie-jquery-ui.min.js':
                         if (!window.jQuery || !window.jQuery.ui) {
                             _seekAndDestroy(url);
                         }
