@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Klear\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-05-03 18:01+0100\n"
-"PO-Revision-Date: 2012-05-03 18:07+0100\n"
+"POT-Creation-Date: 2013-03-05 13:29+0100\n"
+"PO-Revision-Date: 2013-03-05 13:29+0100\n"
 "Last-Translator: Lander Ontoria <lander@irontec.com>\n"
 "Language-Team: Irontec-Klear <lander+klear@irontec.com>\n"
 "Language: \n"
@@ -11,75 +11,112 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "X-Poedit-KeywordsList: _;gettext;gettext_noop;translate;plural:1,2\n"
-"X-Poedit-Basepath: /opt/ektcentrex/klear-core/klear/\n"
+"X-Poedit-Basepath: /home/landerog/workspace/KlearInterval/web/modules/klear\n"
 "X-Poedit-Language: English\n"
 "X-Poedit-Country: SPAIN\n"
 "X-Poedit-SourceCharset: utf-8\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
 "X-Poedit-SearchPath-0: .\n"
 
-#: controllers/IndexController.php:177
+#: controllers/IndexController.php:158
 msgid "Configuration error"
 msgstr "Configuration error"
 
-#: controllers/ErrorController.php:44
+#: controllers/ErrorController.php:86
 msgid "Page not found"
 msgstr ""
 
-#: controllers/ErrorController.php:50
-msgid "Application error"
+#: controllers/ErrorController.php:112
+msgid "Undefined error"
 msgstr ""
 
-#: layouts/scripts/main/header.phtml:90
-msgid "Klear based site"
+#: views/helpers/Toolsbar.php:14
+msgid "Collapse Menu."
 msgstr ""
 
-#: layouts/scripts/main/header.phtml:94
-#: layouts/scripts/main/header.phtml:95
+#: views/helpers/Toolsbar.php:19
+msgid "Remember opened main tabs."
+msgstr ""
+
+#: views/helpers/Toolsbar.php:25
 msgid "logout"
 msgstr ""
 
-#: views/scripts/template/login/form.phtml:17
+#: views/scripts/template/login/form.phtml:20
 msgid "User"
-msgstr ""
+msgid_plural "Users"
+msgstr[0] ""
+msgstr[1] ""
 
-#: views/scripts/template/login/form.phtml:22
+#: views/scripts/template/login/form.phtml:25
 msgid "Password"
 msgstr ""
 
-#: views/scripts/template/login/form.phtml:25
+#: views/scripts/template/login/form.phtml:28
 msgid "Authenticate"
 msgstr ""
 
-#: assets/js/plugins/jquery.klear.request.js:123
-msgid "Unknown response format in Simple Response"
+#: assets/js/navigation.js:946
+msgid "Do you really want to leave?"
 msgstr ""
 
-#: assets/js/plugins/jquery.klear.request.js:137
-#: assets/js/plugins/jquery.klear.request.js:173
-#: assets/js/plugins/jquery.klear.module.js:264
+#: assets/js/klear.compiled.js:16
+#: assets/js/klear.compiled.js:32
+#: assets/js/klear.compiled.js:33
+#: assets/js/plugins/jquery.klear.request.js:151
+#: assets/js/plugins/jquery.klear.request.js:196
+#: assets/js/plugins/jquery.klear.module.js:299
 msgid "Module registration error."
 msgstr ""
 
-#: assets/js/plugins/jquery.klear.request.js:251
-#, python-format
-msgid "Error downloading template [%s]."
-msgstr ""
-
-#: assets/js/plugins/jquery.klear.module.js:266
+#: assets/js/klear.compiled.js:16
+#: assets/js/plugins/jquery.klear.module.js:302
 #, python-format
 msgid "Error: %s."
 msgstr ""
 
-#: assets/js/plugins/jquery.klear.module.js:268
+#: assets/js/klear.compiled.js:16
+#: assets/js/plugins/jquery.klear.module.js:308
 msgid "Klear Module Error"
 msgstr ""
 
-#: assets/js/plugins/jquery.klear.module.js:328
+#: assets/js/klear.compiled.js:17
+#: assets/js/plugins/jquery.klear.module.js:367
 msgid "This tab is locked."
 msgstr ""
 
-#: assets/js/plugins/jquery.klear.module.js:604
+#: assets/js/klear.compiled.js:27
+#: assets/js/plugins/jquery.klear.module.js:670
 msgid "Loading content"
+msgstr ""
+
+#: assets/js/klear.compiled.js:27
+#: assets/js/plugins/jquery.klear.module.js:671
+msgid "Loading Main Module"
+msgstr ""
+
+#: assets/js/klear.compiled.js:27
+#: assets/js/plugins/jquery.klear.module.js:672
+msgid "Loading Secondary modules"
+msgstr ""
+
+#: assets/js/klear.compiled.js:34
+#: assets/js/plugins/jquery.klear.request.js:278
+#, python-format
+msgid "Error downloading template [%s]."
+msgstr ""
+
+#: assets/js/klear.compiled.js:38
+#: assets/js/plugins/jquery.klear.request.js:137
+msgid "Unknown response format in Simple Response"
+msgstr ""
+
+#: assets/js/klear.compiled.js:38
+#: assets/js/plugins/jquery.klear.request.js:208
+msgid "Undefined Error"
+msgstr ""
+
+#: assets/js/plugins/jquery.ui.combobox.js:106
+msgid "Show All Items"
 msgstr ""
 
