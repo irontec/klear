@@ -357,6 +357,10 @@ class Klear_AssetsController extends Zend_Controller_Action
             $key = str_replace(array('\'', '"'), '', $literal);
             $value = $this->_helper->translate($literal);
 
+            if (is_array($value)) {
+                $value = $value[0];
+            }
+            
             $value = str_replace(
                 array('\\\'', '"'),
                 array('\'', '\"'),
