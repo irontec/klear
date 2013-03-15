@@ -154,6 +154,7 @@ class Klear_Model_SiteConfig
 
         Zend_Registry::set('currentSystemLanguage', $this->_lang);
         Zend_Registry::set('SystemDefaultLanguage', $this->_langs[$config->lang]);
+        Zend_Registry::set('defaultLang', $this->_lang->getIden());
         Zend_Registry::set('SystemLanguages', $this->_langs);
 
     }
