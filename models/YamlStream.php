@@ -10,11 +10,6 @@ class Klear_Model_YamlStream
 {
     protected $_protocol = 'klear.yaml://';
 
-    /*
-     * _openedPath, se usa para guardar la ruta relativa al fichero que se está parseando,
-    * a partir de la cual, se cargan los incluidos (L.50)
-    */
-    protected $_openedPath;
     protected $_file;
     protected $_position = 0;
     protected $_length;
@@ -24,37 +19,12 @@ class Klear_Model_YamlStream
     /*
      * http://www.php.net/manual/en/class.streamwrapper.php
      */
-    function stream_open($path, $mode, $options, &$opened_path)
+    function stream_open($path, $mode, $options, &$openedPath)
     {
-        $this->_loadFilepath($path);
+        $this->_file = $this->_getRealFilepath($path);
+        $openedPath = $this->_file;
 
-        $this->_openedPath = dirname($this->_file);
-        $opened_path = $this->_openedPath;
-
-        $fp = fopen($this->_file, 'r');
-
-        while ($line = fgets($fp)) {
-
-            if (preg_match("/^\#include\s+([a-z0-9\/\._\-]+)/i", $line, $matches)) {
-                $confFile = $this->_openedPath . '/' .  $matches[1];
-
-                if (file_exists($confFile)) {
-                    $this->_extraFiles[] = $confFile;
-                }
-
-            } else {
-                break;
-            }
-        }
-
-        fclose($fp);
-
-        $this->_content = '';
-        foreach ($this->_extraFiles as $_confFile) {
-            $this->_content .= file_get_contents($_confFile) ."\n";
-        }
-
-        $this->_content .= file_get_contents($this->_file);
+        $this->_content = $this->_loadContent($this->_file);
 
         $this->_resolveVariables();
 
@@ -63,11 +33,11 @@ class Klear_Model_YamlStream
         $this->_position = 0;
 
         // Uncomment for debug
-        //file_put_contents("/tmp/last",$this->_content);
+//         file_put_contents("/tmp/last", $this->_content);
         return true;
     }
 
-    protected function _loadFilepath($path)
+    protected function _getRealFilepath($path)
     {
         $baseFile = str_replace($this->_protocol, '', $path);
 
@@ -78,11 +48,60 @@ class Klear_Model_YamlStream
             $file .= '.yaml';
         }
 
-        if ((!file_exists($file)) || (!is_readable($file))) {
+        $file = realpath($file);
+
+        if (false === $file  || !is_readable($file)) {
             throw new Zend_Exception('File not readable: ' . $baseFile);
         }
 
-        $this->_file = $file;
+        return $file;
+    }
+
+    protected function _loadContent($file)
+    {
+        // Si no existe o no se puede leer devolvemos un string vacio
+        if (!is_readable($file)) {
+            return '';
+        }
+
+        $contents = '';
+
+        $includeFiles = $this->_getIncludeFiles($file);
+        foreach ($includeFiles as $includeFile) {
+            $contents .= $this->_loadContent($includeFile);
+        }
+
+        $contents .= file_get_contents($file). "\n";
+        return $contents;
+    }
+
+    protected function _getIncludeFiles($file)
+    {
+        $includeFiles = array();
+
+        $fp = fopen($this->_file, 'r');
+
+        while ($line = fgets($fp)) {
+            if (preg_match("/^\#include\s+([a-z0-9\/\._\-]+)/i", $line, $matches)) {
+                $confFile = realpath(dirname($file) . DIRECTORY_SEPARATOR .  $matches[1]);
+
+                if ($confFile) {
+                    //Nos aseguramos de no incluir un mismo fichero 2 veces
+                    $fileIncluded = array_search($confFile, $this->_extraFiles);
+                    if ($fileIncluded === false) {
+                        $includeFiles[] = $confFile;
+                        $this->_extraFiles[] = $confFile;
+                    }
+                }
+
+            } else {
+                break;
+            }
+        }
+
+        fclose($fp);
+
+        return $includeFiles;
     }
 
     protected function _parseVariables($data)
@@ -195,7 +214,7 @@ class Klear_Model_YamlStream
 
     public function url_stat($path)
     {
-        $this->_loadFilepath($path);
+        $this->_file = $this->_getRealFilepath($path);
         return stat($this->_file);
     }
 
