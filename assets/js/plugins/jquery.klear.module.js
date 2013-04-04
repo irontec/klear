@@ -416,8 +416,8 @@
                     ||
                     '<span class="ui-silk inline dialogTitle '+iconClass+' "></span>'+this.options.title + '';
             }
-
-            var width = options.width || 300
+            
+            var width = options.width || 300;
             var height = options.height || 160;
 
             var closeTab = ((options.closeTab==0)||(options.closeTab))? options.closeTab.toString() : false;
@@ -429,7 +429,7 @@
                     position: {
                         my: 'center bottom',
                         at: 'center center',
-                        collision: 'none'                        
+                        collision: 'none'
                     },
                     buttons : defaults.buttons,
                     title: title,

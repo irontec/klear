@@ -246,7 +246,10 @@
 
             self._size();
             self._position(options.position);
-            uiDialog.css("top", this._getNewPosition() + "px");
+            var _curPosition = this._getNewPosition();
+            uiDialog
+                .css("top", _curPosition.top + "px")
+                .css("left", _curPosition.left + "px");
 
             $(self.element).css("height","auto");
 
@@ -255,9 +258,9 @@
 
             $(window).on("scroll."+_uniqueIden,function() {
 
-                var newPos = self._getNewPosition();
+                var curPos = self._getNewPosition();
 
-                $(self.uiDialog).stop().animate({top:Math.abs(newPos)+'px'},{duration:350, complete: function() {
+                $(self.uiDialog).stop().animate({top:Math.abs(curPos.top)+'px', left:Math.abs(curPos.left)+'px'},{duration:350, complete: function() {
                     if (parseFloat($(this).css("top")) < 0) {
                         $(this).css("top","0px");
                     }
@@ -308,10 +311,10 @@
             $(this.element).slideUp('fast',function() {
 
                 $(this).html(content).css("height","auto");
-                var newPos = self._getNewPosition();
+                var curPos = self._getNewPosition();
 
                 $(this).slideDown(function() {
-                    $(self.uiDialog).stop().animate({top: newPos+'px'});
+                    $(self.uiDialog).stop().animate({top: curPos.top+'px', left: curPos.left + 'px'});
                     //Corregimos posición con el nuevo tamaño
                     $(window).trigger("scroll."+self._getKlearPosition().attr("id"));
                 });
@@ -325,12 +328,14 @@
         },
         _getNewPosition: function () {
 
-            var newPos = ($(window).scrollTop() + this._getKlearPosition().offset().top - $(this.uiDialog).height()/2) ;
-            if (newPos < 10) {
-                newPos = 10;
+            var topPos = ($(window).scrollTop() + this._getKlearPosition().offset().top - $(this.uiDialog).height()/2) ;
+            if (topPos < 10) {
+                topPos = 10;
             }
 
-            return newPos;
+            var leftPos = (this._getKlearPosition().width()/2) - ($(this.uiDialog).width()/2) ;
+
+            return {top: topPos, left: leftPos};
         }
     });
 
@@ -338,7 +343,7 @@
     $.extend($.ui.dialog.overlay, {
 
         create: function(dialog) {
-
+            
             if ( (dialog.widgetName == 'klearModule') && ($(dialog.element).moduleDialog("option", "klearPosition")) ) {
 
                 var container = $(dialog.element).moduleDialog("option", "klearPosition");
@@ -364,12 +369,11 @@
                 $(window).bind('resize.dialog-overlay', $.ui.dialog.overlay.resize);
             }
 
-
             // COmpatibilidad con overlays en los tabs
             if (container == document) {
                 container = document.body;
             }
-
+            
             var $el = ( $('<div></div>').addClass('ui-widget-overlay'))
                 .appendTo(container)
                 .css({
