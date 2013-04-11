@@ -25,17 +25,20 @@ class Klear_Model_Language
 
     public function setConfig(Zend_Config $config)
     {
-        if (null != ($title = $config->get('title'))) {
+        $title = $config->get('title');
+        if ($title) {
             $this->_setTitle($title);
         } else {
             $this->_setTitle($this->_iden);
         }
 
-        if (null != ($language = $config->get('language'))) {
+        $language = $config->get('language');
+        if ($language) {
             $this->_setLanguage($language);
         }
 
-        if (null != ($locale = $config->get('locale'))) {
+        $locale = $config->get('locale');
+        if ($locale) {
             $this->_setLocale($locale);
         }
     }
