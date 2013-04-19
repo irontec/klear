@@ -941,18 +941,26 @@
 
         $.klear.start();
 
-        $(window).on('beforeunload', function(e){
-            e.preventDefault();
-            return $.translate('Do you really want to leave?', __namespace__);
-        });
+        
+    	window.onbeforeunload = function (e) {
+    		
+    		if ($( "#tabsList li").length == 0) {
+    			return;
+    		}
+    		
+    		var _warnMsg = $.translate('Do you really want to leave?', __namespace__);
+    		
+    	    var e = e || window.event;
 
+    	    if (e) {
+    	        e.returnValue = _warnMsg;
+    	    }
 
-        var scrollInterval;
-        $(window).on("scroll", function() {
-            /*clearInterval(scrollInterval);
-            scrollInterval = setTimeout(function() {
-                $("#sidebar").trigger("reposition");
-            },350)*/
+    	    return _warnMsg;
+    	};
+    	
+    	
+    	$(window).on("scroll", function() {
             $("#sidebar").trigger("reposition");
 
         });
