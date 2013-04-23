@@ -36,6 +36,8 @@
         })
 
         var _type = options.post? 'post':'get';
+        var _async = options.async != undefined ? options.async : true;
+
         var _action = $.klear.baseurl + options.controller + '/' + options.action;
 
         if (_type == 'post') {
@@ -48,29 +50,30 @@
         return {
             action: _action,
             data: _data,
-            type: _type
+            type: _type,
+            async: _async
         };
     };
 
     $.klear.requestTranslations = new Array();
     $.klear.requestSearchTranslations = function(){
-    	$('script[src*="js/translation"]', $('head')).each(function(){
-    		$.klear.requestTranslations.push($(this).attr('src'));
-    	});
+        $('script[src*="js/translation"]', $('head')).each(function(){
+            $.klear.requestTranslations.push($(this).attr('src'));
+        });
     };
 
     $.klear.requestReloadTranslations = function(){
-    	var l = $.klear.requestTranslations.length;
-    	var done = {};
-    	var nScr = [];
-    	for (var i = 0; i<l; i++) {
-    		if (done[$.klear.requestTranslations[i]] != undefined) continue;
-    		done[$.klear.requestTranslations[i]] = true;
-    		var $el = $('script[src="'+$.klear.requestTranslations[i]+'"]');
-    		if ($el.length>0) {
-    			$el.remove();
-    		}
-    		$.ajax({
+        var l = $.klear.requestTranslations.length;
+        var done = {};
+        var nScr = [];
+        for (var i = 0; i<l; i++) {
+            if (done[$.klear.requestTranslations[i]] != undefined) continue;
+            done[$.klear.requestTranslations[i]] = true;
+            var $el = $('script[src="'+$.klear.requestTranslations[i]+'"]');
+            if ($el.length>0) {
+                $el.remove();
+            }
+            $.ajax({
                  url: $.klear.requestTranslations[i] + '?'+(new Date).getTime() + '&language='+$.klear.language,
                  dataType:'script',
                  type : 'get',
@@ -78,10 +81,10 @@
                  async: true,
                  success: function() {},
                  error : function(r) {}
-    		});
-    		nScr.push($.klear.requestTranslations[i]);
-    	}
-    	$.klear.requestTranslations = nScr;
+            });
+            nScr.push($.klear.requestTranslations[i]);
+        }
+        $.klear.requestTranslations = nScr;
     };
 
     $.klear.request = function(params,successCallback,errorCallback,context) {
@@ -95,17 +98,17 @@
         var clean_baseurl = '';
 
         if (context && context.element) {
-        	var loaderTrace = function(action, param) {
-        		var p = param || true;
-        		$(context.element).klearModule("option",action, p);
-        	};
+            var loaderTrace = function(action, param) {
+                var p = param || true;
+                $(context.element).klearModule("option",action, p);
+            };
         } else {
-        	var loaderTrace = function() {};
+            var loaderTrace = function() {};
         }
         var totalItems = 0;
 
         var _parseResponse = function _parseResponse(response) {
-        	if (response == null) return;
+            if (response == null) return;
             if ( (response.mustLogIn) && (params.controller != 'login') ) {
                 if (!params.isLogin) {
                     $.klear.hello('rememberCallback', reCall);
@@ -118,7 +121,7 @@
             loaderTrace("mainModuleLoaded");
             switch(response.responseType) {
                 case 'dispatch':
-                	return _parseDispatchResponse(response);
+                    return _parseDispatchResponse(response);
                 case 'simple':
                     return _parseSimpleResponse(response);
                 case 'redirect':
@@ -157,11 +160,11 @@
             clean_baseurl = response.cleanBaseurl;
 
             var doCount = function(object, iden) {
-            	var _len = 0;
-            	for(var iden in object) {
-            		_len++;
-            	}
-            	return _len;
+                var _len = 0;
+                for(var iden in object) {
+                    _len++;
+                }
+                return _len;
             };
 
             $.when(
@@ -175,7 +178,7 @@
                 (function tryAgain() {
 
                     if ( (false === response.plugin) || (typeof $.fn[response.plugin] == 'function' ) ) {
-                    	successCallback.apply(context,[response]);
+                        successCallback.apply(context,[response]);
                         return;
 
                    } else {
@@ -201,12 +204,12 @@
 
             try {
 
-            	var response = $.parseJSON(xhr.responseText);
+                var response = $.parseJSON(xhr.responseText);
 
             } catch(e) {
                 var response = {
-                		message : $.translate('Undefined Error', [__namespace__]),
-                		raw : xhr.responseText
+                        message : $.translate('Undefined Error', [__namespace__]),
+                        raw : xhr.responseText
                 }
             }
 
@@ -238,8 +241,8 @@
 
             var done = 0;
             var successCallback = function() {
-            	loaderTrace("addLoadedFile");
-            	total--;
+                loaderTrace("addLoadedFile");
+                total--;
                 done++;
                 if (total == 0) {
                     dfr.resolve(done);
@@ -250,7 +253,7 @@
 
             $.each(templates,function(tmplIden,tmplSrc) {
 
-            	if ($.klear.cacheEnabled && $.klear.loadedTemplates[tmplIden]) {
+                if ($.klear.cacheEnabled && $.klear.loadedTemplates[tmplIden]) {
                     successCallback();
                     return;
                 }
@@ -284,9 +287,9 @@
 
         var _checkScript = function(script) {
 
-        	if (script.match(/js\/translation/)) {
-        		$.klear.requestTranslations.push(script);
-        	}
+            if (script.match(/js\/translation/)) {
+                $.klear.requestTranslations.push(script);
+            }
 
         };
 
@@ -305,12 +308,12 @@
 
             $.each(scripts, function(iden, _script) {
                 if ($.klear.cacheEnabled && $.klear.loadedScripts[iden]) {
-                	loaderTrace("addLoadedFile");
+                    loaderTrace("addLoadedFile");
                     total--;
                     return;
                 }
                 if ("" == _script) {
-                	loaderTrace("addLoadedFile");
+                    loaderTrace("addLoadedFile");
                     total--;
                     return;
                 }
@@ -347,8 +350,8 @@
                             }
                         },
                         error : function(r) {
-                        	dfr.reject("Error downloading script ["+_script+"]");
-                        	//console.log("Error downloading script ["+_script+"]" , r);
+                            dfr.reject("Error downloading script ["+_script+"]");
+                            //console.log("Error downloading script ["+_script+"]" , r);
                         }
                  });
                 } catch(e) {
@@ -376,7 +379,7 @@
 
                 $.getStylesheet(request_baseurl + css[iden],iden);
                 $("#" + iden).on("load",function() {
-                	loaderTrace("addLoadedFile");
+                    loaderTrace("addLoadedFile");
                     total--;
                     if (total == 0) {
                         dfr.resolve(true);
@@ -400,12 +403,12 @@
 
 
             $.each($.param(req.data).split('&'),function(idx, val) {
-            	var _item = val.split('=');
-            	$("<input>")
-                	.attr("name",decodeURIComponent(_item[0]))
-                	.attr("type","hidden")
-                	.val(_item[1])
-                	.appendTo(_theForm);
+                var _item = val.split('=');
+                $("<input>")
+                    .attr("name",decodeURIComponent(_item[0]))
+                    .attr("type","hidden")
+                    .val(_item[1])
+                    .appendTo(_theForm);
             });
 
             _iframe.appendTo("body");
@@ -421,20 +424,21 @@
                 .trigger('submit');
 
             if (typeof successCallback == 'function') {
-            	successCallback(true);
+                successCallback(true);
             }
 
             return false;
         }
 
         $.ajax({
-        	url : req.action,
-        	dataType:'json',
-        	context : this,
-        	data : req.data,
-        	type : req.type,
-        	success: _parseResponse,
-        	error: _errorResponse
+            url : req.action,
+            dataType:'json',
+            context : this,
+            data : req.data,
+            async: req.async,
+            type : req.type,
+            success: _parseResponse,
+            error: _errorResponse
         });
     };
 
