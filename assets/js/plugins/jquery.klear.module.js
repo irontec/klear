@@ -28,7 +28,7 @@
 
     $.klear.loadedTemplates = {};
 
-    
+
     /*
      * Klear Module definition
      *
@@ -179,6 +179,7 @@
             mainEnl : null,
             title : null,
             file : null,
+            filesUploading : {},
             panel : null,
             tabIndex : null,
             baseurl : null,
@@ -368,23 +369,50 @@
                 }
             }
 
+            var uploadInProgress = false;
+            for (var idx in this.options.filesUploading) {
+                uploadInProgress = true;
+                break;
+            }
+
+            if (uploadInProgress) {
+                self.element.klearModule('showDialog',
+                    $.translate("Upload in progress.", [__namespace__]) +
+                    '<br />' +
+                    $.translate("Close the screen?", [__namespace__])
+                    ,{
+                    title : $.translate("Attention!", [__namespace__]),
+                    buttons :
+                         [
+                              {
+                                text: $.translate("Cancel", [__namespace__]),
+                                click: function() {
+                                    $(this).moduleDialog("close");
+                                }
+                            },
+                            {
+                                text: $.translate("Ignore changes and close", [__namespace__]),
+                                click: function() {
+                                    self.element.klearModule("unsetAllUploadsInProgress");
+                                    self.element.klearModule("close");
+                                }
+                            }
+                        ]
+                });
+                return;
+            }
 
             if (opts && opts.callback && typeof opts.callback == "function") {
                 opts.callback();
             }
 
             $(this.options.container).tabs( "remove", this.options.tabIndex );
-
-
-
         },
 
 
         /*
          * blockTab
          */
-
-
         getModuleDialog : function() {
 
             return this.options.moduleDialog;
@@ -416,7 +444,7 @@
                     ||
                     '<span class="ui-silk inline dialogTitle '+iconClass+' "></span>'+this.options.title + '';
             }
-            
+
             var width = options.width || 300;
             var height = options.height || 160;
 
@@ -503,11 +531,9 @@
         /*
          * TAB LOCK
          */
-
         isLocked: function() {
             return this.options.tabLock !== false;
         },
-
         lockTab: function(callback) {
             if ('function' == typeof callback) {
                 this._setOption('tabLock', callback);
@@ -518,8 +544,8 @@
         unLockTab: function() {
             this._setOption('tabLock', false);
         },
-
         setAsChanged : function(changeCallback) {
+
             this.element.addClass('changed');
             this.lockTab(changeCallback);
         },
@@ -527,7 +553,19 @@
             this.element.removeClass('changed');
             this.unLockTab();
         },
-
+        setUploadInProgress: function (id) {
+            this.options.filesUploading[id] = true;
+        },
+        unsetUploadInProgress: function (id) {
+            if (this.options.filesUploading[id]) {
+                delete this.options.filesUploading[id];
+            }
+        },
+        unsetAllUploadsInProgress: function (id) {
+            for (idx in this.options.filesUploading) {
+                delete this.options.filesUploading[idx];
+            }
+        },
         /*
          * DECORATORS
          *
