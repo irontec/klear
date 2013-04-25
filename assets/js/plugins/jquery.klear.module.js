@@ -376,7 +376,10 @@
             }
 
             if (uploadInProgress) {
-                self.element.klearModule('showDialog',
+
+                var self = this;
+
+                this.showDialog(
                     $.translate("Upload in progress.", [__namespace__]) +
                     '<br />' +
                     $.translate("Close the screen?", [__namespace__])
@@ -388,13 +391,13 @@
                                 text: $.translate("Cancel", [__namespace__]),
                                 click: function() {
                                     $(this).moduleDialog("close");
-                                }
+                              }
                             },
                             {
                                 text: $.translate("Ignore changes and close", [__namespace__]),
                                 click: function() {
-                                    self.element.klearModule("unsetAllUploadsInProgress");
-                                    self.element.klearModule("close");
+                                    self.unsetAllUploadsInProgress();
+                                    self.close();
                                 }
                             }
                         ]
