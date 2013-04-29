@@ -72,7 +72,7 @@ class Klear_Model_User implements Klear_Auth_Adapter_Interfaces_BasicUserModel
         return $this->_email;
     }
     
-    public function getTimezone($tz)
+    public function getTimezone()
     {
         return $this->_timezone;
     }
