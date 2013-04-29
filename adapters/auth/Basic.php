@@ -7,6 +7,7 @@ class Klear_Auth_Adapter_Basic implements \Klear_Auth_Adapter_KlearAuthInterface
     protected $_userId;
 
     protected $_userMapper;
+    
 
     /**
      *
@@ -18,7 +19,11 @@ class Klear_Auth_Adapter_Basic implements \Klear_Auth_Adapter_KlearAuthInterface
     {
         $this->_username = $request->getPost('username', '');
         $this->_password = $request->getPost('password', '');
+        
         $this->_initUserMapper($authConfig);
+        $this->_initTimezoneConfig($authConfig);
+        
+        
     }
 
     protected function _initUserMapper(Klear_Model_ConfigParser $authConfig = null)
@@ -29,12 +34,47 @@ class Klear_Auth_Adapter_Basic implements \Klear_Auth_Adapter_KlearAuthInterface
             // TODO: Log auth fallback info message;
             $userMapperName = '\Klear_Model_Mapper_Users';
         }
-
+        
+        
         $this->_userMapper = new $userMapperName;
 
         if (!$this->_userMapper instanceof Klear_Auth_Adapter_Interfaces_BasicUserMapper) {
             throw new \Exception('Auth userMapper must implement Klear_Auth_Adapter_BasicUserInterface');
         }
+        
+    }
+    
+    protected function _initTimezoneConfig(Klear_Model_ConfigParser $authConfig = null)
+    {
+        
+        if ($authConfig->exists('timezone')) {
+            
+            $tzConfig = $authConfig->getRaw()->timezone;
+
+            if (!isset($tzConfig->key) || 
+                    !isset($tzConfig->mapper) ||
+                        !isset($tzConfig->field)) {
+                
+                throw new \Exception("Incomplete configuration for KlearUser timezone");
+            }
+
+            $mapperName = $tzConfig->mapper;
+            $mapper = new $mapperName;
+            $model = $mapper->loadModel(false);           
+            
+            $fieldName = $model->varNameToColumn($tzConfig->field);
+            if (empty($fieldName)) {
+                throw new \Exception("Incomplete configuration for KlearUser timezone");
+            }
+
+            $this->_userMapper->setTimezoneKey($tzConfig->key);
+            $this->_userMapper->setTimezoneMapper($mapper);
+            $this->_userMapper->setTimezoneGetter('get' . ucfirst($fieldName));
+            
+        }
+         
+        
+        
     }
 
     public function authenticate()
@@ -44,6 +84,7 @@ class Klear_Auth_Adapter_Basic implements \Klear_Auth_Adapter_KlearAuthInterface
 
             if ($this->_userHasValidCredentials($user)) {
 
+                
                 $this->_user = $user;
                 $authResult = Zend_Auth_Result::SUCCESS;
                 $authMessage = array("message"=>"Welcome!");

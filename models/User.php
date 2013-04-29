@@ -7,7 +7,8 @@ class Klear_Model_User implements Klear_Auth_Adapter_Interfaces_BasicUserModel
     protected $_password;
     protected $_active;
     protected $_email;
-
+    protected $_timezone = null;
+    
     public function setId($id)
     {
         $this->_id = $id;
@@ -37,6 +38,14 @@ class Klear_Model_User implements Klear_Auth_Adapter_Interfaces_BasicUserModel
         $this->_email = $email;
         return $this;
     }
+    
+    
+    public function setTimezone($tz)
+    {
+        $this->_timezone = $tz;
+        return $this;
+    }
+    
 
     public function getId()
     {
@@ -62,11 +71,26 @@ class Klear_Model_User implements Klear_Auth_Adapter_Interfaces_BasicUserModel
     {
         return $this->_email;
     }
+    
+    public function getTimezone($tz)
+    {
+        return $this->_timezone;
+    }
+    
 
     public function __get($key)
     {
         if ($key === 'username') {
             return $this->getLogin();
         }
+    }
+    
+    public function postLogin()
+    {
+        
+        if (!is_null($this->_timezone)) {
+            date_default_timezone_set($this->_timezone);
+        }
+        
     }
 }

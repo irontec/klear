@@ -22,6 +22,7 @@ class Klear_Plugin_Auth extends Zend_Controller_Plugin_Abstract
             return;
         }
         $this->_initAuth($request);
+        $this->_postLogin();
     }
 
     protected function _initAuth(Zend_Controller_Request_Abstract $request)
@@ -40,7 +41,7 @@ class Klear_Plugin_Auth extends Zend_Controller_Plugin_Abstract
             $logHelper->log('No auth adapter found.');
             return;
         }
-
+        
         if ((bool)$request->getPost("klearLogin")) {
             $auth = Zend_Auth::getInstance();
 
@@ -64,7 +65,8 @@ class Klear_Plugin_Auth extends Zend_Controller_Plugin_Abstract
                 if ($request->getParam('remember', '') == 'true') {
                     Zend_Session::rememberMe();
                 }
-
+                
+                
             } else {
 
                 $messages = $authResult->getMessages();
@@ -78,6 +80,15 @@ class Klear_Plugin_Auth extends Zend_Controller_Plugin_Abstract
         }
     }
 
+    protected function _postLogin()
+    {
+        
+        $identity = Zend_Auth::getInstance()->getIdentity();
+        if (is_object($identity) && method_exists($identity, 'postLogin') ) {
+            $identity->postLogin();
+        }
+    }
+    
     protected function _getSiteConfig()
     {
         $front = Zend_Controller_Front::getInstance();
