@@ -63,7 +63,6 @@ class Klear_Model_YamlStream
         if (!is_readable($file)) {
             return '';
         }
-
         $contents = '';
 
         $includeFiles = $this->_getIncludeFiles($file);
@@ -79,7 +78,7 @@ class Klear_Model_YamlStream
     {
         $includeFiles = array();
 
-        $fp = fopen($this->_file, 'r');
+        $fp = fopen($file, 'r');
 
         while ($line = fgets($fp)) {
             if (preg_match("/^\#include\s+([a-z0-9\/\._\-]+)/i", $line, $matches)) {
