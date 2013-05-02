@@ -81,10 +81,7 @@ class Klear_Model_Gettext
                         }
 
                     } else {
-                        var_dump($string, $token);echo "WTF";exit;
-
-                        Throw new Exception("Invalid gettext string");
-
+                        throw new Exception("Invalid gettext string:" . $string . ' ' . $token);
                     }
 
                     break;
