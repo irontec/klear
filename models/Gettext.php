@@ -22,7 +22,7 @@ class Klear_Model_Gettext
             $quotedValidFunctions[] = '' . preg_quote($funcName . '(', "/") . '';
         }
 
-        if (!preg_match("/^".implode("|", $quotedValidFunctions)."/i", $string, $result)) {
+        if (!preg_match("/^".implode("|", $quotedValidFunctions)."/i", $string)) {
 
             return $string;
         }
