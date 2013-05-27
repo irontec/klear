@@ -7,7 +7,7 @@ class Klear_Model_SiteConfig
     protected $_sitesubname;
     protected $_timezone;
     protected $_signature = 'Klear :: Irontec';
-    
+
     protected $_logo;
 
     protected $_disableMinifiers = false;
@@ -47,6 +47,13 @@ class Klear_Model_SiteConfig
             'year',
             'sitename'
     );
+
+    public function __construct(Zend_Config $config = null)
+    {
+        if (!is_null($config)) {
+            $this->setConfig($config);
+        }
+    }
 
     public function setConfig(Zend_Config $config)
     {
@@ -335,7 +342,7 @@ class Klear_Model_SiteConfig
     {
         return $this->_disableCDN;
     }
-    
+
     public function getSignature()
     {
         return $this->_signature;

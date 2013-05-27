@@ -15,6 +15,13 @@ class Klear_Model_Menu implements \IteratorAggregate
     protected $_siteConfig;
     protected $_sections = array();
 
+    public function __construct(Zend_Config $config = null)
+    {
+        if (!is_null($config)) {
+            $this->setConfig($config);
+        }
+    }
+
     public function getIterator()
     {
         return new \ArrayIterator($this->_sections);

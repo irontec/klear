@@ -43,7 +43,7 @@ class Klear_Model_HeaderMenu extends Klear_Model_Menu
      * (called from _identify)
      * @param unknown_type $configKey
      */
-    protected function _parseKlearSettings($configKey)
+    protected function _parseKlearSettings()
     {
         $section = new Klear_Model_Section;
         $section

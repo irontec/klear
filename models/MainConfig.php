@@ -7,66 +7,50 @@
  */
 class Klear_Model_MainConfig
 {
+    /**
+     * @var Zend_Config
+     */
+    protected $_mainConfig;
+    /**
+     * @var Zend_Config
+     */
+    protected $_menuConfig;
+    /**
+     * @var Zend_Config
+     */
+    protected $_headerConfig;
+    /**
+     * @var Zend_Config
+     */
+    protected $_footerConfig;
 
     protected $_siteConfig;
     protected $_menu;
     protected $_headerMenu;
     protected $_footerMenu;
 
+    public function __construct(Zend_Config $config = null)
+    {
+        if (!is_null($config)) {
+            $this->setConfig($config);
+        }
+    }
+
     /**
-     * Construye las distintas configuraciones que se usarán en el sistema
-     * (siteConfig, menu, headerMenu, etc...)
+     * Guarda la configuración necesaria para configurar el sistema
      * @param Zend_Config $config Configuración de klear
      */
     public function setConfig(Zend_Config $config)
     {
-        $this->_buildSiteConfig($config);
-        $this->_buildMenu($config);
-        $this->_buildHeaderMenu($config);
-        $this->_buildFooterMenu($config);
-    }
-
-
-    protected function _buildSiteConfig(Zend_Config $config)
-    {
-        $this->_siteConfig = new Klear_Model_SiteConfig;
-        $this->_siteConfig->setConfig($config->main);
-    }
-
-    protected function _buildMenu(Zend_Config $config)
-    {
         if (!isset($config->menu) || !$config->menu instanceof Zend_Config) {
-            throw new \Zend_Exception('No menu configuration found in klear.yaml');
+            throw new \Zend_Exception(_('No menu configuration found in klear.yaml'));
         }
-        $this->_menu = new Klear_Model_Menu;
-        $this->_menu->setConfig($config->menu);
-        $this->_menu->setSiteConfig($this->getSiteConfig());
-        $this->_menu->parse();
-
+        $this->_mainConfig = $config->main;
+        $this->_menuConfig = $config->menu;
+        $this->_headerConfig = $config->headerMenu;
+        $this->_footerConfig = $config->footerMenu;
     }
 
-
-    protected function _buildHeaderMenu(Zend_Config $config)
-    {
-        $this->_headerMenu = new Klear_Model_HeaderMenu;
-        if ($config->headerMenu) {
-            $this->_headerMenu->setConfig($config->headerMenu);
-            $this->_headerMenu->setSiteConfig($this->getSiteConfig());
-            $this->_headerMenu->setMenuConfig($config->menu);
-            $this->_headerMenu->parse();
-        }
-    }
-
-    protected function _buildFooterMenu(Zend_Config $config)
-    {
-        $this->_footerMenu = new Klear_Model_FooterMenu;
-        if ($config->footerMenu) {
-            $this->_footerMenu->setConfig($config->footerMenu);
-            $this->_footerMenu->setSiteConfig($this->getSiteConfig());
-            $this->_footerMenu->setMenuConfig($config->menu);
-            $this->_footerMenu->parse();
-        }
-    }
 
     /**
      * Factory que devuelve Configuracion general de Klear en base a sección "main" del fichero
@@ -74,7 +58,16 @@ class Klear_Model_MainConfig
      */
     public function getSiteConfig()
     {
+        if (!isset($this->_siteConfig)) {
+            $this->_buildSiteConfig();
+        }
         return $this->_siteConfig;
+    }
+
+    protected function _buildSiteConfig()
+    {
+        $this->_siteConfig = new Klear_Model_SiteConfig($this->_mainConfig);
+        $this->_siteConfig->setConfig($this->_mainConfig);
     }
 
     /**
@@ -83,7 +76,17 @@ class Klear_Model_MainConfig
      */
     public function getMenu()
     {
+        if (!isset($this->_menu)) {
+            $this->_buildMenu();
+        }
         return $this->_menu;
+    }
+
+    protected function _buildMenu()
+    {
+        $this->_menu = new Klear_Model_Menu($this->_menuConfig);
+        $this->_menu->setSiteConfig($this->getSiteConfig());
+        $this->_menu->parse();
     }
 
     /**
@@ -92,7 +95,20 @@ class Klear_Model_MainConfig
      */
     public function getHeaderMenu()
     {
+        if (!isset($this->_headerMenu)) {
+            $this->_buildHeaderMenu();
+        }
         return $this->_headerMenu;
+    }
+
+    protected function _buildHeaderMenu()
+    {
+        $this->_headerMenu = new Klear_Model_HeaderMenu($this->_headerConfig);
+        if ($this->_headerConfig) {
+            $this->_headerMenu->setSiteConfig($this->getSiteConfig());
+            $this->_headerMenu->setMenuConfig($this->_menuConfig);
+            $this->_headerMenu->parse();
+        }
     }
 
     /**
@@ -101,6 +117,19 @@ class Klear_Model_MainConfig
      */
     public function getFooterMenu()
     {
+        if (!isset($this->_footerMenu)) {
+            $this->_buildFooterMenu();
+        }
         return $this->_footerMenu;
+    }
+
+    protected function _buildFooterMenu()
+    {
+        $this->_footerMenu = new Klear_Model_FooterMenu($this->_footerConfig);
+        if ($this->_footerConfig) {
+            $this->_footerMenu->setSiteConfig($this->getSiteConfig());
+            $this->_footerMenu->setMenuConfig($this->_menuConfig);
+            $this->_footerMenu->parse();
+        }
     }
 }

@@ -16,11 +16,7 @@ class Klear_Plugin_Init extends Zend_Controller_Plugin_Abstract
      */
     protected $_bootstrap;
 
-    /**
-     * @var Zend_Config
-     */
     protected $_config;
-
 
     /**
      * Este método que se ejecuta una vez se ha matcheado la ruta adecuada
@@ -34,9 +30,11 @@ class Klear_Plugin_Init extends Zend_Controller_Plugin_Abstract
         }
 
         $this->_initPlugin();
+
         $this->_initCacheManager();
-        $this->_initConfig();
         $this->_initAuthStorage();
+
+        $this->_initConfig();
         $this->_initLog();
         $this->_initLayout();
         $this->_initErrorHandler();
@@ -71,7 +69,7 @@ class Klear_Plugin_Init extends Zend_Controller_Plugin_Abstract
             'name' => 'File',
             'options' => array(
                 'master_files' => array(
-                //Este archivo es necesario porque 
+                //Este archivo es necesario porque
                 //el constructor nos obliga a ello
                     __DIR__ . '/fakeFile'
                 ),
@@ -111,27 +109,11 @@ class Klear_Plugin_Init extends Zend_Controller_Plugin_Abstract
     {
         /*
          * Cargamos la configuración
-        */
-        $configFile = $this->_getConfigPath();
+         */
+        $config = $this->_getConfig();
 
-        $cache = $this->_getCache($configFile);
-        $this->_config = $cache->load(md5($configFile));
-
-        if (!$this->_config) {
-
-            $this->_config = new Zend_Config_Yaml(
-                $configFile,
-                APPLICATION_ENV,
-                array(
-                    "yamldecoder" => "yaml_parse"
-                )
-            );
-
-            $cache->save($this->_config);
-        }
-
-        $klearConfig = new Klear_Model_MainConfig();
-        $klearConfig->setConfig($this->_config);
+        $klearConfig = new Klear_Model_MainConfig($config);
+        $klearConfig->setConfig($config);
 
         $this->_bootstrap->setOptions(
             array(
@@ -141,6 +123,32 @@ class Klear_Plugin_Init extends Zend_Controller_Plugin_Abstract
                 "footerMenu" => $klearConfig->getFooterMenu()
             )
         );
+    }
+
+    protected function _getConfig()
+    {
+        if (!isset($this->_config)) {
+
+            $configFile = $this->_getConfigPath();
+
+            $cache = $this->_getCache($configFile);
+            $this->_config = $cache->load(md5($configFile));
+
+            if (!$this->_config) {
+
+                $this->_config = new Zend_Config_Yaml(
+                        $configFile,
+                        APPLICATION_ENV,
+                        array(
+                                "yamldecoder" => "yaml_parse"
+                        )
+                );
+
+                $cache->save($this->_config);
+            }
+        }
+
+        return $this->_config;
     }
 
     protected function _getCache($filePath)
@@ -174,8 +182,10 @@ class Klear_Plugin_Init extends Zend_Controller_Plugin_Abstract
 
         $sessionName = 'klear_auth';
 
-        if (isset($this->_config->main->auth->session)) {
-            $authSession = $this->_config->main->auth->session;
+        $config = $this->_getConfig();
+
+        if (isset($config->main->auth->session)) {
+            $authSession = $config->main->auth->session;
 
             // We don't want to change the session_name in this case
             if (isset($authSession->disableChangeName) && $authSession->disableChangeName) {
@@ -192,8 +202,10 @@ class Klear_Plugin_Init extends Zend_Controller_Plugin_Abstract
 
     protected function _initLog()
     {
-        if (isset($this->_config->main->log)) {
-            $params = array($this->_config->main->log->toArray());
+        $config = $this->_getConfig();
+
+        if (isset($config->main->log)) {
+            $params = array($config->main->log->toArray());
         } else {
             $params = array(
                 array(

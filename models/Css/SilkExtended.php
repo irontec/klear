@@ -57,7 +57,7 @@ class Klear_Model_Css_SilkExtended //TODO klear_Model_Css_Abstract
         $files = $this->_getFiles();
 
         $col = $row = $xPos = $yPos = 0;
-        $x = $y = ceil(sqrt(sizeof($files)));
+        $x = ceil(sqrt(sizeof($files)));
         $xWidth = $yHeight = (int)$this->_size * (int)$x;
 
         $base = new Imagick();
