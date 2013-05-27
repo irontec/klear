@@ -137,11 +137,11 @@ class Klear_Plugin_Init extends Zend_Controller_Plugin_Abstract
             if (!$this->_config) {
 
                 $this->_config = new Zend_Config_Yaml(
-                        $configFile,
-                        APPLICATION_ENV,
-                        array(
-                                "yamldecoder" => "yaml_parse"
-                        )
+                    $configFile,
+                    APPLICATION_ENV,
+                    array(
+                        "yamldecoder" => "yaml_parse"
+                    )
                 );
 
                 $cache->save($this->_config);
