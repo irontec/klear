@@ -21,4 +21,8 @@ interface Klear_Auth_Adapter_Interfaces_BasicUserModel
      */
     public function isActive();
 
+    /**
+     * @return bool
+     */
+    public function getAdministrator();
 }

@@ -103,15 +103,54 @@ class Klear_Model_YamlStream
         return $includeFiles;
     }
 
+    /**
+     * @var string $path
+     * @var array | object $data
+     */
+    protected function _walkDataSublevels($path, $data)
+    {
+        $pathSegments = explode(".", $path);
+        $target = array_shift($pathSegments);
+        $path = implode(".", $pathSegments);
+
+        $nextLevel = null;
+
+        switch (true) {
+
+            case is_array($data):
+
+                $nextLevel = array_key_exists($target, $data) ? $data[$target] : null;
+                break;
+
+            case is_object($data):
+
+                $nextLevel = isset($data->$target) ? $data->$target : null;
+                break;
+
+            default:
+
+                return null;
+        }
+
+        if (! is_scalar($nextLevel)) {
+
+            return $this->_walkDataSublevels($path, $nextLevel);
+        }
+
+        return $nextLevel;
+    }
+
     protected function _parseVariables($data)
     {
         switch(true) {
             case preg_match("/auth\.(.*)/", $data[1], $result):
-                $auth = Zend_Auth::getInstance();
-                if (($auth->hasIdentity()) &&
-                    (isset($auth->getIdentity()->{$result[1]}))) {
 
-                    return $auth->getIdentity()->{$result[1]};
+                $auth = Zend_Auth::getInstance();
+
+                if ($auth->hasIdentity() &&
+                    ! is_null($this->_walkDataSublevels($result[1], $auth->getIdentity()))
+                ) {
+                    return $this->_walkDataSublevels($result[1], $auth->getIdentity());
                 }
                 break;
 
