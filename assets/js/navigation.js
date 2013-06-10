@@ -336,7 +336,7 @@
             $( "input#logout", $toolsBar ).off('change').on('change', function(){
                 var $self = $(this);
                 $.getJSON($self.data('url'),{json:true}, function(){
-                    $sidebar.fadeOut();
+                    $sidebar.fadeOut('fast');
                     $infobar.fadeOut();
                     //custom klear events
                     $(document).trigger("kLogout");
@@ -529,6 +529,11 @@
     };
 
     var $sidebar = $("#sidebar");
+    // Fix para expendiente X menú apagado... :(
+    $sidebar.on('mouseenter',function() {
+    	$(this).animate({opacity:'1'});
+    });
+    
     $.klear.toggleMenu = function() {
 
         if ($sidebar.data("seized")) {
@@ -750,6 +755,7 @@
             },
             remove: function(event, ui) {
 
+            	
                 $.klear.tabPersist.remove($(ui.tab).attr('href'));
 
                 $("li",$.klear.canvas).each(function(idx,elem) {

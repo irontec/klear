@@ -250,7 +250,7 @@
                     setTimeout(function() {
                         $self.attr("href",prevHref);
                     },100);
-                    self.close();
+                    $(self.element).klearModule("close");
                 }
 
             });
@@ -333,6 +333,12 @@
         },
 
         reDispatch : function() {
+        	
+        	// Invocamos reDispatch encadena, de padres a hijos.
+        	if (this.options.parentScreen) {
+        		$(this.options.parentScreen).klearModule("reDispatch");	
+        	}
+        	
             this.setAsloading();
             this.dispatch();
         },
@@ -402,14 +408,26 @@
                             }
                         ]
                 });
+                
                 return;
             }
 
             if (opts && opts.callback && typeof opts.callback == "function") {
                 opts.callback();
             }
-
+            
+            var $parentLi = false;
+            // Si la pestaña a cerrar, tiene padre
+            if (this.options.tabIndex == parseInt($.klear.canvas.tabs('option', 'selected'))) {
+            	$parentLi = $(this.options.parentScreen);            	
+            }
             $(this.options.container).tabs( "remove", this.options.tabIndex );
+            
+            
+            // Después de cerrar (e invocar el handler en navigator), seleccionamos el padre
+            if (false !== $parentLi) {
+                $.klear.canvas.tabs('select',$parentLi.klearModule("option","tabIndex"));
+            }
         },
 
 
