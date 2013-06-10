@@ -101,7 +101,7 @@ $.widget("ui.tooltip", {
 		if (!content)
 			return;
 		
-		target.attr("title", "");
+		target.removeAttr("title");
 		
 		if (this.options.disabled)
 			return;

@@ -309,14 +309,16 @@
             self._getKlearPosition().css("overflow","hidden");
 
             $(this.element).slideUp('fast',function() {
+            	var $self = $(this);
+                $self.html(content).css("height","auto");
+                var $elements = $("input, button, select",$(self.uiDialog));
+                $elements.attr("disabled","disabled");
+                
 
-                $(this).html(content).css("height","auto");
-                var curPos = self._getNewPosition();
-
-                $(this).slideDown(function() {
-                    $(self.uiDialog).stop().animate({top: curPos.top+'px', left: curPos.left + 'px'});
+                $self.slideDown(100,function() {
                     //Corregimos posición con el nuevo tamaño
                     $(window).trigger("scroll."+self._getKlearPosition().attr("id"));
+                    $elements.removeAttr("disabled");
                 });
             });
         },
