@@ -239,10 +239,10 @@
             //Este template no lo queremos cacheado nunca
             $.template['klearInfoBar'] = undefined;
 
-            $sidebar.fadeIn();
-            $headerbar.fadeIn();
-            $footerbar.fadeIn();
-            $infobar.fadeIn();
+            $sidebar.stop().fadeIn();
+            $headerbar.stop().fadeIn();
+            $footerbar.stop().fadeIn();
+            $infobar.stop().fadeIn();
 
             $("a",$sidebar).tooltip();
             $("a",$headerbar).tooltip();
