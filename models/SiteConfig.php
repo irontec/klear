@@ -7,7 +7,8 @@ class Klear_Model_SiteConfig
     protected $_sitesubname;
     protected $_timezone;
     protected $_signature = 'Klear :: Irontec';
-
+    protected $_defaultCustomConfiguration;
+    
     protected $_logo;
 
     protected $_disableMinifiers = false;
@@ -40,7 +41,8 @@ class Klear_Model_SiteConfig
             'cssExtended',
             'actionHelpers',
             'disableCDN',
-            'signature'
+            'signature',
+            'defaultCustomConfiguration'
     );
 
     protected $_requiredParams = array(
@@ -347,5 +349,18 @@ class Klear_Model_SiteConfig
     {
         return $this->_signature;
     }
+    
+    public function getDefaultCustomConfiguration($key)
+    {
+        
+        if (is_null($this->_defaultCustomConfiguration) || 
+                !isset($this->_defaultCustomConfiguration->{$key})
+                ) {
+            return null;
+            
+        }
+        
+        return $this->_defaultCustomConfiguration->{$key};
 
+    }
 }
