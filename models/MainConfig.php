@@ -41,7 +41,7 @@ class Klear_Model_MainConfig
      */
     public function setConfig(Zend_Config $config)
     {
-        if (!isset($config->menu) || !$config->menu instanceof Zend_Config )
+        if ( !isset($config->menu) || !$config->menu instanceof Zend_Config )
         {
             throw new \Zend_Exception(_('No menu configuration found in klear.yaml'));
         }
@@ -58,14 +58,13 @@ class Klear_Model_MainConfig
      */
     public function getSiteConfig()
     {
-        if (!isset($this->_siteConfig)) {
+        if ( !isset($this->_siteConfig)) {
             $this->_buildSiteConfig();
         }
         return $this->_siteConfig;
     }
 
-    protected function _buildSiteConfig()
-    {
+    protected function _buildSiteConfig() {
         $this->_siteConfig = new Klear_Model_SiteConfig($this->_mainConfig);
         $this->_siteConfig->setConfig($this->_mainConfig);
     }
