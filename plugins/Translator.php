@@ -35,7 +35,7 @@ class Klear_Plugin_Translator extends Zend_Controller_Plugin_Abstract
 
         $locale = $this->_getLocale();
         $moduleDirectories = $this->_getModuleDirectories();
-        
+
         foreach ($moduleDirectories as $moduleDirectory) {
 
             $translationPath = $this->_getTranslationPath($moduleDirectory, $locale);
@@ -65,6 +65,10 @@ class Klear_Plugin_Translator extends Zend_Controller_Plugin_Abstract
 
             }
         }
+
+        if (!Zend_Registry::isRegistered(self::DEFAULT_REGISTRY_KEY)) {
+            throw new \Klear_Exception_Default("Language not supported");
+        }
     }
 
     /**
@@ -85,7 +89,7 @@ class Klear_Plugin_Translator extends Zend_Controller_Plugin_Abstract
         }
 
         $moduleDirectories[] = APPLICATION_PATH;
-        
+
         return $moduleDirectories;
     }
 
@@ -114,8 +118,8 @@ class Klear_Plugin_Translator extends Zend_Controller_Plugin_Abstract
                 $locale->toString(),
                 $locale->toString() . '.mo'
         );
-        
-        
+
+
         return implode(DIRECTORY_SEPARATOR, $translationPath);
     }
 
