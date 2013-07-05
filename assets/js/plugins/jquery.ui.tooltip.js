@@ -25,7 +25,7 @@ $.widget("ui.tooltip", {
 	options: {
 		tooltipClass: "ui-widget-content",
 		content: function() {
-			return $(this).attr("title");
+			return $(this).data("tooltip-content");
 		},
 		position: {
 			my: "center bottom",
@@ -49,12 +49,13 @@ $.widget("ui.tooltip", {
 			.appendTo(this.tooltip);
 		this.opacity = this.tooltip.css("opacity");
 		this.element
-			.bind("focus.tooltip mouseenter.tooltip", function(event) {
+			.on("focus.tooltip mouseenter.tooltip", function(event) {
 				self.open( event );
 			})
-			.bind("blur.tooltip mouseleave.tooltip", function(event) {
+			.on("blur.tooltip mouseleave.tooltip", function(event) {
 				self.close( event );
-			});
+			})
+			.data('tooltip-content',this.element.attr('title'));
 	},
 	
 	enable: function() {
@@ -81,7 +82,7 @@ $.widget("ui.tooltip", {
 			return;
 		var self = this;
 		this.current = target;
-		this.currentTitle = target.attr("title");
+		target.removeAttr("title");
 		var content = this.options.content.call(target[0], function(response) {
 			// IE may instantly serve a cached response, need to give it a chance to finish with _show before that
 			setTimeout(function() {
@@ -101,7 +102,7 @@ $.widget("ui.tooltip", {
 		if (!content)
 			return;
 		
-		target.removeAttr("title");
+
 		
 		if (this.options.disabled)
 			return;
@@ -129,7 +130,7 @@ $.widget("ui.tooltip", {
 		if (!this.current)
 			return;
 		
-		var current = this.current.attr("title", this.currentTitle);
+		var current = this.current.attr("title", this.options.content.call(this.current));
 		this.current = null;
 		
 		if (this.options.disabled)
@@ -141,7 +142,6 @@ $.widget("ui.tooltip", {
 		this.tooltip.attr("aria-hidden", "true");
 		
 		this.tooltip.stop(false, true).fadeOut();
-		
 		this._trigger( "close", event );
 	}
 	
