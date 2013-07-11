@@ -245,6 +245,18 @@ class Klear_AssetsController extends Zend_Controller_Action
                 case "htm":
                     $fileContentType = 'text/html';
                     break;
+                case "woff":
+                    $fileContentType = 'application/x-font-woff';
+                    break;
+                case "eot":
+                    $fileContentType = 'application/vnd.ms-fontobject';
+                    break;
+                case "svg":
+                    $fileContentType = 'image/svg+xml';
+                    break;
+                case "ttf":
+                    $fileContentType = 'application/x-font-ttf';
+                    break;
             }
 
             $headers = array();
@@ -324,6 +336,10 @@ class Klear_AssetsController extends Zend_Controller_Action
                 case "css":
                     $minifier = new Iron_Minify_CssCompressor($data);
                     break;
+                case 'woff':
+                case 'eot':
+                case 'svg':
+                case 'ttf':
                 case 'html':
                 case 'htm':
                     return $data;
