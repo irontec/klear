@@ -234,32 +234,23 @@ class Klear_AssetsController extends Zend_Controller_Action
 
             $fileContents = $this->_getContents($file, $type);
 
-            switch(strtolower($type)) {
-                case "js":
-                    $fileContentType = 'application/x-javascript';
-                    break;
-                case "css":
-                    $fileContentType = 'text/css';
-                    break;
-                case "html":
-                case "htm":
-                    $fileContentType = 'text/html';
-                    break;
-                case "woff":
-                    $fileContentType = 'application/x-font-woff';
-                    break;
-                case "eot":
-                    $fileContentType = 'application/vnd.ms-fontobject';
-                    break;
-                case "svg":
-                    $fileContentType = 'image/svg+xml';
-                    break;
-                case "ttf":
-                    $fileContentType = 'application/x-font-ttf';
-                    break;
+            $aMimeTypes = array(
+                "js" => 'application/x-javascript',
+                "css" => 'text/css',
+                "html" => 'text/html',
+                "htm" => 'text/html',
+                "woff" => 'application/x-font-woff',
+                "eot" => 'application/vnd.ms-fontobject',
+                "svg" => 'image/svg+xml',
+                "ttf" => 'application/x-font-ttf'
+            );
+            
+            if (isset($aMimeTypes[strtolower($type)])) {
+                $fileContentType = $aMimeTypes[strtolower($type)];
             }
 
             $headers = array();
+            
             if ($this->_applyStrongCache) {
                 $headers['Last-Modified'] = gmdate('D, d M Y H:i:s', $lastModifiedTime) . ' GMT';
             }
