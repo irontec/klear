@@ -10,6 +10,17 @@ class Klear_AssetsController extends Zend_Controller_Action
      */
     protected $_siteConfig;
 
+    protected $_allowedFileTypes = array(
+        "js" => 'application/x-javascript',
+        "css" => 'text/css',
+        "html" => 'text/html',
+        "htm" => 'text/html',
+        "woff" => 'application/x-font-woff',
+        "eot" => 'application/vnd.ms-fontobject',
+        "svg" => 'image/svg+xml',
+        "ttf" => 'application/x-font-ttf'
+    );
+
     public function init()
     {
 
@@ -64,9 +75,14 @@ class Klear_AssetsController extends Zend_Controller_Action
 
             } else {
 
+                $fileType = $this->_getFileExtension($file);
+                if (!isset(strtolower($fileType), $allowedTypes)) {
+                    throw new \Klear_Exception_Default($this->_helper->translate('Forbidden file type'));
+                }
+
                 $this->_compress(
                     $file,
-                    $this->_getFileExtension($file)
+                    $fileType
                 );
             }
         }
@@ -233,28 +249,13 @@ class Klear_AssetsController extends Zend_Controller_Action
         if ((false === $fileContents) || (false === $headers)) {
 
             $fileContents = $this->_getContents($file, $type);
-
-            $aMimeTypes = array(
-                "js" => 'application/x-javascript',
-                "css" => 'text/css',
-                "html" => 'text/html',
-                "htm" => 'text/html',
-                "woff" => 'application/x-font-woff',
-                "eot" => 'application/vnd.ms-fontobject',
-                "svg" => 'image/svg+xml',
-                "ttf" => 'application/x-font-ttf'
-            );
-            
-            if (isset($aMimeTypes[strtolower($type)])) {
-                $fileContentType = $aMimeTypes[strtolower($type)];
-            }
+            $fileContentType = $this->_allowedFileTypes[strtolower($type)];
 
             $headers = array();
-            
+
             if ($this->_applyStrongCache) {
                 $headers['Last-Modified'] = gmdate('D, d M Y H:i:s', $lastModifiedTime) . ' GMT';
             }
-
 
             $headers['Content-type'] = $fileContentType;
             $headers['Content-length'] = mb_strlen($fileContents);
@@ -327,15 +328,8 @@ class Klear_AssetsController extends Zend_Controller_Action
                 case "css":
                     $minifier = new Iron_Minify_CssCompressor($data);
                     break;
-                case 'woff':
-                case 'eot':
-                case 'svg':
-                case 'ttf':
-                case 'html':
-                case 'htm':
-                    return $data;
                 default:
-                    throw new Zend_Exception("Minifier not properly called");
+                    return $data;
             }
             $data = $minifier->min();
         }
@@ -367,7 +361,7 @@ class Klear_AssetsController extends Zend_Controller_Action
             if (is_array($value)) {
                 $value = $value[0];
             }
-            
+
             $value = str_replace(
                 array('\\\'', '"'),
                 array('\'', '\"'),
