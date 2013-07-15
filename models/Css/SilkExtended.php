@@ -110,12 +110,12 @@ class Klear_Model_Css_SilkExtended //TODO klear_Model_Css_Abstract
         }
     }
 
-    public function getCssFile($fileName)
+    public function getCssFile()
     {
         return $this->_iconsCache . "/" . $this->_outputName . ".css";
     }
 
-    public function getPngFile($fileName)
+    public function getPngFile()
     {
         return $this->_iconsCache . "/" . $this->_outputName . ".png";
     }
