@@ -76,7 +76,7 @@ class Klear_AssetsController extends Zend_Controller_Action
             } else {
 
                 $fileType = $this->_getFileExtension($file);
-                if (!isset(strtolower($fileType), $allowedTypes)) {
+                if (!isset($this->_allowedFileTypes[strtolower($fileType)])) {
                     throw new \Klear_Exception_Default($this->_helper->translate('Forbidden file type'));
                 }
 
