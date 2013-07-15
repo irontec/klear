@@ -99,4 +99,9 @@ class Klear_Model_ConfigParser
 
         return true;
     }
+
+    public function hasProperty($attribute)
+    {
+        return $this->exists($attribute);
+    }
 }
