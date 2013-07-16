@@ -371,12 +371,12 @@
                 $(window).bind('resize.dialog-overlay', $.ui.dialog.overlay.resize);
             }
 
-            // COmpatibilidad con overlays en los tabs
+            // Compatibilidad con overlays en los tabs
             if (container == document) {
                 container = document.body;
             }
             
-            var $el = ( $('<div></div>').addClass('ui-widget-overlay'))
+            var $el = ( $('<div />').addClass('ui-widget-overlay'))
                 .appendTo(container)
                 .css({
                     width: this.width(),

@@ -742,17 +742,23 @@
             } else {
                 var _loadingItem = $(".loadingPanel",_panel);
             }
-
-            $("<div />").addClass("overlay")
-                    .css({
-                        opacity: '0.6',
-                        width: _panel.width() + 'px',
-                        height: _panel.height() + 'px'})
-                    .appendTo(_panel);
-
+            
+            if ($("div.overlay",_panel).length == 0) {
+            	var $dOverlay = $("<div />").addClass("overlay");
+            	$dOverlay.appendTo(_panel);
+            } else{
+            	$dOverlay = $("div.overlay",_panel);
+            }
+console.log(_panel);
             if (this._loading) {
                 _loadingItem.show();
                 $(this.options.ui.tab).addClass("ui-state-disabled");
+                $dOverlay.css({
+                    opacity: '0.6',
+                    width: _panel.width() + 'px',
+                    height: _panel.height() + 'px'})
+                .appendTo(_panel);
+                
             } else {
                 $(this.options.ui.tab).removeClass("ui-state-disabled");
             }
