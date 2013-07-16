@@ -749,7 +749,7 @@
             } else{
             	$dOverlay = $("div.overlay",_panel);
             }
-console.log(_panel);
+
             if (this._loading) {
                 _loadingItem.show();
                 $(this.options.ui.tab).addClass("ui-state-disabled");
