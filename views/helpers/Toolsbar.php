@@ -9,10 +9,10 @@ class Klear_View_Helper_Toolsbar extends Klear_View_Helper_Base
 
     public function Toolsbar()
     {
-    	$ret = '<input type="checkbox" id="superCollapse" /> ' .
-    	       	'<label for="superCollapse" title="'. $this->_view->translate("Collapse All.").'">' .
-    	       	'<span class="ui-icon ui-icon-triangle-1-nw" ></span>' .
-    	       	'</label>';
+        $ret = '<input type="checkbox" id="superCollapse" /> ' .
+                '<label for="superCollapse" title="'. $this->_view->translate("Collapse All.").'">' .
+                '<span class="ui-icon ui-icon-triangle-1-nw" ></span>' .
+                '</label>';
 
 //     	$ret .= '<input type="checkbox" id="menuCollapse" /> ' .
 //             '<label for="menuCollapse" title="'. $this->_view->translate("Collapse Menu.").'">' .
@@ -38,12 +38,15 @@ class Klear_View_Helper_Toolsbar extends Klear_View_Helper_Base
 
                 foreach ($langs as $_langIden => $lang) {
                     $ret .= '<input type="radio" name="lang" class="pickableLang" value="'.$_langIden.'" ' .
-                            ' id="lang' .$_langIden.'" '.
-                            (($_langIden == $this->_view->SiteConfig()->getLang()->getIden())? ' checked="checked"':'') . 
-                            '/><label for="lang'.$_langIden.'" title="' . $lang.'" class="expanded pickableLanguage">' .
+                            ' id="lang' .$_langIden.'" ';
+                    if ($_langIden == $this->_view->SiteConfig()->getLang()->getIden()) {
+                        $ret .= ' checked="checked"'; 
+                    }
+
+                    $ret .= '/><label for="lang'.$_langIden.'" title="' . $lang.'" class="expanded pickableLanguage">' .
                             $lang .
                             '</label>';
-                }
+                } 
             }
         }
         
