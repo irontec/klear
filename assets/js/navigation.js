@@ -248,8 +248,12 @@
             $("a",$headerbar).tooltip();
             $("a",$footerbar).tooltip();
 
-            if (localStorage.getItem('toogleMenu') === true) {
+            if (localStorage.getItem('toogleMenu') == 'true') {
                 $.klear.toggleMenu();
+            }
+
+            if (localStorage.getItem('toogleHeader') == 'true') {
+                $.klear.toggleHeader();
             }
 
             $(document).trigger("kMenuLoaded");
@@ -319,21 +323,32 @@
 
 
             $toolsBar = $( "#headerToolsbar" ),
-            $langBar = $( "#headerLanguagebar" ),
-            $langSelector = $( ".langSelector" );
-
-            $toolsBar.html(navMenus.toolsbar);
-            $langSelector.buttonset();
-            $toolsBar.buttonset();
-
+            
+            $toolsBar.html(navMenus.toolsbar).buttonset();
+            
             $( "label", $toolsBar ).tooltip();
 
-            $( "input",  $langSelector).off('change').on('change', function(){
+            $( ".pickableLang",  $toolsBar).off('change').on('change', function(){
                 $.klear.language = $(this).val();
                 $.klear.restart({'language': $(this).val()});
+                $( "#langPicker", $toolsBar).trigger("change");
             });
 
-            $( "input#logout", $toolsBar ).off('change').on('change', function(){
+            
+            $( "#langPicker", $toolsBar).off('change').on('change', function(){
+            	var $self = $(this);
+                if ($(".pickableLanguage",$toolsBar).hasClass("expanded")) {
+                	$(".pickableLanguage",$toolsBar).removeClass("expanded").css("display","inline").animate({width:'85px'});
+                } else {
+                	$(".pickableLanguage",$toolsBar).animate({width:'0'},function() {
+                		$(this).addClass("expanded").css("display","none");
+                	});
+                	
+                }
+            });
+            
+            
+            $( "#logout", $toolsBar ).off('change').on('change', function(){
                 var $self = $(this);
                 $.getJSON($self.data('url'),{json:true}, function(){
                     $sidebar.fadeOut('fast');
@@ -344,7 +359,7 @@
                 });
             });
 
-            $( "input#tabsPersist", $toolsBar ).off('change').on('change', function(){
+            $( "#tabsPersist", $toolsBar ).off('change').on('change', function(){
                 var $self = $(this);
                 if ($.klear.tabPersist.enabled()) {
                     $.klear.tabPersist.disable();
@@ -374,15 +389,50 @@
                 var $self = $(this).next('label');
                 var $icon = $('.ui-icon', $self);
                 if ($.klear.isMenuCollapsed()) {
-                    $icon.removeClass('ui-icon-arrowthickstop-1-w').addClass('ui-icon-arrowthickstop-1-e');
+                    $icon.removeClass('ui-icon-triangle-1-w').addClass('ui-icon-triangle-1-e');
                     $self.addClass('ui-state-active');
                 } else {
-                    $icon.removeClass('ui-icon-arrowthickstop-1-e').addClass('ui-icon-arrowthickstop-1-w');
+                    $icon.removeClass('ui-icon-triangle-1-e').addClass('ui-icon-triangle-1-w');
+                }
+            });
+            
+
+            $( "#headerCollapse", $toolsBar ).off('change').on('change', function(){
+                $.klear.toggleHeader();
+            });
+
+            
+            $( "#headerCollapse", $toolsBar ).off('update-icon').on('update-icon', function(){
+                var $self = $(this).next('label');
+                var $icon = $('.ui-icon', $self);
+                if ($.klear.isHeaderCollapsed()) {
+                	$icon.removeClass('ui-icon-triangle-1-n').addClass('ui-icon-triangle-1-s');
+                    $self.addClass('ui-state-active');
+                } else {
+                	$icon.removeClass('ui-icon-triangle-1-s').addClass('ui-icon-triangle-1-n');
                 }
             });
 
+            
+            $( "#superCollapse", $toolsBar ).off('change').on('change', function(){
+                $.klear.toggleAll();
+            });
 
-            $langBar.show();
+            
+            $( "#superCollapse", $toolsBar ).off('update-icon').on('update-icon', function(){
+                var $self = $(this).next('label');
+                var $icon = $('.ui-icon', $self);
+                if ($.klear.isHeaderCollapsed()) {
+                	$icon.removeClass('ui-icon-triangle-1-nw').addClass('ui-icon-triangle-1-se');
+                    $self.addClass('ui-state-active');
+                } else {
+                	$icon.removeClass('ui-icon-triangle-1-se').addClass('ui-icon-triangle-1-nw');
+                }
+            });
+            
+
+
+//            $langBar.show();
             $toolsBar.show();
 
 
@@ -552,12 +602,52 @@
 
         localStorage.setItem('toogleMenu', $.klear.isMenuCollapsed());
         $( "#menuCollapse").trigger('update-icon');
-
-
+        $( "#superCollapse").trigger('update-icon');
     };
+    
+
+    $.klear.toggleHeader = function() {
+    	$appLogo = $("#applicationLogo");
+    	
+        if ($.klear.isHeaderCollapsed()) {
+        	$("#applicationInfo").fadeOut(function() {
+        		$(this).removeClass("collapsedHeader").fadeIn();
+        	});
+        	$appLogo.animate({opacity:'1', height:'auto'});
+        	$("#applicationTools").animate({marginTop:'0px'});
+
+        	$appLogo.data("seized",false);
+            
+        } else {
+        	$("#applicationInfo").fadeOut(function() {
+        		$(this).addClass("collapsedHeader").fadeIn();
+        	});
+        	$appLogo.animate({opacity:'0', height:'0'});
+        	$("#applicationTools").animate({marginTop:'-40px'});
+        	$appLogo.data("seized",true);
+        }
+
+        localStorage.setItem('toogleHeader', $.klear.isHeaderCollapsed());
+        $( "#headerCollapse").trigger('update-icon');
+        $( "#superCollapse").trigger('update-icon');
+    };
+    
+    $.klear.toggleAll = function() {
+    	
+    	var initialState = $.klear.isMenuCollapsed();
+    	$.klear.toggleMenu();
+    	if (initialState == $.klear.isHeaderCollapsed()) {
+    		$.klear.toggleHeader();	
+    	}
+    	
+    }
 
     $.klear.isMenuCollapsed = function() {
-        return $("#sidebar").data("seized");
+        return $("#sidebar").data("seized") || false;
+    };
+    
+    $.klear.isHeaderCollapsed = function() {
+        return $("#applicationLogo").data("seized") || false;
     };
 
 
@@ -601,6 +691,7 @@
             e.stopPropagation();
         }
         $.klear.toggleMenu();
+        $.klear.toggleHeader();
     });
 
 
@@ -828,6 +919,14 @@
             77 : {
                 key: 'm',
                 action: $.klear.toggleMenu
+            },
+            72 : {
+                key: 'h',
+                action: $.klear.toggleHeader
+            },
+            88 : {
+                key: 'x',
+                action: $.klear.toggleAll
             }
 
         };

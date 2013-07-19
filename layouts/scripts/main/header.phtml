@@ -91,20 +91,6 @@ if ($this->SiteConfig()->getDisableCDN()) {
             <div id="headerToolsbar">
                 <?php echo $this->Toolsbar();?>
             </div>
-            <div id="headerLanguagebar">
-            <?php
-            if ($langs = $this->SiteConfig()->getLangs()):
-                if (sizeof($langs) > 1) {
-                    echo '<span class="langSelector">';
-                    foreach ($langs as $_langIden => $lang) {
-                        echo '<input type="radio" id="lang_'.$_langIden.'" value="'.$_langIden.'" name="lang" '.(($_langIden == $this->SiteConfig()->getLang()->getIden())? ' checked="checked"':'') .' /><label for="lang_'.$_langIden.'">'.$lang.'</label>';
-                    }
-                    echo '</span>';
-                }
-            endif;
-            ?>
-            </div>
-
         </div>
     </div>
 <div id="body">

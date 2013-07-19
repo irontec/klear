@@ -95,7 +95,6 @@ body {
 
 #header h1, #header h2 {
     padding: .2em 0;
-    text-align:right;
 }
 
 #header h1 {
@@ -239,26 +238,56 @@ div.ui-tabs-panel {
 	text-align:right;
 }
 
-#applicationTools  {
-	text-align:right;
-	padding: 0.5em 0 0.2em 0;
+#applicationInfo.collapsedHeader {
+	text-align:left;
 }
 
-#headerLanguagebar {
-	font-size: 0.8em;
-	display:none;
+
+#applicationTools  {
+    height: 27px;
+	padding: 0.5em 0 0.2em;
+	text-align: right;
+	position: relative;
+    
 }
+
 #headerToolsbar {
 	font-size: 0.7em;
 	padding: 0.8em 0;
 	display:none;
+	position: absolute;
+	right: 0;
 }
     
 #applicationTools .ui-buttonset {
-	margin-right: 0px;
+	position: absolute;
+	margin-right:2px;
+
+}
+#applicationTools label {
+	z-index:10;
 }
 
+#applicationTools .pickableLanguage {
+    font-size: 1em;
+    height: 19px;
+    overflow: hidden;
+    position: relative;
+    width: 0;
+    z-index: 5;
+    display:none;
+    top: 0;
+}
 
+#applicationTools .pickableLanguage span {
+	position: absolute;
+	top:0;
+	left:0;
+	height: 19px;
+	width:85px;
+	margin:0;
+	padding: 0.4em 0;
+}
 
 #headerbar {
 
