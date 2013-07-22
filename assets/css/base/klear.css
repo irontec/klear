@@ -269,8 +269,8 @@ div.ui-tabs-panel {
 }
 
 #applicationTools .pickableLanguage {
-    font-size: 1em;
-    height: 19px;
+    font-size: 1.3em;
+    height: 24px;
     overflow: hidden;
     position: relative;
     width: 0;
