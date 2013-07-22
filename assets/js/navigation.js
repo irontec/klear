@@ -614,12 +614,12 @@
         		$(this).removeClass("collapsedHeader").fadeIn();
         	});
         	
-        	$appLogo.animate({opacity:'1', height:'auto'});
+        	$appLogo.animate({opacity:'1', height:'100px'});
         	$("#applicationTools").animate({marginTop:'0px'});
 
         	$appLogo.data("seized",false);
             
-        	if ($("#footer").height() > '30') {
+        	if ($("#footer").hasClass("collapsedFooter")) {
         		$("#footer").fadeOut(function() {
         			$(this).removeClass("collapsedFooter").fadeIn();
         		});
