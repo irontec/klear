@@ -613,11 +613,17 @@
         	$("#applicationInfo").fadeOut(function() {
         		$(this).removeClass("collapsedHeader").fadeIn();
         	});
+        	
         	$appLogo.animate({opacity:'1', height:'auto'});
         	$("#applicationTools").animate({marginTop:'0px'});
 
         	$appLogo.data("seized",false);
             
+        	if ($("#footer").height() > '30') {
+        		$("#footer").fadeOut(function() {
+        			$(this).removeClass("collapsedFooter").fadeIn();
+        		});
+        	}
         } else {
         	$("#applicationInfo").fadeOut(function() {
         		$(this).addClass("collapsedHeader").fadeIn();
@@ -625,6 +631,12 @@
         	$appLogo.animate({opacity:'0', height:'0'});
         	$("#applicationTools").animate({marginTop:'-40px'});
         	$appLogo.data("seized",true);
+        	
+        	if ($("#footer").height() > '50') {
+	        	$("#footer").fadeOut(function() {
+	        		$(this).addClass("collapsedFooter").fadeIn();
+	        	});
+        	}
         }
 
         localStorage.setItem('toogleHeader', $.klear.isHeaderCollapsed());
