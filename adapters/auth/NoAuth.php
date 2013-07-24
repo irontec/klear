@@ -8,13 +8,22 @@ class Klear_Auth_Adapter_NoAuth implements \Klear_Auth_Adapter_KlearAuthInterfac
 
     protected $_userMapper;
 
-
     /**
      *
      * @var Klear_Auth_Adapter_Interfaces_BasicUserModel
      */
     protected $_user;
 
+    /**
+     *
+     * @param Zend_Controller_Request_Abstract $request
+     * @param Klear_Model_ConfigParser $authConfig
+     *
+     *
+     * @SuppressWarnings(PHPMD.UnusedFormalParameter)
+     * $authConfig no se usa porque no se necesita,
+     * pero es obligatorio para cumplir con la interfaz
+     */
     public function __construct(Zend_Controller_Request_Abstract $request, Klear_Model_ConfigParser $authConfig = null)
     {
         $this->_username = $request->getPost('username', '');
