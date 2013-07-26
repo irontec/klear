@@ -51,7 +51,16 @@ class Klear_ErrorController extends Zend_Controller_Action
             $parsedErrors->setConfig($aErrors);
 
             foreach ($aErrors as $code => $msg) {
-                $data[$code] = Klear_Model_Gettext::gettextCheck($parsedErrors->getProperty($code));
+
+                if (is_string($msg)) {
+                    // Si es un string, no será una estructura i18n (deprecated),
+                    // Lo pasamos por gettext por si utilizará _("literal")
+                    $data[$code] = Klear_Model_Gettext::gettextCheck($msg);
+                } else {
+                    // es una estructura multi-idioma, que ConfigParser se encarga de traducir
+                    $data[$code] = $parsedErrors->getProperty($code)
+                }
+
             }
         }
 
@@ -99,22 +108,22 @@ class Klear_ErrorController extends Zend_Controller_Action
                 $this->view->message = $errors->exception->getMessage();
                 $this->view->code = 500;
                 $this->view->exceptionCode = $errors->exception->getCode();
-                
-                
+
+
                 if (APPLICATION_ENV == 'development') {
                     $this->view->file = $errors->exception->getFile();
                     $this->view->line = $errors->exception->getLine();
                     $this->view->traceString = $errors->exception->getTraceAsString();
                 } else {
                     // Si no estamos en desarrollo, y no tenemo ćodigo de excepción, es probable
-                    // que estemos ante un error de PHP. (lo ocultamos ;) 
+                    // que estemos ante un error de PHP. (lo ocultamos ;)
                     if ($this->view->exceptionCode == 0) {
                         $this->view->message = $this->_helper->translate('Undefined error');
                     }
-                    
+
                 }
-                
-                
+
+
                 break;
         }
 
