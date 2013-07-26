@@ -53,12 +53,13 @@ class Klear_ErrorController extends Zend_Controller_Action
             foreach ($aErrors as $code => $msg) {
 
                 if (is_string($msg)) {
-                    // Si es un string, no será una estructura i18n (deprecated),
+                    // Si es un string, no será una estructura i18n(deprecated)
                     // Lo pasamos por gettext por si utilizará _("literal")
                     $data[$code] = Klear_Model_Gettext::gettextCheck($msg);
                 } else {
-                    // es una estructura multi-idioma, que ConfigParser se encarga de traducir
-                    $data[$code] = $parsedErrors->getProperty($code)
+                    // es una estructura multi-idioma
+                    // ConfigParser se encarga de traducir
+                    $data[$code] = $parsedErrors->getProperty($code);
                 }
 
             }
