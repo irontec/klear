@@ -111,7 +111,7 @@ class Klear_Model_JQueryUIThemeParser
 
         // old school config jquery-ui themes config file (no multicdn)
         if (isset($this->_config->themes)) {
-            $foundPath = $this->_parseForTheme($config, $theme);
+            $foundPath = $this->_parseForTheme($this->_config, $theme);
             if ($foundPath !== false) {
                 return $foundPath;
             }
