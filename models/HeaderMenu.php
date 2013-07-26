@@ -61,13 +61,14 @@ class Klear_Model_HeaderMenu extends Klear_Model_Menu
     {
         $sections = array();
         foreach ($this->_config->$configKey as $section=>$subSection) {
+
+            $sections[$section] = array();
+
             if ($subSection instanceof Zend_Config) {
-                $sections[$section] = array();
                 foreach ($subSection as $subSectionKey=>$bool) {
+                    $bool; //Avoid PMD UnusedLocalVariable warning
                     $sections[$section][] = $subSectionKey;
                 }
-            } else {
-                $sections[$section] = array();
             }
         }
 
@@ -76,6 +77,7 @@ class Klear_Model_HeaderMenu extends Klear_Model_Menu
                 $skip = array();
                 if (!empty($sections[$name])) {
                     foreach ($sectionData->submenus as $submenuIndex => $submenu) {
+                        $submenu; //Avoid PMD UnusedLocalVariable warning
                         if (!in_array($submenuIndex, $sections[$name])) {
                             $skip[] = $submenuIndex;
                         }

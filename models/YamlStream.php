@@ -21,6 +21,9 @@ class Klear_Model_YamlStream
      */
     function stream_open($path, $mode, $options, &$openedPath)
     {
+        $options; //Avoid PMD UnusedFormalParameter warning
+        $mode; //Avoid PMD UnusedFormalParameter warning
+
         $this->_file = $this->_getRealFilepath($path);
         $openedPath = $this->_file;
 
@@ -190,6 +193,7 @@ class Klear_Model_YamlStream
 
     public function stream_write($data)
     {
+        $data; //Avoid PMD UnusedFormalParameter warning
         return false;
     }
 

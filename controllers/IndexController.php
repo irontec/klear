@@ -107,7 +107,7 @@ class Klear_IndexController extends Zend_Controller_Action
 
     protected function _getNamespaceModuleName($jsNamespace)
     {
-        list($type, $namespace) = explode("/", $jsNamespace, 2);
+        list(, $namespace) = explode("/", $jsNamespace, 2);
         if ($namespace == 'null') {
             $namespace = 'default.default';
         }

@@ -72,6 +72,7 @@ class Klear_Model_SectionConfig
             $errorContents .= $contents[$matches['lineNumber']];
 
             $errorMessage = 'Error parsing Yaml: <br /><pre>' . $errorContents . '</pre>';
+            $errorMessage .= '<br /><strong>' . $filePath . '</strong> (Line: '.$errline.')';
             throw new Exception($errorMessage, $errno);
         }
 
