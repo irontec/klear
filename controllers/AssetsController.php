@@ -46,12 +46,6 @@ class Klear_AssetsController extends Zend_Controller_Action
     {
         $front = $this->getFrontController();
         $moduleDirectory = $front->getModuleDirectory($this->getRequest()->getParam('moduleName'));
-
-        // Y este festival???
-        if (strpos($this->getRequest()->getParam("file"), 'translation/') !== false) {
-            $this->_jsModuleTranslation($moduleDirectory);
-            exit;
-        }
         return $moduleDirectory . $base . $this->getRequest()->getParam("file");
     }
 
@@ -336,9 +330,13 @@ class Klear_AssetsController extends Zend_Controller_Action
         return $data;
     }
 
-    protected function _jsModuleTranslation($directory)
+    public function jsTranslationAction()
     {
-        $transFile = $directory . '/languages/js-translations.php';
+
+        $front = $this->getFrontController();
+        $moduleDirectory = $front->getModuleDirectory($this->getRequest()->getParam('moduleName'));
+
+        $transFile = $moduleDirectory . '/languages/js-translations.php';
         $jsTranslations = array();
         if (file_exists($transFile)) {
             $jsTranslations = include $transFile;

@@ -152,6 +152,22 @@ class Klear_Bootstrap extends Zend_Application_Module_Bootstrap
                 )
             )
         );
+
+        $router->addRoute(
+            'klearTranslations',
+            new Zend_Controller_Router_Route_Regex(
+                '(default|klear[^/]*)/js/translation/(.*)$',
+                array(
+                    'controller' => 'assets',
+                    'action' => 'js-translation',
+                    'module' => 'klear'
+                ),
+                array(
+                    2 => 'file',
+                    1 => 'moduleName'
+                )
+            )
+        );
     }
 
     protected function _initAutoload()
