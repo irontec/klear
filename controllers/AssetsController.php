@@ -370,7 +370,8 @@ class Klear_AssetsController extends Zend_Controller_Action
         }
 
         echo "/*\n *\t[".$this->getRequest()->getParam('moduleName')."]\n *\tTranslation File\n */\n";
-        echo "(function doLoad() { if (!window.jQuery || !window.jQuery.addTranslation) { setTimeout(doLoad,100); return };";
+        echo "(function doLoad() { if (!window.jQuery || !window.jQuery.addTranslation)";
+        echo "{ setTimeout(doLoad,100); return };";
         echo "$.addTranslation({\n\t";
         echo implode(",\n\t", $aLines);
         echo "\n});";

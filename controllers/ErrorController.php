@@ -3,7 +3,8 @@
  * TODO: Habría que definir X tipos de excepciones del propio Klear
  *       que se capturasen en el ErrorController y enviasen al cliente
  *       los codigos de error y mensajes necesarios.
- *       example: throw new \KlearMatrix_Exception_MissingParameter('modelFile must be specified in ' . $this->_item->getType() . 'configuration', ###);
+ *       example: throw new \KlearMatrix_Exception_MissingParameter
+ *          ('modelFile must be specified in ' . $this->_item->getType() . 'configuration', ###);
  */
 class Klear_ErrorController extends Zend_Controller_Action
 {
