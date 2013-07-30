@@ -38,6 +38,7 @@ production:
         - aristo-dark
         - aristo-green
         - aristo-red
+        - redmond-red
         - twitter
         
 testing:
