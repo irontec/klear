@@ -610,7 +610,7 @@
     	$appLogo = $("#applicationLogo");
     	
         if ($.klear.isHeaderCollapsed()) {
-        	$("#applicationInfo").fadeOut(function() {
+        	$("#header").fadeOut(function() {
         		$(this).removeClass("collapsedHeader").fadeIn();
         	});
         	
@@ -625,7 +625,7 @@
         		});
         	}
         } else {
-        	$("#applicationInfo").fadeOut(function() {
+        	$("#header").fadeOut(function() {
         		$(this).addClass("collapsedHeader").fadeIn();
         	});
         	$appLogo.animate({opacity:'0', height:'0'});
