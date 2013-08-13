@@ -139,6 +139,14 @@ body {
     display: none;
 }
 
+#sidebar .compact {
+    display: none;
+}
+
+#sidebar .iconsidebar {
+    height: 15px;
+}
+
 #canvasWrapper {
     min-height: 700px;
     padding: 0px 15px 15px 0;
@@ -241,6 +249,7 @@ div.ui-tabs-panel {
 #header.collapsedHeader #applicationInfo {
 	text-align:left;
 }
+
 
 
 #applicationTools  {

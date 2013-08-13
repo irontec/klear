@@ -590,6 +590,9 @@
             $sidebar.animate({width: menuMeasures.getWidth() + 'px'});
             $(".textnode", $sidebar).stop().animate({opacity:'1', 'font-size': menuMeasures.getFontSize()});
             $("li",$sidebar).animate({padding:"0.5em"});
+            
+            $("#sidebar h2").removeClass('iconsidebar');
+            $(".textnode").removeClass('compact');
 
             $sidebar.data("seized",false);
         } else {
@@ -598,6 +601,9 @@
             $sidebar.animate({width:'50px'});
             $("li",$sidebar).animate({padding:"0em"});
             $sidebar.data("seized",true);
+            
+            $("#sidebar h2").addClass('iconsidebar');
+            $(".textnode").addClass('compact');
         }
 
         localStorage.setItem('toogleMenu', $.klear.isMenuCollapsed());
