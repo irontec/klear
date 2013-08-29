@@ -489,7 +489,21 @@
                 this.tabs = tabs;
                 this.save();
             },
+            fix : function() {
+            	  var auxTabs = {};
+            	  var tabs = [];
+                  for (var i in this.tabs ) {
+                	  item = this.tabs[i];
+                	  if (auxTabs[item] && auxTabs[item] === true) {
+                		  continue;
+                	  }
+                	  auxTabs[item] = true;
+                	  tabs.push(item);
+                  }
+                  this.tabs = tabs;
+            },
             save : function() {
+            	this.fix();
                 var jsTabs = JSON.stringify(this.tabs);
                 localStorage.setItem('tabPersist', jsTabs);
             },
@@ -505,7 +519,6 @@
                     this.tabs.push('#' + $('a.subsection.autoplay:eq(0)').attr("id"));
                 }
                 return this;
-
             },
             launch : function() {
 
@@ -537,7 +550,7 @@
                 localStorage.setItem('tabPersistEnabled', '0');
             },
             enabled : function() {
-                return localStorage.getItem('tabPersistEnabled') == '1';
+            	return localStorage.getItem('tabPersistEnabled') == '1';
             }
         };
 
@@ -569,7 +582,6 @@
             $.klear.canvas.tabs( "add", idContent, tabTitle);
 
             $.klear.tabPersist.add(idContent);
-
 
         }).on("click","a.subsection",function(e) {
             e.preventDefault();
@@ -603,7 +615,7 @@
             $sidebar.data("seized",true);
             
             $("#sidebar h2").addClass('iconsidebar');
-            $(".textnode").addClass('compact');
+            $(".textnode", $sidebar).addClass('compact');
         }
 
         localStorage.setItem('toogleMenu', $.klear.isMenuCollapsed());
@@ -864,8 +876,8 @@
             },
             remove: function(event, ui) {
 
-            	
-                $.klear.tabPersist.remove($(ui.tab).attr('href'));
+            	var iden = '#'  + $(ui.panel).attr("id");
+                $.klear.tabPersist.remove(iden);
 
                 $("li",$.klear.canvas).each(function(idx,elem) {
                     $(elem).klearModule("option","tabIndex",idx);
