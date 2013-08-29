@@ -865,18 +865,17 @@
                 });
 
                 var $tabLi = $(ui.tab).parent("li");
-
                 $tabLi
                     .klearModule("updateLoader");
                     //.klearModule("highlightOn");
-
-                return $tabLi;
+            },
+            show : function(event, ui) {
+                $(ui.panel).trigger("focusin");
             },
             remove: function(event, ui) {
 
             	var iden = '#'  + $(ui.panel).attr("id");
                 $.klear.tabPersist.remove(iden);
-
                 $("li",$.klear.canvas).each(function(idx,elem) {
                     $(elem).klearModule("option","tabIndex",idx);
                 });
