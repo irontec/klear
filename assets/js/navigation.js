@@ -152,16 +152,15 @@
                 controller: 'index',
                 action: 'hello'
         };
-
-        this.callback = false;
-
+        this.callback = this.callback || [];
+        
         switch(option) {
             case 'rememberCallback':
-                this.callback = arguments[1];
+                this.callback.push(arguments[1]);
                 return;
             break;
             case 'setCallback':
-                this.callback = arguments[1];
+                this.callback.push(arguments[1]);
             break;
             case 'options':
                 // completamos las opciones de klear.request con las enviadas como segundo parámetro
@@ -169,22 +168,21 @@
             break;
         }
         var self = this;
-
         $.klear._doHelloSuccess = function(response) {
             if (response.success && response.success === true) {
-                if (typeof self.callback == 'function') {
-                    // Existe un bug en determinados navegadores
-                    // La petición se reenvia "demasiado pronto", y hay que recargar
-                    setTimeout(self.callback, 250);
-                } else {
-
-                    $.klear.menu();
+                if (self.callback.length == 0) {
+                    self.callback.push($.klear.menu);
                 }
+                do {
+                    var callback = self.callback.shift();
+                    if (typeof callback == 'function') {
+                        setTimeout(callback, 350);	
+                    }
+                } while(self.callback.length > 0);
             }
         };
 
         $.klear._doHelloError = function(response) {
-
             console.log(response);
         };
 
