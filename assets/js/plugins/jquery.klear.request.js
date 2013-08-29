@@ -89,9 +89,9 @@
 
     $.klear.request = function(params,successCallback,errorCallback,context) {
 
-        var caller = arguments;
+        var _arguments = arguments;
         var reCall = function() {
-            caller.callee.apply(caller.callee, Array.prototype.slice.call(caller));
+        	_arguments.callee.apply(_arguments.callee, Array.prototype.slice.call(_arguments));
         }
         
         var request_baseurl = '';
