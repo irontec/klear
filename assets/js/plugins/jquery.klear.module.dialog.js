@@ -302,7 +302,7 @@
         getContext : function() {
             return this.element;
         },
-        updateContent : function(content) {
+        updateContent : function(content, callback) {
 
             var self = this;
 
@@ -319,6 +319,9 @@
                     //Corregimos posición con el nuevo tamaño
                     $(window).trigger("scroll."+self._getKlearPosition().attr("id"));
                     $elements.removeAttr("disabled");
+                    if (typeof callback == 'function') {
+                    	callback.apply(self);
+                    }
                 });
             });
         },
