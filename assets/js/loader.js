@@ -18,7 +18,7 @@ var console = window.console || { log : function() {}};
             setTimeout(lazyLoader,10);
             return;
         }
-
+        
         document.getElementsByTagName('body')[0].appendChild(_loader);
 
         _loader.interval = setInterval(function() {
@@ -47,30 +47,34 @@ var console = window.console || { log : function() {}};
 
     })();
 
-
-//    var _baseScripts = ['base!js/plugins/jquery.cookie.js',
-//      'base!js/plugins/jquery.scrollabletab.js',
-//      'base!js/plugins/jquery.ui.tooltip.js',
-//      'base!js/plugins/jquery.selectBoxIt.js',
-//      'base!js/scripts/spin.min.js',
-//      'base!js/plugins/jquery.getStylesheet.js',
-//      'base!js/plugins/jquery.translate.js',
-//      'base!js/translation/jquery.klear.translation.js',
-//      'base!../default/js/translation/jquery.default.translation.js',
-//      'base!js/plugins/jquery.klear.request.js',
-//      'base!js/plugins/jquery.klear.module.js',
-//      'base!js/plugins/jquery.klear.module.dialog.js',
-//      'base!js/plugins/jquery.klear.errors.js',
-//      'base!js/navigation.js'];
-
-    var _baseScripts = [
-                        'base!js/klear.compiled.js',
-                        'base!js/translation/jquery.klear.translation.js',
-                        'base!../default/js/translation/jquery.default.translation.js',
-                        'base!js/navigation.js',
-                        'base!../klearMatrix/js/translation/jquery.klearmatrix.translation.js',
-                        'base!../klearMatrix/js/klearMatrix.compiled.js'
-                        ];
+    if (document.documentElement.getAttribute("data-stage") == "development") {
+        var _baseScripts = [
+            'base!js/plugins/jquery.cookie.js',
+            'base!js/plugins/jquery.scrollabletab.js',
+            'base!js/plugins/jquery.ui.tooltip.js',
+            'base!js/plugins/jquery.selectBoxIt.js',
+            'base!js/scripts/spin.min.js',
+            'base!js/plugins/jquery.getStylesheet.js',
+            'base!js/plugins/jquery.translate.js',
+            'base!js/translation/jquery.klear.translation.js',
+            'base!../default/js/translation/jquery.default.translation.js',
+            'base!js/plugins/jquery.translationRegister.js',
+            'base!js/plugins/jquery.klear.request.js',
+            'base!js/plugins/jquery.klear.module.js',
+            'base!js/plugins/jquery.klear.module.dialog.js',
+            'base!js/plugins/jquery.klear.errors.js',
+            'base!js/navigation.js'
+        ];
+    } else  {
+        var _baseScripts = [
+            'base!js/klear.compiled.js',
+            'base!js/translation/jquery.klear.translation.js',
+            'base!../default/js/translation/jquery.default.translation.js',
+            'base!js/navigation.js',
+            'base!../klearMatrix/js/translation/jquery.klearmatrix.translation.js',
+            'base!../klearMatrix/js/klearMatrix.compiled.js'
+        ];
+    }
     var _scripts = [];
 
     // El total de cargas serán los "base" + los 4 principales

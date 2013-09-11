@@ -7,7 +7,6 @@ java -jar closure-compiler.jar --third_party \
 --js ../js/plugins/jquery.klear.request.js \
 --js ../js/plugins/jquery.scrollabletab.js \
 --js ../js/plugins/jquery.translate.js \
---js ../js/plugins/jquery.translationRegister.js \
 --js ../js/plugins/jquery.selectBoxIt.js \
 --js ../js/plugins/jquery.ui.tooltip.js \
 --js ../js/scripts/spin.min.js \

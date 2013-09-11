@@ -1,5 +1,9 @@
 <!doctype html>
-<html lang="<?php echo $this->SiteConfig()->getLang()->getLanguage();?>">
+<html lang="<?php echo $this->SiteConfig()->getLang()->getLanguage();?>" <?php
+    if ("development" === APPLICATION_ENV) {
+        echo ' data-stage="development"';
+    }
+?>>
 <head<?php
 if ($this->SiteConfig()->getDisableCDN()) {
     echo ' rel="noCDN"';
@@ -30,7 +34,6 @@ if ($this->SiteConfig()->getDisableCDN()) {
 
 <?php
 
-
     $this->headLink()
             ->appendStylesheet($this->baseUrl('/klear/css/base/reset.css'))
             ->appendStylesheet($this->baseUrl('/klear/css/base/layout.css'))
@@ -56,12 +59,6 @@ if ($this->SiteConfig()->getDisableCDN()) {
 
     foreach ($this->SiteConfig()->getRawJavascripts() as $_rawJs) {
         $this->headScript()->appendFile($this->baseUrl($_rawJs));
-    }
-
-    if ("development" === APPLICATION_ENV) {
-        $this->headScript()
-            ->appendFile($this->baseUrl('klear/js/plugins/jquery.translationRegister.js'))
-            ->setIndent(4);
     }
 
     echo $this->headScript();
