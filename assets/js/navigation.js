@@ -1080,7 +1080,7 @@
     			return;
     		}
     		
-    		var _warnMsg = $.translate('Do you really want to leave?', __namespace__);
+    		var _warnMsg = $.translate("Do you really want to leave?", __namespace__);
     		
     	    var e = e || window.event;
 

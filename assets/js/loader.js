@@ -58,7 +58,6 @@ var console = window.console || { log : function() {}};
             'base!js/plugins/jquery.translate.js',
             'base!js/translation/jquery.klear.translation.js',
             'base!../default/js/translation/jquery.default.translation.js',
-            'base!js/plugins/jquery.translationRegister.js',
             'base!js/plugins/jquery.klear.request.js',
             'base!js/plugins/jquery.klear.module.js',
             'base!js/plugins/jquery.klear.module.dialog.js',

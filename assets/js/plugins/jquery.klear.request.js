@@ -137,7 +137,7 @@
         var _parseSimpleResponse = function _parseSimpleResponse(response) {
 
             if (!response.data) {
-                errorCallback.apply(context,[$.translate("Unknown response format in Simple Response", [__namespace__])]);
+                errorCallback.apply(context,[$.translate("Unknown response format in Simple Response")]);
                 return;
             }
             successCallback.apply(context,[response.data]);
@@ -151,7 +151,7 @@
             for(var i=0; i<responseCheck.length; i++) {
 
                 if (typeof response[responseCheck[i]] == 'undefined') {
-                    errorCallback.apply(context,[$.translate("Module registration error.", [__namespace__])]);
+                    errorCallback.apply(context,[$.translate("Module registration error.")]);
                     return;
                 }
             }
@@ -196,7 +196,7 @@
 
             }).fail( function( data ){
 
-                errorCallback.apply(context,[$.translate('Module registration error.', [__namespace__]),data]);
+                errorCallback.apply(context,[$.translate('Module registration error.'),data]);
             });
         };
 
@@ -208,7 +208,7 @@
 
             } catch(e) {
                 var response = {
-                        message : $.translate('Undefined Error', [__namespace__]),
+                        message : $.translate('Undefined Error'),
                         raw : xhr.responseText
                 }
             }
@@ -278,7 +278,7 @@
                         successCallback();
                     },
                     error : function(r) {
-                        dfr.reject($.translate("Error downloading template [%s].", tmplIden, [__namespace__]));
+                        dfr.reject($.translate("Error downloading template [%s].", tmplIden));
                     }
                 });
             });

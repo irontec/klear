@@ -103,7 +103,7 @@
 
 				$( "<a>" )
 					.attr( "tabIndex", -1 )
-					.attr( "title", $.translate("Show All Items", [__namespace__]))
+					.attr( "title", $.translate("Show All Items"))
 					.appendTo( wrapper )
 					.button({
 						icons: {

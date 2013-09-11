@@ -297,16 +297,13 @@
                 message = Array.prototype.join.call(arguments, '</em><br /><em>', [__namespace__]);
             }
 
-            var errorMessage = $.translate("Module registration error.", [__namespace__])
+            var errorMessage = $.translate("Module registration error.")
                              + '<br /><br />'
-                             + $.translate(
-                                 "Error: %s.",
-                                 '<em>' + message + '</em>'
-                             );
+                             + $.translate("Error: %s.", '<em>' + message + '</em>');
             this.showDialogError(
                 errorMessage,
                 {
-                    title: $.translate("Klear Module Error", [__namespace__]) + ' - ' + title + '',
+                    title: $.translate("Klear Module Error") + ' - ' + title + '',
                     closeTab: this.options.tabIndex
                 }
             );
@@ -371,7 +368,7 @@
                     }
 
                 } else {
-                    this.showInlineWarn($.translate('This tab is locked.', [__namespace__]));
+                    this.showInlineWarn($.translate('This tab is locked.'));
                 }
             }
 
@@ -386,21 +383,21 @@
                 var self = this;
 
                 this.showDialog(
-                    $.translate("Upload in progress.", [__namespace__]) +
+                    $.translate("Upload in progress.") +
                     '<br />' +
-                    $.translate("Close the screen?", [__namespace__])
+                    $.translate("Close the screen?")
                     ,{
-                    title : $.translate("Attention!", [__namespace__]),
+                    title : $.translate("Attention!"),
                     buttons :
                          [
                               {
-                                text: $.translate("Cancel", [__namespace__]),
+                                text: $.translate("Cancel"),
                                 click: function() {
                                     $(this).moduleDialog("close");
                               }
                             },
                             {
-                                text: $.translate("Ignore changes and close", [__namespace__]),
+                                text: $.translate("Ignore changes and close"),
                                 click: function() {
                                     self.unsetAllUploadsInProgress();
                                     self.close();
@@ -726,9 +723,9 @@
             if ($(".loadingPanel",_panel).length == 0) {
 
                 var $parsetHtml = $.tmpl(this.loadingTmpl.join(''), {
-                    loadingText: $.translate("Loading content", [__namespace__]),
-                    loadingTextMain: $.translate("Loading Main Module", [__namespace__]),
-                    loadingTextExtra: $.translate("Loading Secondary modules", [__namespace__])
+                    loadingText: $.translate("Loading content"),
+                    loadingTextMain: $.translate("Loading Main Module"),
+                    loadingTextExtra: $.translate("Loading Secondary modules")
                 });
 
                 _loadingItem = $parsetHtml;
