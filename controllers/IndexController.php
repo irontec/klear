@@ -12,7 +12,6 @@ class Klear_IndexController extends Zend_Controller_Action
         $this->_helper->ContextSwitch()
                 ->addActionContext('hello', 'json')
                 ->addActionContext('bye', 'json')
-                ->addActionContext('registertranslation', 'json')
                 ->initContext('json');
 
         $this->_auth = Zend_Auth::getInstance();
@@ -61,83 +60,6 @@ class Klear_IndexController extends Zend_Controller_Action
             )
         );
         $jsonResponse->attachView($this->view);
-    }
-
-
-    public function registertranslationAction()
-    {
-        $namespace = $this->getRequest()->getParam("namespace", false);
-        $str = $this->getRequest()->getParam("str", false);
-
-        if ($namespace && $str) {
-            $translationFile = $this->_getTranslationFilePath($namespace);
-            $jsTranslations = $this->_getTranslationData($translationFile);
-
-            if (!in_array($str, $jsTranslations)) {
-                $jsTranslations[] = $str;
-                $this->_writeTranslationsFile($translationFile, $jsTranslations);
-            }
-        }
-
-        $jsonResponse = new Klear_Model_SimpleResponse();
-        $jsonResponse->setData(
-            array(
-                'success'=> true,
-            )
-        );
-        $jsonResponse->attachView($this->view);
-    }
-
-    protected function _getTranslationFilePath($jsNamespace)
-    {
-        $module = $this->_getNamespaceModuleName($jsNamespace);
-        $this->getRequest()->setModuleName($module);
-
-        $translationFilePath = implode(
-            DIRECTORY_SEPARATOR,
-            array(
-                $this->getFrontController()->getModuleDirectory(),
-                'languages',
-                'js-translations.php'
-            )
-        );
-
-        return $translationFilePath;
-    }
-
-    protected function _getNamespaceModuleName($jsNamespace)
-    {
-        list(, $namespace) = explode("/", $jsNamespace, 2);
-        if ($namespace == 'null') {
-            $namespace = 'default.default';
-        }
-
-        $module = explode(".", $namespace, 2);
-
-        $modules = Zend_Controller_Front::getInstance()->getControllerDirectory();
-        $mods = array_keys($modules);
-
-        foreach ($mods as $mod) {
-            if (strtolower($mod) == strtolower($module[0])) {
-                return $mod;
-            }
-        }
-        return 'default';
-    }
-
-    protected function _getTranslationData($translationFile)
-    {
-        if (file_exists($translationFile)) {
-            return include($translationFile);
-        }
-        return array();
-    }
-
-    protected function _writeTranslationsFile($translationFile, $contents)
-    {
-        $fileContents = "<?php\n\n";
-        $fileContents .= "return " . var_export($contents, true) . ";\n";
-        file_put_contents($translationFile, $fileContents);
     }
 
     /**
