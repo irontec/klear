@@ -208,7 +208,7 @@
 
             } catch(e) {
                 var response = {
-                        message : $.translate('Undefined Error'),
+                        message : $.translate("Undefined Error"),
                         raw : xhr.responseText
                 }
             }

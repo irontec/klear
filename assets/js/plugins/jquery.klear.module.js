@@ -296,14 +296,18 @@
 
                 message = Array.prototype.join.call(arguments, '</em><br /><em>', [__namespace__]);
             }
-
+            
+            message = '<em>' + message + '</em>';
+            
             var errorMessage = $.translate("Module registration error.")
                              + '<br /><br />'
-                             + $.translate("Error: %s.", '<em>' + message + '</em>');
+                             + $.translate("Error: %s.", message);
+            var dTitle = $.translate("Klear Module Error");
+            dTitle+ = ' - ' + title + '';
             this.showDialogError(
                 errorMessage,
                 {
-                    title: $.translate("Klear Module Error") + ' - ' + title + '',
+                    title: dTitle,
                     closeTab: this.options.tabIndex
                 }
             );
@@ -368,7 +372,7 @@
                     }
 
                 } else {
-                    this.showInlineWarn($.translate('This tab is locked.'));
+                    this.showInlineWarn($.translate("This tab is locked."));
                 }
             }
 
