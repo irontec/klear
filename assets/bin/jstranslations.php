@@ -59,12 +59,12 @@ foreach ($paths as $path) {
 $strings = array_unique($strings);
    
 $translationFilePath = implode(
-        DIRECTORY_SEPARATOR,
-        array(
-                $moduleDir,
-                'languages',
-                'js-translations.php'
-        )
+    DIRECTORY_SEPARATOR,
+    array(
+        $moduleDir,
+        'languages',
+        'js-translations.php'
+    )
 );
 
 $fileContents = "<?php\n\n";
