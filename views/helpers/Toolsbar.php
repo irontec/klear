@@ -32,7 +32,7 @@ class Klear_View_Helper_Toolsbar extends Klear_View_Helper_Base
         if ($langs = $this->_view->SiteConfig()->getLangs()) {
             if (sizeof($langs) > 1) {
                 $ret .= '<input type="checkbox" id="langPicker" '.
-                        '/><label for="langPicker" title="' . $this->_view->translate("Cambiar de Idioma") .'">' .
+                        '/><label for="langPicker" title="' . $this->_view->translate("Change language") .'">' .
                         '<span class="ui-icon ui-icon-flag" ></span>' .
                         '</label>';
 

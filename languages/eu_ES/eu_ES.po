@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Klear\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-09-11 13:40+0100\n"
-"PO-Revision-Date: 2013-09-11 13:41+0100\n"
+"POT-Creation-Date: 2013-09-12 19:07+0100\n"
+"PO-Revision-Date: 2013-09-12 19:07+0100\n"
 "Last-Translator: Lander Ontoria <lander@irontec.com>\n"
 "Language-Team: Irontec-Klear <lander+klear@irontec.com>\n"
 "Language: en_ES\n"
@@ -19,7 +19,7 @@ msgstr ""
 
 #: controllers/AssetsController.php:74
 msgid "Forbidden file type"
-msgstr ""
+msgstr "Fitxategi mota debekatuta"
 
 #: controllers/IndexController.php:80
 msgid "Configuration error"
@@ -34,17 +34,16 @@ msgid "Undefined error"
 msgstr "Errore ezezaguna"
 
 #: views/helpers/Toolsbar.php:13
-#, fuzzy
 msgid "Collapse All."
-msgstr "Menua zabaldu/itxi"
+msgstr "Dana itxi."
 
 #: views/helpers/Toolsbar.php:28
 msgid "Remember opened main tabs."
 msgstr "Irekitako lehioak gogoratu."
 
 #: views/helpers/Toolsbar.php:35
-msgid "Cambiar de Idioma"
-msgstr ""
+msgid "Change language"
+msgstr "Hizkuntza aldatu"
 
 #: views/helpers/Toolsbar.php:56
 msgid "logout"
@@ -76,52 +75,52 @@ msgstr "Ziur irten nahi duzula?"
 #: assets/js/klear.compiled.js:35
 #: assets/js/plugins/jquery.klear.request.js:154
 #: assets/js/plugins/jquery.klear.request.js:199
-#: assets/js/plugins/jquery.klear.module.js:300
+#: assets/js/plugins/jquery.klear.module.js:302
 msgid "Module registration error."
 msgstr "Errorea modulua erregistratzean."
 
-#: assets/js/klear.compiled.js:17 assets/js/plugins/jquery.klear.module.js:302
+#: assets/js/klear.compiled.js:17 assets/js/plugins/jquery.klear.module.js:304
 #, python-format
 msgid "Error: %s."
 msgstr "Errorea: %s."
 
-#: assets/js/klear.compiled.js:17 assets/js/plugins/jquery.klear.module.js:306
+#: assets/js/klear.compiled.js:17 assets/js/plugins/jquery.klear.module.js:305
 msgid "Klear Module Error"
 msgstr "Klear Module Errorea"
 
-#: assets/js/klear.compiled.js:19 assets/js/plugins/jquery.klear.module.js:371
+#: assets/js/klear.compiled.js:19 assets/js/plugins/jquery.klear.module.js:375
 msgid "This tab is locked."
 msgstr "Fitxa hau blokeatuta dago."
 
-#: assets/js/klear.compiled.js:19 assets/js/plugins/jquery.klear.module.js:386
-msgid "Upload in progress."
-msgstr ""
-
-#: assets/js/klear.compiled.js:19 assets/js/plugins/jquery.klear.module.js:388
-msgid "Close the screen?"
-msgstr ""
-
 #: assets/js/klear.compiled.js:19 assets/js/plugins/jquery.klear.module.js:390
-msgid "Attention!"
-msgstr ""
+msgid "Upload in progress."
+msgstr "Igoera prozesuan."
+
+#: assets/js/klear.compiled.js:19 assets/js/plugins/jquery.klear.module.js:392
+msgid "Close the screen?"
+msgstr "Pantaila itxi?"
 
 #: assets/js/klear.compiled.js:19 assets/js/plugins/jquery.klear.module.js:394
+msgid "Attention!"
+msgstr "Kontuz!"
+
+#: assets/js/klear.compiled.js:19 assets/js/plugins/jquery.klear.module.js:398
 msgid "Cancel"
-msgstr ""
+msgstr "Ezeztatu"
 
-#: assets/js/klear.compiled.js:20 assets/js/plugins/jquery.klear.module.js:400
+#: assets/js/klear.compiled.js:20 assets/js/plugins/jquery.klear.module.js:404
 msgid "Ignore changes and close"
-msgstr ""
+msgstr "Aldaketak ezeztatu eta itxi"
 
-#: assets/js/klear.compiled.js:30 assets/js/plugins/jquery.klear.module.js:726
+#: assets/js/klear.compiled.js:30 assets/js/plugins/jquery.klear.module.js:730
 msgid "Loading content"
 msgstr "Edukia kargatzen"
 
-#: assets/js/klear.compiled.js:30 assets/js/plugins/jquery.klear.module.js:727
+#: assets/js/klear.compiled.js:30 assets/js/plugins/jquery.klear.module.js:731
 msgid "Loading Main Module"
 msgstr "Modulu printzipala kargatzen"
 
-#: assets/js/klear.compiled.js:30 assets/js/plugins/jquery.klear.module.js:728
+#: assets/js/klear.compiled.js:30 assets/js/plugins/jquery.klear.module.js:732
 msgid "Loading Secondary modules"
 msgstr "Bigarren mailako moduluak kargatzen"
 

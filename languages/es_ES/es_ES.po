@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Klear\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-09-11 13:38+0100\n"
-"PO-Revision-Date: 2013-09-11 13:39+0100\n"
+"POT-Creation-Date: 2013-09-12 19:05+0100\n"
+"PO-Revision-Date: 2013-09-12 19:06+0100\n"
 "Last-Translator: Lander Ontoria <lander@irontec.com>\n"
 "Language-Team: Irontec-Klear <lander+klear@irontec.com>\n"
 "Language: en_ES\n"
@@ -19,7 +19,7 @@ msgstr ""
 
 #: controllers/AssetsController.php:74
 msgid "Forbidden file type"
-msgstr ""
+msgstr "Tipo de fichero no permitido"
 
 #: controllers/IndexController.php:80
 msgid "Configuration error"
@@ -30,22 +30,20 @@ msgid "Page not found"
 msgstr "Página no encontrada"
 
 #: controllers/ErrorController.php:123
-#, fuzzy
 msgid "Undefined error"
 msgstr "Error Indefinido"
 
 #: views/helpers/Toolsbar.php:13
-#, fuzzy
 msgid "Collapse All."
-msgstr "Plegar/Replegar Menú"
+msgstr "Replegar todo."
 
 #: views/helpers/Toolsbar.php:28
 msgid "Remember opened main tabs."
 msgstr "Recordar las pestañas de menú abiertas"
 
 #: views/helpers/Toolsbar.php:35
-msgid "Cambiar de Idioma"
-msgstr ""
+msgid "Change language"
+msgstr "Cambiar de idioma"
 
 #: views/helpers/Toolsbar.php:56
 msgid "logout"
@@ -77,52 +75,52 @@ msgstr "¿Está seguro de que quiere abandonar esta página?"
 #: assets/js/klear.compiled.js:35
 #: assets/js/plugins/jquery.klear.request.js:154
 #: assets/js/plugins/jquery.klear.request.js:199
-#: assets/js/plugins/jquery.klear.module.js:300
+#: assets/js/plugins/jquery.klear.module.js:302
 msgid "Module registration error."
 msgstr "Error registrando el módulo."
 
-#: assets/js/klear.compiled.js:17 assets/js/plugins/jquery.klear.module.js:302
+#: assets/js/klear.compiled.js:17 assets/js/plugins/jquery.klear.module.js:304
 #, python-format
 msgid "Error: %s."
 msgstr "Error: %s."
 
-#: assets/js/klear.compiled.js:17 assets/js/plugins/jquery.klear.module.js:306
+#: assets/js/klear.compiled.js:17 assets/js/plugins/jquery.klear.module.js:305
 msgid "Klear Module Error"
 msgstr "Error de Klear Module"
 
-#: assets/js/klear.compiled.js:19 assets/js/plugins/jquery.klear.module.js:371
+#: assets/js/klear.compiled.js:19 assets/js/plugins/jquery.klear.module.js:375
 msgid "This tab is locked."
 msgstr "La pestaña está bloqueada."
 
-#: assets/js/klear.compiled.js:19 assets/js/plugins/jquery.klear.module.js:386
-msgid "Upload in progress."
-msgstr ""
-
-#: assets/js/klear.compiled.js:19 assets/js/plugins/jquery.klear.module.js:388
-msgid "Close the screen?"
-msgstr ""
-
 #: assets/js/klear.compiled.js:19 assets/js/plugins/jquery.klear.module.js:390
-msgid "Attention!"
-msgstr ""
+msgid "Upload in progress."
+msgstr "Carga en proceso."
+
+#: assets/js/klear.compiled.js:19 assets/js/plugins/jquery.klear.module.js:392
+msgid "Close the screen?"
+msgstr "¿Cerrar la ventana?"
 
 #: assets/js/klear.compiled.js:19 assets/js/plugins/jquery.klear.module.js:394
+msgid "Attention!"
+msgstr "¡Atención!"
+
+#: assets/js/klear.compiled.js:19 assets/js/plugins/jquery.klear.module.js:398
 msgid "Cancel"
-msgstr ""
+msgstr "Cancelar"
 
-#: assets/js/klear.compiled.js:20 assets/js/plugins/jquery.klear.module.js:400
+#: assets/js/klear.compiled.js:20 assets/js/plugins/jquery.klear.module.js:404
 msgid "Ignore changes and close"
-msgstr ""
+msgstr "Ignorar cambios y cerrar"
 
-#: assets/js/klear.compiled.js:30 assets/js/plugins/jquery.klear.module.js:726
+#: assets/js/klear.compiled.js:30 assets/js/plugins/jquery.klear.module.js:730
 msgid "Loading content"
 msgstr "Cargando contenido"
 
-#: assets/js/klear.compiled.js:30 assets/js/plugins/jquery.klear.module.js:727
+#: assets/js/klear.compiled.js:30 assets/js/plugins/jquery.klear.module.js:731
 msgid "Loading Main Module"
 msgstr "Cargando Módulo Principal"
 
-#: assets/js/klear.compiled.js:30 assets/js/plugins/jquery.klear.module.js:728
+#: assets/js/klear.compiled.js:30 assets/js/plugins/jquery.klear.module.js:732
 msgid "Loading Secondary modules"
 msgstr "Cargando módulos Secundarios"
 
