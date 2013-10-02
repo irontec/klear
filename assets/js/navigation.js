@@ -88,7 +88,7 @@
         $.extend(options, {
             icon: options.icon || 'ui-icon-info',
             state: options.state || 'default',
-            text: msg || '',
+            text: msg || ''
         });
         var dialogSettings = {
             title: '<span class="ui-icon inline dialogTitle '+options.icon+' "></span>'+options.titleText + "",
@@ -136,7 +136,7 @@
             state: 'highlight',
             titleText: 'Klear Error Window'
         };
-        var opts = opts || {}
+        var opts = opts || {};
         $.extend(options, opts);
         $.klear.klearDialog(msg, options);
     };
@@ -153,7 +153,7 @@
                 action: 'hello'
         };
         this.callback = this.callback || [];
-        
+
         switch(option) {
             case 'rememberCallback':
                 this.callback.push(arguments[1]);
@@ -176,7 +176,7 @@
                 do {
                     var callback = self.callback.shift();
                     if (typeof callback == 'function') {
-                        setTimeout(callback, 350);	
+                        setTimeout(callback, 350);
                     }
                 } while(self.callback.length > 0);
             }
@@ -321,9 +321,9 @@
 
 
             $toolsBar = $( "#headerToolsbar" ),
-            
+
             $toolsBar.html(navMenus.toolsbar).buttonset();
-            
+
             $( "label", $toolsBar ).tooltip();
 
             $( ".pickableLang",  $toolsBar).off('change').on('change', function(){
@@ -332,7 +332,7 @@
                 $( "#langPicker", $toolsBar).trigger("change");
             });
 
-            
+
             $( "#langPicker", $toolsBar).off('change').on('change', function(){
             	var $self = $(this);
                 if ($(".pickableLanguage",$toolsBar).hasClass("expanded")) {
@@ -341,11 +341,11 @@
                 	$(".pickableLanguage",$toolsBar).animate({width:'0'},function() {
                 		$(this).addClass("expanded").css("display","none");
                 	});
-                	
+
                 }
             });
-            
-            
+
+
             $( "#logout", $toolsBar ).off('change').on('change', function(){
                 var $self = $(this);
                 $.getJSON($self.data('url'),{json:true}, function(){
@@ -393,13 +393,13 @@
                     $icon.removeClass('ui-icon-triangle-1-e').addClass('ui-icon-triangle-1-w');
                 }
             });
-            
+
 
             $( "#headerCollapse", $toolsBar ).off('change').on('change', function(){
                 $.klear.toggleHeader();
             });
 
-            
+
             $( "#headerCollapse", $toolsBar ).off('update-icon').on('update-icon', function(){
                 var $self = $(this).next('label');
                 var $icon = $('.ui-icon', $self);
@@ -411,12 +411,12 @@
                 }
             });
 
-            
+
             $( "#superCollapse", $toolsBar ).off('change').on('change', function(){
                 $.klear.toggleAll();
             });
 
-            
+
             $( "#superCollapse", $toolsBar ).off('update-icon').on('update-icon', function(){
                 var $self = $(this).next('label');
                 var $icon = $('.ui-icon', $self);
@@ -427,7 +427,7 @@
                 	$icon.removeClass('ui-icon-triangle-1-se').addClass('ui-icon-triangle-1-nw');
                 }
             });
-            
+
 
 
 //            $langBar.show();
@@ -593,14 +593,14 @@
     $sidebar.on('mouseenter',function() {
     	$(this).animate({opacity:'1'});
     });
-    
+
     $.klear.toggleMenu = function() {
 
         if ($sidebar.data("seized")) {
             $sidebar.animate({width: menuMeasures.getWidth() + 'px'});
             $(".textnode", $sidebar).stop().animate({opacity:'1', 'font-size': menuMeasures.getFontSize()});
             $("li",$sidebar).animate({padding:"0.5em"});
-            
+
             $("#sidebar h2").removeClass('iconsidebar');
             $(".textnode").removeClass('compact');
 
@@ -611,7 +611,7 @@
             $sidebar.animate({width:'50px'});
             $("li",$sidebar).animate({padding:"0em"});
             $sidebar.data("seized",true);
-            
+
             $("#sidebar h2").addClass('iconsidebar');
             $(".textnode", $sidebar).addClass('compact');
         }
@@ -620,21 +620,21 @@
         $( "#menuCollapse").trigger('update-icon');
         $( "#superCollapse").trigger('update-icon');
     };
-    
+
 
     $.klear.toggleHeader = function() {
     	$appLogo = $("#applicationLogo");
-    	
+
         if ($.klear.isHeaderCollapsed()) {
         	$("#header").fadeOut(function() {
         		$(this).removeClass("collapsedHeader").fadeIn();
         	});
-        	
+
         	$appLogo.animate({opacity:'1', height:'100px'});
         	$("#applicationTools").animate({marginTop:'0px'});
 
         	$appLogo.data("seized",false);
-            
+
         	if ($("#footer").hasClass("collapsedFooter")) {
         		$("#footer").fadeOut(function() {
         			$(this).removeClass("collapsedFooter").fadeIn();
@@ -647,7 +647,7 @@
         	$appLogo.animate({opacity:'0', height:'0'});
         	$("#applicationTools").animate({marginTop:'-40px'});
         	$appLogo.data("seized",true);
-        	
+
         	if ($("#footer").height() > '50') {
 	        	$("#footer").fadeOut(function() {
 	        		$(this).addClass("collapsedFooter").fadeIn();
@@ -659,21 +659,21 @@
         $( "#headerCollapse").trigger('update-icon');
         $( "#superCollapse").trigger('update-icon');
     };
-    
+
     $.klear.toggleAll = function() {
-    	
+
     	var initialState = $.klear.isMenuCollapsed();
     	$.klear.toggleMenu();
     	if (initialState == $.klear.isHeaderCollapsed()) {
-    		$.klear.toggleHeader();	
+    		$.klear.toggleHeader();
     	}
-    	
+
     }
 
     $.klear.isMenuCollapsed = function() {
         return $("#sidebar").data("seized") || false;
     };
-    
+
     $.klear.isHeaderCollapsed = function() {
         return $("#applicationLogo").data("seized") || false;
     };
@@ -1073,15 +1073,15 @@
 
         $.klear.start();
 
-        
+
     	window.onbeforeunload = function (e) {
-    		
+
     		if ($( "#tabsList li").length == 0) {
     			return;
     		}
-    		
+
     		var _warnMsg = $.translate("Do you really want to leave?");
-    		
+
     	    var e = e || window.event;
 
     	    if (e) {
@@ -1090,8 +1090,8 @@
 
     	    return _warnMsg;
     	};
-    	
-    	
+
+
     	$(window).on("scroll", function() {
             $("#sidebar").trigger("reposition");
 
