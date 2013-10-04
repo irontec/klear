@@ -1,45 +1,45 @@
 ;(function($) {
-	$.extend({
-		translate: function(_text) {
-			var _args = arguments;
+    $.extend({
+        translate: function(_text) {
+            var _args = arguments;
 
-			var _length = arguments.length;
+            var _length = arguments.length;
 
-			if (_length<=0) {
-				return '0';
-			}
+            if (_length<=0) {
+                return '0';
+            }
 
-			var _namespace = null;
+            var _namespace = null;
 
-			if (_length>1) {
-				if (typeof arguments[_length-1] == 'object') {
-					_namespace = arguments[_length-1][0];
-				}
-			}
+            if (_length>1) {
+                if (typeof arguments[_length-1] == 'object') {
+                    _namespace = arguments[_length-1][0];
+                }
+            }
 
-			var _cleanText = _text.replace(/'/g, '').replace(/"/g, '');
+            var _cleanText = _text.replace(/'/g, '').replace(/"/g, '');
 
-			if ($.translations[_cleanText]==undefined) {
-				if ($.translationRegister!=undefined)
-					$.translationRegister(_text, _namespace);
-			} else {
-				_text = $.translations[_cleanText];
-			}
+            if ($.translations[_cleanText]==undefined) {
+                if ($.translationRegister!=undefined)
+                    $.translationRegister(_text, _namespace);
+            } else {
+                _text = $.translations[_cleanText];
+            }
 
-			var _ll = _namespace==null? _length: _length-1;
+            var _ll = _namespace==null? _length: _length-1;
 
-			for (var i=1; i<_ll; i++) {
-				if (undefined != _args[i]) {
-					_text = _text.replace(/%s/, _args[i]);
-				}
-			}
+            for (var i=1; i<_ll; i++) {
+                if (undefined != _args[i]) {
+                    _text = _text.replace(/%s/, _args[i]);
+                }
+            }
 
-			return _text;
-		},
-		addTranslation: function(obj){
-			$.extend($.translations, obj);
-		},
-		translations: {}
-	});
+            return _text;
+        },
+        addTranslation: function(obj){
+            $.extend($.translations, obj);
+        },
+        translations: {}
+    });
 
 })(jQuery);

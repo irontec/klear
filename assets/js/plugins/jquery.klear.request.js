@@ -33,7 +33,7 @@
             if (options[_value]) {
                 _params[_value] = options[_value];
             }
-        })
+        });
 
         var _type = options.post? 'post':'get';
         var _async = options.async != undefined ? options.async : true;
@@ -91,9 +91,9 @@
 
         var _arguments = arguments;
         var reCall = function() {
-        	_arguments.callee.apply(_arguments.callee, Array.prototype.slice.call(_arguments));
-        }
-        
+            _arguments.callee.apply(_arguments.callee, Array.prototype.slice.call(_arguments));
+        };
+
         var request_baseurl = '';
         var clean_baseurl = '';
 
@@ -210,7 +210,7 @@
                 var response = {
                         message : $.translate("Undefined Error"),
                         raw : xhr.responseText
-                }
+                };
             }
 
             if ( ( (response.mustLogIn) && (params.controller != 'login') ) ||

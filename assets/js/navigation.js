@@ -1,7 +1,6 @@
 /*
  * jQuery Klear
  */
-
 ;(function($) {
 
     /*
@@ -81,7 +80,6 @@
             },100);
             $el.data('noFocus', true);
         }
-
     };
 
     $.klear.klearDialog = function (msg, options) {
@@ -270,7 +268,7 @@
                     $(document).trigger("kErrorsLoaded");
                 },
                 function() {
-                    console.error("errors.yaml not found!")
+                    console.error("errors.yaml not found!");
                 }
             );
 
@@ -334,13 +332,13 @@
 
 
             $( "#langPicker", $toolsBar).off('change').on('change', function(){
-            	var $self = $(this);
+                var $self = $(this);
                 if ($(".pickableLanguage",$toolsBar).hasClass("expanded")) {
-                	$(".pickableLanguage",$toolsBar).removeClass("expanded").css("display","inline").animate({width:'85px'});
+                    $(".pickableLanguage",$toolsBar).removeClass("expanded").css("display","inline").animate({width:'85px'});
                 } else {
-                	$(".pickableLanguage",$toolsBar).animate({width:'0'},function() {
-                		$(this).addClass("expanded").css("display","none");
-                	});
+                    $(".pickableLanguage",$toolsBar).animate({width:'0'},function() {
+                        $(this).addClass("expanded").css("display","none");
+                    });
 
                 }
             });
@@ -404,10 +402,10 @@
                 var $self = $(this).next('label');
                 var $icon = $('.ui-icon', $self);
                 if ($.klear.isHeaderCollapsed()) {
-                	$icon.removeClass('ui-icon-triangle-1-n').addClass('ui-icon-triangle-1-s');
+                    $icon.removeClass('ui-icon-triangle-1-n').addClass('ui-icon-triangle-1-s');
                     $self.addClass('ui-state-active');
                 } else {
-                	$icon.removeClass('ui-icon-triangle-1-s').addClass('ui-icon-triangle-1-n');
+                    $icon.removeClass('ui-icon-triangle-1-s').addClass('ui-icon-triangle-1-n');
                 }
             });
 
@@ -421,10 +419,10 @@
                 var $self = $(this).next('label');
                 var $icon = $('.ui-icon', $self);
                 if ($.klear.isHeaderCollapsed()) {
-                	$icon.removeClass('ui-icon-triangle-1-nw').addClass('ui-icon-triangle-1-se');
+                    $icon.removeClass('ui-icon-triangle-1-nw').addClass('ui-icon-triangle-1-se');
                     $self.addClass('ui-state-active');
                 } else {
-                	$icon.removeClass('ui-icon-triangle-1-se').addClass('ui-icon-triangle-1-nw');
+                    $icon.removeClass('ui-icon-triangle-1-se').addClass('ui-icon-triangle-1-nw');
                 }
             });
 
@@ -488,20 +486,20 @@
                 this.save();
             },
             fix : function() {
-            	  var auxTabs = {};
-            	  var tabs = [];
+                  var auxTabs = {};
+                  var tabs = [];
                   for (var i in this.tabs ) {
-                	  item = this.tabs[i];
-                	  if (auxTabs[item] && auxTabs[item] === true) {
-                		  continue;
-                	  }
-                	  auxTabs[item] = true;
-                	  tabs.push(item);
+                      item = this.tabs[i];
+                      if (auxTabs[item] && auxTabs[item] === true) {
+                          continue;
+                      }
+                      auxTabs[item] = true;
+                      tabs.push(item);
                   }
                   this.tabs = tabs;
             },
             save : function() {
-            	this.fix();
+                this.fix();
                 var jsTabs = JSON.stringify(this.tabs);
                 localStorage.setItem('tabPersist', jsTabs);
             },
@@ -548,7 +546,7 @@
                 localStorage.setItem('tabPersistEnabled', '0');
             },
             enabled : function() {
-            	return localStorage.getItem('tabPersistEnabled') == '1';
+                return localStorage.getItem('tabPersistEnabled') == '1';
             }
         };
 
@@ -591,7 +589,7 @@
     var $sidebar = $("#sidebar");
     // Fix para expendiente X menú apagado... :(
     $sidebar.on('mouseenter',function() {
-    	$(this).animate({opacity:'1'});
+        $(this).animate({opacity:'1'});
     });
 
     $.klear.toggleMenu = function() {
@@ -623,36 +621,36 @@
 
 
     $.klear.toggleHeader = function() {
-    	$appLogo = $("#applicationLogo");
+        $appLogo = $("#applicationLogo");
 
         if ($.klear.isHeaderCollapsed()) {
-        	$("#header").fadeOut(function() {
-        		$(this).removeClass("collapsedHeader").fadeIn();
-        	});
+            $("#header").fadeOut(function() {
+                $(this).removeClass("collapsedHeader").fadeIn();
+            });
 
-        	$appLogo.animate({opacity:'1', height:'100px'});
-        	$("#applicationTools").animate({marginTop:'0px'});
+            $appLogo.animate({opacity:'1', height:'100px'});
+            $("#applicationTools").animate({marginTop:'0px'});
 
-        	$appLogo.data("seized",false);
+            $appLogo.data("seized",false);
 
-        	if ($("#footer").hasClass("collapsedFooter")) {
-        		$("#footer").fadeOut(function() {
-        			$(this).removeClass("collapsedFooter").fadeIn();
-        		});
-        	}
+            if ($("#footer").hasClass("collapsedFooter")) {
+                $("#footer").fadeOut(function() {
+                    $(this).removeClass("collapsedFooter").fadeIn();
+                });
+            }
         } else {
-        	$("#header").fadeOut(function() {
-        		$(this).addClass("collapsedHeader").fadeIn();
-        	});
-        	$appLogo.animate({opacity:'0', height:'0'});
-        	$("#applicationTools").animate({marginTop:'-40px'});
-        	$appLogo.data("seized",true);
+            $("#header").fadeOut(function() {
+                $(this).addClass("collapsedHeader").fadeIn();
+            });
+            $appLogo.animate({opacity:'0', height:'0'});
+            $("#applicationTools").animate({marginTop:'-40px'});
+            $appLogo.data("seized",true);
 
-        	if ($("#footer").height() > '50') {
-	        	$("#footer").fadeOut(function() {
-	        		$(this).addClass("collapsedFooter").fadeIn();
-	        	});
-        	}
+            if ($("#footer").height() > '50') {
+                $("#footer").fadeOut(function() {
+                    $(this).addClass("collapsedFooter").fadeIn();
+                });
+            }
         }
 
         localStorage.setItem('toogleHeader', $.klear.isHeaderCollapsed());
@@ -662,13 +660,13 @@
 
     $.klear.toggleAll = function() {
 
-    	var initialState = $.klear.isMenuCollapsed();
-    	$.klear.toggleMenu();
-    	if (initialState == $.klear.isHeaderCollapsed()) {
-    		$.klear.toggleHeader();
-    	}
+        var initialState = $.klear.isMenuCollapsed();
+        $.klear.toggleMenu();
+        if (initialState == $.klear.isHeaderCollapsed()) {
+            $.klear.toggleHeader();
+        }
 
-    }
+    };
 
     $.klear.isMenuCollapsed = function() {
         return $("#sidebar").data("seized") || false;
@@ -826,7 +824,7 @@
                 }
                 var backgroundTab = false;
                 if ($(this).data('noFocus')===true) {
-                    $(this).data('noFocus', false)
+                    $(this).data('noFocus', false);
                     backgroundTab = true;
                 }
 
@@ -874,7 +872,7 @@
             },
             remove: function(event, ui) {
 
-            	var iden = '#'  + $(ui.panel).attr("id");
+                var iden = '#'  + $(ui.panel).attr("id");
                 $.klear.tabPersist.remove(iden);
                 $("li",$.klear.canvas).each(function(idx,elem) {
                     $(elem).klearModule("option","tabIndex",idx);
@@ -897,7 +895,6 @@
         });
 
     };
-
 
     $(document).on("keydown",function(e) {
 
@@ -1004,7 +1001,6 @@
         $.klear.menu(true, opts);
         $.klear.loadedTemplates = {};
         $.klear.requestReloadTranslations();
-
     };
 
     $.klear.start = function() {
@@ -1012,10 +1008,7 @@
          * Setting klear.baseurl value
          */
         $.klear.baseurl = $.klear.baseurl || $("base").attr("href");
-
         $.klear.language = $('html').attr('lang');
-
-
         $.klear.baseCanvas = $("#canvasWrapper").html();
 
         /*
@@ -1023,7 +1016,6 @@
          */
 
         $.klear.canvas = $("#canvas");
-
 
         /*
          * Loading and binding main container
@@ -1048,12 +1040,9 @@
                 });
             }, 300000);
         };
-
     };
 
-
 })(jQuery);
-
 
 /*
  * document ready Klear Launch
@@ -1073,28 +1062,24 @@
 
         $.klear.start();
 
+        window.onbeforeunload = function (e) {
 
-    	window.onbeforeunload = function (e) {
+            if ($( "#tabsList li").length == 0) {
+                return;
+            }
 
-    		if ($( "#tabsList li").length == 0) {
-    			return;
-    		}
+            var _warnMsg = $.translate("Do you really want to leave?");
+            var e = e || window.event;
 
-    		var _warnMsg = $.translate("Do you really want to leave?");
+            if (e) {
+                e.returnValue = _warnMsg;
+            }
 
-    	    var e = e || window.event;
+            return _warnMsg;
+        };
 
-    	    if (e) {
-    	        e.returnValue = _warnMsg;
-    	    }
-
-    	    return _warnMsg;
-    	};
-
-
-    	$(window).on("scroll", function() {
+        $(window).on("scroll", function() {
             $("#sidebar").trigger("reposition");
-
         });
     });
 

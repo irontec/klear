@@ -1,5 +1,4 @@
-;
-(function($) {
+;(function($) {
     $.extend({
 
         getStylesheet : function(url, id, media) {

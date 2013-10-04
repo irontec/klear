@@ -1,8 +1,8 @@
 var console = window.console || { log : function() {}};
 
 (function() {
-    var _base = document.getElementsByTagName('base')[0].getAttribute('href');
 
+    var _base = document.getElementsByTagName('base')[0].getAttribute('href');
     var _loadIndicator = document.createElement("div");
     var _loader = document.createElement("div");
     _loader.setAttribute("class","initialLoader");
@@ -13,25 +13,26 @@ var console = window.console || { log : function() {}};
     _loader.total = 0;
 
     (function lazyLoader() {
-    	
+
         if (!document.getElementsByTagName('body')[0]) {
             setTimeout(lazyLoader,10);
             return;
         }
-        
+
         document.getElementsByTagName('body')[0].appendChild(_loader);
 
         _loader.interval = setInterval(function() {
+
             if (_loader.total == 0) {
                 return;
             }
-            
+
             var _percentTarget = parseInt((100*_loader.target)/_loader.total);
             _loader.firstChild.innerHTML = _loader.curPercent + '%';
 
             if (_percentTarget >= _loader.curPercent) {
-                _loader.curPercent++;
 
+                _loader.curPercent++;
                 _loader.firstChild.style.width = _loader.curPercent + '%';
 
                 if (_loader.curPercent == 100) {
@@ -40,11 +41,9 @@ var console = window.console || { log : function() {}};
                     $(_loader).fadeOut("slow",function() {
                         $(this).remove();
                     });
-
                 }
             }
-        },2);
-
+        }, 2);
     })();
 
     if (document.documentElement.getAttribute("data-stage") == "development") {
@@ -88,16 +87,14 @@ var console = window.console || { log : function() {}};
     });
 
     yepnope.addPrefix('cdnCheck', function(resourceObj) {
-    	if (_noCDN) {
-    		// Si estamos en un sistema "super seguro" que evita utilizar CDNs, evitamos también el preload
-    		resourceObj.url = 'about:blank';
-    		resourceObj.noexec = true;
-    	}
+        if (_noCDN) {
+            // Si estamos en un sistema "super seguro" que evita utilizar CDNs, evitamos también el preload
+            resourceObj.url = 'about:blank';
+            resourceObj.noexec = true;
+        }
 
-    	return resourceObj;
+        return resourceObj;
     });
-
-
 
     var _seekAndDestroy = function(realSrc) {
 

@@ -309,18 +309,18 @@
             self._getKlearPosition().css("overflow","hidden");
 
             $(this.element).slideUp('fast',function() {
-            	var $self = $(this);
+                var $self = $(this);
                 $self.html(content).css("height","auto");
                 var $elements = $("input, button, select",$(self.uiDialog));
                 $elements.attr("disabled","disabled");
-                
+
 
                 $self.slideDown(100,function() {
                     //Corregimos posición con el nuevo tamaño
                     $(window).trigger("scroll."+self._getKlearPosition().attr("id"));
                     $elements.removeAttr("disabled");
                     if (typeof callback == 'function') {
-                    	callback.apply(self);
+                        callback.apply(self);
                     }
                 });
             });
@@ -348,7 +348,7 @@
     $.extend($.ui.dialog.overlay, {
 
         create: function(dialog) {
-            
+
             if ( (dialog.widgetName == 'klearModule') && ($(dialog.element).moduleDialog("option", "klearPosition")) ) {
 
                 var container = $(dialog.element).moduleDialog("option", "klearPosition");
@@ -378,7 +378,7 @@
             if (container == document) {
                 container = document.body;
             }
-            
+
             var $el = ( $('<div />').addClass('ui-widget-overlay'))
                 .appendTo(container)
                 .css({

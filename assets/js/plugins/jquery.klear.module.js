@@ -296,14 +296,14 @@
 
                 message = Array.prototype.join.call(arguments, '</em><br /><em>', [__namespace__]);
             }
-            
+
             message = '<em>' + message + '</em>';
-            
+
             var errorMessage = $.translate("Module registration error.")
                              + '<br /><br />'
                              + $.translate("Error: %s.", message);
             var dTitle = $.translate("Klear Module Error");
-            dTitle+ = ' - ' + title + '';
+            dTitle = dTitle + ' - ' + title + '';
             this.showDialogError(
                 errorMessage,
                 {
@@ -334,12 +334,12 @@
         },
 
         reDispatch : function() {
-        	
-        	// Invocamos reDispatch encadena, de padres a hijos.
-        	if (this.options.parentScreen) {
-        		$(this.options.parentScreen).klearModule("reDispatch");	
-        	}
-        	
+
+            // Invocamos reDispatch encadena, de padres a hijos.
+            if (this.options.parentScreen) {
+                $(this.options.parentScreen).klearModule("reDispatch");
+            }
+
             this.setAsloading();
             this.dispatch();
         },
@@ -409,22 +409,22 @@
                             }
                         ]
                 });
-                
+
                 return;
             }
 
             if (opts && opts.callback && typeof opts.callback == "function") {
                 opts.callback();
             }
-            
+
             var $parentLi = false;
             // Si la pestaña a cerrar, tiene padre
             if (this.options.tabIndex == parseInt($.klear.canvas.tabs('option', 'selected'))) {
-            	$parentLi = $(this.options.parentScreen);            	
+                $parentLi = $(this.options.parentScreen);
             }
             $(this.options.container).tabs( "remove", this.options.tabIndex );
-            
-            
+
+
             // Después de cerrar (e invocar el handler en navigator), seleccionamos el padre
             if (false !== $parentLi) {
                 $.klear.canvas.tabs('select',$parentLi.klearModule("option","tabIndex"));
@@ -522,7 +522,7 @@
                 type: 'msg',
                 dialogType: 'moduleDialog'
             };
-            var opts = opts || {}
+            var opts = opts || {};
             $.extend(options, opts);
             this.showDialog(msg, options);
         },
@@ -533,7 +533,7 @@
                 icon: 'ui-icon-alert',
                 dialogType: 'moduleDialog'
             };
-            var opts = opts || {}
+            var opts = opts || {};
             $.extend(options, opts);
             this.showDialog(msg, options);
         },
@@ -545,7 +545,7 @@
                 state: 'highlight',
                 dialogType: 'moduleDialog'
             };
-            var opts = opts || {}
+            var opts = opts || {};
             $.extend(options, opts);
             this.showDialog(msg, options);
         },
@@ -743,39 +743,39 @@
             } else {
                 var _loadingItem = $(".loadingPanel",_panel);
             }
-            
-            
+
+
             if (this._loading) {
                 _loadingItem.show();
                 this.showOverlay();
                 $(this.options.ui.tab).addClass("ui-state-disabled");
-                
+
             } else {
                 $(this.options.ui.tab).removeClass("ui-state-disabled");
             }
         },
         _getOverlay : function() {
-        	var _panel = $(this.options.panel);
-        	if ($("div.overlay",_panel).length == 0) {
-            	return $("<div />")
-            			.addClass("overlay")
-            			.css({
-            				opacity: '0.6',
-            				width: _panel.width() + 'px',
-            				height: _panel.height() + 'px'
-            			})
-            			.hide()
-            			.appendTo(_panel);
+            var _panel = $(this.options.panel);
+            if ($("div.overlay",_panel).length == 0) {
+                return $("<div />")
+                        .addClass("overlay")
+                        .css({
+                            opacity: '0.6',
+                            width: _panel.width() + 'px',
+                            height: _panel.height() + 'px'
+                        })
+                        .hide()
+                        .appendTo(_panel);
             } else{
-            	return $("div.overlay",_panel);
+                return $("div.overlay",_panel);
             }
         },
         showOverlay : function() {
-        	this._getOverlay().show();
-        	
+            this._getOverlay().show();
+
         },
         hideOverlay : function() {
-        	this._getOverlay().hide();
+            this._getOverlay().hide();
         },
         updateTitle : function(title) {
             if (title && title != '')  {
