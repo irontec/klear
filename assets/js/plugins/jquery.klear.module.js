@@ -352,7 +352,7 @@
             });
             
             $(this.element)[response.plugin]({
-                data: response.data,
+                data: response.data
             });
 //            
 //            if (typeof this.options.PostDispatchMethod == 'function') {
