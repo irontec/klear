@@ -28,7 +28,6 @@
 
     $.klear.loadedTemplates = {};
 
-
     /*
      * Klear Module definition
      *
@@ -37,7 +36,7 @@
      */
 
     var __namespace__ = 'klear.module';
-
+    
 
     $.widget("klear.module", {
 
@@ -54,7 +53,10 @@
         },
 
         _init: function() {
-            // setting init options
+        	
+        	$.console.info("["+__namespace__+"] _init module");
+
+        	// setting init options
             this._initOptions();
 
             this.setAsloading();
@@ -199,6 +201,9 @@
          */
 
         _initOptions: function() {
+        	
+        	$.console.info("["+__namespace__+"] _initOptions");
+        	
             this.options.mainEnl = $("a:first",this.element);
             this.options.title = $("a:first",this.element).html();
             this.options.file = $("a:first",this.element).attr("href").replace(/\#tabs\-([^\_]+).*/,'$1');
@@ -214,6 +219,8 @@
          */
 
         _initTab : function() {
+        	
+        	$.console.info("["+__namespace__+"] _initTab");
 
             if ((!this.options.menuLink)
                 || ($("span.ui-silk",this.options.menuLink).length <= 0)) {
@@ -259,6 +266,9 @@
         },
 
         reload : function() {
+        	
+        	$.console.info("["+__namespace__+"] reload");
+        	
             this._initTab();
         },
 
@@ -270,6 +280,9 @@
          */
 
         dispatch : function() {
+        	
+        	$.console.info("["+__namespace__+"] dispatch");
+        	
             var dispatchData = {
                     file : this.options.file
             };
@@ -284,6 +297,9 @@
 
         },
         _errorResponse: function() {
+        	
+        	$.console.info("["+__namespace__+"] _errorResponse");
+        	
             this.setAsloaded();
 
             var title = '<span class="ui-silk inline dialogTitle '+this._getTabIconClass()+' "></span>';
@@ -315,6 +331,8 @@
 
         _parseDispatchResponse : function(response) {
 
+        	$.console.info("["+__namespace__+"] _parseDispatchResponse");
+        	
             this.setAsloaded();
 
             $(this.options.panel).html('');
@@ -323,18 +341,30 @@
                 response.data.mainTemplate = response.mainTemplate;
             }
 
-            $(this.element)[response.plugin]({
-                data: response.data
+            var _self = this;
+            
+            
+            $(this.element).on('moduleInitReady', function(){
+            	$.console.info("["+__namespace__+"] " + response.plugin + " is ready.");
+            	if (typeof _self.options.PostDispatchMethod == 'function') {
+            		_self.options.PostDispatchMethod.apply(_self);
+                }
             });
-
-            if (typeof this.options.PostDispatchMethod == 'function') {
-                this.options.PostDispatchMethod.apply(this);
-            }
+            
+            $(this.element)[response.plugin]({
+                data: response.data,
+            });
+//            
+//            if (typeof this.options.PostDispatchMethod == 'function') {
+//                this.options.PostDispatchMethod.apply(this);
+//            }
 
         },
 
         reDispatch : function() {
 
+        	$.console.info("["+__namespace__+"] _reDispatch");
+        	
             // Invocamos reDispatch encadena, de padres a hijos.
             if (this.options.parentScreen) {
                 $(this.options.parentScreen).klearModule("reDispatch");
@@ -361,6 +391,8 @@
 
         close: function(opts) {
 
+        	$.console.info("["+__namespace__+"] close");
+        	
             if (this.isLocked()) {
                 $(this.options.container).tabs( "select", this.options.tabIndex );
 
@@ -685,11 +717,17 @@
         _loading : false,
 
         setAsloading : function() {
+        	
+        	$.console.info("["+__namespace__+"] setAsLoading");
+        	
             this._loading = true;
             this.updateLoader();
         },
 
         setAsloaded : function() {
+        	
+        	$.console.info("["+__namespace__+"] setAsloaded");
+        	
             this._loading = false;
             this.updateLoader();
         },
@@ -792,5 +830,20 @@
 
 
     $.widget.bridge("klearModule", $.klear.module);
+    
+    
+    /*
+     * Info console.
+     */
+    
+	$.console = {
+			debugInfo: true,
+			info: function() {
+				if (this.debugInfo && console && typeof console.info == 'function') {
+					var message = Array.prototype.slice.apply(arguments).join(' ');
+					console.info(message);
+				}
+			}
+    };
 
 })(jQuery);
