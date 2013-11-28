@@ -607,13 +607,6 @@
             this.element.removeClass('changed');
             this.unLockTab();
         },
-        getUploadInProgressNumber: function () {
-            var kont = 0;
-            for (var idx in this.options.filesUploading) {
-                kont++;
-            }
-            return kont;
-        },
         setUploadInProgress: function (id) {
             this.options.filesUploading[id] = true;
         },
