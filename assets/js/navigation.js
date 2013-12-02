@@ -291,7 +291,8 @@
             });
 
             $sidebar.on('reposition', function() {
-                if (!$(this).is(":visible")) {
+                if (!$(this).is(":visible")
+                        || $(window).width() <= '680') {
                     return;
                 }
 
