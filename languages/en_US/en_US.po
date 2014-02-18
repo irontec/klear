@@ -2,9 +2,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Klear\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-11-27 10:32+0100\n"
-"PO-Revision-Date: 2013-11-27 10:32+0100\n"
-"Last-Translator: Lander Ontoria <lander@irontec.com>\n"
+"POT-Creation-Date: 2014-02-18 11:39+0100\n"
+"PO-Revision-Date: 2014-02-18 11:39+0100\n"
+"Last-Translator: Lander Ontoria Gardeazabal <lander@irontec.com>\n"
 "Language-Team: Irontec-Klear <lander+klear@irontec.com>\n"
 "Language: en_ES\n"
 "MIME-Version: 1.0\n"
@@ -67,7 +67,7 @@ msgstr ""
 msgid "Authenticate"
 msgstr ""
 
-#: assets/js/navigation.js:1071
+#: assets/js/navigation.js:1072
 msgid "Do you really want to leave?"
 msgstr ""
 
