@@ -832,18 +832,4 @@
     $.widget.bridge("klearModule", $.klear.module);
 
 
-    /*
-     * Info console.
-     */
-
-    $.console = {
-            debugInfo: true,
-            info: function() {
-                if (this.debugInfo && console && typeof console.info == 'function') {
-                    var message = Array.prototype.slice.apply(arguments).join(' ');
-                    console.info(message);
-                }
-            }
-    };
-
 })(jQuery);

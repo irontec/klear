@@ -898,7 +898,7 @@
     };
 
     $(document).on("keydown",function(e) {
-
+console.log(e.keyCode);
         var ctrlAltActions = {
             87 : {
                 key : 'w',
@@ -952,6 +952,10 @@
             88 : {
                 key: 'x',
                 action: $.klear.toggleAll
+            },
+            71 : {
+            	key: 'g',
+            	action: $.console.toggleDebugInfo
             }
 
         };
@@ -1083,5 +1087,37 @@
             $("#sidebar").trigger("reposition");
         });
     });
+    
+    $.console = {
+            debugInfo: false,
+            info: function() {
+                if ($.console.debugInfo && console && typeof console.info == 'function') {
+                    var message = Array.prototype.slice.apply(arguments).join(' ');
+                    console.info(message);
+                }
+            },
+            log: function(message) {
+            	if (console && typeof console.log == 'function') {
+            		console.log(message)
+            	}
+            },
+            toggleDebugInfo : function() {
+            	$.console.setDebugInfo(!$.console.debugInfo);
+            },
+            setDebugInfo : function(value) {
+            	value = value? true:false;
+            	$.console.log(((value)? 'ACTIVATING':'DEACTIVATING') + ' debug Info.');
+            	localStorage.setItem('debugInfo', value);
+            	$.console.debugInfo = value;
+            },
+            init : function() {
+            	$.console.debugInfo = $("html:eq(0)").data("stage") == "development";
+            	if (localStorage.getItem('debugInfo')) {
+            		$.console.setDebugInfo(localStorage.getItem('debugInfo') == 'true'); 
+            	}            	
+            }
+    };
+    $.console.init();
+
 
 })(jQuery);
