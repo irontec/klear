@@ -303,6 +303,22 @@
                     _target -= sideBarOffset.top;
                 }
                 $(this).stop().animate({'marginTop': _target + 'px'}, 0, 'easeOutQuad');
+                
+                /*
+                 * Hacemos que la barra de tabs, esté siempre presente
+                 * Corregimos en 7px para que se ajuste al marco superior.
+                 */
+                _target -= 7;
+                if (_target > 0) {
+                    $("#tabsList").css("position","absolute");
+                } else {
+                    _target = 0;
+                }
+                $("#tabsList").stop().animate({'marginTop': _target + 'px'}, 0, 'easeOutQuad',function() {
+                    if (_target <= 0) {
+                        $(this).css("position","relative");
+                    }
+                });
 
             });
 
@@ -313,11 +329,6 @@
             });
 
             self.loaded = true;
-
-            /*
-             *
-             */
-
 
             $toolsBar = $( "#headerToolsbar" ),
 
@@ -898,7 +909,6 @@
     };
 
     $(document).on("keydown",function(e) {
-console.log(e.keyCode);
         var ctrlAltActions = {
             87 : {
                 key : 'w',

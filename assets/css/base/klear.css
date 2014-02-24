@@ -192,6 +192,7 @@ ul#tabsList {
     border-bottom-right-radius:0;
     border-bottom-left-radius:0;
     display:none;
+    z-index:10;
 }
 
 #tabsList li {
