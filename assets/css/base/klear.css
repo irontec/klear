@@ -89,6 +89,11 @@ body {
     margin-top:1em;
 }
 
+.loginDialog p.language {
+    text-align:center;
+    margin-top:1em;
+}
+
 #header {
 	padding: 10px 15px;
 }
@@ -184,6 +189,7 @@ body {
     position:absolute;
     padding:1.3em;
     font-size:.85em;
+    z-index: 9000
 }
 
 ul#tabsList {
