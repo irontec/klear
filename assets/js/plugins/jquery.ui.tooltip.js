@@ -35,7 +35,7 @@ $.widget("ui.tooltip", {
     },
     _init: function() {
         var self = this;
-        this.showTimeout;
+        this.showTimeout = null;
         this.tooltip = $("<div></div>")
             .attr("id", "ui-tooltip-" + increments++)
             .attr("role", "tooltip")
