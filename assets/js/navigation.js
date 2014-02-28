@@ -772,6 +772,28 @@
                     $("input:text:eq(0)",self.$loginForm).trigger("focusin").select();
                 }
             });
+            
+            setTimeout(function(){
+            	$loginToolsBar = $("#loginToolsbar",self.$loginForm); 
+            	$loginToolsBar.buttonset();
+            	$("#loginToolsbar",self.$loginForm).fadeIn();	
+            	$( "#langPickerLogin").siblings('label[for=langPickerLogin]').addClass('ui-corner-right');
+                $( ".pickableLang",  $loginToolsBar).off('change').on('change', function(){
+                    $.klear.language = $(this).val();
+                    $.klear.restart({'language': $(this).val()});
+                });
+                $( "#langPickerLogin", $loginToolsBar).off('change').on('change', function(){
+                    var $self = $(this);
+                    if ($(".pickableLanguage",$loginToolsBar).hasClass("expanded")) {
+                        $(".pickableLanguage",$loginToolsBar).removeClass("expanded").css("display","inline").animate({width:'85px'});
+                    } else {
+                        $(".pickableLanguage",$loginToolsBar).animate({width:'0'},function() {
+                            $(this).addClass("expanded").css("display","none");
+                        });
+                    }
+                });
+            }, 1000);
+            
 
             $("select",self.$loginForm).selectBoxIt({theme: "jqueryui"});
             $("input",self.$loginForm).removeAttr("disabled");

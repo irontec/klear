@@ -268,20 +268,20 @@ div.ui-tabs-panel {
 }
 
 #headerToolsbar {
-	font-size: 0.7em;
-	padding: 0.8em 0;
-	display:none;
-	position: absolute;
-	right: 0;
+    font-size: 0.7em;
+    padding: 0.8em 0;
+    display:none;
+    position: absolute;
+    right: 0;
 }
     
 #applicationTools .ui-buttonset {
-	position: absolute;
-	margin-right:2px;
+    position: absolute;
+    margin-right:2px;
 
 }
 #applicationTools label {
-	z-index:10;
+    z-index:10;
 }
 
 #applicationTools .pickableLanguage {
@@ -296,13 +296,65 @@ div.ui-tabs-panel {
 }
 
 #applicationTools .pickableLanguage span {
-	position: absolute;
-	top:0;
-	left:0;
-	height: 19px;
-	width:85px;
-	margin:0;
-	padding: 0.4em 0;
+    position: absolute;
+    top:0;
+    left:0;
+    height: 19px;
+    width:85px;
+    margin:0;
+    padding: 0.4em 0;
+}
+
+#loginToolsbar {
+    font-size: 0.7em;
+    padding: 0.8em 0;
+    position: absolute;
+    display:none;
+    right: 0;
+}
+#loginTools {
+height: 40px;	
+}
+
+#loginTools .ui-buttonset {
+    position: relative;
+    float:right;
+
+}
+#loginTools label {
+    z-index:10;
+    width: 15px;
+    
+}
+#loginTools span.ui-button-text {
+	padding: 0 0 0;
+	
+}
+#loginTools .pickableLanguage {
+    font-size: 1.3em;
+    height: 24px;
+    overflow: hidden;
+    position: relative;
+    display:none;
+    width: 0;
+    z-index: 5;
+    top: 0;
+    
+    font-size: 1.1em;
+height: 22px;
+padding: 0;
+}
+
+#loginTools .pickableLanguage span {
+    position: absolute;
+    top:0;
+    left:0;
+    height: 19px;
+    width:85px;
+    margin:0;
+/*     padding: 0.4em 0; */
+    text-align: center;
+    top: 4px;
 }
 
 #headerbar {
