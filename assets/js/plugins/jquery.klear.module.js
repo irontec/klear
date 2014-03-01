@@ -233,9 +233,8 @@
                     $(_mainEnl).trigger("click");
             });
             var self = this;
-
-            $(this.options.ui.tab).on('mouseup',function(event) {
-
+            $(this.options.ui.tab).off('mouseup.closing');
+            $(this.options.ui.tab).on('mouseup.closing',function(event) {
                 if (event.which == null) {
                        /* IE case */
                        button= (event.button < 2) ? "LEFT" :
@@ -257,6 +256,7 @@
                     setTimeout(function() {
                         $self.attr("href",prevHref);
                     },100);
+                    
                     $(self.element).klearModule("close");
                 }
 
