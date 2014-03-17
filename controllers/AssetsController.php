@@ -310,22 +310,25 @@ class Klear_AssetsController extends Zend_Controller_Action
     protected function _getContents($file, $type)
     {
         $data = file_get_contents($file);
-        if ($this->_siteConfig->minifiersDisabled()) {
-            return $data;
-        }
 
-        if ($this->_applyStrongCache) {
-            switch(strtolower($type)) {
-                case "js":
-                    $minifier = new Iron_Minify_JsMin($data);
-                    break;
-                case "css":
-                    $minifier = new Iron_Minify_CssCompressor($data);
-                    break;
-                default:
-                    return $data;
+        if (APPLICATION_ENV !== 'development') {
+            if ($this->_siteConfig->minifiersDisabled()) {
+                return $data;
             }
-            $data = $minifier->min();
+
+            if ($this->_applyStrongCache) {
+                switch(strtolower($type)) {
+                    case "js":
+                        $minifier = new Iron_Minify_JsMin($data);
+                        break;
+                    case "css":
+                        $minifier = new Iron_Minify_CssCompressor($data);
+                        break;
+                    default:
+                        return $data;
+                }
+                $data = $minifier->min();
+            }
         }
         return $data;
     }
