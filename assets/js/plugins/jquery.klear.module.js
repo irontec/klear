@@ -193,7 +193,8 @@
             parentScreen: false,
             moduleDialog: null,
             PostDispatchMethod: null,
-            PreDispatchMethod : null
+            PreDispatchMethod : null,
+            shortcuts : {}
         },
 
         /*
@@ -381,7 +382,25 @@
         getContainer : function() {
             return this.options.container;
         },
-
+        
+        shortcut : function(keyCode)
+        {
+            if (this.options.shortcuts[keyCode]) {
+                for(var i in this.options.shortcuts[keyCode]) {
+                    if (typeof this.options.shortcuts[keyCode][i] == 'function') {
+                        this.options.shortcuts[keyCode][i]();
+                    }
+                }
+            }
+        },
+        registerShortcut : function(keyCode,fn)
+        {
+            if (!this.options.shortcuts[keyCode]) {
+                this.options.shortcuts[keyCode] = [];
+            }
+            this.options.shortcuts[keyCode].push(fn);
+        },
+        
         /*
          * close method
          *

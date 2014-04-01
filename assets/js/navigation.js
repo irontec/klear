@@ -305,7 +305,7 @@
                 $(this).stop().animate({'marginTop': _target + 'px'}, 0, 'easeOutQuad');
                 
                 /*
-                 * Hacemos que la barra de tabs, esté siempre presente
+                 * Hacemos que la barra de tabs, esté siempre arriba
                  * Corregimos en 7px para que se ajuste al marco superior.
                  */
                 _target -= 7;
@@ -1001,7 +1001,7 @@
             }
         };
 
-        if (e.altKey && e.ctrlKey && ctrlAltActions[e.which]
+        if (e.altKey && e.ctrlKey
             || e.altKey && altActions[e.which]
         ) {
             e.preventDefault();
@@ -1010,8 +1010,15 @@
             var selectedTab = parseInt($.klear.canvas.tabs('option', 'selected'));
 
             if (e.altKey && e.ctrlKey) {
-                // Ctrl + Alt + Key
-                ctrlAltActions[e.which]['action'](selectedTab);
+                if (ctrlAltActions[e.which]) {
+                    // Ctrl + Alt + Key
+                    ctrlAltActions[e.which]['action'](selectedTab);
+                } else {
+                    // Not a "registerd shortcut=?
+                    // Handle it to klearModule, see if there is something to be done ;)
+                    $("#tabsList li:eq("+selectedTab+")")
+                        .klearModule('shortcut', e.which);
+                }
             } else {
                 // Alt + Key
                 altActions[e.which]['action'](selectedTab);
