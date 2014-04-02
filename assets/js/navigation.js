@@ -438,9 +438,48 @@
                 }
             });
 
+            
+            
+            $( "#themeRoller", $toolsBar ).off('change').on('change', function(){
+            	
+            	var $self = $(this);
+            	$self.button('widget').removeClass('ui-state-active');
+            	if (!$("#themeRollerSelector").hasClass("active")) {
+            		$("#themeRollerSelector").show('fast', function(){
+            			$(this).selectBoxIt({theme: "jqueryui",autoWidth: true, viewport: $(window)});	
+            		});
+            		$("#themeRollerSelector").addClass("active");
+            	}
+            	
+            	
+            	if ($("#themeRollerSelector").hasClass("open")) {
+            		$("#themeRollerSelector").removeClass("open");
+                	$("#themeRollerSelectorSelectBoxItContainer").fadeOut();
+            	} else {
+            		$("#themeRollerSelector").addClass("open");
+                	$("#themeRollerSelectorSelectBoxItContainer").fadeIn();
+            	}
 
+            });
 
-//            $langBar.show();
+            $( "#themeRollerSelector", $toolsBar ).off('change').on('change', function(){
+            	$("#currentTheme")[0].href = $(this).val();
+        		$.klear.request(
+        				{
+        					controller: 'index',
+        	                action: 'hello',                                
+                            theme: $("option:selected", $(this)).text()
+                        },
+                        function(response) {
+                        },
+                        function() {
+                        }
+                );
+            	
+            });
+            
+            
+            
             $toolsBar.show();
 
 

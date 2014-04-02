@@ -305,6 +305,21 @@ div.ui-tabs-panel {
     padding: 0.4em 0;
 }
 
+#applicationTools #themeRollerSelector{
+	display:none;
+}
+
+#applicationTools .selectboxit-container .selectboxit {
+	border-radius: 0;
+}
+
+#applicationTools .selectboxit-container span, 
+#applicationTools .selectboxit-container .selectboxit-options a{
+	height: 100%;
+	line-height: 2.2em;
+	font-size: 1.1em;
+}
+
 #loginToolsbar {
     font-size: 0.7em;
     padding: 0.8em 0;
@@ -356,6 +371,8 @@ padding: 0;
     text-align: center;
     top: 4px;
 }
+
+
 
 #headerbar {
 

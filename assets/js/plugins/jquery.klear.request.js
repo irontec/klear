@@ -26,7 +26,7 @@
 
         $.extend(options,params);
 
-        var _validParams = "execute type file screen dialog command pk language str namespace".split(" ");
+        var _validParams = "execute type file screen dialog command pk language str namespace theme".split(" ");
         var _params = {};
 
         $.each(_validParams,function(idx,_value) {
