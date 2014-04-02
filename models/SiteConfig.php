@@ -28,6 +28,11 @@ class Klear_Model_SiteConfig
 
     // Ruta de la aplicación (public), hacia el tema custom de jQuery UI
     protected $_jqueryUICustomTheme;
+    
+    protected $_currentTheme;
+    
+    protected $_themeRoller = array();
+    protected $_themeRollerCustom = array();
 
     protected $_lang;
     protected $_langs = array();
@@ -44,6 +49,8 @@ class Klear_Model_SiteConfig
             'signature',
             'defaultCustomConfiguration'
     );
+    
+    protected $_session;
 
     protected $_requiredParams = array(
             'year',
@@ -55,6 +62,8 @@ class Klear_Model_SiteConfig
         if (!is_null($config)) {
             $this->setConfig($config);
         }
+        
+        
     }
 
     public function setConfig(Zend_Config $config)
@@ -133,7 +142,9 @@ class Klear_Model_SiteConfig
          * Resquested Language // SESSION Language
         */
 
-        $session = new Zend_Session_Namespace('UserSettings');
+        if (!$this->_session instanceof Zend_Session_Namespace) {
+            $this->_session = new Zend_Session_Namespace('UserSettings');
+        }
 
         $front = Zend_Controller_Front::getInstance();
 
@@ -145,21 +156,21 @@ class Klear_Model_SiteConfig
             $lang = $requestedLanguage;
         }
         if ((!$lang)
-                && ($session->currentSystemLanguage!=null)
-                && (array_key_exists($session->currentSystemLanguage, $this->_langs)) ) {
-            $lang = $session->currentSystemLanguage;
+                && ($this->_session->currentSystemLanguage!=null)
+                && (array_key_exists($this->_session->currentSystemLanguage, $this->_langs)) ) {
+            $lang = $this->_session->currentSystemLanguage;
         }
 
         if (!$lang) {
             $lang = $config->lang;
         }
 
-        $session->currentSystemLanguage = $lang;
+        $this->_session->currentSystemLanguage = $lang;
 
         /*
          * Setting language Object
         */
-        $this->_lang = $this->_langs[$session->currentSystemLanguage];
+        $this->_lang = $this->_langs[$this->_session->currentSystemLanguage];
 
         Zend_Registry::set('currentSystemLanguage', $this->_lang);
         Zend_Registry::set('SystemDefaultLanguage', $this->_langs[$config->lang]);
@@ -196,34 +207,81 @@ class Klear_Model_SiteConfig
             }
         }
     }
+    
+    protected function _initThemeRoller(Zend_Config $config)
+    {
+        if (isset($config->jqueryUI->themeRoller)) {
+            if (isset($config->jqueryUI->themeRoller->themes)) {
+                $themeParser = new Klear_Model_JQueryUIThemeParser;
+                $themeParser->init();
+                foreach ($config->jqueryUI->themeRoller->themes as $theme) {
+                    if (isset($config->jqueryUI->jqueryUI->extraThemeFile)) {
+                        $themeParser->setLocalExtraConfigFile($config->jqueryUI->extraThemeFile);
+                    }
+                    $this->_themeRoller[$theme] = $themeParser->getPathForTheme($theme);  
+                }
+            }
+            if (isset($config->jqueryUI->themeRoller->paths)) {
+                foreach ($config->jqueryUI->themeRoller->paths as $themeName => $path) {
+                    $this->_themeRoller[$themeName] = $path;
+                    $this->_themeRollerCustom[] = $themeName;
+                }
+            }   
+        }
+    }
 
     public function _initJQueryUITheme(Zend_Config $config)
     {
         if (isset($config->jqueryUI)) {
-
-            if (isset($config->jqueryUI->path)) {
-                $this->_jqueryUICustomTheme = $config->jqueryUI->path;
-
-            } else {
-
-                if (isset($config->jqueryUI->theme)) {
-
-                    $themeParser = new Klear_Model_JQueryUIThemeParser;
-
-                    $themeParser->init();
-
-                    // If configured, we can pass the parser, extra custom jQueryUI themes
-                    if (isset($config->jqueryUI->extraThemeFile)) {
-                        $themeParser->setLocalExtraConfigFile($config->jqueryUI->extraThemeFile);
-                    }
-
-                    $this->_jqueryUIPathTheme = $themeParser->getPathForTheme($config->jqueryUI->theme);
-
-                } else {
-
-                    Throw new Zend_Exception("No existe una configuración de estilos válida");
+            $this->_initThemeRoller($config);
+            
+            $front = Zend_Controller_Front::getInstance();
+            $requestedTheme = $front->getRequest()->getParam('theme', false);
+            
+            if (!$this->_session instanceof Zend_Session_Namespace) {
+                $this->_session = new Zend_Session_Namespace('UserSettings');
+            }
+            
+            $configTheme = isset($config->jqueryUI->theme)? $config->jqueryUI->theme: null;
+            
+            $configThemePath = isset($config->jqueryUI->path)? $config->jqueryUI->path: null; 
+            if ($configThemePath && !$configTheme) {
+                $configTheme = $configThemePath;
+            }
+            $themes = $this->getThemeRoller(null);
+            
+            if ($requestedTheme) {
+                $requestedTheme = trim($requestedTheme);
+                if (array_key_exists($requestedTheme, $themes)) {
+                    $this->_session->theme = $requestedTheme;
                 }
             }
+            
+            
+            if ($this->_session->theme && !is_null($this->_session->theme)) {
+                $configTheme = $this->_session->theme;
+                if (in_array($configTheme, $this->_themeRollerCustom)) {
+                    $configThemePath = $themes[$configTheme]; 
+                }
+            }
+            
+            
+            
+            if (!$configThemePath) {
+                $themeParser = new Klear_Model_JQueryUIThemeParser;
+                $themeParser->init();
+                // If configured, we can pass the parser, extra custom jQueryUI themes
+                if (isset($config->jqueryUI->extraThemeFile)) {
+                    $themeParser->setLocalExtraConfigFile($config->jqueryUI->extraThemeFile);
+                }
+                $this->_jqueryUIPathTheme = $themeParser->getPathForTheme($configTheme);
+                $this->_currentTheme = $configTheme;
+            } else {
+                $this->_jqueryUICustomTheme = $configThemePath;
+                $this->_currentTheme = $configTheme;
+            }
+            
+            
         } else {
             Throw new Zend_Exception("No existe una configuración de estilos válida");
         }
@@ -296,6 +354,11 @@ class Klear_Model_SiteConfig
         return $this->_langs;
     }
 
+    public function getCurrentTheme()
+    {
+        return $this->_currentTheme;
+    }
+    
     public function getJQueryUItheme($baseUrl)
     {
         if (!empty($this->_jqueryUICustomTheme)) {
@@ -303,6 +366,22 @@ class Klear_Model_SiteConfig
         } else {
             return $this->_jqueryUIPathTheme;
         }
+    }
+    
+    public function getThemeRoller($baseUrl) 
+    {
+        if ($baseUrl) {
+            $baseUrl = $baseUrl;
+        } else {
+            $baseUrl = "";
+        }
+        $ret = $this->_themeRoller;
+        if (count($this->_themeRollerCustom)>0) {
+            foreach ($this->_themeRollerCustom as $trc) {
+                $ret[$trc] = $baseUrl . $this->_themeRoller[$trc];
+            }
+        }
+        return $ret;
     }
 
     public function getActionHelpers()
