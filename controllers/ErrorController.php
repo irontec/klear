@@ -106,7 +106,6 @@ class Klear_ErrorController extends Zend_Controller_Action
             default:
                 // application error
                 $this->getResponse()->setHttpResponseCode(500);
-//              $this->view->message = $this->view->translate('Application error');
                 $this->view->message = $errors->exception->getMessage();
                 $this->view->code = 500;
                 $this->view->exceptionCode = $errors->exception->getCode();
@@ -125,8 +124,11 @@ class Klear_ErrorController extends Zend_Controller_Action
 
                 }
 
-
                 break;
+        }
+
+        if (!$this->_request->isXmlHttpRequest()) {
+            Zend_Layout::getMvcInstance()->disableLayout();
         }
 
         $this->_helper->log('Exception captured ['.$this->view->code.']: ' .$this->view->message, Zend_Log::ERR);
