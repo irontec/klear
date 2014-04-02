@@ -34,12 +34,14 @@ if ($this->SiteConfig()->getDisableCDN()) {
 
 <?php
 
+    
     $this->headLink()
             ->appendStylesheet($this->baseUrl('/klear/css/base/reset.css'))
             ->appendStylesheet($this->baseUrl('/klear/css/base/layout.css'))
             ->appendStylesheet($this->baseUrl('/klear/css/silk/silk-sprite.css'))
             ->appendStylesheet($this->baseUrl('/klear/css-extended/silk-extended/silk-extended-sprite.css'))
-            ->appendStylesheet($this->SiteConfig()->getJQueryUItheme($this->baseUrl()))
+            ->appendStylesheet($this->SiteConfig()->getJQueryUItheme($this->baseUrl()), 
+                'screen', true, array('id' => 'currentTheme'))
             ->appendStylesheet($this->baseUrl('/klear/css/base/klear.css'))
             ->appendStylesheet($this->baseUrl('/klear/css/base/selectBoxIt.css'))
             ->headLink(array('rel' => 'shortcut icon','href' => $this->baseUrl('/images/favicon.ico')))

@@ -9,21 +9,14 @@ class Klear_View_Helper_Toolsbar extends Klear_View_Helper_Base
 
     public function Toolsbar()
     {
-        $ret = '<input type="checkbox" id="superCollapse" /> ' .
+        $themeRoller = $this->_view->SiteConfig()->getThemeRoller($this->_view->baseUrl());
+        $theme = $this->_view->SiteConfig()->getCurrentTheme();
+        $ret = '
+                <input type="checkbox" id="superCollapse" /> ' .
                 '<label for="superCollapse" title="'. $this->_view->translate("Collapse All.").'">' .
                 '<span class="ui-icon ui-icon-triangle-1-nw" ></span>' .
-                '</label>';
-
-//     	$ret .= '<input type="checkbox" id="menuCollapse" /> ' .
-//             '<label for="menuCollapse" title="'. $this->_view->translate("Collapse Menu.").'">' .
-//             '<span class="ui-icon ui-icon-triangle-1-w" ></span>' .
-//             '</label>';
-
-//         $ret .= '<input type="checkbox" id="headerCollapse" /> ' .
-//         		'<label for="headerCollapse" title="'. $this->_view->translate("Collapse Header.").'">' .
-//         		'<span class="ui-icon ui-icon-triangle-1-n" ></span>' .
-//         		'</label>';
-
+                '</label>
+                ';
         $ret .= '<input type="checkbox" id="tabsPersist" />' .
             '<label for="tabsPersist" title="' .$this->_view->translate("Remember opened main tabs.") . '">'.
             '<span class="ui-icon ui-icon-unlocked" ></span>' .
@@ -49,7 +42,26 @@ class Klear_View_Helper_Toolsbar extends Klear_View_Helper_Base
                 } 
             }
         }
-        
+        if (count($themeRoller) > 0) {
+            $ret .= '
+                    <input type="checkbox" id="themeRoller" data-themes=\''.json_encode($themeRoller).'\' data-current="'.$theme.'"/> ' .
+                            '<label for="themeRoller" title="'. $this->_view->translate("themeRoller.").'">' .
+                            '<span class="ui-icon ui-icon-image" ></span>' .
+                            '</label>
+                            ';
+            $ret .= '<select id="themeRollerSelector">';
+            foreach ($themeRoller as $themeName=>$themePath) {
+                $ret .= '<option';
+                $ret .= ' value="' . $themePath . '" ';
+                if ($themeName == $theme) {
+                    $ret .= ' selected="selected" ';
+                }
+                $ret .= '>';
+                $ret .= $themeName;
+                $ret .= '</option>';
+            }
+            $ret .= '</select>';
+        }
         
         $ret .= '<input type="checkbox" id="logout" '.
                 'data-url="' . $this->_view->url(array('controller' => 'index', 'action' => 'bye')).'"' .
