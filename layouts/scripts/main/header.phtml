@@ -34,6 +34,11 @@ if ($this->SiteConfig()->getDisableCDN()) {
 
 <?php
 
+
+    $favIcon = $this->SiteConfig()->getFavIcon();
+    if (trim($favIcon) == "") {
+        $favIcon = 'images/favicon.ico';
+    }
     
     $this->headLink()
             ->appendStylesheet($this->baseUrl('/klear/css/base/reset.css'))
@@ -44,7 +49,7 @@ if ($this->SiteConfig()->getDisableCDN()) {
                 'screen', true, array('id' => 'currentTheme'))
             ->appendStylesheet($this->baseUrl('/klear/css/base/klear.css'))
             ->appendStylesheet($this->baseUrl('/klear/css/base/selectBoxIt.css'))
-            ->headLink(array('rel' => 'shortcut icon','href' => $this->baseUrl('/images/favicon.ico')))
+            ->headLink(array('rel' => 'shortcut icon','href' => $this->baseUrl($favIcon)))
             ->setIndent(4);
 
     foreach ($this->SiteConfig()->getRawCss() as $_rawCss) {

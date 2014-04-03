@@ -23,6 +23,11 @@ abstract class Klear_Model_Settings_Dynamic_Abstract
     {
         return $logo;
     }
+    
+    public function processFavIcon($logo)
+    {
+        return $logo;
+    }
 
     public function processYear($year)
     {

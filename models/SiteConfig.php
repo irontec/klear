@@ -10,6 +10,7 @@ class Klear_Model_SiteConfig
     protected $_defaultCustomConfiguration;
     
     protected $_logo;
+    protected $_favIcon;
 
     protected $_disableMinifiers = false;
     protected $_disableAssetsCache = false;
@@ -41,6 +42,7 @@ class Klear_Model_SiteConfig
 
     protected $_optionalParams = array(
             'logo',
+            'favIcon',
             'disableMinifier',
             'disableAssetsCache',
             'cssExtended',
@@ -306,6 +308,7 @@ class Klear_Model_SiteConfig
         $this->_sitesubname = $dynamic->processSiteSubName($this->_sitesubname);
         $this->_langs = $dynamic->processLangs($this->_langs);
         $this->_logo = $dynamic->processLogo($this->_logo);
+        $this->_favIcon = $dynamic->processFavIcon($this->_favIcon);
         $this->_timezone = $dynamic->processTimezone($this->_timezone);
         $this->_jqueryUIPathTheme = $dynamic->processjQueryUI($this->_jqueryUIPathTheme);
         $this->_rawCss = $dynamic->processRawCss($this->_rawCss);
@@ -346,6 +349,12 @@ class Klear_Model_SiteConfig
     {
         return $this->_logo;
 
+    }
+    
+    public function getFavIcon()
+    {
+        return $this->_favIcon;
+    
     }
 
     public function getLangs()
