@@ -299,6 +299,9 @@
                 var _target = $(window).scrollTop();
                 if (_target < sideBarOffset.top) {
                     _target = 0;
+                    $(this).css({
+                    	opacity: "1"
+                    });
                 } else {
                     _target -= sideBarOffset.top;
                 }
@@ -316,10 +319,19 @@
                 }
                 $("#tabsList").stop().animate({'marginTop': _target + 'px'}, 0, 'easeOutQuad',function() {
                     if (_target <= 0) {
-                        $(this).css("position","relative");
+                        $(this).css({
+                        	position: "relative",
+                        	opacity: "1"
+                        });
                     }
                 });
+                
+                $("#tabsListNavArrows").stop().animate({'marginTop': _target + 'px'}, 0, 'easeOutQuad',function() {
+                    
+                });
 
+                
+                
             });
 
             $("li", $sidebar).on("mouseenter",function() {

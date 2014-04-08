@@ -50,7 +50,7 @@
 
 
                 var $nav = self.element.find(".ui-tabs-nav:first").removeClass('ui-corner-all'),
-                $arrowsNav = $('<ol class="ui-helper-reset ui-helper-clearfix ui-tabs-nav-arrows"></ol>').prependTo($parent),
+                $arrowsNav = $('<ol class="ui-helper-reset ui-helper-clearfix ui-tabs-nav-arrows" id="tabsListNavArrows"></ol>').prependTo($parent),
                 $navPrev = $('<li class="ui-tabs-arrow-previous ui-state-default ui-widget-content" title="Previous"><a href="#"><span class="ui-icon ui-icon-carat-1-w">Previous tab</span></a></li>').prependTo($arrowsNav),
                 $navNext = $('<li class="ui-tabs-arrow-next ui-state-default ui-widget-content" title="Next"><a href="#"><span class="ui-icon ui-icon-carat-1-e">Next tab</span></a></li>').appendTo($arrowsNav);
 

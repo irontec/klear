@@ -19,7 +19,9 @@ class Klear_View_Helper_LanguageSelector extends Klear_View_Helper_Base
                 <div id="loginToolsbar">';
 
                 $ret .= '<input type="checkbox" id="langPickerLogin" '.
-                        '/><label for="langPickerLogin" title="' . $this->_view->translate("Change language") . '" class="ui-corner-right">' .
+                        '/><label for="langPickerLogin" title="' .
+                         $this->_view->translate("Change language") . 
+                        '" class="ui-corner-right">' .
                         '<span class="ui-icon ui-icon-flag " ></span>' .
                         '</label>';
 
@@ -32,7 +34,8 @@ class Klear_View_Helper_LanguageSelector extends Klear_View_Helper_Base
                         $ret .= ' checked="checked"';
                     }
 
-                    $ret .= '/><label for="lang' . $_langIden . 'Login" title="' . $lang . '" class="expanded pickableLanguage">' .
+                    $ret .= '/><label for="lang' . $_langIden . 'Login" 
+                            title="' . $lang . '" class="expanded pickableLanguage">' .
                             $lang .
                             '</label>';
                 }
