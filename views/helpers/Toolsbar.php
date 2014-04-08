@@ -44,10 +44,14 @@ class Klear_View_Helper_Toolsbar extends Klear_View_Helper_Base
         }
         if (count($themeRoller) > 0) {
             $ret .= '
-                    <input type="checkbox" id="themeRoller" data-themes=\''.json_encode($themeRoller).'\' data-current="'.$theme.'"/> ' .
-                            '<label for="themeRoller" title="'. $this->_view->translate("Change theme").'">' .
-                            '<span class="ui-icon ui-icon-image" ></span>' .
-                            '</label>
+                    <input type="checkbox" 
+                        id="themeRoller" 
+                        data-themes=\''.json_encode($themeRoller).'\' 
+                        data-current="'.$theme.'"/> ' .
+                        '<label for="themeRoller" 
+                                title="'. $this->_view->translate("Change theme").'">' .
+                        '<span class="ui-icon ui-icon-image" ></span>' .
+                        '</label>
                             ';
             $ret .= '<select id="themeRollerSelector">';
             foreach ($themeRoller as $themeName=>$themePath) {

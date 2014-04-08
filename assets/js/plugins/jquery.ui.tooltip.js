@@ -30,7 +30,7 @@ $.widget("ui.tooltip", {
         position: {
             my: "center bottom",
             at: "center bottom",
-            offset: "50 50"
+            offset: "40 40"
         }
     },
     _init: function() {
@@ -94,7 +94,7 @@ $.widget("ui.tooltip", {
         if (content) {
             self.showTimeout = setTimeout(function() {
                 self._show(event, target, content);
-            }, 350);
+            }, 200);
         }
     },
 
@@ -125,6 +125,7 @@ $.widget("ui.tooltip", {
     },
 
     close: function(event) {
+
         if (!this.current)
             return;
 

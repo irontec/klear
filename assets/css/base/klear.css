@@ -187,10 +187,14 @@ body {
 
 .ui-tooltip {
     position:absolute;
-    padding:1.3em;
+    padding:1.2em;
     font-size:.85em;
-    z-index: 9000
+    z-index: 9000;
+    background: rgba(30, 30, 30, 0.87);
+    color: #fff;
+    border-radius: 5px;
 }
+
 
 ul#tabsList {
     overflow:hidden;
