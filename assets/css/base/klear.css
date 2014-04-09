@@ -524,6 +524,35 @@ MESSAGES
     float: left;
     margin-right: .3em;
 }
+
+.inlineDialogHelp {
+    text-align: left;
+    font-weight: normal;
+    margin: 8px 0 0 0;
+    padding: 8px 0 0 0;
+}
+.inlineDialogHelp ul{
+    list-style-type: circle;
+    padding: 8px 0 8px 20px;
+}
+.inlineDialogHelp ul li{
+    
+}
+
+p.dialogTitle {
+	font-size:1.1em;
+	text-align: left;
+}
+p.dialogSubtitle {
+	font-size:1.05em;
+}
+
+.toolsBarHelp li .ui-icon{ 
+    display:inline-block;
+    vertical-align: text-top;
+    padding:0 2px 0 0;
+}
+	
 /*
 PANEL
 */

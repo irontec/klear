@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Klear\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-04-02 15:43+0100\n"
-"PO-Revision-Date: 2014-04-02 15:43+0100\n"
+"POT-Creation-Date: 2014-04-09 13:16+0100\n"
+"PO-Revision-Date: 2014-04-09 13:21+0100\n"
 "Last-Translator: Lander Ontoria Gardeazabal <lander@irontec.com>\n"
 "Language-Team: Irontec-Klear <lander+klear@irontec.com>\n"
 "Language: en_ES\n"
@@ -29,11 +29,11 @@ msgstr "Error de configuración"
 msgid "Page not found"
 msgstr "Página no encontrada"
 
-#: controllers/ErrorController.php:123
+#: controllers/ErrorController.php:122
 msgid "Undefined error"
 msgstr "Error Indefinido"
 
-#: views/helpers/LanguageSelector.php:22 views/helpers/Toolsbar.php:28
+#: views/helpers/LanguageSelector.php:23 views/helpers/Toolsbar.php:26
 msgid "Change language"
 msgstr "Cambiar de idioma"
 
@@ -41,15 +41,19 @@ msgstr "Cambiar de idioma"
 msgid "Collapse All."
 msgstr "Replegar todo."
 
-#: views/helpers/Toolsbar.php:21
+#: views/helpers/Toolsbar.php:20
 msgid "Remember opened main tabs."
 msgstr "Recordar las pestañas de menú abiertas"
 
-#: views/helpers/Toolsbar.php:48
+#: views/helpers/Toolsbar.php:50
 msgid "Change theme"
 msgstr "Cambiar tema"
 
-#: views/helpers/Toolsbar.php:68
+#: views/helpers/Toolsbar.php:69 assets/js/navigation.js:799
+msgid "Global help"
+msgstr "Ayuda global"
+
+#: views/helpers/Toolsbar.php:74
 msgid "logout"
 msgstr "Desconectarse"
 
@@ -71,7 +75,51 @@ msgstr "Contraseña"
 msgid "Authenticate"
 msgstr "Autenticarse"
 
-#: assets/js/navigation.js:1154
+#: assets/js/navigation.js:806
+msgid "Shortcuts information Ctrl+Alt+<em>[KEY]</em>"
+msgstr "Información de shortcuts Ctrl+Alt+<em>[KEY]</em>"
+
+#: assets/js/navigation.js:809
+msgid "Klear"
+msgstr "Klear"
+
+#: assets/js/navigation.js:814
+msgid "Toolsbar information"
+msgstr "Información de la barra de herramientas"
+
+#: assets/js/navigation.js:1081
+msgid "closes current tab."
+msgstr "cierra la pestaña actual."
+
+#: assets/js/navigation.js:1089
+msgid "reloads current tab."
+msgstr "recarga la pestaña actual."
+
+#: assets/js/navigation.js:1097
+msgid "goes to previous tab."
+msgstr "va a la siguiente pestaña anterior."
+
+#: assets/js/navigation.js:1108
+msgid "goes to next tab."
+msgstr "va a la siguiente pestaña."
+
+#: assets/js/navigation.js:1125
+msgid "toggles menu view."
+msgstr "activa/desactiva el menú."
+
+#: assets/js/navigation.js:1132
+msgid "toggles header view."
+msgstr "activa/desactiva la cabecera."
+
+#: assets/js/navigation.js:1139
+msgid "toggles fullscreen view."
+msgstr "activa/desactiva la pantalla completa."
+
+#: assets/js/navigation.js:1152
+msgid "toggles help dialog."
+msgstr "abre el diálogo de ayuda."
+
+#: assets/js/navigation.js:1282
 msgid "Do you really want to leave?"
 msgstr "¿Está seguro de que quiere abandonar esta página?"
 
@@ -92,39 +140,39 @@ msgstr "Error: %s."
 msgid "Klear Module Error"
 msgstr "Error de Klear Module"
 
-#: assets/js/klear.compiled.js:20 assets/js/plugins/jquery.klear.module.js:426
+#: assets/js/klear.compiled.js:21 assets/js/plugins/jquery.klear.module.js:430
 msgid "This tab is locked."
 msgstr "La pestaña está bloqueada."
 
-#: assets/js/klear.compiled.js:21 assets/js/plugins/jquery.klear.module.js:441
+#: assets/js/klear.compiled.js:21 assets/js/plugins/jquery.klear.module.js:445
 msgid "Upload in progress."
 msgstr "Carga en proceso."
 
-#: assets/js/klear.compiled.js:21 assets/js/plugins/jquery.klear.module.js:443
+#: assets/js/klear.compiled.js:21 assets/js/plugins/jquery.klear.module.js:447
 msgid "Close the screen?"
 msgstr "¿Cerrar la ventana?"
 
-#: assets/js/klear.compiled.js:21 assets/js/plugins/jquery.klear.module.js:445
+#: assets/js/klear.compiled.js:21 assets/js/plugins/jquery.klear.module.js:449
 msgid "Attention!"
 msgstr "¡Atención!"
 
-#: assets/js/klear.compiled.js:21 assets/js/plugins/jquery.klear.module.js:449
+#: assets/js/klear.compiled.js:21 assets/js/plugins/jquery.klear.module.js:453
 msgid "Cancel"
 msgstr "Cancelar"
 
-#: assets/js/klear.compiled.js:21 assets/js/plugins/jquery.klear.module.js:455
+#: assets/js/klear.compiled.js:21 assets/js/plugins/jquery.klear.module.js:459
 msgid "Ignore changes and close"
 msgstr "Ignorar cambios y cerrar"
 
-#: assets/js/klear.compiled.js:32 assets/js/plugins/jquery.klear.module.js:787
+#: assets/js/klear.compiled.js:32 assets/js/plugins/jquery.klear.module.js:791
 msgid "Loading content"
 msgstr "Cargando contenido"
 
-#: assets/js/klear.compiled.js:32 assets/js/plugins/jquery.klear.module.js:788
+#: assets/js/klear.compiled.js:32 assets/js/plugins/jquery.klear.module.js:792
 msgid "Loading Main Module"
 msgstr "Cargando Módulo Principal"
 
-#: assets/js/klear.compiled.js:32 assets/js/plugins/jquery.klear.module.js:789
+#: assets/js/klear.compiled.js:32 assets/js/plugins/jquery.klear.module.js:793
 msgid "Loading Secondary modules"
 msgstr "Cargando módulos Secundarios"
 

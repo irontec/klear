@@ -11,21 +11,19 @@ class Klear_View_Helper_Toolsbar extends Klear_View_Helper_Base
     {
         $themeRoller = $this->_view->SiteConfig()->getThemeRoller($this->_view->baseUrl());
         $theme = $this->_view->SiteConfig()->getCurrentTheme();
-        $ret = '
-                <input type="checkbox" id="superCollapse" /> ' .
-                '<label for="superCollapse" title="'. $this->_view->translate("Collapse All.").'">' .
-                '<span class="ui-icon ui-icon-triangle-1-nw" ></span>' .
-                '</label>
-                ';
+        
+        $ret = '<input type="checkbox" id="superCollapse" /> ' .
+                '<label for="superCollapse" class="primary" title="'. $this->_view->translate("Collapse All.").'">' .
+                '<span class="ui-icon ui-icon-triangle-1-nw" ></span></label>';
+        
         $ret .= '<input type="checkbox" id="tabsPersist" />' .
-            '<label for="tabsPersist" title="' .$this->_view->translate("Remember opened main tabs.") . '">'.
-            '<span class="ui-icon ui-icon-unlocked" ></span>' .
-            '</label>';
+                '<label for="tabsPersist" class="primary" title="' .$this->_view->translate("Remember opened main tabs.") . '">'.
+                '<span class="ui-icon ui-icon-unlocked" ></span></label>';
 
         if ($langs = $this->_view->SiteConfig()->getLangs()) {
             if (sizeof($langs) > 1) {
                 $ret .= '<input type="checkbox" id="langPicker" '.
-                        '/><label for="langPicker" title="' . $this->_view->translate("Change language") .'">' .
+                        '/><label for="langPicker" class="primary" title="' . $this->_view->translate("Change language") .'">' .
                         '<span class="ui-icon ui-icon-flag" ></span>' .
                         '</label>';
 
@@ -48,7 +46,7 @@ class Klear_View_Helper_Toolsbar extends Klear_View_Helper_Base
                         id="themeRoller" 
                         data-themes=\''.json_encode($themeRoller).'\' 
                         data-current="'.$theme.'"/> ' .
-                        '<label for="themeRoller" 
+                        '<label for="themeRoller"  class="primary" 
                                 title="'. $this->_view->translate("Change theme").'">' .
                         '<span class="ui-icon ui-icon-image" ></span>' .
                         '</label>
@@ -67,9 +65,13 @@ class Klear_View_Helper_Toolsbar extends Klear_View_Helper_Base
             $ret .= '</select>';
         }
         
+        $ret .= '<input type="checkbox" id="generalHelp" />' .
+                '<label for="generalHelp" title="' .$this->_view->translate("Global help") . '" class="primary">'.
+                '<span class="ui-icon ui-icon-info" ></span></label>';
+        
         $ret .= '<input type="checkbox" id="logout" '.
                 'data-url="' . $this->_view->url(array('controller' => 'index', 'action' => 'bye')).'"' .
-                '/><label for="logout" title="' . $this->_view->translate("logout") .'">' .
+                '/><label for="logout" class="primary" title="' . $this->_view->translate("logout") .'">' .
                 '<span class="ui-icon ui-icon-power" ></span>' .
                 '</label>'; 
 

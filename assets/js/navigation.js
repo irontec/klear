@@ -56,14 +56,15 @@
             return;
         }
         if (typeof $link == 'undefined') return;
+        var button;
         if (e.which == null) {
                 if (!e.button) return;
                /* IE case */
-               var button= (e.button < 2) ? "LEFT" :
+               button= (e.button < 2) ? "LEFT" :
                          ((event.button == 4) ? "MIDDLE" : "RIGHT");
         } else {
                /* All others */
-               var button= (e.which < 2) ? "LEFT" :
+               button= (e.which < 2) ? "LEFT" :
                          ((e.which == 2) ? "MIDDLE" : "RIGHT");
         }
 
@@ -103,6 +104,7 @@
             '<div class="ui-widget"><div class="ui-state-${state} ui-corner-all inlineMessage"><p><span class="ui-icon ${icon} inlineMessage-icon"></span>{{html text}}</p></div></div>';
         var $parsedHtml = $.tmpl(dialogTemplate, dialogSettings);
         $parsedHtml.dialog(dialogSettings);
+        return $parsedHtml;
     };
 
     $.klear.klearMessage = function (msg, opts) {
@@ -491,6 +493,11 @@
             });
             
             
+            $( "#generalHelp", $toolsBar ).off('change').on('change', function(){
+            	var $self = $(this);
+            	$self.button('widget').removeClass('ui-state-active');
+            	$.klear.toggleHelpDialog();
+            });
             
             $toolsBar.show();
 
@@ -510,7 +517,7 @@
             }
 
         };
-
+        
         $.klear._doMenuError = function(response) {
             console.log(response);
         };
@@ -740,6 +747,85 @@
     };
 
 
+    $.klear.helpDialog = {};
+    
+    $.klear.toggleHelpDialog = function() {
+    	if ($.klear.helpDialog.dialogObj && $.klear.helpDialog.dialogObj.dialog('isOpen')===true) {
+			$.klear.helpDialog.dialogObj.dialog('close');
+			return;
+		}
+    	if (!$.klear.helpDialog.fixedHelpList) {
+            var generalHelpLi = [];
+            for (var keyNum in $.klear.ctrlAltActions) {
+            	if ($.klear.ctrlAltActions[keyNum]['title'] != undefined) {
+            		var title = $.klear.ctrlAltActions[keyNum]['title'];
+            		var key = $.klear.ctrlAltActions[keyNum]['key'];
+            		generalHelpLi.push('<li>Ctrl+Alt+<strong>' + key + '</strong>: ' + title + '');	
+            	}
+            }
+            $.klear.helpDialog.fixedHelpList = '<ul>' + generalHelpLi.join(' ') + '</ul>';	
+    	}
+    	var openedScreensHelp = "";
+    	$("#tabsList li").each(function(){
+    		var $self = $(this);
+    		var currentScreenShortCuts = $self.klearModule('getShortcuts');
+    		var title = $self.klearModule('getTitle');
+    	 	var panel = $self.klearModule('getPanel');
+    	 	var screenHelpLi = [];
+    	 	for (var chartCode in currentScreenShortCuts) {
+    	 		var chartString = String.fromCharCode(chartCode);
+    	 		screenHelpLi.push('<li>Ctrl+Alt+<strong>' + chartString + '</strong>: ' 
+    	 				+ $("[data-shortcut="+chartString+"]", panel).text() + '');
+    	 	}
+    	 	if (screenHelpLi.length<=0) return; 
+            var helpUl = '<ul>' + screenHelpLi.join(' ') + '</ul>';
+            openedScreensHelp+= '<div class="inlineDialogHelp" >'+title+':' + helpUl + '</div>';
+    	});
+    	
+    	var $primaryToolsBar = $("label.primary", $toolsBar);
+    	var $tmp = $("<div />");
+    	var $tmpUl = $("<ul />", {'class': 'toolsBarHelp'});
+    	$primaryToolsBar.each(function(){
+    		var $self = $(this);
+    		console.log($self, $self.attr('title'));
+    		var $tmpLi = $("<li />");
+    		$tmpLi.append($self.find(".ui-button-text").html());
+    		$tmpLi.append($self.attr('title'));
+    		$tmpUl.append($tmpLi);
+    	});
+    	$tmp.append($tmpUl);
+    	$.klear.helpDialog.dialogObj = $.klear.klearDialog("", {
+    		width: '450',
+    		title: '<span class="ui-icon inline dialogTitle ui-icon-info "></span>'+ $.translate("Global help") + "", 
+    	    type: 'msg',
+            icon: 'ui-icon-comment',
+            template: 
+    			'<div class="ui-widget">' 
+    			+ '<div class="ui-state-default ui-corner-all inlineMessage inlineDialogHelpBox">'
+    			+ '<p class="dialogTitle">'
+    			+ $.translate("Shortcuts information Ctrl+Alt+<em>[KEY]</em>")
+    			+ '</p>'
+    			+ ((openedScreensHelp!="")? openedScreensHelp:'')
+    			+ '<div class="inlineDialogHelp" ><p class="dialogSubtitle">'+$.translate("Klear")
+    			+ ':</p>' + $.klear.helpDialog.fixedHelpList + '</div>'
+    			+ '</div>'
+    			+ '<div class="ui-state-default ui-corner-all inlineMessage inlineDialogHelpBox">'
+    			+ '<p class="dialogTitle">'
+    			+ $.translate("Toolsbar information")
+    			+ '</p>'
+    			+ '<div class="inlineDialogHelp" >'
+    			+ $tmp.html() 
+    			+ '</div>'
+    			+ '</div>'
+    			+ '</div>'
+    			,
+			close: function() {
+				$.klear.helpDialog.dialogObj.dialog('destroy');
+	    		delete $.klear.helpDialog.dialogObj;
+			}
+    	});
+    };
+
     var menuMeasures = {
                data : {
                    normal : {
@@ -827,7 +913,15 @@
             setTimeout(function(){
             	$loginToolsBar = $("#loginToolsbar",self.$loginForm); 
             	$loginToolsBar.buttonset();
-            	$("#loginToolsbar",self.$loginForm).fadeIn();	
+            	$("#loginToolsbar",self.$loginForm).fadeIn();
+            	var tempIntCounter = 0;
+            	var tempInt = setInterval(function(){
+            		tempIntCounter++;
+            		$( "#langPickerLogin").button('widget').toggleClass('ui-state-highlight');
+            		if (tempIntCounter==6) {
+            			clearInterval(tempInt);
+            		}
+            	}, 200);
             	$( "#langPickerLogin").siblings('label[for=langPickerLogin]').addClass('ui-corner-right');
                 $( ".pickableLang",  $loginToolsBar).off('change').on('change', function(){
                     $.klear.language = $(this).val();
@@ -981,25 +1075,26 @@
 
     };
 
-    $(document).on("keydown",function(e) {
-        var ctrlAltActions = {
+    $.klear.ctrlAltActions = {
             87 : {
-                key : 'w',
+                key : 'W',
+                title: $.translate("closes current tab."),
                 action : function(selectedTab) {
-
                     $li = $("#tabsList li:eq("+selectedTab+")");
                     $li.klearModule('close');
                 }
             },
             82 : {
-                key : 'r',
+                key : 'R',
+                title: $.translate("reloads current tab."),
                 action : function(selectedTab) {
                     $li = $("#tabsList li:eq("+selectedTab+")");
                     $li.klearModule('reDispatch');
                 }
             },
             34 : {
-                key : 'rePag',
+                key : 'RePag',
+                title: $.translate("goes to previous tab."),
                 action : function(selectedTab) {
                     selectedTab++;
                     if (selectedTab >= $("#tabsList li").length) {
@@ -1010,6 +1105,7 @@
             },
             33 : {
                 key : 'AvPag',
+                title: $.translate("goes to next tab."),
                 action : function(selectedTab) {
                     selectedTab--;
                     selectedTab = selectedTab<0 ? $("#tabsList li").length-1 : selectedTab ;
@@ -1017,7 +1113,7 @@
                 }
             },
             67 : { // c
-                key: 'c',
+                key: 'C',
                 action: function(selectedTab) {
                     $.klear.cacheEnabled = !$.klear.cacheEnabled;
                     console.log($.klear.cacheEnabled? "Cache Habilitada":"Cache Deshabilitada");
@@ -1025,25 +1121,45 @@
                 }
             },
             77 : {
-                key: 'm',
-                action: $.klear.toggleMenu
+                key: 'M',
+                title: $.translate("toggles menu view."),
+                action: function() {
+                	$.klear.toggleMenu();
+                }
             },
             72 : {
-                key: 'h',
-                action: $.klear.toggleHeader
+                key: 'H',
+                title: $.translate("toggles header view."),
+                action: function() {
+                	$.klear.toggleHeader();
+                }
             },
             88 : {
-                key: 'x',
-                action: $.klear.toggleAll
+                key: 'X',
+                title: $.translate("toggles fullscreen view."),
+                action: function() {
+                	$.klear.toggleAll();
+                }
             },
             71 : {
-            	key: 'g',
-            	action: $.console.toggleDebugInfo
+            	key: 'G',
+            	action: function() {
+            		$.console.toggleDebugInfo();
+            	}
+            },
+            73 : {
+                key: 'I',
+                title: $.translate("toggles help dialog."),
+                action: function() {
+                	$.klear.toggleHelpDialog();
+                }
             }
 
         };
-
-        var altActions = {
+    
+    $(document).on("keydown",function(e) {
+        
+    	var altActions = {
             37 : { //Disable alt + back arrow shortcut on browser
                 key: 'backArrow',
                 action: function() {
@@ -1057,13 +1173,13 @@
         ) {
             e.preventDefault();
             e.stopPropagation();
-
+            
             var selectedTab = parseInt($.klear.canvas.tabs('option', 'selected'));
 
             if (e.altKey && e.ctrlKey) {
-                if (ctrlAltActions[e.which]) {
+                if ($.klear.ctrlAltActions[e.which]) {
                     // Ctrl + Alt + Key
-                    ctrlAltActions[e.which]['action'](selectedTab);
+                	$.klear.ctrlAltActions[e.which]['action'](selectedTab);
                 } else {
                     // Not a "registerd shortcut=?
                     // Handle it to klearModule, see if there is something to be done ;)

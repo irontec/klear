@@ -393,6 +393,10 @@
                 }
             }
         },
+        getShortcuts : function()
+        {
+            return this.options.shortcuts;
+        },
         registerShortcut : function(keyCode,fn)
         {
             if (!this.options.shortcuts[keyCode]) {
@@ -838,7 +842,12 @@
             if (title && title != '')  {
                 $(this.options.ui.tab).html(title);
             }
+        },
+        getTitle : function() {
+            return $(this.options.ui.tab).html();
+            
         }
+
 
     });
 
