@@ -403,6 +403,30 @@
                 }
             });
 
+            $( "#hideTabLabelNames", $toolsBar ).off('change').on('change', function(){
+                var $self = $(this);
+                if ($.klear.tabNamesFunction.areVisible()) {
+                    $.klear.tabNamesFunction.hide();
+                } else {
+                    $.klear.tabNamesFunction.show();
+                }
+
+                $self.trigger('update-icon');
+            });
+            
+            $( "#hideTabLabelNames", $toolsBar ).off('update-icon').on('update-icon', function(){
+                var $self = $(this).next('label');
+                var $icon = $('.ui-icon', $self);
+                if ($.klear.tabNamesFunction.areVisible()) {
+                    $icon.removeClass('ui-icon-arrowstop-1-e').addClass('ui-icon-arrowstop-1-w');
+                } else {
+                    $icon.removeClass('ui-icon-arrowstop-1-w').addClass('ui-icon-arrowstop-1-e');
+                }
+                $self.removeClass('ui-state-active');
+            });
+            
+            $.klear.tabNamesFunction.loadSavedState();
+            
             $( "#menuCollapse", $toolsBar ).off('change').on('change', function(){
                 $.klear.toggleMenu();
             });
@@ -729,7 +753,6 @@
     };
 
     $.klear.toggleAll = function() {
-
         var initialState = $.klear.isMenuCollapsed();
         $.klear.toggleMenu();
         if (initialState == $.klear.isHeaderCollapsed()) {
@@ -746,7 +769,31 @@
         return $("#applicationLogo").data("seized") || false;
     };
 
-
+    $.klear.tabNamesFunction = {
+        loadSavedState : function() {
+            if (localStorage.getItem('hideTabNames') == 'true') {
+                $.klear.tabNamesFunction.hide();
+            } else {
+                $.klear.tabNamesFunction.show();
+            }
+            
+            $( "#hideTabLabelNames").trigger("update-icon");
+            
+        },
+        areVisible : function() {
+            return !$("#tabsList").hasClass("hideLabelNames");
+        },
+        show : function() {
+            localStorage.setItem('hideTabNames', false);
+            $("#tabsList").removeClass("hideLabelNames");
+        },
+        hide : function() {
+            localStorage.setItem('hideTabNames', true);
+            $("#tabsList").addClass("hideLabelNames");
+            
+        }            
+    };
+    
     $.klear.helpDialog = {};
     
     $.klear.toggleHelpDialog = function() {
@@ -1152,6 +1199,13 @@
                 title: $.translate("toggles help dialog."),
                 action: function() {
                 	$.klear.toggleHelpDialog();
+                }
+            },
+            69 : {
+                key: 'E',
+                title: $.translate("toggles unselected tab names."),
+                action: function() {
+                    $( "#hideTabLabelNames", $toolsBar ).trigger("change");
                 }
             }
 

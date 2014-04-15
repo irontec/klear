@@ -214,10 +214,14 @@ ul#tabsList {
 
 
  #tabsList li.ui-state-default a {
-/*    text-indent: -99999px;
-    width:0;*/
+    overflow:hidden;
     padding: 0.5em .1em;
     margin:0;
+}
+
+#tabsList.hideLabelNames li.ui-state-default a {
+    text-indent: -99999px;
+    width:0;				
 }
 
 
@@ -233,7 +237,14 @@ ul#tabsList {
     padding: 0.5em 0.1em;
     text-indent: 0;
     width: auto;
+    max-width: auto; !important
 }
+
+#tabsList.hideLabelNames li.ui-state-active a {
+    text-indent: 0;
+    width:auto;
+}
+
 
 #tabsList li.changed a:before {
     content: '*';
