@@ -159,6 +159,9 @@ class Klear_Model_YamlStream
 
             case preg_match("/params\.(.*)/", $data[1], $result):
                 $request = Zend_Controller_Front::getInstance()->getRequest();
+                if (is_array($request)) {
+                    $request = implode(',', $request);
+                }
                 return $request->getParam($result[1], '');
                 break;
 

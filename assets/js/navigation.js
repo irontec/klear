@@ -183,7 +183,7 @@
         };
 
         $.klear._doHelloError = function(response) {
-            console.log(response);
+            $.console.log(response);
         };
 
 
@@ -543,7 +543,7 @@
         };
         
         $.klear._doMenuError = function(response) {
-            console.log(response);
+            $.console.log(response);
         };
 
         var settings = $.extend({
@@ -834,7 +834,6 @@
     	var $tmpUl = $("<ul />", {'class': 'toolsBarHelp'});
     	$primaryToolsBar.each(function(){
     		var $self = $(this);
-    		console.log($self, $self.attr('title'));
     		var $tmpLi = $("<li />");
     		$tmpLi.append($self.find(".ui-button-text").html());
     		$tmpLi.append($self.attr('title'));
@@ -1013,7 +1012,7 @@
         };
 
         $.klear._doLoginError = function(response) {
-            console.log(response);
+            $.console.log(response);
         };
 
 
@@ -1163,7 +1162,7 @@
                 key: 'C',
                 action: function(selectedTab) {
                     $.klear.cacheEnabled = !$.klear.cacheEnabled;
-                    console.log($.klear.cacheEnabled? "Cache Habilitada":"Cache Deshabilitada");
+                    $.console.log($.klear.cacheEnabled? "Cache Habilitada":"Cache Deshabilitada");
 
                 }
             },
@@ -1357,24 +1356,24 @@
                 }
             },
             log: function(message) {
-            	if (console && typeof console.log == 'function') {
-            		console.log(message)
-            	}
+                if (console && typeof console.log == 'function') {
+                	console.log(message)
+                }
             },
             toggleDebugInfo : function() {
-            	$.console.setDebugInfo(!$.console.debugInfo);
+                $.console.setDebugInfo(!$.console.debugInfo);
             },
             setDebugInfo : function(value) {
-            	value = value? true:false;
-            	$.console.log(((value)? 'ACTIVATING':'DEACTIVATING') + ' debug Info.');
-            	localStorage.setItem('debugInfo', value);
-            	$.console.debugInfo = value;
+                value = value? true:false;
+                $.console.log(((value)? 'ACTIVATING':'DEACTIVATING') + ' debug Info.');
+                localStorage.setItem('debugInfo', value);
+                $.console.debugInfo = value;
             },
             init : function() {
-            	$.console.debugInfo = $("html:eq(0)").data("stage") == "development";
-            	if (localStorage.getItem('debugInfo')) {
-            		$.console.setDebugInfo(localStorage.getItem('debugInfo') == 'true'); 
-            	}            	
+                $.console.debugInfo = $("html:eq(0)").data("stage") == "development";
+                if (localStorage.getItem('debugInfo')) {
+                    $.console.setDebugInfo(localStorage.getItem('debugInfo') == 'true'); 
+                }
             }
     };
     $.console.init();
