@@ -1224,23 +1224,23 @@
         if (e.altKey && e.ctrlKey
             || e.altKey && altActions[e.which]
         ) {
-            e.preventDefault();
-            e.stopPropagation();
-            
             var selectedTab = parseInt($.klear.canvas.tabs('option', 'selected'));
-
             if (e.altKey && e.ctrlKey) {
                 if ($.klear.ctrlAltActions[e.which]) {
                     // Ctrl + Alt + Key
+                	e.preventDefault();
+                    e.stopPropagation();
                 	$.klear.ctrlAltActions[e.which]['action'](selectedTab);
                 } else {
                     // Not a "registerd shortcut=?
                     // Handle it to klearModule, see if there is something to be done ;)
                     $("#tabsList li:eq("+selectedTab+")")
-                        .klearModule('shortcut', e.which);
+                        .klearModule('shortcut', e);
                 }
             } else {
                 // Alt + Key
+                e.preventDefault();
+                e.stopPropagation();
                 altActions[e.which]['action'](selectedTab);
             }
 

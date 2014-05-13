@@ -383,11 +383,14 @@
             return this.options.container;
         },
         
-        shortcut : function(keyCode)
+        shortcut : function(e)
         {
+        	var keyCode = e.which;
             if (this.options.shortcuts[keyCode]) {
                 for(var i in this.options.shortcuts[keyCode]) {
                     if (typeof this.options.shortcuts[keyCode][i] == 'function') {
+                    	e.preventDefault();
+                        e.stopPropagation();        	
                         this.options.shortcuts[keyCode][i]();
                     }
                 }
