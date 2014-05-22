@@ -1,5 +1,6 @@
 ;(function($) {
 
+    var checkQueues = true;
     $.klear = $.klear || {};
 
     $.klear.cacheEnabled = true;
@@ -16,6 +17,9 @@
 
     var __namespace__ = 'klear.buildRequest';
 
+    var scriptsInQueue = {},
+        templatesInQueue = {};
+    
     $.klear.buildRequest = function(params) {
         var options = {
                 controller : 'index',
@@ -182,14 +186,11 @@
                         return;
 
                    } else {
-
-                       if (++tryOuts == 20) {
-
-
+                       if (++tryOuts == 40) {
                            errorCallback.apply(context,[response.plugin + ' plugin not found']);
                            return;
                        } else {
-                           window.setTimeout(tryAgain,20);
+                           window.setTimeout(tryAgain,50);
                        }
                     }
                 })();
@@ -257,6 +258,12 @@
                     successCallback();
                     return;
                 }
+                
+                // ALREADY IN QUEUE
+                if (checkQueues && templatesInQueue[tmplIden]) {
+                    templatesInQueue[tmplIden].push(successCallback);
+                    return;
+                }
 
                 if (typeof tmplSrc == 'object' && typeof tmplSrc.module != 'undefined') {
 
@@ -266,7 +273,11 @@
 
                    targetUrl = request_baseurl + tmplSrc;
                 }
-
+                
+                if (!templatesInQueue[tmplIden]) {
+                    templatesInQueue[tmplIden] = [];
+                }
+                
                 $.ajax({
                     url: targetUrl,
                     dataType:'text',
@@ -276,6 +287,10 @@
                         $.template(tmplIden, r);
                         $.klear.loadedTemplates[tmplIden] = true;
                         successCallback();
+                        for(var i in templatesInQueue[tmplIden]) {
+                            templatesInQueue[tmplIden][i]();
+                        }
+                        templatesInQueue[tmplIden] = false;
                     },
                     error : function(r) {
                         dfr.reject($.translate("Error downloading template [%s].", tmplIden));
@@ -317,6 +332,15 @@
                     total--;
                     return;
                 }
+                
+                // ALREADY IN QUEUE
+                if (checkQueues && true == scriptsInQueue[iden]) {
+                    loaderTrace("addLoadedFile");
+                    total--;
+                    return;
+                }
+                
+                
                 isAjax = true;
 
 
@@ -331,7 +355,8 @@
                    _checkScript(targetUrl);
 
                 }
-
+                
+                scriptsInQueue[iden] = true;
 
                 try {
                 $.ajax({
@@ -350,6 +375,7 @@
                             }
                         },
                         error : function(r) {
+                            scriptsInQueue[iden] = false;
                             dfr.reject("Error downloading script ["+_script+"]");
                             //console.log("Error downloading script ["+_script+"]" , r);
                         }
@@ -412,6 +438,7 @@
             });
 
             _iframe.appendTo("body");
+             
             _theForm
                 .appendTo('body')
                 .on('submit',function() {
@@ -422,7 +449,7 @@
                     },100000);
                 })
                 .trigger('submit');
-
+                
             if (typeof successCallback == 'function') {
                 successCallback(true);
             }
