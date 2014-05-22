@@ -28,8 +28,7 @@
         }
 
         var depLength = dependencies.length;
-        for(var i=0; i < depLength; i++) {
-
+        for (var i=0; i < depLength; i++) {
             var segments = dependencies[i].split('.');
             var prev = window;
             for(var j=0; j < segments.length; j++) {
@@ -51,25 +50,28 @@
 
     $.klear.checkNoFocusEvent = function(e, $el, $link) {
 
-        if(e.ctrlKey) {
+        if (e.ctrlKey) {
             $el.data('noFocus', true);
             return;
         }
-        if (typeof $link == 'undefined') return;
+
+        if (typeof $link == 'undefined') {
+            return;
+        }
+
         var button;
         if (e.which == null) {
-                if (!e.button) return;
-               /* IE case */
-               button= (e.button < 2) ? "LEFT" :
-                         ((event.button == 4) ? "MIDDLE" : "RIGHT");
+            if (!e.button) {
+                return;
+            }
+            /* IE case */
+            button= (e.button < 2) ? "LEFT" : ((event.button == 4) ? "MIDDLE" : "RIGHT");
         } else {
-               /* All others */
-               button= (e.which < 2) ? "LEFT" :
-                         ((e.which == 2) ? "MIDDLE" : "RIGHT");
+            /* All others */
+            button= (e.which < 2) ? "LEFT" : ((e.which == 2) ? "MIDDLE" : "RIGHT");
         }
 
         if (button == 'MIDDLE') {
-
             e.stopPropagation();
             e.preventDefault();
 
@@ -77,20 +79,22 @@
             $link.removeAttr("href");
             var $_link = $link;
             setTimeout(function() {
-                $_link.attr("href",prevHref);
-            },100);
+                $_link.attr("href", prevHref);
+            }, 100);
             $el.data('noFocus', true);
         }
     };
 
     $.klear.klearDialog = function (msg, options) {
+
         $.extend(options, {
             icon: options.icon || 'ui-icon-info',
             state: options.state || 'default',
             text: msg || ''
         });
+
         var dialogSettings = {
-            title: '<span class="ui-icon inline dialogTitle '+options.icon+' "></span>'+options.titleText + "",
+            title: '<span class="ui-icon inline dialogTitle ' + options.icon + ' "></span>' + options.titleText,
             modal: true,
             resizable: false,
             close: function(ui) {
@@ -113,7 +117,7 @@
             icon: 'ui-icon-comment',
             titleText: 'Klear Message Window'
         };
-        var opts = opts || {};
+        opts = (typeof opts == 'undefined')? {} : opts;
         $.extend(options, opts);
         $.klear.klearDialog(msg, options);
     };
@@ -124,7 +128,7 @@
             icon: 'ui-icon-info',
             titleText: 'Klear Warning Window'
         };
-        var opts = opts || {};
+        opts = (typeof opts == 'undefined')? {} : opts;
         $.extend(options, opts);
         $.klear.klearDialog(msg, options);
     };
@@ -136,22 +140,22 @@
             state: 'highlight',
             titleText: 'Klear Error Window'
         };
-        var opts = opts || {};
+        opts = (typeof opts == 'undefined')? {} : opts;
         $.extend(options, opts);
         $.klear.klearDialog(msg, options);
     };
-
-
 
     /*
      * Hello Klear Server
      */
 
     $.klear.hello = function(option){
+
         var options = {
-                controller: 'index',
-                action: 'hello'
+            controller: 'index',
+            action: 'hello'
         };
+
         this.callback = this.callback || [];
 
         switch(option) {
@@ -167,6 +171,7 @@
                 $.extend(options,arguments[1]);
             break;
         }
+
         var self = this;
         $.klear._doHelloSuccess = function(response) {
             if (response.success && response.success === true) {
@@ -186,16 +191,12 @@
             $.console.log(response);
         };
 
-
-        $.klear.request(options,
-                        $.klear._doHelloSuccess,
-                        $.klear._doHelloError,
-                        this
-        );
+        $.klear.request(options, $.klear._doHelloSuccess, $.klear._doHelloError, this);
     };
 
     $.klear.menu = function(force, options) {
-        var options = options || {};
+
+        options = (typeof options == 'undefined')? {} : options;
 
         if (force === true) {
             this.loaded = false;
@@ -217,7 +218,11 @@
             var navMenus = response.data.navMenus;
 
             if (response.data.jqLocale) {
-                $.datepicker.setDefaults($.datepicker.regional[response.data.jqLocale]);
+                if (response.data.jqLocale == 'en') {
+                    $.datepicker.setDefaults($.datepicker.regional['']);
+                } else {
+                    $.datepicker.setDefaults($.datepicker.regional[response.data.jqLocale]);
+                }
             }
 
             $sidebar.empty();
@@ -227,11 +232,8 @@
             $infobar.empty();
 
             $.tmpl('klearSidebarMenu', navMenus.sidebar).appendTo($sidebar);
-
             $.tmpl('klearHeaderbarMenu', navMenus.headerbar).appendTo($headerbar);
-
             $.tmpl('klearFooterbarMenu', navMenus.footerbar).appendTo($footerbar);
-
             $.tmpl('klearInfoBar').appendTo($infobar);
 
             //Este template no lo queremos cacheado nunca
@@ -279,22 +281,20 @@
             /*
              * JQ Decorartors
              */
-
-
             var sideBarOffset = $sidebar.offset();
 
             $sidebar.accordion({
                 icons : {
-                        header: "ui-icon-circle-arrow-e",
-                        headerSelected: "ui-icon-circle-arrow-s"
+                    header: "ui-icon-circle-arrow-e",
+                    headerSelected: "ui-icon-circle-arrow-s"
                 },
                 collapsible: true,
                 autoHeight: false
             });
 
             $sidebar.on('reposition', function() {
-                if (!$(this).is(":visible")
-                        || $(window).width() <= '680') {
+
+                if (!$(this).is(":visible") || $(window).width() <= '680') {
                     return;
                 }
 
@@ -308,7 +308,7 @@
                     _target -= sideBarOffset.top;
                 }
                 $(this).stop().animate({'marginTop': _target + 'px'}, 0, 'easeOutQuad');
-                
+
                 /*
                  * Hacemos que la barra de tabs, esté siempre arriba
                  * Corregimos en 7px para que se ajuste al marco superior.
@@ -327,13 +327,9 @@
                         });
                     }
                 });
-                
-                $("#tabsListNavArrows").stop().animate({'marginTop': _target + 'px'}, 0, 'easeOutQuad',function() {
-                    
-                });
 
-                
-                
+                $("#tabsListNavArrows").stop().animate({'marginTop': _target + 'px'}, 0, 'easeOutQuad',function() {
+                });
             });
 
             $("li", $sidebar).on("mouseenter",function() {
@@ -343,34 +339,27 @@
             });
 
             self.loaded = true;
-
-            $toolsBar = $( "#headerToolsbar" ),
-
+            $toolsBar = $("#headerToolsbar");
             $toolsBar.html(navMenus.toolsbar).buttonset();
+            $("label", $toolsBar).tooltip();
 
-            $( "label", $toolsBar ).tooltip();
-
-            $( ".pickableLang",  $toolsBar).off('change').on('change', function(){
+            $(".pickableLang", $toolsBar).off('change').on('change', function(){
                 $.klear.language = $(this).val();
                 $.klear.restart({'language': $(this).val()});
                 $( "#langPicker", $toolsBar).trigger("change");
             });
 
-
-            $( "#langPicker", $toolsBar).off('change').on('change', function(){
-                var $self = $(this);
+            $("#langPicker", $toolsBar).off('change').on('change', function(){
                 if ($(".pickableLanguage",$toolsBar).hasClass("expanded")) {
                     $(".pickableLanguage",$toolsBar).removeClass("expanded").css("display","inline").animate({width:'85px'});
                 } else {
                     $(".pickableLanguage",$toolsBar).animate({width:'0'},function() {
                         $(this).addClass("expanded").css("display","none");
                     });
-
                 }
             });
 
-
-            $( "#logout", $toolsBar ).off('change').on('change', function(){
+            $("#logout", $toolsBar).off('change').on('change', function(){
                 var $self = $(this);
                 $.getJSON($self.data('url'),{json:true}, function(){
                     $sidebar.fadeOut('fast');
@@ -381,18 +370,17 @@
                 });
             });
 
-            $( "#tabsPersist", $toolsBar ).off('change').on('change', function(){
+            $("#tabsPersist", $toolsBar).off('change').on('change', function(){
                 var $self = $(this);
                 if ($.klear.tabPersist.enabled()) {
                     $.klear.tabPersist.disable();
                 } else {
                     $.klear.tabPersist.enable();
                 }
-
                 $self.trigger('update-icon');
             });
 
-            $( "input#tabsPersist", $toolsBar ).off('update-icon').on('update-icon', function(){
+            $("input#tabsPersist", $toolsBar).off('update-icon').on('update-icon', function(){
                 var $self = $(this).next('label');
                 var $icon = $('.ui-icon', $self);
                 if ($.klear.tabPersist.enabled()) {
@@ -403,18 +391,17 @@
                 }
             });
 
-            $( "#hideTabLabelNames", $toolsBar ).off('change').on('change', function(){
+            $("#hideTabLabelNames", $toolsBar).off('change').on('change', function(){
                 var $self = $(this);
                 if ($.klear.tabNamesFunction.areVisible()) {
                     $.klear.tabNamesFunction.hide();
                 } else {
                     $.klear.tabNamesFunction.show();
                 }
-
                 $self.trigger('update-icon');
             });
-            
-            $( "#hideTabLabelNames", $toolsBar ).off('update-icon').on('update-icon', function(){
+
+            $("#hideTabLabelNames", $toolsBar).off('update-icon').on('update-icon', function(){
                 var $self = $(this).next('label');
                 var $icon = $('.ui-icon', $self);
                 if ($.klear.tabNamesFunction.areVisible()) {
@@ -424,14 +411,14 @@
                 }
                 $self.removeClass('ui-state-active');
             });
-            
+
             $.klear.tabNamesFunction.loadSavedState();
-            
-            $( "#menuCollapse", $toolsBar ).off('change').on('change', function(){
+
+            $("#menuCollapse", $toolsBar).off('change').on('change', function(){
                 $.klear.toggleMenu();
             });
 
-            $( "#menuCollapse", $toolsBar ).off('update-icon').on('update-icon', function(){
+            $("#menuCollapse", $toolsBar).off('update-icon').on('update-icon', function(){
                 var $self = $(this).next('label');
                 var $icon = $('.ui-icon', $self);
                 if ($.klear.isMenuCollapsed()) {
@@ -442,13 +429,11 @@
                 }
             });
 
-
-            $( "#headerCollapse", $toolsBar ).off('change').on('change', function(){
+            $("#headerCollapse", $toolsBar).off('change').on('change', function(){
                 $.klear.toggleHeader();
             });
 
-
-            $( "#headerCollapse", $toolsBar ).off('update-icon').on('update-icon', function(){
+            $("#headerCollapse", $toolsBar).off('update-icon').on('update-icon', function(){
                 var $self = $(this).next('label');
                 var $icon = $('.ui-icon', $self);
                 if ($.klear.isHeaderCollapsed()) {
@@ -460,12 +445,11 @@
             });
 
 
-            $( "#superCollapse", $toolsBar ).off('change').on('change', function(){
+            $("#superCollapse", $toolsBar).off('change').on('change', function(){
                 $.klear.toggleAll();
             });
 
-
-            $( "#superCollapse", $toolsBar ).off('update-icon').on('update-icon', function(){
+            $("#superCollapse", $toolsBar).off('update-icon').on('update-icon', function(){
                 var $self = $(this).next('label');
                 var $icon = $('.ui-icon', $self);
                 if ($.klear.isHeaderCollapsed()) {
@@ -476,20 +460,16 @@
                 }
             });
 
-            
-            
-            $( "#themeRoller", $toolsBar ).off('change').on('change', function(){
-            	
+            $("#themeRoller", $toolsBar).off('change').on('change', function(){
             	var $self = $(this);
             	$self.button('widget').removeClass('ui-state-active');
             	if (!$("#themeRollerSelector").hasClass("active")) {
             		$("#themeRollerSelector").show('fast', function(){
-            			$(this).selectBoxIt({theme: "jqueryui",autoWidth: true, viewport: $(window)});	
+            			$(this).selectBoxIt({theme: "jqueryui",autoWidth: true, viewport: $(window)});
             		});
             		$("#themeRollerSelector").addClass("active");
             	}
-            	
-            	
+
             	if ($("#themeRollerSelector").hasClass("open")) {
             		$("#themeRollerSelector").removeClass("open");
                 	$("#themeRollerSelectorSelectBoxItContainer").fadeOut();
@@ -497,34 +477,30 @@
             		$("#themeRollerSelector").addClass("open");
                 	$("#themeRollerSelectorSelectBoxItContainer").fadeIn();
             	}
-
             });
 
-            $( "#themeRollerSelector", $toolsBar ).off('change').on('change', function(){
+            $("#themeRollerSelector", $toolsBar).off('change').on('change', function(){
             	$("#currentTheme")[0].href = $(this).val();
         		$.klear.request(
-        				{
-        					controller: 'index',
-        	                action: 'hello',                                
-                            theme: $("option:selected", $(this)).text()
-                        },
-                        function(response) {
-                        },
-                        function() {
-                        }
+    				{
+    					controller: 'index',
+    	                action: 'hello',
+                        theme: $("option:selected", $(this)).text()
+                    },
+                    function(response) {
+                    },
+                    function() {
+                    }
                 );
-            	
             });
-            
-            
-            $( "#generalHelp", $toolsBar ).off('change').on('change', function(){
+
+            $("#generalHelp", $toolsBar).off('change').on('change', function(){
             	var $self = $(this);
             	$self.button('widget').removeClass('ui-state-active');
             	$.klear.toggleHelpDialog();
             });
-            
-            $toolsBar.show();
 
+            $toolsBar.show();
 
             //TODO: refactorizar tabPersist para que tenga consistencia con autoplay
             if ($.klear.tabPersist.enabled()) {
@@ -539,9 +515,8 @@
                             .loadAutoPlay()
                             .launch();
             }
-
         };
-        
+
         $.klear._doMenuError = function(response) {
             $.console.log(response);
         };
@@ -612,26 +587,22 @@
             },
             launch : function() {
 
+                var menuButton = null;
                 for (var i in this.tabs ) {
-                    var menuButton = this.tabs[i].replace(/#tabs-/, '#target-');
+                    menuButton = this.tabs[i].replace(/#tabs-/, '#target-');
                     $(menuButton).trigger('mouseup');
                 }
 
-
                 // Seleccionamos el tab del ultimo menú principal seleccionado
                 if ($(menuButton).length>0) {
-
                     var _parent = $(menuButton).parents('div:eq(0)');
-
                     if (_parent.is(".ui-accordion-content")) {
-                           var _idx = $("h2",$sidebar).index(_parent.prev('h2'));
-                           if ($("#sidebar").accordion('option','active') != _idx) {
-                               $("#sidebar").accordion('option','active', _idx);
-                           }
+                        var _idx = $("h2",$sidebar).index(_parent.prev('h2'));
+                       if ($("#sidebar").accordion('option','active') != _idx) {
+                           $("#sidebar").accordion('option','active', _idx);
                        }
+                    }
                 }
-
-
             },
             enable : function(){
                 localStorage.setItem('tabPersistEnabled', '1');
@@ -647,37 +618,30 @@
         $sidebar.add($headerbar).add($footerbar);
 
         $('body').on("mouseup","a.subsection", function(e) {
+
             e.preventDefault();
             e.stopPropagation();
 
             var iden = $(this).attr("id").replace(/^target-/,'');
-
             $.klear.checkNoFocusEvent(e, $.klear.canvas, $(this));
-
             var tabTitle = $(this).text()!=""? $(this).text():$(this).parent().attr('title');
 
             if ($("#tabs-"+iden).length > 0) {
-                ;
                 //Actualizo su título, por si acaso soy una opción externa con un título "disfrazado"
                 $.klear.canvas
-                        .tabs('select', '#tabs-'+iden)
-                        .find(".ui-tabs-selected:eq(0)")
-                            .klearModule("updateTitle", tabTitle);
-
+                    .tabs('select', '#tabs-'+iden)
+                    .find(".ui-tabs-selected:eq(0)")
+                    .klearModule("updateTitle", tabTitle);
                 return;
             }
             var idContent = "#tabs-" + iden;
-
-
             $.klear.canvas.tabs( "add", idContent, tabTitle);
-
             $.klear.tabPersist.add(idContent);
 
         }).on("click","a.subsection",function(e) {
             e.preventDefault();
             e.stopPropagation();
         });
-
     };
 
     var $sidebar = $("#sidebar");
@@ -689,21 +653,20 @@
     $.klear.toggleMenu = function() {
 
         if ($sidebar.data("seized")) {
+
             $sidebar.animate({width: menuMeasures.getWidth() + 'px'});
             $(".textnode", $sidebar).stop().animate({opacity:'1', 'font-size': menuMeasures.getFontSize()});
             $("li",$sidebar).animate({padding:"0.5em"});
-
             $("#sidebar h2").removeClass('iconsidebar');
             $(".textnode").removeClass('compact');
-
             $sidebar.data("seized",false);
+
         } else {
 
             $(".textnode", $sidebar).animate({fontSize:'0em',opacity:'0'});
             $sidebar.animate({width:'50px'});
             $("li",$sidebar).animate({padding:"0em"});
             $sidebar.data("seized",true);
-
             $("#sidebar h2").addClass('iconsidebar');
             $(".textnode", $sidebar).addClass('compact');
         }
@@ -713,18 +676,18 @@
         $( "#superCollapse").trigger('update-icon');
     };
 
-
     $.klear.toggleHeader = function() {
+
         $appLogo = $("#applicationLogo");
 
         if ($.klear.isHeaderCollapsed()) {
+
             $("#header").fadeOut(function() {
                 $(this).removeClass("collapsedHeader").fadeIn();
             });
 
             $appLogo.animate({opacity:'1', height:'100px'});
             $("#applicationTools").animate({marginTop:'0px'});
-
             $appLogo.data("seized",false);
 
             if ($("#footer").hasClass("collapsedFooter")) {
@@ -732,7 +695,9 @@
                     $(this).removeClass("collapsedFooter").fadeIn();
                 });
             }
+
         } else {
+
             $("#header").fadeOut(function() {
                 $(this).addClass("collapsedHeader").fadeIn();
             });
@@ -758,7 +723,6 @@
         if (initialState == $.klear.isHeaderCollapsed()) {
             $.klear.toggleHeader();
         }
-
     };
 
     $.klear.isMenuCollapsed = function() {
@@ -770,15 +734,14 @@
     };
 
     $.klear.tabNamesFunction = {
+
         loadSavedState : function() {
             if (localStorage.getItem('hideTabNames') == 'true') {
                 $.klear.tabNamesFunction.hide();
             } else {
                 $.klear.tabNamesFunction.show();
             }
-            
             $( "#hideTabLabelNames").trigger("update-icon");
-            
         },
         areVisible : function() {
             return !$("#tabsList").hasClass("hideLabelNames");
@@ -790,30 +753,35 @@
         hide : function() {
             localStorage.setItem('hideTabNames', true);
             $("#tabsList").addClass("hideLabelNames");
-            
-        }            
+
+        }
     };
-    
+
     $.klear.helpDialog = {};
-    
+
     $.klear.toggleHelpDialog = function() {
-    	if ($.klear.helpDialog.dialogObj && $.klear.helpDialog.dialogObj.dialog('isOpen')===true) {
+
+    	if ($.klear.helpDialog.dialogObj && $.klear.helpDialog.dialogObj.dialog('isOpen') === true) {
 			$.klear.helpDialog.dialogObj.dialog('close');
 			return;
 		}
+
     	if (!$.klear.helpDialog.fixedHelpList) {
             var generalHelpLi = [];
             for (var keyNum in $.klear.ctrlAltActions) {
             	if ($.klear.ctrlAltActions[keyNum]['title'] != undefined) {
             		var title = $.klear.ctrlAltActions[keyNum]['title'];
             		var key = $.klear.ctrlAltActions[keyNum]['key'];
-            		generalHelpLi.push('<li>Ctrl+Alt+<strong>' + key + '</strong>: ' + title + '');	
+            		generalHelpLi.push('<li>Ctrl+Alt+<strong>' + key + '</strong>: ' + title + '');
             	}
             }
-            $.klear.helpDialog.fixedHelpList = '<ul>' + generalHelpLi.join(' ') + '</ul>';	
+            $.klear.helpDialog.fixedHelpList = '<ul>' + generalHelpLi.join(' ') + '</ul>';
     	}
+
     	var openedScreensHelp = "";
+
     	$("#tabsList li").each(function(){
+
     		var $self = $(this);
     		var currentScreenShortCuts = $self.klearModule('getShortcuts');
     		var title = $self.klearModule('getTitle');
@@ -821,17 +789,20 @@
     	 	var screenHelpLi = [];
     	 	for (var chartCode in currentScreenShortCuts) {
     	 		var chartString = String.fromCharCode(chartCode);
-    	 		screenHelpLi.push('<li>Ctrl+Alt+<strong>' + chartString + '</strong>: ' 
+    	 		screenHelpLi.push('<li>Ctrl+Alt+<strong>' + chartString + '</strong>: '
     	 				+ $("[data-shortcut="+chartString+"]", panel).text() + '');
     	 	}
-    	 	if (screenHelpLi.length<=0) return; 
+    	 	if (screenHelpLi.length <= 0) {
+    	 	   return;
+    	 	}
             var helpUl = '<ul>' + screenHelpLi.join(' ') + '</ul>';
             openedScreensHelp+= '<div class="inlineDialogHelp" >'+title+':' + helpUl + '</div>';
     	});
-    	
+
     	var $primaryToolsBar = $("label.primary", $toolsBar);
     	var $tmp = $("<div />");
     	var $tmpUl = $("<ul />", {'class': 'toolsBarHelp'});
+
     	$primaryToolsBar.each(function(){
     		var $self = $(this);
     		var $tmpLi = $("<li />");
@@ -839,14 +810,15 @@
     		$tmpLi.append($self.attr('title'));
     		$tmpUl.append($tmpLi);
     	});
+
     	$tmp.append($tmpUl);
     	$.klear.helpDialog.dialogObj = $.klear.klearDialog("", {
     		width: '450',
-    		title: '<span class="ui-icon inline dialogTitle ui-icon-info "></span>'+ $.translate("Global help") + "", 
+    		title: '<span class="ui-icon inline dialogTitle ui-icon-info "></span>'+ $.translate("Global help") + "",
     	    type: 'msg',
             icon: 'ui-icon-comment',
-            template: 
-    			'<div class="ui-widget">' 
+            template:
+    			'<div class="ui-widget">'
     			+ '<div class="ui-state-default ui-corner-all inlineMessage inlineDialogHelpBox">'
     			+ '<p class="dialogTitle">'
     			+ $.translate("Shortcuts information Ctrl+Alt+<em>[KEY]</em>")
@@ -860,7 +832,7 @@
     			+ $.translate("Toolsbar information")
     			+ '</p>'
     			+ '<div class="inlineDialogHelp" >'
-    			+ $tmp.html() 
+    			+ $tmp.html()
     			+ '</div>'
     			+ '</div>'
     			+ '</div>'
@@ -873,38 +845,36 @@
     };
 
     var menuMeasures = {
-               data : {
-                   normal : {
-                       fontsize : '1em',
-                       width: 300
-                   },
-                   small  : {
-                       fontsize : '0.70em',
-                       width: 180
-                   }
-               },
-               getFontSize : function() {
-                   return this.data[this.current]['fontsize'];
-               },
-               getWidth : function() {
-                   return this.data[this.current]['width'];
-               },
-               current : 'normal',
-               loadSize : function() {
-
-                   if ($(window).width() < 1030) {
-                       menuMeasures.current = 'small';
-                   } else {
-                       menuMeasures.current = 'normal';
-                   }
-                   $sidebar.data("seized",! $sidebar.data("seized"));
-                   $.klear.toggleMenu();
-               }
+            data : {
+                normal : {
+                    fontsize : '1em',
+                    width: 300
+                },
+                small  : {
+                    fontsize : '0.70em',
+                    width: 180
+                }
+            },
+            getFontSize : function() {
+                return this.data[this.current]['fontsize'];
+            },
+            getWidth : function() {
+                return this.data[this.current]['width'];
+            },
+            current : 'normal',
+            loadSize : function() {
+                if ($(window).width() < 1030) {
+                    menuMeasures.current = 'small';
+                } else {
+                    menuMeasures.current = 'normal';
+                }
+                $sidebar.data("seized",! $sidebar.data("seized"));
+                $.klear.toggleMenu();
+            }
     };
 
     $(window).on('resize', menuMeasures.loadSize);
     $(document).on("kMenuLoaded", menuMeasures.loadSize);
-
 
     $("body").on('click','a.toogleMenu',function(e) {
         if (e) {
@@ -915,25 +885,21 @@
         $.klear.toggleHeader();
     });
 
-
     $.klear.login = function(option){
 
         switch(option) {
             case 'close':
-
                 if (this.$loginForm) {
                     this.$loginForm.fadeOut(function() {
                         $(this).dialog("destroy").remove();
                     });
                     // klear custom events
                     $(document).trigger("kAuthSuccess");
-
                 }
 
                 return;
             break;
         }
-
 
         var self = this;
 
@@ -955,16 +921,17 @@
                     $("input:text:eq(0)",self.$loginForm).trigger("focusin").select();
                 }
             });
-            
+
             setTimeout(function(){
-            	$loginToolsBar = $("#loginToolsbar",self.$loginForm); 
+            	$loginToolsBar = $("#loginToolsbar",self.$loginForm);
             	$loginToolsBar.buttonset();
             	$("#loginToolsbar",self.$loginForm).fadeIn();
             	var tempIntCounter = 0;
-            	var tempInt = setInterval(function(){
+            	var tempInt = null;
+            	tempInt = setInterval(function(){
             		tempIntCounter++;
             		$( "#langPickerLogin").button('widget').toggleClass('ui-state-highlight');
-            		if (tempIntCounter==6) {
+            		if (tempIntCounter == 6) {
             			clearInterval(tempInt);
             		}
             	}, 200);
@@ -974,7 +941,6 @@
                     $.klear.restart({'language': $(this).val()});
                 });
                 $( "#langPickerLogin", $loginToolsBar).off('change').on('change', function(){
-                    var $self = $(this);
                     if ($(".pickableLanguage",$loginToolsBar).hasClass("expanded")) {
                         $(".pickableLanguage",$loginToolsBar).removeClass("expanded").css("display","inline").animate({width:'85px'});
                     } else {
@@ -984,7 +950,6 @@
                     }
                 });
             }, 1000);
-            
 
             $("select",self.$loginForm).selectBoxIt({theme: "jqueryui"});
             $("input",self.$loginForm).removeAttr("disabled");
@@ -992,29 +957,24 @@
             $("input:text:eq(0)",self.$loginForm).trigger("focusin").select();
 
             if ($("div.loginError",self.$loginForm).length > 0) {
-
                 self.$loginForm.effect("shake",{times: 3},60);
             }
 
             $("form",self.$loginForm.parent()).on('submit',function(e) {
-
                 e.preventDefault();
                 e.stopPropagation();
                 $.klear.hello('options',{
-                            post: $(this).serialize(),
-                            isLogin: true
+                    post: $(this).serialize(),
+                    isLogin: true
                 });
 
                 $("input",self.$loginForm).attr("disabled","disabled");
             });
-
-
         };
 
         $.klear._doLoginError = function(response) {
             $.console.log(response);
         };
-
 
         $.klear.request(
             {
@@ -1027,7 +987,6 @@
         );
 
         return this;
-
     };
 
     $.klear.loadCanvas = function(){
@@ -1058,7 +1017,6 @@
                     $("html, body").animate({ scrollTop: 0 }, 600);
                 }
 
-
                 var $tabLi = $(ui.tab).parent("li");
 
                 $tabLi.klearModule({
@@ -1068,18 +1026,11 @@
 
                 // Se invoca custom event para actualizar objeto klear.module (si fuera necesario);
                 $.klear.canvas.trigger("tabspostadd",ui);
-
                 $tabLi.klearModule("dispatch");
-
-                if (backgroundTab !== true) {
-                    //$tabLi.klearModule("highlightOn");
-                }
 
                 $("li",$.klear.canvas).each(function(idx,elem) {
                     $(elem).klearModule("option","tabIndex",idx);
                 });
-
-
             },
             select : function(event, ui) {
 
@@ -1088,9 +1039,7 @@
                 });
 
                 var $tabLi = $(ui.tab).parent("li");
-                $tabLi
-                    .klearModule("updateLoader");
-                    //.klearModule("highlightOn");
+                $tabLi.klearModule("updateLoader");
             },
             show : function(event, ui) {
                 $(ui.panel).trigger("focusin");
@@ -1102,10 +1051,10 @@
                 $("li",$.klear.canvas).each(function(idx,elem) {
                     $(elem).klearModule("option","tabIndex",idx);
                 });
-
                 $.klear.canvas.tabs('select', $.klear.canvas.tabs('option', 'selected'));
             }
         }).find( ".ui-tabs-nav" ).sortable({ axis: "x" });
+
         /*
          * CLOSE
          */
@@ -1118,7 +1067,6 @@
             var $tab = $(this).parent("li");
             $tab.klearModule("reDispatch");
         });
-
     };
 
     $.klear.ctrlAltActions = {
@@ -1207,11 +1155,10 @@
                     $( "#hideTabLabelNames", $toolsBar ).trigger("change");
                 }
             }
+    };
 
-        };
-    
     $(document).on("keydown",function(e) {
-        
+
     	var altActions = {
             37 : { //Disable alt + back arrow shortcut on browser
                 key: 'backArrow',
@@ -1221,9 +1168,8 @@
             }
         };
 
-        if (e.altKey && e.ctrlKey
-            || e.altKey && altActions[e.which]
-        ) {
+        if (e.altKey && e.ctrlKey || e.altKey && altActions[e.which]) {
+
             var selectedTab = parseInt($.klear.canvas.tabs('option', 'selected'));
             if (e.altKey && e.ctrlKey) {
                 if ($.klear.ctrlAltActions[e.which]) {
@@ -1243,11 +1189,9 @@
                 e.stopPropagation();
                 altActions[e.which]['action'](selectedTab);
             }
-
             return;
         }
     });
-
 
     $.klear.removeTabs = function() {
         $.klear.canvas.tabs('destroy');
@@ -1257,11 +1201,12 @@
     };
 
     $.klear.restart = function(opts, removetabs) {
+
         if (removetabs === true) {
             $.klear.removeTabs();
         }
-        $.klear.requestSearchTranslations();
 
+        $.klear.requestSearchTranslations();
         $.klear.menu(true, opts);
         $.klear.loadedTemplates = {};
         $.klear.requestReloadTranslations();
@@ -1333,7 +1278,7 @@
             }
 
             var _warnMsg = $.translate("Do you really want to leave?");
-            var e = e || window.event;
+            e = (typeof e == 'undefined')? window.event : e;
 
             if (e) {
                 e.returnValue = _warnMsg;
@@ -1346,7 +1291,7 @@
             $("#sidebar").trigger("reposition");
         });
     });
-    
+
     $.console = {
             debugInfo: false,
             info: function() {
@@ -1357,7 +1302,7 @@
             },
             log: function(message) {
                 if (console && typeof console.log == 'function') {
-                	console.log(message)
+                	console.log(message);
                 }
             },
             toggleDebugInfo : function() {
@@ -1372,11 +1317,10 @@
             init : function() {
                 $.console.debugInfo = $("html:eq(0)").data("stage") == "development";
                 if (localStorage.getItem('debugInfo')) {
-                    $.console.setDebugInfo(localStorage.getItem('debugInfo') == 'true'); 
+                    $.console.setDebugInfo(localStorage.getItem('debugInfo') == 'true');
                 }
             }
     };
     $.console.init();
-
 
 })(jQuery);
