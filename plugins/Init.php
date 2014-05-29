@@ -65,6 +65,21 @@ class Klear_Plugin_Init extends Zend_Controller_Plugin_Abstract
             $bootstrap->getContainer()->cachemanager = $cacheManager;
         }
 
+        //Locale default cache in APPLICATION_PATH . '/cache/'
+        $frontendOptions = array(
+            'lifetime' => 600,
+            'automatic_serialization' => true
+        );
+        $backendOptions = array(
+            'cache_dir' => APPLICATION_PATH . '/cache/'
+        );
+        $cache = Zend_Cache::factory('Core',
+            'File',
+            $frontendOptions,
+            $backendOptions
+        );
+        Zend_Locale::setCache($cache);
+
         $frontend = array(
             'name' => 'File',
             'options' => array(
