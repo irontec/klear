@@ -1,0 +1,9 @@
+#header, #sidebar, #footerbar, #footer, #tabsListNavArrows, div.paginator, div.klearMatrixFiltering, #canvas > ul.tabs {
+    display:none!important;
+}
+
+div.ui-tabs-panel.ui-tabs-hide {
+    display:none!important;
+}
+
+
