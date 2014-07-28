@@ -1,9 +1,39 @@
+html, body, div, span, object, iframe, h1, h2, h3, h4, h5, h6, blockquote, pre, abbr, address, cite, code, del, dfn, em, img, ins, kbd, q, samp, small, strong, sub, sup, var, b, i, dl, dt, dd, ol, ul, li, fieldset, form, label, legend, table, caption, tbody, tfoot, thead, tr, th, td, article, aside, canvas, details, figcaption, figure, footer, header, hgroup, menu, nav, section, summary, time, mark, audio, video {
+    font-size: 16px !important;
+}
+
 #header, #sidebar, #footerbar, #footer, #tabsListNavArrows, div.paginator, div.klearMatrixFiltering, #canvas > ul.tabs {
     display:none!important;
 }
 
-div.ui-tabs-panel.ui-tabs-hide {
+div.ui-tabs-panel.ui-tabs-hide, .selectboxit-options, .generalOptionsToolbar {
     display:none!important;
 }
 
+label {
+    font-weight: bold !important;
+    text-transform:capitalize;
+}
 
+input, textarea, fieldset {
+    border: none;
+}
+
+fieldset legend.ui-widget-header {
+    text-align: center;
+    font-size: 20px;
+    font-weight: bold;
+    margin-top: 5px;
+    margin-bottom: 10px;
+    text-transform:uppercase;
+    text-decoration: underline;
+}
+
+.ui-widget-content {
+    margin-bottom: 10px;
+}
+
+.ui-widget-content table {
+    width: 100%;
+    margin-top: 10px;
+}
