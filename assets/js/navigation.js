@@ -1066,6 +1066,18 @@
         $( "#tabsList").on("click","span.ui-icon-arrowrefresh-1-w", function() {
             var $tab = $(this).parent("li");
             $tab.klearModule("reDispatch");
+            
+            if ($(this).hasClass('ui-icon-refresh')) {
+                $(this).removeClass('ui-icon-refresh');
+                clearInterval(timerInterval);
+            } else {
+                $(this).addClass('ui-icon-refresh');
+                timerInterval = setInterval(function() {myInterval()}, 30000);
+            }
+            
+            function myInterval() {
+                $tab.klearModule("reDispatch");
+            }
         });
     };
 
