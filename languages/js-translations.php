@@ -31,4 +31,5 @@ return array (
   29 => 'Loading Main Module',
   30 => 'Loading Secondary modules',
   31 => 'Show All Items',
+  32 => 'close other tabs.',
 );
