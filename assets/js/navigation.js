@@ -1070,6 +1070,14 @@
     };
 
     $.klear.ctrlAltActions = {
+            81 : {
+                key : 'Q',
+                title: $.translate("close other tabs."),
+                action : function(selectedTab) {
+                    $li = $("#tabsList :not(li:eq("+selectedTab+"))");
+                    $li.klearModule('close');
+                }
+            },
             87 : {
                 key : 'W',
                 title: $.translate("closes current tab."),
@@ -1171,6 +1179,7 @@
         if (e.altKey && e.ctrlKey || e.altKey && altActions[e.which]) {
 
             var selectedTab = parseInt($.klear.canvas.tabs('option', 'selected'));
+            
             if (e.altKey && e.ctrlKey) {
                 if ($.klear.ctrlAltActions[e.which]) {
                     // Ctrl + Alt + Key
