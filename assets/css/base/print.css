@@ -7,7 +7,8 @@ html, body {
 }
 
 body {
-	padding-top: 50px;
+	margin-top: 50px;
+	margin-bottom: 100px;
 }
 
 #header, #sidebar, #footerbar, #footer, #tabsListNavArrows, div.paginator, div.klearMatrixFiltering, #canvas > ul.tabs {
@@ -43,13 +44,12 @@ fieldset legend.ui-widget-header {
 }
 
 .ui-widget-content table {
-    width: 100%;
+    width: 95%;
     margin-top: 10px;
 }
 
 .klearMatrix_form > fieldset > div.container.ui-widget-content.ui-corner-all {
 	margin-left: 15px;
-	display: none;
 }
 
 
@@ -526,7 +526,7 @@ table th[class*="span"],
   }
   a,
   a:visited {
-    text-decoration: underline;
+    text-decoration: none;
   }
   a[href]:after {
     content: " (" attr(href) ")";
