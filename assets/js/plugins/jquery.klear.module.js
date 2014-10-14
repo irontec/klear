@@ -355,10 +355,10 @@
             $(this.element)[response.plugin]({
                 data: response.data
             });
-//
-//            if (typeof this.options.PostDispatchMethod == 'function') {
-//                this.options.PostDispatchMethod.apply(this);
-//            }
+
+            if (typeof this.options.PostDispatchMethod == 'function') {
+                this.options.PostDispatchMethod.apply(this);
+            }
 
         },
 
@@ -366,10 +366,11 @@
 
             $.console.info("["+__namespace__+"] _reDispatch");
 
-            // Invocamos reDispatch encadena, de padres a hijos.
-            if (this.options.parentScreen) {
-                $(this.options.parentScreen).klearModule("reDispatch");
-            }
+//            // Invocamos reDispatch encadena, de padres a hijos.
+//            if (this.options.parentScreen) {
+//            	console.log("REDISPATCHING", this.options.parentScreen);
+//                $(this.options.parentScreen).klearModule("reDispatch");
+//            }
 
             this.setAsloading();
             this.dispatch();
