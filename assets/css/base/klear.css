@@ -625,6 +625,12 @@ input, textarea {
 	padding: 0.15em 0.25em;
 }
 
+.fa {
+    background: none;
+    text-indent: initial;
+    width: auto;
+    height: auto
+}
 
 @media screen and (max-width: 680px){
     #canvasWrapper {
