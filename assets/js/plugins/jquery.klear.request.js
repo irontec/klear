@@ -440,7 +440,7 @@
             
             if (typeof successCallback == 'function') {
                 var token = 'token' + hash;
-                $("<input name='__downloadToken'>").val(token).appendTo(_theForm);
+                $("<input type='hidden' name='__downloadToken'>").val(token).appendTo(_theForm);
             }
             
             _iframe
