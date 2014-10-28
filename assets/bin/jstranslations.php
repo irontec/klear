@@ -42,7 +42,7 @@ foreach ($paths as $path) {
                 //TODO: Hay que mejorar la expresión pero ya.
                 $contents = file_get_contents($dir . $entry);
                 
-                preg_match_all('/\$\.translate\([\"|\'](.*)[\"|\'][,|\)]/i', $contents, $result);
+                preg_match_all('/\$\.translate\([\"|\'](.*)[\"|\'][,|\)]/iU', $contents, $result);
                 
                 $count = count($result[1]);
                 if ($count<=0) {

@@ -437,14 +437,38 @@
                     .val(_item[1])
                     .appendTo(_theForm);
             });
+
+            _iframe
+            	.appendTo("body");
             
             if (typeof successCallback == 'function') {
                 var token = 'token' + hash;
                 $("<input type='hidden' name='__downloadToken'>").val(token).appendTo(_theForm);
+        
+                var checkInterval = setInterval(function() {
+                    try {
+                        if ($.cookie("downloadToken") == token ) {
+                            //Comprobamos que el iframe "devuelto" statusCode == 20X
+                            _iframe.contents();
+                            clearInterval(checkInterval);
+                            successCallback(true);
+                            return;
+                        }
+                        
+                        // Si la petición ha devuelto error, contentWindow se convierte en innaccesible.
+                        _iframe.contents();
+                    } catch(e) {
+                    	
+                        if (typeof errorCallback == 'function') {
+                            clearInterval(checkInterval);
+                            errorCallback();
+                            return;
+                        }
+                	}
+                    
+                    
+                },650);
             }
-            
-            _iframe
-                .appendTo("body");
             
             _theForm
                 .appendTo('body')
@@ -458,15 +482,7 @@
                 .trigger('submit');
             
             
-            if (typeof successCallback == 'function') {
-                var checkInterval = setInterval(function() {
-                    if ($.cookie("downloadToken") == token) {
-                        clearInterval(checkInterval);
-                        successCallback(true);
-                    }
-                },650);
-            }
-
+            
             return false;
         }
 
