@@ -40,6 +40,7 @@ class Klear_Plugin_Init extends Zend_Controller_Plugin_Abstract
         $this->_initErrorHandler();
         $this->_registerYamlStream();
         $this->_initHooks();
+        $this->_initMagicCookie($request);
     }
 
     /**
@@ -280,6 +281,23 @@ class Klear_Plugin_Init extends Zend_Controller_Plugin_Abstract
                     new $actionHelper()
                 );
             }
+        }
+    }
+    
+    /**
+     * Método para comprobar que la descarg
+     * @param Zend_Controller_Request_Abstract $request
+     */
+    protected function _initMagicCookie(Zend_Controller_Request_Abstract $request)
+    {
+        if ($request->getParam("__downloadToken","") != '') {
+        
+            $filter = new Zend_Filter_Alnum();
+            $token  = $filter->filter($request->getParam("__downloadToken"));
+            $expires = gmdate('D, d M Y H:i:s', (time() + 5)) . ' GMT';
+            $cookie = new Zend_Http_Header_SetCookie('downloadToken', $token , $expires, '/', null, false, false);
+        
+            $this->getResponse()->setRawHeader($cookie);
         }
     }
 }

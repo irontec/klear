@@ -420,7 +420,8 @@
         if (params.external) {
 
             //La petición se realizará sobre un iframe oculto, no se controla response
-            var _name = 'ftarget' + Math.round(Math.random(1000,1000));
+            var hash = Math.round(Math.random(1000,9999)*1000);
+            var _name = 'ftarget' + hash;
 
             var _iframe = $("<iframe />",{"name":_name}).hide();
 
@@ -436,9 +437,15 @@
                     .val(_item[1])
                     .appendTo(_theForm);
             });
-
-            _iframe.appendTo("body");
-             
+            
+            if (typeof successCallback == 'function') {
+                var token = 'token' + hash;
+                $("<input name='__downloadToken'>").val(token).appendTo(_theForm);
+            }
+            
+            _iframe
+                .appendTo("body");
+            
             _theForm
                 .appendTo('body')
                 .on('submit',function() {
@@ -446,12 +453,18 @@
                     setTimeout(function() {
                         $self.remove();
                         _iframe.remove();
-                    },100000);
+                    },10000000);
                 })
                 .trigger('submit');
-                
+            
+            
             if (typeof successCallback == 'function') {
-                successCallback(true);
+                var checkInterval = setInterval(function() {
+                    if ($.cookie("downloadToken") == token) {
+                        clearInterval(checkInterval);
+                        successCallback(true);
+                    }
+                },650);
             }
 
             return false;
