@@ -590,7 +590,7 @@
                 var menuButton = null;
                 for (var i in this.tabs ) {
                     menuButton = this.tabs[i].replace(/#tabs-/, '#target-');
-                    $(menuButton).trigger('mouseup');
+                    $(menuButton).trigger('mouseup', true);
                 }
 
                 // Seleccionamos el tab del ultimo menú principal seleccionado
@@ -617,11 +617,22 @@
 
         $sidebar.add($headerbar).add($footerbar);
 
-        $('body').on("mouseup","a.subsection", function(e) {
-
+        
+        $('body')
+        .on("mousedown","a.subsection", function(e) {
+            $(this).data("pressed",true);        
+        })
+        .on("mouseout","a.subsection", function(e) {
+            $(this).data("pressed",false);        
+        })
+        .on("mouseup","a.subsection", function(e, force) {
             e.preventDefault();
             e.stopPropagation();
-
+            if ($(this).data("pressed") !== true &&
+                    force !== true) {
+                return;
+            }
+            
             var iden = $(this).attr("id").replace(/^target-/,'');
             $.klear.checkNoFocusEvent(e, $.klear.canvas, $(this));
             var tabTitle = $(this).text()!=""? $(this).text():$(this).parent().attr('title');
