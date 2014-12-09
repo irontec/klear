@@ -26,6 +26,7 @@ label {
 
 input, textarea, fieldset {
     border: none;
+    width:100%;
 }
 
 fieldset legend.ui-widget-header {
