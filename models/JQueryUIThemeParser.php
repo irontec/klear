@@ -69,10 +69,13 @@ class Klear_Model_JQueryUIThemeParser
         $cache = $this->_getCache($cssAssetsPath);
         $this->_config = $cache->load(md5($cssAssetsPath));
 
+        $availablesEnvs = array("production", "testing", "development", "staging");
+        $env = in_array(APPLICATION_ENV, $availablesEnvs) ? APPLICATION_ENV : "production";
+
         if (!$this->_config) {
             $this->_config = new Zend_Config_Yaml(
                 $cssAssetsPath,
-                APPLICATION_ENV,
+                $env,
                 array(
                     "yamldecoder" => "yaml_parse"
                 )
