@@ -111,7 +111,7 @@ class Klear_ErrorController extends Zend_Controller_Action
                 $this->view->exceptionCode = $errors->exception->getCode();
 
 
-                if (APPLICATION_ENV == 'development') {
+                if ($this->_showErrors()) {
                     $this->view->file = $errors->exception->getFile();
                     $this->view->line = $errors->exception->getLine();
                     $this->view->traceString = $errors->exception->getTraceAsString();
@@ -132,6 +132,19 @@ class Klear_ErrorController extends Zend_Controller_Action
         }
 
         $this->_helper->log('Exception captured ['.$this->view->code.']: ' .$this->view->message, Zend_Log::ERR);
+    }
+
+    protected function _showErrors()
+    {
+        $phpSettings = $this->getInvokeArg('bootstrap')->getOption("phpSettings");
+        $showErrors = false;
+        if (array_key_exists("display_errors", $phpSettings) && $phpSettings["display_errors"]) {
+            $showErrors = true;
+        }
+        if (APPLICATION_ENV == 'development' || $showErrors) {
+            $showErrors = true;
+        }
+        return $showErrors;
     }
 
 }
