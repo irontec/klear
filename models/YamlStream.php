@@ -31,7 +31,7 @@ class Klear_Model_YamlStream
 
         $this->_resolveVariables();
 
-        $this->_length = mb_strlen($this->_content);
+        $this->_length = mb_strlen($this->_content, '8bit');
 
         $this->_position = 0;
 
@@ -186,7 +186,7 @@ class Klear_Model_YamlStream
 
     public function stream_read($count)
     {
-        $chunk = mb_substr($this->_content, $this->_position, $count);
+        $chunk = mb_substr($this->_content, $this->_position, $count, '8bit');
         $this->_position += $count;
         if ($this->_position > $this->_length) {
             $this->_position = $this->_length;
