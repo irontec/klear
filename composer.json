@@ -1,0 +1,24 @@
+{
+    "name": "irontec/klear",
+    "description": "klear",
+    "authors": [
+        {
+            "name": "ddniel",
+            "email": "ddniel16@gmail.com"
+        }
+    ],
+    "repositories": [
+        {
+        "type":"vcs",
+        "url":"/opt/workspace/klear-git/klear-full/modules/klearMatrix"
+        },
+        {
+        "type":"vcs",
+        "url":"/opt/workspace/klear-git/klear-full/modules/klearGallery"
+        }
+    ],
+    "require":{
+        "irontec/klearMatrix":"master",
+        "irontec/klearGallery":"master
+    }  
+}
