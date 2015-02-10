@@ -11,7 +11,7 @@
         {
         "type":"vcs",
         "url":"/opt/workspace/klear-git/klear-full/modules/klearMatrix"
-        },
+        }
     ],
     "require": {
         "irontec/klearMatrix":"dev-composer"
