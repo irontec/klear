@@ -12,13 +12,8 @@
         "type":"vcs",
         "url":"/opt/workspace/klear-git/klear-full/modules/klearMatrix"
         },
-        {
-        "type":"vcs",
-        "url":"/opt/workspace/klear-git/klear-full/modules/klearGallery"
-        }
     ],
-    "require":{
-        "irontec/klearMatrix":"master",
-        "irontec/klearGallery":"master
+    "require": {
+        "irontec/klearMatrix":"dev-composer"
     }  
 }
