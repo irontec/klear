@@ -7,6 +7,8 @@
 */
 class Klear_Model_Section  implements \IteratorAggregate
 {
+    protected $_iden;
+
     protected $_name;
 
     protected $_description;
@@ -24,6 +26,12 @@ class Klear_Model_Section  implements \IteratorAggregate
     public function getIterator()
     {
         return new \ArrayIterator($this->_subsections);
+    }
+
+    public function setIden($iden)
+    {
+        $this->_iden = $iden;
+        return $this;
     }
 
     public function setName($name)
@@ -78,6 +86,11 @@ class Klear_Model_Section  implements \IteratorAggregate
                 $this->_subsections[] = $subsection;
             }
         }
+    }
+
+    public function getIden()
+    {
+        return $this->_iden;
     }
 
     public function getName()

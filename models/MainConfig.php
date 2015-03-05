@@ -87,6 +87,7 @@ class Klear_Model_MainConfig
         $this->_menu = new Klear_Model_Menu($this->_menuConfig);
         $this->_menu->setSiteConfig($this->getSiteConfig());
         $this->_menu->parse();
+        $this->_menu->_initDynamicClass($this->_mainConfig);
     }
 
     /**

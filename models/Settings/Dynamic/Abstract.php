@@ -23,7 +23,7 @@ abstract class Klear_Model_Settings_Dynamic_Abstract
     {
         return $logo;
     }
-    
+
     public function processFavIcon($logo)
     {
         return $logo;
@@ -68,17 +68,21 @@ abstract class Klear_Model_Settings_Dynamic_Abstract
     {
         return $rawJavascripts;
     }
-    
+
     public function processTimezone($timezone)
     {
         return $timezone;
     }
 
-    
+
     public function processSignature($signature)
     {
         return $signature;
     }
-    
+
+    public function processSections($sections)
+    {
+        return $sections;
+    }
 
 }
