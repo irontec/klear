@@ -66,7 +66,7 @@ class Klear_Model_MainConfig
 
     protected function _buildSiteConfig()
     {
-        $this->_siteConfig = new Klear_Model_SiteConfig($this->_mainConfig);
+        $this->_siteConfig = new Klear_Model_SiteConfig();
         $this->_siteConfig->setConfig($this->_mainConfig);
     }
 

@@ -29,16 +29,15 @@ class Klear_Plugin_Init extends Zend_Controller_Plugin_Abstract
             return;
         }
 
+        $this->_registerYamlStream();
+        
         $this->_initPlugin();
 
         $this->_initCacheManager();
-        $this->_initAuthStorage();
 
         $this->_initConfig();
-        $this->_initLog();
         $this->_initLayout();
         $this->_initErrorHandler();
-        $this->_registerYamlStream();
         $this->_initHooks();
         $this->_initMagicCookie($request);
     }
@@ -128,7 +127,7 @@ class Klear_Plugin_Init extends Zend_Controller_Plugin_Abstract
          */
         $config = $this->_getConfig();
 
-        $klearConfig = new Klear_Model_MainConfig($config);
+        $klearConfig = new Klear_Model_MainConfig();
         $klearConfig->setConfig($config);
 
         $this->_bootstrap->setOptions(
@@ -180,61 +179,15 @@ class Klear_Plugin_Init extends Zend_Controller_Plugin_Abstract
 
     /**
      * Devuelve la ruta al fichero de configuración
+     * con el wrapper incluído
      */
     protected function _getConfigPath()
     {
-        $configPath = APPLICATION_PATH . '/configs/klear/klear.yaml';
         $moduleConfig = $this->_bootstrap->getOption('config');
-        if (isset($moduleConfig['file'])
-                && file_exists($moduleConfig['file'])) {
-            $configPath = $moduleConfig['file'];
-        }
-        return $configPath;
-    }
-
-    protected function _initAuthStorage()
-    {
-        $auth = Zend_Auth::getInstance();
-
-        $sessionName = 'klear_auth';
-
-        $config = $this->_getConfig();
-
-        if (isset($config->main->auth->session)) {
-            $authSession = $config->main->auth->session;
-
-            // We don't want to change the session_name in this case
-            if (isset($authSession->disableChangeName) && $authSession->disableChangeName) {
-                return;
-            }
-
-            if (isset($authSession->name)) {
-                $sessionName = $authSession->name;
-            }
-        }
-
-        $auth->setStorage(new Zend_Auth_Storage_Session($sessionName));
-    }
-
-    protected function _initLog()
-    {
-        $config = $this->_getConfig();
-
-        if (isset($config->main->log)) {
-            $params = array($config->main->log->toArray());
-        } else {
-            $params = array(
-                array(
-                    'writerName' => 'Null'
-                )
-            );
-        }
-
-
-        $log = Zend_Log::factory($params);
-        Zend_Controller_Action_HelperBroker::addHelper(
-            new Klear_Controller_Helper_Log($log)
-        );
+        if (!isset($moduleConfig['file'])) {
+            throw new Klear_Exception_MissingConfiguration('main config file is required');
+        }        
+        return 'klear.yaml://' . basename($moduleConfig['file']);
     }
 
     /**

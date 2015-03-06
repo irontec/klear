@@ -9,6 +9,21 @@ class Klear_Bootstrap extends Zend_Application_Module_Bootstrap
         Zend_Json::$useBuiltinEncoderDecoder = false;
     }
 
+    
+    protected function _initMainConfig()
+    {
+        $config = $this->getOption('config');
+        if (empty($config)) {
+            $config = array();
+        }
+        
+        if (!isset($config['file'])) {
+            $config['file'] = APPLICATION_PATH . '/configs/klear/klear.yaml';
+        }
+        
+        $this->setOptions(array('config'=>$config));
+
+    }
 
     /**
      * Registramos los plugins necesarios para el correcto funcionamiento de Klear
@@ -16,15 +31,16 @@ class Klear_Bootstrap extends Zend_Application_Module_Bootstrap
     protected function _initKlear()
     {
         $front = Zend_Controller_Front::getInstance();
+
+        // Inicialización mínima para parsear la configuración
+        // Zend_Auth Y Zend_Log
+        $front->registerPlugin(new Klear_Plugin_InitAuthAndLog());
+        
+        // Arranque de la configuración principal
         $front->registerPlugin(new Klear_Plugin_Init());
 
-        /*
-         * Klear_Plugin_Auth if enabled in klear.yaml
-        */
-        $front->registerPlugin(new Klear_Plugin_Auth());
-
-        /*
-         * Klear_Plugin_Translator lander
+        /**
+         * Klear_Plugin_Translator
          */
         $front->registerPlugin(new Klear_Plugin_Translator());
 

@@ -64,10 +64,9 @@ class Klear_Model_SiteConfig
         if (!is_null($config)) {
             $this->setConfig($config);
         }
-        
-        
     }
 
+    
     public function setConfig(Zend_Config $config)
     {
         $this->_initRequiredParams($config);
@@ -80,17 +79,27 @@ class Klear_Model_SiteConfig
         $this->_initSiteSubName($config);
 
         if (isset($config->auth)) {
-            $this->_authConfig = new Klear_Model_ConfigParser();
-            $this->_authConfig->setConfig($config->auth);
+            $this->_initAuthConfig($config->auth);
         }
 
         $this->_initRawIncludes($config);
-
         $this->_initDynamicClass($config);
-
-
     }
+    
+    public function setConfigForAuth(Zend_Config $config)
+    {
+        if (isset($config->auth)) {
+            $this->_initAuthConfig($config->auth);
+        }
+        $this->_initDynamicClass($config);
+    }  
 
+    protected function _initAuthConfig(Zend_Config $authConfig) 
+    {
+        $this->_authConfig = new Klear_Model_ConfigParser();
+        $this->_authConfig->setConfig($authConfig);
+    }
+    
     protected function _initSiteSubName(Zend_Config $config)
     {
 
