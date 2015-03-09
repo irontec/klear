@@ -10,8 +10,10 @@ class Klear_Model_Section  implements \IteratorAggregate
     protected $_iden;
 
     protected $_name;
-
+     
     protected $_description;
+
+    protected $_showOnlyIf = true;
 
     protected $_notMultilangPropertyKeys = array();
 
@@ -20,7 +22,7 @@ class Klear_Model_Section  implements \IteratorAggregate
     protected $_subsections = array();
 
     protected $_skip = array();
-
+    
     protected $_default = false;
 
     public function getIterator()
@@ -62,17 +64,26 @@ class Klear_Model_Section  implements \IteratorAggregate
 
         $this->_name = $config->getRequiredProperty("title");
         $this->_description = $config->getProperty("description");
+        
+        if ($config->exists("showOnlyIf")) {
+            $this->_showOnlyIf = (bool)$config->getProperty("showOnlyIf");
+        }
 
         $this->_class = $config->getProperty("class");
         $this->_default = (bool)$config->getProperty("default");
 
-        if (!isset($data->submenus) || empty($data->submenus)) {
+        
+        if (!isset($data->submenus) ||
+                empty($data->submenus) ||
+                    !$this->_showOnlyIf) {
             return;
         }
 
         foreach ($data->submenus as $file => $sectionData) {
 
+
             if (in_array($file, $this->_skip)) continue;
+            
             $subsection = new Klear_Model_SubSection;
 
             $subsection
@@ -81,13 +92,19 @@ class Klear_Model_Section  implements \IteratorAggregate
                 ->setData($sectionData);
 
 
-            if ($subsection->_hasAccess()) {
+            if ($subsection->_hasAccess() &&
+                    $subsection->isShowable()) {
 
                 $this->_subsections[] = $subsection;
             }
         }
     }
 
+    public function isShowable()
+    {
+        return $this->_showOnlyIf;
+    }
+    
     public function getIden()
     {
         return $this->_iden;
