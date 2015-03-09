@@ -1,17 +1,12 @@
 <?php
 /**
- * Plugin encargado de instanciar lo mínimo para arrancar el parseo del fichero klear.yaml
- *  Zend_Auth y Zend_Log
- *  
- *  klear.yaml se reparseará con estos recursos disponibles
- *  
- * @author Jabi Infante
- * @author ClassName >> Mikel Madariaga
- *
+ * Inicilización plugin auth
  */
-class Klear_Plugin_InitAuthAndLog extends Zend_Controller_Plugin_Abstract
+class Klear_Plugin_Auth extends Zend_Controller_Plugin_Abstract
 {
     protected $_mainConfig; 
+    protected $_authConfig;
+
     
     /**
      * Este método se ejecuta una vez se ha matcheado la ruta adecuada
@@ -24,49 +19,16 @@ class Klear_Plugin_InitAuthAndLog extends Zend_Controller_Plugin_Abstract
             return;
         }
         
-        $this->_initConfig();
-        $this->_initLog();   
+        $this->_initPlugin();
         $this->_initAuthStorage();
         $this->_initAuth($request);
-        
         $this->_postLogin();
-    }
-
-    protected function _initConfig() {
-        $configFile = $this->_getConfigPath();
-        $fullConfig = new Zend_Config_Yaml(
-                $configFile,
-                APPLICATION_ENV,
-                array(
-                        "yamldecoder" => "yaml_parse"
-                )
-        );
         
-        $this->_mainConfig = $fullConfig->main;
     }
-    
-    protected function _initLog()
-    {
-        
-    
-        if (isset($this->_mainConfig->log)) {
-            $params = array($this->_mainConfig->log->toArray());
-        } else {
-            $params = array(
-                    array(
-                            'writerName' => 'Null'
-                    )
-            );
-        }
-    
-        Zend_Controller_Action_HelperBroker::addHelper(
-                new Klear_Controller_Helper_Log(Zend_Log::factory($params))
-        );
-    }
-    
     protected function _initAuth(Zend_Controller_Request_Abstract $request)
     {
         $authConfig = $this->_getAuthConfig();
+        
         $logHelper = Zend_Controller_Action_HelperBroker::getStaticHelper('log');
         if ((false === $authConfig) || !$authConfig->exists("adapter")) {
             // La instancia de klear no tiene autenticación
@@ -130,7 +92,6 @@ class Klear_Plugin_InitAuthAndLog extends Zend_Controller_Plugin_Abstract
         $sessionName = 'klear_auth';
     
         $authConfig = $this->_getAuthConfig();
-    
         if (isset($authConfig->session)) {
             $authSession = $authConfig->session;
     
@@ -160,24 +121,18 @@ class Klear_Plugin_InitAuthAndLog extends Zend_Controller_Plugin_Abstract
         
         return $this->_authConfig;
     }
+        
     
-    /**
-     * Devuelve la ruta al fichero de configuración
-     */
-    protected function _getConfigPath()
+    protected function _initPlugin()
     {
         $front = Zend_Controller_Front::getInstance();
-        $bootstrap = $front
-                        ->getParam('bootstrap')
-                        ->getResource('modules')
-                        ->offsetGet('klear');
-        
-        $moduleConfig = $bootstrap->getOption('config');
-        if (!isset($moduleConfig['file'])) {
-            throw new Klear_Exception_MissingConfiguration('main config file is required');
+        $bootstrap = $front->getParam('bootstrap')->getResource('modules')->offsetGet('klear');
+        $config = $bootstrap->getOption("configFast");
+        if (!isset($config->main)) {
+             throw new Klear_Exception_MissingConfiguration('Main section is required on Auth Plugin');
         }
-        return $moduleConfig['file'];
-    }
+        $this->_mainConfig = $config->main;
     
+    }
 
 }

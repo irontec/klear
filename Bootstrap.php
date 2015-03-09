@@ -2,46 +2,44 @@
 
 class Klear_Bootstrap extends Zend_Application_Module_Bootstrap
 {
+    
+    protected $_configFile = APPLICATION_PATH . '/configs/klear/klear.yaml';
 
     protected function _initJson()
     {
         // Hasta que se resuelve el tema de que Zend_config JSON_encodee bien....
         Zend_Json::$useBuiltinEncoderDecoder = false;
     }
-
     
-    protected function _initMainConfig()
+    protected function _initYamlWrapper()
     {
-        $config = $this->getOption('config');
-        if (empty($config)) {
-            $config = array();
-        }
-        
-        if (!isset($config['file'])) {
-            $config['file'] = APPLICATION_PATH . '/configs/klear/klear.yaml';
-        }
-        
-        $this->setOptions(array('config'=>$config));
-
+        stream_wrapper_register("klear.yaml", "Klear_Model_YamlStream");
     }
+
 
     /**
      * Registramos los plugins necesarios para el correcto funcionamiento de Klear
      */
     protected function _initKlear()
     {
-        $front = Zend_Controller_Front::getInstance();
-
-        // Inicialización mínima para parsear la configuración
-        // Zend_Auth Y Zend_Log
-        $front->registerPlugin(new Klear_Plugin_InitAuthAndLog());
+        $this->setOptions(array("configFilePath"=>$this->_configFile));
         
-        // Arranque de la configuración principal
-        $front->registerPlugin(new Klear_Plugin_Init());
-
-        /**
-         * Klear_Plugin_Translator
-         */
+        $front = Zend_Controller_Front::getInstance();
+        
+        $front->registerPlugin(new Klear_Plugin_Cache());
+        $front->registerPlugin(new Klear_Plugin_Error());
+        
+        $front->registerPlugin(new Klear_Plugin_ParserFast());
+        $front->registerPlugin(new Klear_Plugin_Log());
+        $front->registerPlugin(new Klear_Plugin_Auth());
+        
+        
+        $front->registerPlugin(new Klear_Plugin_Parser());
+        
+        $front->registerPlugin(new Klear_Plugin_Config());
+        $front->registerPlugin(new Klear_Plugin_Layout());
+        $front->registerPlugin(new Klear_Plugin_Hooks());
+        $front->registerPlugin(new Klear_Plugin_MagicCookie());
         $front->registerPlugin(new Klear_Plugin_Translator());
 
     }
@@ -206,4 +204,6 @@ class Klear_Bootstrap extends Zend_Application_Module_Bootstrap
 
         return $autoloader;
     }
+    
+
 }
