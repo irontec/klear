@@ -28,6 +28,8 @@ class Klear_Bootstrap extends Zend_Application_Module_Bootstrap
         
         $front->registerPlugin(new Klear_Plugin_Cache());
         $front->registerPlugin(new Klear_Plugin_Error());
+        $front->registerPlugin(new Klear_Plugin_Layout());
+        
         
         $front->registerPlugin(new Klear_Plugin_ParserFast());
         $front->registerPlugin(new Klear_Plugin_Log());
@@ -35,10 +37,9 @@ class Klear_Bootstrap extends Zend_Application_Module_Bootstrap
         
         
         $front->registerPlugin(new Klear_Plugin_Parser());
-        
         $front->registerPlugin(new Klear_Plugin_Config());
-        $front->registerPlugin(new Klear_Plugin_Layout());
         $front->registerPlugin(new Klear_Plugin_Hooks());
+        
         $front->registerPlugin(new Klear_Plugin_MagicCookie());
         $front->registerPlugin(new Klear_Plugin_Translator());
 

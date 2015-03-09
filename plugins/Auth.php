@@ -127,7 +127,7 @@ class Klear_Plugin_Auth extends Zend_Controller_Plugin_Abstract
     {
         $front = Zend_Controller_Front::getInstance();
         $bootstrap = $front->getParam('bootstrap')->getResource('modules')->offsetGet('klear');
-        $config = $bootstrap->getOption("configFast");
+        $config = $bootstrap->getOption("klearBaseConfigFast");
         if (!isset($config->main)) {
              throw new Klear_Exception_MissingConfiguration('Main section is required on Auth Plugin');
         }

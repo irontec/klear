@@ -5,7 +5,7 @@
  */
 class Klear_Plugin_ParserFast extends Klear_Plugin_Parser
 {
-    protected $_bootstrapConfigIden = 'configFast';
+    protected $_bootstrapConfigIden = 'klearBaseConfigFast';
     
     protected function _initPlugin()
     {

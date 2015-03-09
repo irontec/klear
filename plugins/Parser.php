@@ -9,7 +9,7 @@ class Klear_Plugin_Parser extends Zend_Controller_Plugin_Abstract
     protected $_bootstrap;
     protected $_configFilePath;
     protected $_filePath;
-    protected $_bootstrapConfigIden = 'config';
+    protected $_bootstrapConfigIden = 'klearBaseConfig';
     /**
      * Este método que se ejecuta una vez se ha matcheado la ruta adecuada
      * (non-PHPdoc)

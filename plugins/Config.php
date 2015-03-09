@@ -22,8 +22,6 @@ class Klear_Plugin_Config extends Zend_Controller_Plugin_Abstract
         }
         $this->_initPlugin();
         $this->_initConfig();
-        
-        $this->_releaseConfig();
 
     }
 
@@ -36,7 +34,7 @@ class Klear_Plugin_Config extends Zend_Controller_Plugin_Abstract
 
         $klearConfig = new Klear_Model_MainConfig();
         $klearConfig->setConfig($this->_config);
-
+        
         $this->_bootstrap->setOptions(
             array(
                 "siteConfig" => $klearConfig->getSiteConfig(),
@@ -51,19 +49,12 @@ class Klear_Plugin_Config extends Zend_Controller_Plugin_Abstract
     {
         $front = Zend_Controller_Front::getInstance();
         $this->_bootstrap = $front->getParam('bootstrap')->getResource('modules')->offsetGet('klear');
-        $config = $this->_bootstrap->getOption("config");
-        if (!isset($config->main)) {
+        $this->_config = $this->_bootstrap->getOption("klearBaseConfig");
+        
+        if (!isset($this->_config->main)) {
             throw new Klear_Exception_MissingConfiguration('Main section is required on ConfigPlugin');
         }
-        $this->_config = $config;
-    }
-    
-    protected function _releaseConfig()
-    {
-        $this->_bootstrap->setOptions(array(
-                "config"=>null,
-                "configFast"=>null
-        ));
+        
     }
 
 }
