@@ -71,6 +71,7 @@ class Klear_Model_YamlStream
         $includeFiles = $this->_getIncludeFiles($file);
         foreach ($includeFiles as $includeFile) {
             $contents .= $this->_loadContent($includeFile);
+            $this->_extraFiles[] = $includeFile;
         }
 
         $contents .= file_get_contents($file). "\n";
@@ -92,7 +93,6 @@ class Klear_Model_YamlStream
                     $fileIncluded = array_search($confFile, $this->_extraFiles);
                     if ($fileIncluded === false) {
                         $includeFiles[] = $confFile;
-                        $this->_extraFiles[] = $confFile;
                     }
                 }
 
