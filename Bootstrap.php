@@ -2,8 +2,24 @@
 
 class Klear_Bootstrap extends Zend_Application_Module_Bootstrap
 {
-    
-    protected $_configFile = APPLICATION_PATH . '/configs/klear/klear.yaml';
+
+    protected $_configFile;
+
+    /**
+     * Constructor
+     *
+     * @return void
+     */
+    public function __construct($application)
+    {
+        $this->_init();
+        return parent::__construct($application);
+    }
+
+    protected function _init()
+    {
+        $this->_configFile = APPLICATION_PATH . '/configs/klear/klear.yaml';       
+    }
 
     protected function _initJson()
     {
