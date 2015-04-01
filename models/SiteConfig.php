@@ -147,8 +147,7 @@ class Klear_Model_SiteConfig
             }
         }
 
-        //Klear_Model_Interface_Language_Filter
-
+        // Klear_Model_Interface_Language_Filter
         /*
          * Resquested Language // SESSION Language
         */
@@ -304,13 +303,17 @@ class Klear_Model_SiteConfig
             return;
         }
         $dynamicClassName = $config->dynamicConfigClass;
-
-        $dynamic = new $dynamicClassName;
-        if (!is_subclass_of($dynamic, 'Klear_Model_Settings_Dynamic_Abstract')) {
-
-            Throw new Exception('Dynamic class does not extend Klear_Model_Settings_Dynamic_Abstract');
+        
+        if (method_exists($dynamicClassName, 'factory')) {
+            $dynamic = $dynamicClassName::factory();
+        } else {
+            $dynamic = new $dynamicClassName;
         }
 
+        if (!is_subclass_of($dynamic, '\Klear_Model_Settings_Dynamic_Abstract')) {
+            throw new Exception('Dynamic class does not extend Klear_Model_Settings_Dynamic_Abstract');
+        }
+        
         $dynamic->init($config);
 
         $this->_sitename = $dynamic->processSiteName($this->_sitename);
