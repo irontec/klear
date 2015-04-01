@@ -72,21 +72,4 @@ class Klear_Model_Menu implements \IteratorAggregate
         $this->_config = null;
     }
 
-    public function _initDynamicClass(Zend_Config $config)
-    {
-        if (!isset($config->dynamicConfigClass)) {
-            return;
-        }
-        $dynamicClassName = $config->dynamicConfigClass;
-
-        $dynamic = new $dynamicClassName;
-        if (!is_subclass_of($dynamic, 'Klear_Model_Settings_Dynamic_Abstract')) {
-
-            Throw new Exception('Dynamic class does not extend Klear_Model_Settings_Dynamic_Abstract');
-        }
-
-        $dynamic->init($config);
-
-        $this->_sections = $dynamic->processSections($this->_sections);
-    }
 }

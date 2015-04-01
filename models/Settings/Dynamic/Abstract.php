@@ -80,9 +80,4 @@ abstract class Klear_Model_Settings_Dynamic_Abstract
         return $signature;
     }
 
-    public function processSections($sections)
-    {
-        return $sections;
-    }
-
 }
