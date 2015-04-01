@@ -153,7 +153,12 @@ class Klear_Model_YamlStream
                 if ($auth->hasIdentity() &&
                     ! is_null($this->_walkDataSublevels($result[1], $auth->getIdentity()))
                 ) {
-                    return $this->_walkDataSublevels($result[1], $auth->getIdentity());
+                    $value = $this->_walkDataSublevels($result[1], $auth->getIdentity());
+                    
+                    if (is_bool($value)) {
+                        $value = $value? 'true':'false';
+                    }
+                    return $value;
                 }
                 break;
 
