@@ -46,7 +46,7 @@ var console = window.console || { log : function() {}};
         }, 2);
     })();
 
-    if (true || document.documentElement.getAttribute("data-stage") == "development") {
+    if (document.documentElement.getAttribute("data-stage") == "development") {
         var _baseScripts = [
             'base!js/plugins/jquery.cookie.js',
             'base!js/plugins/jquery.scrollabletab.js',

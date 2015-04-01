@@ -1,6 +1,6 @@
 <!doctype html>
 <html lang="<?php echo $this->SiteConfig()->getLang()->getLanguage();?>" <?php
-    if ("development" === APPLICATION_ENV) {
+    if ("development" === APPLICATION_ENV || "localdev" === APPLICATION_ENV) {
         echo ' data-stage="development"';
     }
 ?>>
