@@ -18,7 +18,7 @@ class Klear_Bootstrap extends Zend_Application_Module_Bootstrap
 
     protected function _init()
     {
-        $this->_configFile = APPLICATION_PATH . '/configs/klear/klear.yaml';       
+        $this->_configFile = APPLICATION_PATH . '/configs/klear/klear.yaml';
     }
 
     protected function _initJson()
@@ -50,7 +50,6 @@ class Klear_Bootstrap extends Zend_Application_Module_Bootstrap
         $front->registerPlugin(new Klear_Plugin_ParserFast());
         $front->registerPlugin(new Klear_Plugin_Log());
         $front->registerPlugin(new Klear_Plugin_Auth());
-        
         
         $front->registerPlugin(new Klear_Plugin_Parser());
         $front->registerPlugin(new Klear_Plugin_Config());
