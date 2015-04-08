@@ -304,12 +304,9 @@ class Klear_Model_SiteConfig
         }
         $dynamicClassName = $config->dynamicConfigClass;
         
-        if (method_exists($dynamicClassName, 'factory')) {
-            $dynamic = $dynamicClassName::factory();
-        } else {
-            $dynamic = new $dynamicClassName;
-        }
-
+        
+        $dynamic = $dynamicClassName::factory();
+        
         if (!is_subclass_of($dynamic, '\Klear_Model_Settings_Dynamic_Abstract')) {
             throw new Exception('Dynamic class does not extend Klear_Model_Settings_Dynamic_Abstract');
         }

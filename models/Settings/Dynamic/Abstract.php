@@ -8,7 +8,12 @@
 abstract class Klear_Model_Settings_Dynamic_Abstract
 {
     abstract public function init($siteConfig);
-
+    
+    public static function factory()
+    {
+        return new static();
+    }
+    
     public function processSiteName($sitename)
     {
         return $sitename;
@@ -79,5 +84,6 @@ abstract class Klear_Model_Settings_Dynamic_Abstract
     {
         return $signature;
     }
+
 
 }
