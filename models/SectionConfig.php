@@ -21,7 +21,11 @@ class Klear_Model_SectionConfig
          * Carga configuración de la sección cargada según la request.
         */
         $cache = $this->_getCache($filePath);
-        $this->_config = $cache->load(md5($filePath));
+        
+        $keyGenerator = new \Klear_Model_CacheKeyGenerator($filePath);
+        $cacheKey = $keyGenerator->getKey();
+        
+        $this->_config = $cache->load($cacheKey);
 
         if (!$this->_config) {
 

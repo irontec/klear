@@ -17,8 +17,24 @@ class Klear_Plugin_Hooks extends Zend_Controller_Plugin_Abstract
         if (!preg_match("/^klear/", $request->getModuleName())) {
             return;
         }
-
-        $this->_initHooks();
+        
+        try {
+            
+            $this->_initHooks();
+            
+        } catch(Exception $e) {
+        
+            $request->setControllerName('error');
+            $request->setActionName('error');
+        
+            // Set up the error handler
+            $error = new Zend_Controller_Plugin_ErrorHandler();
+            $error->type = Zend_Controller_Plugin_ErrorHandler::EXCEPTION_OTHER;
+            $error->request = clone($request);
+            $error->exception = $e;
+            $request->setParam('error_handler', $error);
+        
+        }
 
     }
 

@@ -15,27 +15,29 @@ class Klear_Plugin_Cache extends Zend_Controller_Plugin_Abstract
         if (!preg_match("/^klear/", $request->getModuleName())) {
             return;
         }
+        try {
+            $this->_initCacheManager();
+            $this->_initCacheForLocale();
+        } catch(Exception $e) {
 
-        $this->_initCacheManager();
-
+            $request->setControllerName('error');
+            $request->setActionName('error');
+            
+            // Set up the error handler
+            $error = new Zend_Controller_Plugin_ErrorHandler();
+            $error->type = Zend_Controller_Plugin_ErrorHandler::EXCEPTION_OTHER;
+            $error->request = clone($request);
+            $error->exception = $e;
+            $request->setParam('error_handler', $error);
+            
+        }
+        
     }
 
-    /**
-     * Inicia los atributos utilizados en el plugin
-     */
-    public function _initPlugin()
-    {
-        $this->_front = Zend_Controller_Front::getInstance();
-        $this->_bootstrap = $this->_front
-                                 ->getParam('bootstrap')
-                                 ->getResource('modules')
-                                 ->offsetGet('klear');
-    }
 
     protected function _initCacheManager()
     {
-        $bootstrap = Zend_Controller_Front::getInstance()
-                        ->getParam('bootstrap');
+        $bootstrap = Zend_Controller_Front::getInstance()->getParam('bootstrap');
         $cacheManager = $bootstrap->getResource('cachemanager');
 
         if (!$cacheManager) {
@@ -43,31 +45,12 @@ class Klear_Plugin_Cache extends Zend_Controller_Plugin_Abstract
             $bootstrap->getContainer()->cachemanager = $cacheManager;
         }
 
-        //Locale default cache in APPLICATION_PATH . '/cache/'
-        $frontendOptions = array(
-            'lifetime' => 600,
-            'automatic_serialization' => true
-        );
-        $backendOptions = array(
-            'cache_dir' => APPLICATION_PATH . '/cache/'
-        );
-        $cache = Zend_Cache::factory('Core',
-            'File',
-            $frontendOptions,
-            $backendOptions
-        );
-        Zend_Locale::setCache($cache);
-
         $frontend = array(
             'name' => 'File',
             'options' => array(
-                'master_files' => array(
-                //Este archivo es necesario porque
-                //el constructor nos obliga a ello
-                    __DIR__ . '/fakeFile'
-                ),
+                'master_files' => array(__FILE__),
                 'automatic_serialization' => true,
-                'lifetime' => null
+                'ignore_missing_master_files'=>true
             )
         );
 
@@ -78,7 +61,7 @@ class Klear_Plugin_Cache extends Zend_Controller_Plugin_Abstract
                 'backend' => array(
                     'name' => 'File',
                     'options' => array(
-                        'cache_dir' => APPLICATION_PATH . '/cache'
+                        'cache_dir' => APPLICATION_PATH . '/cache',
                     )
                 )
             );
@@ -86,12 +69,34 @@ class Klear_Plugin_Cache extends Zend_Controller_Plugin_Abstract
             $cacheManager->setCacheTemplate('klearconfig', $cache);
 
         } else {
-
             $cacheManager->setTemplateOptions(
                 'klearconfig',
                 array('frontend' => $frontend)
             );
         }
-    }
+   }
+   
+   protected function _initCacheForLocale()
+   {
+       $frontendOptions = array(
+               'lifetime' => 7200,
+               'automatic_serialization' => true
+       );
+       
+       $backendOptions = array(
+           'cache_dir' => APPLICATION_PATH . '/cache/'
+       );
+       
+       
+       $cache = \Zend_Cache::factory(
+                    'Core',
+                    'File',
+                    $frontendOptions,
+                    $backendOptions
+                );
+       
+       Zend_Locale::setCache($cache);
+
+   }
 
 }

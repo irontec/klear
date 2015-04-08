@@ -20,8 +20,24 @@ class Klear_Plugin_Parser extends Zend_Controller_Plugin_Abstract
         if (!preg_match("/^klear/", $request->getModuleName())) {
             return;
         }
-        $this->_initPlugin();
-        $this->_initParser();
+        try  {
+
+            $this->_initPlugin();
+            $this->_initParser();
+
+        } catch(Exception $e) {
+
+            $request->setControllerName('error');
+            $request->setActionName('error');
+            
+            // Set up the error handler
+            $error = new Zend_Controller_Plugin_ErrorHandler();
+            $error->type = Zend_Controller_Plugin_ErrorHandler::EXCEPTION_OTHER;
+            $error->request = clone($request);
+            $error->exception = $e;
+            $request->setParam('error_handler', $error);
+            
+        }
 
     }
 
@@ -31,7 +47,7 @@ class Klear_Plugin_Parser extends Zend_Controller_Plugin_Abstract
         $cache = $this->_getCache();
         
         $config = $cache->load($cacheKey);
-        
+
         if (!$config) {
 
             $config = new Zend_Config_Yaml(
@@ -50,39 +66,37 @@ class Klear_Plugin_Parser extends Zend_Controller_Plugin_Abstract
     
     protected function _initPlugin()
     {
+
         $front = Zend_Controller_Front::getInstance();
         $this->_bootstrap = $front->getParam('bootstrap')->getResource('modules')->offsetGet('klear');
-
         $this->_configFilePath = $this->_bootstrap->getOption("configFilePath");
+
         if (!$this->_configFilePath) {
-            throw new Klear_Exception_MissingConfiguration('Confgi File Path is required on Parser Plugin');
+            throw new Klear_Exception_MissingConfiguration('Config File Path is required on Parser Plugin');
         }
+        
         $this->_filePath = 'klear.yaml://' . basename($this->_configFilePath);
     }
     
     protected function _getCacheKey()
     {
-        
-        $baseKey = $this->_filePath;
-        $identity = Zend_Auth::getInstance()->getIdentity();
-        if ($identity) {
-            $baseKey .= $identity->getId();
-        } else {
-            $baseKey .= "UNKOWNN_ID";
-        }
-        return md5($baseKey);
+        $generator = new \Klear_Model_CacheKeyGenerator($this->_filePath);
+        return $generator->getKey();
     }
     
     protected function _getCache()
     {
         $bootstrap = Zend_Controller_Front::getInstance()->getParam('bootstrap');
         $cacheManager = $bootstrap->getResource('cachemanager');
+        
         if (!$cacheManager) {
             throw new Klear_Exception_MissingConfiguration('Cache manager initializated is required on Parser Plugin');
         }
         
         $cache = $cacheManager->getCache('klearconfig');
+        
         $cache->setMasterFile($this->_configFilePath);
+        
         return $cache;
     }
     

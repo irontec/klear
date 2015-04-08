@@ -27,7 +27,13 @@ class Klear_ErrorController extends Zend_Controller_Action
          * Carga configuración de la sección cargada según la request.
         */
         $cache = $this->_getCache($filePath);
-        $config = $cache->load(md5($filePath));
+        
+        $keyGenerator = new \Klear_Model_CacheKeyGenerator($filePath);
+        // En principio los errores no contendrán valores ${auth.*}
+        $keyGenerator->ignoreSessionAuth();
+        $cacheKey = $keyGenerator->getKey();
+        
+        $config = $cache->load($cacheKey);
 
         if (!$config) {
             $config = new Zend_Config_Yaml(
