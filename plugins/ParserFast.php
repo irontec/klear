@@ -13,9 +13,6 @@ class Klear_Plugin_ParserFast extends Klear_Plugin_Parser
         $this->_bootstrap = $front->getParam('bootstrap')->getResource('modules')->offsetGet('klear');
         
         $this->_configFilePath = $this->_bootstrap->getOption("configFilePath");
-        if (!$this->_configFilePath) {
-            die("MOROTITI");
-        }
         $this->_filePath = $this->_configFilePath;
     }
     
