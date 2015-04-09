@@ -19,26 +19,33 @@ class Klear_MenuController extends Zend_Controller_Action
 
         foreach ($this->_klearBootstrap->getOption($menuName) as $section) {
             $tmpSection = array(
-                    'sectionId' => $section->getName(),
-                    'sectionClass' => $section->getName(),
-                    'sectionName' => $section->getName(),
-                    'sectionDescription' => $section->getDescription(),
-                    'sectionOpts' => array()
+                    'id' => $section->getName(),
+                    'name' => $section->getName(),
+                    'meta' => $section->getMeta(),
+                    'description' => $section->getDescription(),
+                    'opts' => array()
             );
+            $tmpSection = $this->_thinData($tmpSection);
             foreach ($section as $subsection) {
                 $tmpSubSection = array(
-                        'sectionId' => $subsection->getMainFile(),
-                        'sectionClass' => $subsection->getClass(),
-                        'sectionName' => $subsection->getName(),
+                        'id' => $subsection->getMainFile(),
+                        'name' => $subsection->getName(),
+                        'meta' => $subsection->getMeta(),
+                        'class' => $subsection->getClass(),
                         'default' =>  $subsection->isDefault(),
-                        'sectionDescription' => $subsection->getDescription(),
-                        'sectionOpts' => array()
+                        'description' => $subsection->getDescription(),
+                        'Zpts' => array()
                 );
+                $tmpSubSection = $this->_thinData($tmpSubSection);
                 $tmpSection['subsections'][] = $tmpSubSection;
             }
             $menu['sections'][] = $tmpSection;
         }
         return $menu;
+    }
+    
+    protected function _thinData($data) {
+        return array_filter($data);
     }
 
     protected function _getToolsbar()
