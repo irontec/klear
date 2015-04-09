@@ -4,14 +4,12 @@
 <!-- ${section.sectionName} -->
     {{each(idx,subsection) section.subsections}}
     <li>
-    <a class="subsection{{if (section.subsections[idx]['default'])}} autoplay{{/if}}" href="?" id="target-${subsection.sectionId}">
+    <a class="subsection{{if (section.subsections[idx]['default'])}} autoplay{{/if}}" href="?" id="target-${subsection.id}" {{if (subsection.meta)}} data-meta="${subsection.meta}"{{/if}}>
 
-    <span class="ui-silk inline ${subsection.sectionClass}"></span>
-    ${subsection.sectionName}
+    <span class="ui-silk inline ${subsection.class}"></span>
+    ${subsection.name}
     </a>
     </li>
     {{/each}}
-<!-- // ${section.sectionName} -->
 {{/each}}
-
 </ul>

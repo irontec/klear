@@ -7,7 +7,7 @@
     {{each(idx,subsection) section.subsections}}
     <li>
 
-<a class="subsection" href="?" id="target-${subsection.sectionId}" >
+<a class="subsection" href="?" id="target-${subsection.sectionId}" {{if (subsection.sectionMeta)}} data-meta="${subsection.sectionMeta}"{{/if}}>
 <span class="ui-silk inline ${subsection.sectionClass}"></span>
 ${subsection.sectionName}
 </a>

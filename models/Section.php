@@ -10,6 +10,8 @@ class Klear_Model_Section  implements \IteratorAggregate
     protected $_iden;
 
     protected $_name;
+    
+    protected $_meta;
      
     protected $_description;
 
@@ -42,6 +44,12 @@ class Klear_Model_Section  implements \IteratorAggregate
         return $this;
     }
 
+    public function setMeta($meta)
+    {
+        $this->_meta = $meta;
+        return $this;
+    }
+    
     public function setParentMenu($menu)
     {
         $this->_menu = $menu;
@@ -64,6 +72,7 @@ class Klear_Model_Section  implements \IteratorAggregate
 
         $this->_name = $config->getRequiredProperty("title");
         $this->_description = $config->getProperty("description");
+        $this->_meta = $config->getProperty("meta");
         
         if ($config->exists("showOnlyIf")) {
             $this->_showOnlyIf = (bool)$config->getProperty("showOnlyIf");
@@ -110,6 +119,11 @@ class Klear_Model_Section  implements \IteratorAggregate
         return $this->_iden;
     }
 
+    public function getMeta()
+    {
+        return $this->_meta;
+    }
+    
     public function getName()
     {
         return Klear_Model_Gettext::gettextCheck($this->_name);
