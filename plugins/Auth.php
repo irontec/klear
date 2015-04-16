@@ -18,26 +18,11 @@ class Klear_Plugin_Auth extends Zend_Controller_Plugin_Abstract
         if (!preg_match("/^klear/", $request->getModuleName())) {
             return;
         }
-        try {
-
-            $this->_initPlugin();
-            $this->_initAuthStorage();
-            $this->_initAuth($request);
-            $this->_postLogin();
-
-        } catch(Exception $e) {
-
-            $request->setControllerName('error');
-            $request->setActionName('error');
-            
-            // Set up the error handler
-            $error = new Zend_Controller_Plugin_ErrorHandler();
-            $error->type = Zend_Controller_Plugin_ErrorHandler::EXCEPTION_OTHER;
-            $error->request = clone($request);
-            $error->exception = $e;
-            $request->setParam('error_handler', $error);
-            
-        }
+        
+        $this->_initPlugin();
+        $this->_initAuthStorage();
+        $this->_initAuth($request);
+        $this->_postLogin();
     }
     protected function _initAuth(Zend_Controller_Request_Abstract $request)
     {
@@ -143,7 +128,7 @@ class Klear_Plugin_Auth extends Zend_Controller_Plugin_Abstract
         $bootstrap = $front->getParam('bootstrap')->getResource('modules')->offsetGet('klear');
         $config = $bootstrap->getOption("klearBaseConfigFast");
         if (!isset($config->main)) {
-            throw new Klear_Exception_MissingConfiguration('Main section is required on Auth Plugin');
+           throw new Klear_Exception_MissingConfiguration('Main section is required on Auth Plugin');
         }
         $this->_mainConfig = $config->main;
     }
