@@ -2,16 +2,16 @@
 /**
  * Plugin encargado de instanciar lo mínimo para arrancar el parseo del fichero klear.yaml
  *  Zend_Auth y Zend_Log
- *  
+ *
  *  klear.yaml se reparseará con estos recursos disponibles
- *  
+ *
  * @author Jabi Infante
  *
  */
 class Klear_Plugin_Log extends Zend_Controller_Plugin_Abstract
 {
-    protected $_mainConfig; 
-    
+    protected $_mainConfig;
+
     /**
      * Este método se ejecuta una vez se ha matcheado la ruta adecuada
      * (non-PHPdoc)
@@ -27,26 +27,25 @@ class Klear_Plugin_Log extends Zend_Controller_Plugin_Abstract
         $this->_initLog();
     }
 
-    
+
     protected function _initLog()
     {
-        
-    
-        if (isset($this->_mainConfig->log)) {
-            $params = array($this->_mainConfig->log->toArray());
-        } else {
+        $bootstrap = \Zend_Controller_Front::getInstance()->getParam('bootstrap');
+        $logger = $bootstrap->getResource('log');
+        if (is_null($logger)) {
             $params = array(
-                    array(
-                            'writerName' => 'Null'
-                    )
+                array(
+                    'writerName' => 'Null'
+                )
             );
+            $logger = Zend_Log::factory($params);
         }
-    
+
         Zend_Controller_Action_HelperBroker::addHelper(
-                new Klear_Controller_Helper_Log(Zend_Log::factory($params))
+                new Klear_Controller_Helper_Log($logger)
         );
     }
-    
+
     protected function _initPlugin()
     {
         $front = Zend_Controller_Front::getInstance();
@@ -56,7 +55,7 @@ class Klear_Plugin_Log extends Zend_Controller_Plugin_Abstract
             throw new Klear_Exception_MissingConfiguration('Main section is required on Log Plugin');
         }
         $this->_mainConfig = $config->main;
-        
+
     }
 
 }
