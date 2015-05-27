@@ -26,7 +26,7 @@ class Klear_Bootstrap extends Zend_Application_Module_Bootstrap
         // Hasta que se resuelve el tema de que Zend_config JSON_encodee bien....
         Zend_Json::$useBuiltinEncoderDecoder = false;
     }
-    
+
     protected function _initYamlWrapper()
     {
         stream_wrapper_register("klear.yaml", "Klear_Model_YamlStream");
@@ -38,25 +38,27 @@ class Klear_Bootstrap extends Zend_Application_Module_Bootstrap
      */
     protected function _initKlear()
     {
+
+        $front = \Zend_Controller_Front::getInstance();
         $this->setOptions(array("configFilePath"=>$this->_configFile));
-        
-        $front = Zend_Controller_Front::getInstance();
-        
-        $front->registerPlugin(new Klear_Plugin_Cache());
+
         $front->registerPlugin(new Klear_Plugin_Error());
+        $front->registerPlugin(new Klear_Plugin_Cache());
+
         $front->registerPlugin(new Klear_Plugin_Layout());
-        
-        
+
+
         $front->registerPlugin(new Klear_Plugin_ParserFast());
         $front->registerPlugin(new Klear_Plugin_Log());
         $front->registerPlugin(new Klear_Plugin_Auth());
-        
+
         $front->registerPlugin(new Klear_Plugin_Parser());
         $front->registerPlugin(new Klear_Plugin_Config());
         $front->registerPlugin(new Klear_Plugin_Hooks());
-        
+
         $front->registerPlugin(new Klear_Plugin_MagicCookie());
         $front->registerPlugin(new Klear_Plugin_Translator());
+
 
     }
 
@@ -220,6 +222,6 @@ class Klear_Bootstrap extends Zend_Application_Module_Bootstrap
 
         return $autoloader;
     }
-    
+
 
 }

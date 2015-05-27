@@ -27,12 +27,12 @@ class Klear_ErrorController extends Zend_Controller_Action
          * Carga configuración de la sección cargada según la request.
         */
         $cache = $this->_getCache($filePath);
-        
+
         $keyGenerator = new \Klear_Model_CacheKeyGenerator($filePath);
         // En principio los errores no contendrán valores ${auth.*}
         $keyGenerator->ignoreSessionAuth();
         $cacheKey = $keyGenerator->getKey();
-        
+
         $config = $cache->load($cacheKey);
 
         if (!$config) {
@@ -137,7 +137,13 @@ class Klear_ErrorController extends Zend_Controller_Action
             Zend_Layout::getMvcInstance()->disableLayout();
         }
 
-        $this->_helper->log('Exception captured ['.$this->view->code.']: ' .$this->view->message, Zend_Log::ERR);
+        $eCode = $errors->exception->getCode();
+        $eFile = $errors->exception->getFile();
+        $eLine = $errors->exception->getLine();
+        $eMessage = $errors->exception->getMessage();
+        $logMessage = 'Exception captured ['.$this->view->code.']: '.
+            $eMessage." (".$eCode.") # ".$eFile." (".$eLine.")";
+        $this->_helper->log($logMessage, Zend_Log::ERR);
     }
 
     protected function _showErrors()
