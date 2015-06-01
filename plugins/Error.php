@@ -18,6 +18,14 @@ class Klear_Plugin_Error extends Zend_Controller_Plugin_Abstract
         $this->_front->throwExceptions(true);
         $this->_bootstrap = $this->_front->getParam('bootstrap');
         $this->_logger = $this->_bootstrap->getResource('log');
+        if (is_null($this->_logger)) {
+            $params = array(
+                    array(
+                            'writerName' => 'Null'
+                    )
+            );
+            $this->_logger = Zend_Log::factory($params);
+        }
     }
 
     /**
