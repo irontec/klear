@@ -48,6 +48,11 @@ abstract class Klear_Model_Settings_Dynamic_Abstract
     {
         return $langs;
     }
+    
+    public function processModelLangs($modelLangs)
+    {
+        return $modelLangs;
+    }
 
     public function processjQueryUI($jQueryUIconf)
     {

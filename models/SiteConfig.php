@@ -37,6 +37,8 @@ class Klear_Model_SiteConfig
 
     protected $_lang;
     protected $_langs = array();
+    
+    protected $_modelLangs = array();
 
     protected $_authConfig = false;
 
@@ -144,6 +146,18 @@ class Klear_Model_SiteConfig
                 $language->setIden($_langIden);
                 $language->setConfig($lang);
                 $this->_langs[$language->getIden()] = $language;
+            }
+        }
+        
+        /*
+         * Loading Model Languages
+         */
+        if (isset($config->modelLangs)) {
+            foreach ($config->modelLangs as $_langIden => $lang) {
+                $modelLanguage = new Klear_Model_Language();
+                $modelLanguage->setIden($_langIden);
+                $modelLanguage->setConfig($lang);
+                $this->_modelLangs[$modelLanguage->getIden()] = $modelLanguage;
             }
         }
 
@@ -316,6 +330,7 @@ class Klear_Model_SiteConfig
         $this->_sitename = $dynamic->processSiteName($this->_sitename);
         $this->_sitesubname = $dynamic->processSiteSubName($this->_sitesubname);
         $this->_langs = $dynamic->processLangs($this->_langs);
+        $this->_modelLangs = $dynamic->processModelLangs($this->_modelLangs);
         $this->_logo = $dynamic->processLogo($this->_logo);
         $this->_favIcon = $dynamic->processFavIcon($this->_favIcon);
         $this->_timezone = $dynamic->processTimezone($this->_timezone);
@@ -370,6 +385,12 @@ class Klear_Model_SiteConfig
     {
         if (sizeof($this->_langs) == 0) return false;
         return $this->_langs;
+    }
+    
+    public function getModelLangs()
+    {
+        if (sizeof($this->_modelLangs) == 0) return false;
+        return $this->_modelLangs;
     }
 
     public function getCurrentTheme()
