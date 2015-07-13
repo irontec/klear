@@ -12,7 +12,7 @@ class Klear_Plugin_Error extends Zend_Controller_Plugin_Abstract
     protected $_bootstrap;
     protected $_logger;
 
-    public function routeStartup()
+    public function routeStartup(Zend_Controller_Request_Abstract $request)
     {
         $this->_front = \Zend_Controller_Front::getInstance();
         $this->_front->throwExceptions(true);
@@ -44,7 +44,7 @@ class Klear_Plugin_Error extends Zend_Controller_Plugin_Abstract
 
 
 
-    public function preDispatch()
+    public function preDispatch(Zend_Controller_Request_Abstract $request)
     {
         $options = $this->_bootstrap->getOptions();
         if (isset($options["resources"]["throwexceptions"])) {
