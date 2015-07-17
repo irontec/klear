@@ -4,10 +4,10 @@
  */
 class Klear_Plugin_Auth extends Zend_Controller_Plugin_Abstract
 {
-    protected $_mainConfig; 
+    protected $_mainConfig;
     protected $_authConfig;
 
-    
+
     /**
      * Este método se ejecuta una vez se ha matcheado la ruta adecuada
      * (non-PHPdoc)
@@ -18,7 +18,7 @@ class Klear_Plugin_Auth extends Zend_Controller_Plugin_Abstract
         if (!preg_match("/^klear/", $request->getModuleName())) {
             return;
         }
-        
+
         $this->_initPlugin();
         $this->_initAuthStorage();
         $this->_initAuth($request);
@@ -33,7 +33,7 @@ class Klear_Plugin_Auth extends Zend_Controller_Plugin_Abstract
             $logHelper->log('No auth adapter found.');
             return;
         }
-     
+
         if ((bool)$request->getPost("klearLogin")) {
             $auth = Zend_Auth::getInstance();
 
@@ -47,19 +47,18 @@ class Klear_Plugin_Auth extends Zend_Controller_Plugin_Abstract
 
                 $authAdapter->saveStorage();
                 $session = new Zend_Session_Namespace('Zend_Auth');
-
                 $logHelper->log(
                     'User ' . $auth->getIdentity()->getLogin()
                     .' (' . get_class($auth->getIdentity()) . ') logged in'
                 );
 
                 $session->setExpirationSeconds(86400);
-                
+
                 if ($request->getParam('remember', '') == 'true') {
                     Zend_Session::rememberMe();
                 }
-                
-                
+
+
             } else {
 
                 $messages = $authResult->getMessages();
@@ -75,53 +74,52 @@ class Klear_Plugin_Auth extends Zend_Controller_Plugin_Abstract
 
     protected function _postLogin()
     {
-        
+
         $identity = Zend_Auth::getInstance()->getIdentity();
         if (is_object($identity) && method_exists($identity, 'postLogin') ) {
             $identity->postLogin();
         }
     }
-    
-    
+
+
     protected function _initAuthStorage()
     {
         $auth = Zend_Auth::getInstance();
-    
+
         $sessionName = 'klear_auth';
         $authConfig = $this->_getAuthConfig();
-        
-        $session = $authConfig->getRaw()->session;
-        
-        if (isset($authConfig->session)) {
-            $authSession = $authConfig->session;
-    
+
+        $authSession = $authConfig->getRaw()->session;
+
+        if (!is_null($authSession)) {
+
             // We don't want to change the session_name in this case
             if (isset($authSession->disableChangeName) && $authSession->disableChangeName) {
                 return;
             }
-    
+
             if (isset($authSession->name)) {
                 $sessionName = $authSession->name;
             }
         }
-        
+
         $auth->setStorage(new \Zend_Auth_Storage_Session($sessionName));
     }
-    
+
     protected function _getAuthConfig()
     {
         if (!isset($this->_authConfig)) {
 
             $siteConfig = new Klear_Model_SiteConfig();
             $siteConfig->setConfigForAuth($this->_mainConfig);
-            
+
             $this->_authConfig = $siteConfig->getAuthConfig();
-            
+
         }
         return $this->_authConfig;
     }
-        
-    
+
+
     protected function _initPlugin()
     {
         $front = Zend_Controller_Front::getInstance();
