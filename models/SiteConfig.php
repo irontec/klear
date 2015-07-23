@@ -8,7 +8,7 @@ class Klear_Model_SiteConfig
     protected $_timezone;
     protected $_signature = 'Klear :: Irontec';
     protected $_defaultCustomConfiguration;
-    
+
     protected $_logo;
     protected $_favIcon;
 
@@ -29,9 +29,9 @@ class Klear_Model_SiteConfig
 
     // Ruta de la aplicación (public), hacia el tema custom de jQuery UI
     protected $_jqueryUICustomTheme;
-    
+
     protected $_currentTheme;
-    
+
     protected $_themeRoller = array();
     protected $_themeRollerCustom = array();
 
@@ -42,6 +42,8 @@ class Klear_Model_SiteConfig
 
     protected $_authConfig = false;
 
+    protected $_rememberScroll;
+
     protected $_optionalParams = array(
             'logo',
             'favIcon',
@@ -51,9 +53,10 @@ class Klear_Model_SiteConfig
             'actionHelpers',
             'disableCDN',
             'signature',
-            'defaultCustomConfiguration'
+            'defaultCustomConfiguration',
+            'rememberScroll'
     );
-    
+
     protected $_session;
 
     protected $_requiredParams = array(
@@ -68,7 +71,7 @@ class Klear_Model_SiteConfig
         }
     }
 
-    
+
     public function setConfig(Zend_Config $config)
     {
         $this->_initRequiredParams($config);
@@ -87,21 +90,21 @@ class Klear_Model_SiteConfig
         $this->_initRawIncludes($config);
         $this->_initDynamicClass($config);
     }
-    
+
     public function setConfigForAuth(Zend_Config $config)
     {
         if (isset($config->auth)) {
             $this->_initAuthConfig($config->auth);
         }
         $this->_initDynamicClass($config);
-    }  
+    }
 
-    protected function _initAuthConfig(Zend_Config $authConfig) 
+    protected function _initAuthConfig(Zend_Config $authConfig)
     {
         $this->_authConfig = new Klear_Model_ConfigParser();
         $this->_authConfig->setConfig($authConfig);
     }
-    
+
     protected function _initSiteSubName(Zend_Config $config)
     {
 
@@ -231,7 +234,7 @@ class Klear_Model_SiteConfig
             }
         }
     }
-    
+
     protected function _initThemeRoller(Zend_Config $config)
     {
         if (isset($config->jqueryUI->themeRoller)) {
@@ -242,7 +245,7 @@ class Klear_Model_SiteConfig
                     if (isset($config->jqueryUI->jqueryUI->extraThemeFile)) {
                         $themeParser->setLocalExtraConfigFile($config->jqueryUI->extraThemeFile);
                     }
-                    $this->_themeRoller[$theme] = $themeParser->getPathForTheme($theme);  
+                    $this->_themeRoller[$theme] = $themeParser->getPathForTheme($theme);
                 }
             }
             if (isset($config->jqueryUI->themeRoller->paths)) {
@@ -250,7 +253,7 @@ class Klear_Model_SiteConfig
                     $this->_themeRoller[$themeName] = $path;
                     $this->_themeRollerCustom[] = $themeName;
                 }
-            }   
+            }
         }
     }
 
@@ -258,39 +261,39 @@ class Klear_Model_SiteConfig
     {
         if (isset($config->jqueryUI)) {
             $this->_initThemeRoller($config);
-            
+
             $front = Zend_Controller_Front::getInstance();
             $requestedTheme = $front->getRequest()->getParam('theme', false);
-            
+
             if (!$this->_session instanceof Zend_Session_Namespace) {
                 $this->_session = new Zend_Session_Namespace('UserSettings');
             }
-            
+
             $configTheme = isset($config->jqueryUI->theme)? $config->jqueryUI->theme: null;
-            
-            $configThemePath = isset($config->jqueryUI->path)? $config->jqueryUI->path: null; 
+
+            $configThemePath = isset($config->jqueryUI->path)? $config->jqueryUI->path: null;
             if ($configThemePath && !$configTheme) {
                 $configTheme = $configThemePath;
             }
             $themes = $this->getThemeRoller(null);
-            
+
             if ($requestedTheme) {
                 $requestedTheme = trim($requestedTheme);
                 if (array_key_exists($requestedTheme, $themes)) {
                     $this->_session->theme = $requestedTheme;
                 }
             }
-            
-            
+
+
             if ($this->_session->theme && !is_null($this->_session->theme)) {
                 $configTheme = $this->_session->theme;
                 if (in_array($configTheme, $this->_themeRollerCustom)) {
-                    $configThemePath = $themes[$configTheme]; 
+                    $configThemePath = $themes[$configTheme];
                 }
             }
-            
-            
-            
+
+
+
             if (!$configThemePath) {
                 $themeParser = new Klear_Model_JQueryUIThemeParser;
                 $themeParser->init();
@@ -304,8 +307,8 @@ class Klear_Model_SiteConfig
                 $this->_jqueryUICustomTheme = $configThemePath;
                 $this->_currentTheme = $configTheme;
             }
-            
-            
+
+
         } else {
             Throw new Zend_Exception("No existe una configuración de estilos válida");
         }
@@ -317,14 +320,14 @@ class Klear_Model_SiteConfig
             return;
         }
         $dynamicClassName = $config->dynamicConfigClass;
-        
-        
+
+
         $dynamic = $dynamicClassName::factory();
-        
+
         if (!is_subclass_of($dynamic, '\Klear_Model_Settings_Dynamic_Abstract')) {
             throw new Exception('Dynamic class does not extend Klear_Model_Settings_Dynamic_Abstract');
         }
-        
+
         $dynamic->init($config);
 
         $this->_sitename = $dynamic->processSiteName($this->_sitename);
@@ -374,11 +377,11 @@ class Klear_Model_SiteConfig
         return $this->_logo;
 
     }
-    
+
     public function getFavIcon()
     {
         return $this->_favIcon;
-    
+
     }
 
     public function getLangs()
@@ -397,7 +400,7 @@ class Klear_Model_SiteConfig
     {
         return $this->_currentTheme;
     }
-    
+
     public function getJQueryUItheme($baseUrl)
     {
         if (!empty($this->_jqueryUICustomTheme)) {
@@ -406,8 +409,8 @@ class Klear_Model_SiteConfig
             return $this->_jqueryUIPathTheme;
         }
     }
-    
-    public function getThemeRoller($baseUrl) 
+
+    public function getThemeRoller($baseUrl)
     {
         if ($baseUrl) {
             $baseUrl = $baseUrl;
@@ -467,18 +470,33 @@ class Klear_Model_SiteConfig
     {
         return $this->_signature;
     }
-    
+
     public function getDefaultCustomConfiguration($key)
     {
-        
-        if (is_null($this->_defaultCustomConfiguration) || 
+
+        if (is_null($this->_defaultCustomConfiguration) ||
                 !isset($this->_defaultCustomConfiguration->{$key})
                 ) {
             return null;
-            
+
         }
-        
+
         return $this->_defaultCustomConfiguration->{$key};
 
+    }
+
+    public function getRememberScroll()
+    {
+        $rememberScroll = "false";
+        if (is_null($this->_rememberScroll)) {
+            $rememberScroll = "false";
+        }
+        if ($this->_rememberScroll === true) {
+            $rememberScroll = "true";
+        }
+        if ($this->_rememberScroll == 1) {
+            $rememberScroll = "true";
+        }
+        return $rememberScroll;
     }
 }

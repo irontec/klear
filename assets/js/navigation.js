@@ -51,7 +51,7 @@
      */
 
     $.klear.checkNoFocusEvent = function(e, $el, $link) {
-
+        
         if (e.ctrlKey) {
             $el.data('noFocus', true);
             return;
@@ -563,6 +563,8 @@
             
                 $("#sidebar").accordion('option','active', options.openedSection)
             }
+            
+            $(document).trigger('kMenuSuccess');
         };
 
         $.klear._doMenuError = function(response) {
@@ -819,7 +821,6 @@
     };
 
     $.klear.tabNamesFunction = {
-
         loadSavedState : function() {
             if (localStorage.getItem('hideTabNames') == 'true') {
                 $.klear.tabNamesFunction.hide();
@@ -974,9 +975,15 @@
         }
     };
 
+    if ($("#applicationInfo").attr("data-rememberScroll") == "true") {
+        $(window).on("scroll", function(){
+            $(".ui-tabs-selected").data("scrollposition", $(window).scrollTop());
+        });
+    }
+    
     $(window).on('resize', menuMeasures.loadSize);
     $(document).on("kMenuLoaded", menuMeasures.loadSize);
-
+    
     $("body").on('click', 'a.toogleMenu', function(e) {
         if (e) {
             e.preventDefault();
@@ -987,12 +994,11 @@
     });
 
     $.klear.login = function(option) {
-
         switch (option) {
         case 'close':
-            if (this.$loginForm) {
+            if (this.$loginForm && $(this.$loginForm).is(":visible")) {
                 this.$loginForm.fadeOut(function() {
-                    $(this).dialog("destroy").remove();
+                    $(this).remove();
                 });
                 // klear custom events
                 $(document).trigger("kAuthSuccess");
@@ -1156,7 +1162,6 @@
                         });
                     },
                     select : function(event, ui) {
-
                         $("#tabsList li").each(function(idx, elem) {
                             $(elem).klearModule("highlightOff");
                         });
@@ -1166,6 +1171,15 @@
                     },
                     show : function(event, ui) {
                         $(ui.panel).trigger("focusin");
+                        var position = 0;
+                        if ($("#applicationInfo").attr("data-rememberScroll") == "true") {
+                            if ($(".ui-tabs-selected").data("scrollposition")) {
+                                position = $(".ui-tabs-selected").data("scrollposition");
+                            }
+                        }
+                        $('html, body').animate({
+                            scrollTop: position
+                            }, 600);
                     },
                     remove : function(event, ui) {
 
@@ -1358,6 +1372,7 @@
         $.klear.menu(true, opts);
         $.klear.loadedTemplates = {};
         $.klear.requestReloadTranslations();
+        
     };
 
     $.klear.start = function() {

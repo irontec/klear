@@ -78,7 +78,6 @@ if ($this->SiteConfig()->getDisableCDN()) {
 ?>
 
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
 </head>
 <body rel='<?php echo $this->baseUrl('klear')?>'>
 <div id="wrapper">
@@ -90,7 +89,7 @@ if ($this->SiteConfig()->getDisableCDN()) {
         endif;
         ?>
         </div>
-        <div id="applicationInfo">
+        <div id="applicationInfo" data-rememberScroll="<?php echo $this->SiteConfig()->getRememberScroll();?>">
             <?php echo $this->Info()?>
         </div>
         <div id="applicationTools">
