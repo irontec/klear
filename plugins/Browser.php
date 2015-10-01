@@ -40,7 +40,7 @@ class Klear_Plugin_Browser extends Zend_Controller_Plugin_Abstract
             $regex = "/(MSIE|Trident|Edge)/";
             if (preg_match($regex, $_SERVER['HTTP_USER_AGENT'])) {
                 echo "<center><font face='arial'>";
-                echo "<h2>We are sorry. We don't support your browser.</h2>";
+                echo "<h2>Lo sentimos, tu navegador no está soportado. / We are sorry. We don't support your browser.</h2>";
                 echo "<p>".$_SERVER['HTTP_USER_AGENT']."</p>";
                 echo $this->_getBrowsersLinks(array("chrome", "firefox", "opera"));
                 echo "</font></center>";
