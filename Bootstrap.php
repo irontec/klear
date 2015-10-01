@@ -30,6 +30,7 @@ class Klear_Bootstrap extends Zend_Application_Module_Bootstrap
     protected function _initYamlWrapper()
     {
         stream_wrapper_register("klear.yaml", "Klear_Model_YamlStream");
+
     }
 
 
@@ -49,6 +50,7 @@ class Klear_Bootstrap extends Zend_Application_Module_Bootstrap
 
 
         $front->registerPlugin(new Klear_Plugin_ParserFast());
+        $front->registerPlugin(new Klear_Plugin_Browser());
         $front->registerPlugin(new Klear_Plugin_Log());
         $front->registerPlugin(new Klear_Plugin_Auth());
 
@@ -58,7 +60,6 @@ class Klear_Bootstrap extends Zend_Application_Module_Bootstrap
 
         $front->registerPlugin(new Klear_Plugin_MagicCookie());
         $front->registerPlugin(new Klear_Plugin_Translator());
-
 
     }
 
@@ -222,6 +223,5 @@ class Klear_Bootstrap extends Zend_Application_Module_Bootstrap
 
         return $autoloader;
     }
-
 
 }
