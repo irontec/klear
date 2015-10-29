@@ -12,9 +12,9 @@ class Klear_Plugin_Browser extends Zend_Controller_Plugin_Abstract
      * (non-PHPdoc)
      * @see Zend_Controller_Plugin_Abstract::routeShutdown()
      */
-    public function routeShutdown(Zend_Controller_Request_Abstract $request)
+    public function routeShutdown(\Zend_Controller_Request_Abstract $request)
     {
-        if (!preg_match("/^klear/", $request->getModuleName())) {
+        if (!preg_match("/^klear/", $request->getModuleName()) || $request->getControllerName() == "assets") {
             return;
         }
 
