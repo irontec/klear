@@ -1,6 +1,7 @@
 Source: klear
 Section: web
 Priority: optional
+Build-Depends: debhelper
 Maintainer: Irontec Development Team <desarrollo@irontec.com>
 
 Package: klear
