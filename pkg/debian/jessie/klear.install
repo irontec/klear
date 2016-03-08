@@ -1,0 +1,11 @@
+adapters /opt/klear/modules/klear
+assets /opt/klear/modules/klear
+Bootstrap.php /opt/klear/modules/klear
+composer.json /opt/klear/modules/klear
+controllers /opt/klear/modules/klear
+exceptions /opt/klear/modules/klear
+languages /opt/klear/modules/klear
+layouts /opt/klear/modules/klear
+models /opt/klear/modules/klear
+plugins /opt/klear/modules/klear
+views /opt/klear/modules/klear

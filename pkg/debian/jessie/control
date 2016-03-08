@@ -1,0 +1,18 @@
+Source: klear
+Section: web
+Priority: optional
+Maintainer: Irontec Development Team <desarrollo@irontec.com>
+
+Package: klear
+Architecture: all
+Section: web
+Depends: klear-matrix, klear-library
+Priority: optional
+Homepage: http://www.irontec.com
+Description: Klear Framework - Full stable files
+ This package includes all files required to make klear work.
+ .
+ This package should be pulled by any klear module that will 
+ require any web application.
+ .
+
