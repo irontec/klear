@@ -1,0 +1,8 @@
+# Debian complains about minimized JS in sources
+klear source: source-is-missing assets/js/klear.compiled.js
+klear source: source-is-missing assets/js/scripts/spin.min.js
+klear source: source-is-missing assets/js/libs/yepnope.1.5.4-min.js
+klear source: source-is-missing assets/js/libs/jquery.tmpl.min.js
+klear source: source-is-missing assets/js/libs/jquery.min.js
+klear source: source-is-missing assets/js/libs/jquery-ui.min.js
+klear source: source-is-missing assets/js/libs/jquery-ui-i18n.min.js
