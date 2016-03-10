@@ -37,12 +37,13 @@ class Klear_Model_SiteConfig
 
     protected $_lang;
     protected $_langs = array();
-    
+
     protected $_modelLangs = array();
 
     protected $_authConfig = false;
 
     protected $_rememberScroll;
+    protected $_hideLangPicker = false;
 
     protected $_optionalParams = array(
             'logo',
@@ -54,7 +55,8 @@ class Klear_Model_SiteConfig
             'disableCDN',
             'signature',
             'defaultCustomConfiguration',
-            'rememberScroll'
+            'rememberScroll',
+            'hideLangPicker'
     );
 
     protected $_session;
@@ -151,7 +153,7 @@ class Klear_Model_SiteConfig
                 $this->_langs[$language->getIden()] = $language;
             }
         }
-        
+
         /*
          * Loading Model Languages
          */
@@ -389,7 +391,7 @@ class Klear_Model_SiteConfig
         if (sizeof($this->_langs) == 0) return false;
         return $this->_langs;
     }
-    
+
     public function getModelLangs()
     {
         if (sizeof($this->_modelLangs) == 0) return false;
@@ -498,5 +500,10 @@ class Klear_Model_SiteConfig
             $rememberScroll = "true";
         }
         return $rememberScroll;
+    }
+
+    public function getHideLangPicker()
+    {
+        return $this->_hideLangPicker;
     }
 }

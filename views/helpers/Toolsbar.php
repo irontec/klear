@@ -26,7 +26,8 @@ class Klear_View_Helper_Toolsbar extends Klear_View_Helper_Base
 
 
         if ($langs = $this->_view->SiteConfig()->getLangs()) {
-            if (sizeof($langs) > 1) {
+            $hideLangPicker = $this->_view->SiteConfig()->getHideLangPicker();
+            if (sizeof($langs) > 1 && !$hideLangPicker) {
                 $ret .= '<input type="checkbox" id="langPicker" '.
                         '/><label for="langPicker" class="primary" title="' . $this->_view->translate("Change language") .'">' .
                         '<span class="ui-icon ui-icon-flag" ></span>' .
