@@ -8,7 +8,7 @@ Maintainer: Irontec Development Team <desarrollo@irontec.com>
 Package: klear
 Architecture: all
 Section: web
-Depends: klear-matrix, klear-library
+Depends: klear-matrix, klear-library, zendframework
 Priority: optional
 Homepage: http://www.irontec.com
 Description: Klear Framework - Full stable files
