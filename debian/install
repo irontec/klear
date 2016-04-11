@@ -1,0 +1,10 @@
+adapters        /opt/irontec/klear/modules/klear
+assets          /opt/irontec/klear/modules/klear
+Bootstrap.php   /opt/irontec/klear/modules/klear
+controllers     /opt/irontec/klear/modules/klear
+exceptions      /opt/irontec/klear/modules/klear
+languages       /opt/irontec/klear/modules/klear
+layouts         /opt/irontec/klear/modules/klear
+models          /opt/irontec/klear/modules/klear
+plugins         /opt/irontec/klear/modules/klear
+views           /opt/irontec/klear/modules/klear
