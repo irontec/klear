@@ -1,0 +1,4 @@
+#!/bin/bash
+
+# Remove all klear deploys
+[ -L /opt/klear ] || rm -fr /opt/klear
