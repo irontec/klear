@@ -1,4 +1,5 @@
 #!/bin/bash
 
-# Remove all klear deploys
+# Previous all klear deploys
 [ -L /opt/klear ] || rm -fr /opt/klear
+[ -L /opt/klear-stable ] || rm -fr /opt/klear-stable
