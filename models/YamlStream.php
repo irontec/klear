@@ -30,6 +30,7 @@ class Klear_Model_YamlStream
         $this->_content = $this->_loadContent($this->_file);
 
         $this->_resolveVariables();
+        $this->_fixGettextInvocations();
 
         $this->_length = mb_strlen($this->_content, '8bit');
 
@@ -188,6 +189,22 @@ class Klear_Model_YamlStream
             $this->_content
         );
     }
+
+    protected function _fixGettext($data) 
+    {
+        return ': "' . str_replace('"','\\"', $data[2]). '"';
+    }
+
+    protected function _fixGettextInvocations()
+    {
+        $this->_content = preg_replace_callback(
+            '/:\s?(["\']{0,1})((_|ngettext)\(.*\))(["\']{0,1})/',
+            array($this, '_fixGettext'),
+            $this->_content
+        );
+
+    }
+
 
     public function stream_read($count)
     {
