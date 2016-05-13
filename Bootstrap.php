@@ -29,8 +29,10 @@ class Klear_Bootstrap extends Zend_Application_Module_Bootstrap
 
     protected function _initYamlWrapper()
     {
-        stream_wrapper_register("klear.yaml", "Klear_Model_YamlStream");
-
+        $existed = in_array("klear.yaml", stream_get_wrappers());
+        if (!$existed) {
+            stream_wrapper_register("klear.yaml", "Klear_Model_YamlStream");
+        }
     }
 
 
