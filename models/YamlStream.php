@@ -155,7 +155,7 @@ class Klear_Model_YamlStream
                     ! is_null($this->_walkDataSublevels($result[1], $auth->getIdentity()))
                 ) {
                     $value = $this->_walkDataSublevels($result[1], $auth->getIdentity());
-                    
+
                     if (is_bool($value)) {
                         $value = $value? 'true':'false';
                     }
@@ -190,15 +190,16 @@ class Klear_Model_YamlStream
         );
     }
 
-    protected function _fixGettext($data) 
+    protected function _fixGettext($data)
     {
-        return ': "' . str_replace('"','\\"', $data[2]). '"';
+        return ': "' . str_replace('"', '\\"', $data[2]). '"';
     }
 
     protected function _fixGettextInvocations()
     {
+
         $this->_content = preg_replace_callback(
-            '/:\s?(["\']{0,1})((_|ngettext)\(.*\))(["\']{0,1})/',
+            '/:\s?(["\']{0,1})((_|ngettext)\(.*\))(["\';]{0,1})/',
             array($this, '_fixGettext'),
             $this->_content
         );
