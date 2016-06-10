@@ -55,7 +55,11 @@ if ($this->SiteConfig()->getDisableCDN()) {
             ->setIndent(4);
 
     foreach ($this->SiteConfig()->getRawCss() as $_rawCss) {
-        $this->headLink()->appendStylesheet($this->baseUrl($_rawCss));
+        if (substr($_rawCss, 0, 2) == '//') {
+            $this->headLink()->appendStylesheet($_rawCss);
+        } else {
+            $this->headLink()->appendStylesheet($this->baseUrl($_rawCss));
+        }
     }
 
     echo $this->headLink();
@@ -67,7 +71,11 @@ if ($this->SiteConfig()->getDisableCDN()) {
         ->setIndent(4);
 
     foreach ($this->SiteConfig()->getRawJavascripts() as $_rawJs) {
-        $this->headScript()->appendFile($this->baseUrl($_rawJs));
+        if (substr($_rawJs, 0, 2) == '//') {
+            $this->headScript()->appendFile($_rawJs);
+        } else {
+            $this->headScript()->appendFile($this->baseUrl($_rawJs));
+        }
     }
 
     echo $this->headScript();
