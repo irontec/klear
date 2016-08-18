@@ -113,7 +113,7 @@ class Klear_Plugin_Error extends Zend_Controller_Plugin_Abstract
         echo $this->_defaultErrorMessage;
     }
 
-    public function fallback_exception_handler (\Exception $exception)
+    public function fallback_exception_handler ($exception)
     {
 
         $currentException = $exception;
