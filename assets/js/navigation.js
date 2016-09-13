@@ -299,7 +299,7 @@
             });
 
             $sidebar.on('reposition', function() {
-
+                
                 if (!$(this).is(":visible") || $(window).width() <= '680') {
                     return;
                 }
@@ -313,10 +313,13 @@
                 } else {
                     _target -= sideBarOffset.top;
                 }
-                $(this).stop().animate({
-                    'marginTop' : _target + 'px'
-                }, 0, 'easeOutQuad');
-
+                
+//                if ($(window).height() > $(this).height()) {
+//                    $(this).stop().animate({
+//                        'marginTop' : _target + 'px'
+//                    }, 0, 'easeOutQuad');
+//                }
+                
                 /*
                  * Hacemos que la barra de tabs, esté siempre arriba Corregimos
                  * en 7px para que se ajuste al marco superior.
