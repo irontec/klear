@@ -66,7 +66,7 @@ class Klear_Model_SiteConfig
             'sitename'
     );
 
-    protected $_disabledFixed;
+    protected $_disableFixed;
 
     public function __construct(Zend_Config $config = null)
     {
@@ -94,7 +94,7 @@ class Klear_Model_SiteConfig
         $this->_initRawIncludes($config);
         $this->_initDynamicClass($config);
 
-        $this->_initDisabledFixed($config);
+        $this->_initDisableFixed($config);
     }
 
     public function setConfigForAuth(Zend_Config $config)
@@ -351,13 +351,13 @@ class Klear_Model_SiteConfig
         $this->_signature = $dynamic->processSignature($this->_signature);
     }
 
-    protected function _initDisabledFixed(Zend_Config $config)
+    protected function _initDisableFixed(Zend_Config $config)
     {
-        if (!isset($config->disabledFixed)) {
+        if (!isset($config->disableFixed)) {
             return;
         }
 
-        $this->_disabledFixed = $config->disabledFixed;
+        $this->_disableFixed = $config->disableFixed;
     }
 
     public function getYear()
@@ -520,8 +520,8 @@ class Klear_Model_SiteConfig
         return $this->_hideLangPicker;
     }
 
-    public function getDisabledFixed()
+    public function getDisableFixed()
     {
-        return $this->_disabledFixed;
+        return $this->_disableFixed;
     }
 }

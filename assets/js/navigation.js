@@ -314,7 +314,7 @@
                     _target -= sideBarOffset.top;
                 }
 
-               if (!response.data.disabledFixed) {
+               if (!response.data.disableFixed) {
                    $(this).stop().animate({
                        'marginTop' : _target + 'px'
                    }, 0, 'easeOutQuad');

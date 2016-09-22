@@ -68,11 +68,11 @@ class Klear_MenuController extends Zend_Controller_Action
         return $this->_getMenu('footerMenu');
     }
 
-    protected function _getDisabledFixed()
+    protected function _getDisableFixed()
     {
         $siteConfig = $this->_klearBootstrap->getOption('siteConfig');
 
-        return $siteConfig->getDisabledFixed();
+        return $siteConfig->getDisableFixed();
     }
 
     public function indexAction()
@@ -100,7 +100,7 @@ class Klear_MenuController extends Zend_Controller_Action
         $data = array();
         $data['jqLocale'] = $currentKlearLanguage->getjQLocale();
         $data['navMenus'] = $availableMenuSites;
-        $data['disabledFixed'] = $this->_getDisabledFixed();
+        $data['disableFixed'] = $this->_getDisableFixed();
 
         $jsonResponse = Klear_Model_DispatchResponseFactory::build();
 
