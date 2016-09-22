@@ -313,38 +313,38 @@
                 } else {
                     _target -= sideBarOffset.top;
                 }
-                
-//                if ($(window).height() > $(this).height()) {
-//                    $(this).stop().animate({
-//                        'marginTop' : _target + 'px'
-//                    }, 0, 'easeOutQuad');
-//                }
-                
-                /*
-                 * Hacemos que la barra de tabs, esté siempre arriba Corregimos
-                 * en 7px para que se ajuste al marco superior.
-                 */
-                _target -= 7;
-                if (_target > 0) {
-                    $("#tabsList").css("position", "absolute");
-                } else {
-                    _target = 0;
-                }
-                $("#tabsList").stop().animate({
-                    'marginTop' : _target + 'px'
-                }, 0, 'easeOutQuad', function() {
-                    if (_target <= 0) {
-                        $(this).css({
-                            position : "relative",
-                            opacity : "1"
-                        });
-                    }
-                });
 
-                $("#tabsListNavArrows").stop().animate({
-                    'marginTop' : _target + 'px'
-                }, 0, 'easeOutQuad', function() {
-                });
+               if (!response.data.disabledFixed) {
+                   $(this).stop().animate({
+                       'marginTop' : _target + 'px'
+                   }, 0, 'easeOutQuad');
+
+                   /*
+                    * Hacemos que la barra de tabs, esté siempre arriba Corregimos
+                    * en 7px para que se ajuste al marco superior.
+                    */
+                   _target -= 7;
+                   if (_target > 0) {
+                       $("#tabsList").css("position", "absolute");
+                   } else {
+                       _target = 0;
+                   }
+                   $("#tabsList").stop().animate({
+                       'marginTop' : _target + 'px'
+                   }, 0, 'easeOutQuad', function() {
+                       if (_target <= 0) {
+                           $(this).css({
+                               position : "relative",
+                               opacity : "1"
+                           });
+                       }
+                   });
+
+                   $("#tabsListNavArrows").stop().animate({
+                       'marginTop' : _target + 'px'
+                   }, 0, 'easeOutQuad', function() {
+                   });
+               }
             });
 
             $("li", $sidebar).on("mouseenter", function() {
