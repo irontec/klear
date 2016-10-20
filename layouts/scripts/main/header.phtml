@@ -10,7 +10,7 @@ if ($this->SiteConfig()->getDisableCDN()) {
 }
 ?>>
 <?php
-    $this->headTitle()->append("klear");
+//    $this->headTitle()->append("klear");
     $this->headTitle()->append($this->SiteConfig()->getYear());
     if (APPLICATION_ENV!='production') {
         $this->headTitle()->append("ENV: " . APPLICATION_ENV);
