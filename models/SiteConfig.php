@@ -68,6 +68,8 @@ class Klear_Model_SiteConfig
 
     protected $_disableFixed;
 
+    protected $_hideKlearName;
+
     public function __construct(Zend_Config $config = null)
     {
         if (!is_null($config)) {
@@ -95,6 +97,8 @@ class Klear_Model_SiteConfig
         $this->_initDynamicClass($config);
 
         $this->_initDisableFixed($config);
+
+        $this->_initHideKlearName($config);
     }
 
     public function setConfigForAuth(Zend_Config $config)
@@ -360,6 +364,15 @@ class Klear_Model_SiteConfig
         $this->_disableFixed = $config->disableFixed;
     }
 
+    protected function _initHideKlearName(Zend_Config $config)
+    {
+        if (!isset($config->hideKlearName)) {
+            return;
+        }
+
+        $this->_hideKlearName = $config->hideKlearName;
+    }
+
     public function getYear()
     {
         return $this->_year;
@@ -523,5 +536,10 @@ class Klear_Model_SiteConfig
     public function getDisableFixed()
     {
         return $this->_disableFixed;
+    }
+
+    public function getHideKlearName()
+    {
+        return $this->_hideKlearName;
     }
 }

@@ -10,7 +10,10 @@ if ($this->SiteConfig()->getDisableCDN()) {
 }
 ?>>
 <?php
-//    $this->headTitle()->append("klear");
+    if (!$this->SiteConfig()->getHideKlearName()) {
+        $this->headTitle()->append("klear");
+    }
+
     $this->headTitle()->append($this->SiteConfig()->getYear());
     if (APPLICATION_ENV!='production') {
         $this->headTitle()->append("ENV: " . APPLICATION_ENV);
@@ -33,8 +36,6 @@ if ($this->SiteConfig()->getDisableCDN()) {
     <base href="<?php echo $this->serverUrl($this->baseUrl('klear')); ?>/" />
 
 <?php
-
-
     $favIcon = $this->SiteConfig()->getFavIcon();
     if (trim($favIcon) == "") {
         $favIcon = 'images/favicon.ico';
