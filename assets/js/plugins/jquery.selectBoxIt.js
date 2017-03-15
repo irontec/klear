@@ -2067,6 +2067,8 @@
 
         var self = this,
 
+            maxListHeight = 400,
+
             // Returns the x and y coordinates of the dropdown list options list relative to the document
             listOffsetTop = self.dropdown.offset().top,
 
@@ -2121,8 +2123,9 @@
 
             // If there is more room on the bottom
             if(outsideBottomViewport < outsideTopViewport) {
-
-                self.list.css("max-height", listHeight - outsideBottomViewport - (selectBoxHeight/2));
+                var maxHeight = listHeight - outsideBottomViewport - (selectBoxHeight/2);
+                if (maxHeight > maxListHeight) maxHeight = maxListHeight;
+                self.list.css("max-height", maxHeight);
 
                 self.list.css("top", "auto");
 
@@ -2131,7 +2134,9 @@
             // If there is more room on the top
             else {
 
-                self.list.css("max-height", listHeight - outsideTopViewport - (selectBoxHeight/2));
+                var maxHeight = listHeight - outsideTopViewport - (selectBoxHeight/2);
+                if (maxHeight > maxListHeight) maxHeight = maxListHeight;
+                self.list.css("max-height", maxHeight);
 
                 // Sets custom CSS properties to place the dropdown list options directly above the dropdown list
                 self.list.css("top", (self.dropdown.position().top - self.list.outerHeight()));
