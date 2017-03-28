@@ -30,6 +30,7 @@ class Klear_Model_YamlStream
         $this->_content = $this->_loadContent($this->_file);
 
         $this->_resolveVariables();
+        $this->_resolveExpressions();
         $this->_fixGettextInvocations();
 
         $this->_length = mb_strlen($this->_content, '8bit');
@@ -186,6 +187,23 @@ class Klear_Model_YamlStream
         $this->_content = preg_replace_callback(
             '/\$\{([^\}]*)\}/',
             array($this, '_parseVariables'),
+            $this->_content
+        );
+    }
+
+    protected function _parseExpression($data)
+    {
+        // Check expression has only allowed tokens
+        $expr = Klear_Model_YamlExpression::checkTokens("return (" . $data[1] . ");");
+        $value = (bool) eval ($expr);
+        return $value ? 'true' : 'false';
+    }
+
+    protected function _resolveExpressions()
+    {
+        $this->_content = preg_replace_callback(
+            '/\$\[([^\]]*)\]/',
+            array($this, '_parseExpression'),
             $this->_content
         );
     }
