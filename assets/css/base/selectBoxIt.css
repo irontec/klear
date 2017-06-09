@@ -75,6 +75,7 @@
 
 .selectboxit .selectboxit-option-icon-container {
   margin-left: 5px;
+  display: none;
 }
 
 /* Options List */
