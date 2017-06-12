@@ -43,7 +43,8 @@ production:
         - redmond-red
         - twitter
         - tedra
-        
+        - pinkpat
+
 testing:
   _extends: production
 
