@@ -37,7 +37,6 @@
 
     var __namespace__ = 'klear.module';
 
-
     $.widget("klear.module", {
 
         /*
@@ -48,6 +47,7 @@
          */
 
         _create: function(){
+
             // remember this instance
             $.klear.module.instances.push(this.element);
         },
@@ -362,7 +362,7 @@
 
         },
 
-        reDispatch : function() {
+        reDispatch: function() {
 
             $.console.info("["+__namespace__+"] _reDispatch");
 
@@ -372,6 +372,7 @@
 //                $(this.options.parentScreen).klearModule("reDispatch");
 //            }
 
+            this.element.trigger("reDispatch");
             this.setAsloading();
             this.dispatch();
         },
