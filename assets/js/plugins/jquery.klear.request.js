@@ -34,7 +34,7 @@
         var _params = {};
 
         $.each(_validParams,function(idx,_value) {
-            if (options[_value]) {
+            if (options[_value] !== undefined) {
                 _params[_value] = options[_value];
             }
         });
