@@ -1111,7 +1111,6 @@
 
                 // `click` event with the `selectBoxIt` namespace
                 "click.selectBoxIt": function() {
-
                     // Used to make sure the dropdown becomes focused (fixes IE issue)
                     self.dropdown.trigger("focus", true);
 
@@ -1318,26 +1317,31 @@
             // Select box individual options events bound with the jQuery `delegate` method.  `Delegate` was used because binding indropdownidual events to each list item (since we don't know how many there will be) would decrease performance.  Instead, we bind each event to the unordered list, provide the list item context, and allow the list item events to bubble up (`event bubbling`). This greatly increases page performance because we only have to bind an event to one element instead of x number of elements. Delegates the `click` event with the `selectBoxIt` namespace to the list items
             self.list.on({
 
-                "mousedown.selectBoxIt": function() {
-
-                    self._update($(this));
-
-                    self.triggerEvent("option-click");
-
-                    // If the current drop down option is not disabled
-                    if ($(this).attr("data-disabled") === "false" && $(this).attr("data-preventclose") !== "true") {
-
-                        // Closes the drop down list
-                        self.close();
-
-                    }
-
+                "mousedown.selectBoxIt": function(e) {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    var that = this;
                     setTimeout(function() {
 
-                        self.dropdown.trigger('focus', true);
+                        self._update($(that));
 
-                    }, 0);
+                        self.triggerEvent("option-click");
 
+                        // If the current drop down option is not disabled
+                        if ($(that).attr("data-disabled") === "false" && $(that).attr("data-preventclose") !== "true") {
+
+                            // Closes the drop down list
+                            self.close();
+
+                        }
+
+                        setTimeout(function () {
+
+                            self.dropdown.trigger('focus', true);
+
+                        }, 0);
+
+                    }, 100);
                 },
 
                // Delegates the `focusin` event with the `selectBoxIt` namespace to the list items
