@@ -33,7 +33,7 @@ if ($this->SiteConfig()->getDisableCDN()) {
 
     // Este base antes que el script!!!
 ?>
-    <base href="<?php echo $this->serverUrl($this->baseUrl('klear')); ?>/" />
+    <base href="<?php echo $this->serverUrl($_SERVER['SCRIPT_NAME'] . $this->baseUrl('klear')); ?>/" />
 
 <?php
     $favIcon = $this->SiteConfig()->getFavIcon();
