@@ -1341,7 +1341,7 @@
 
                         }, 0);
 
-                    }, 100);
+                    }, 200);
                 },
 
                // Delegates the `focusin` event with the `selectBoxIt` namespace to the list items
