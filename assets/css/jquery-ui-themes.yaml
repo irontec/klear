@@ -1,7 +1,7 @@
 production:
   multicdn:
-    googleapis:
-      baseurl: //ajax.googleapis.com/ajax/libs/jqueryui/1.8.17/themes/%theme%/jquery-ui.css
+    jquery:
+      baseurl: /klear/themes/jquery/%theme%/jquery-ui.css
       themes:
         - base
         - black-tie
@@ -29,7 +29,7 @@ production:
         - ui-lightness
         - vader
     irontec:
-      baseurl: //klear-themes.irontec.com/%theme%/jquery-ui.css
+      baseurl: /klear/themes/irontec/%theme%/jquery-ui.css
       themes:
         - irontec-red
         - absolution
@@ -48,10 +48,8 @@ production:
 testing:
   _extends: production
 
-    
 staging:
   _extends: production
 
-    
 development:
   _extends: production

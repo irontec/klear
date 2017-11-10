@@ -83,9 +83,7 @@ class Klear_Model_JQueryUIThemeParser
 
             $cache->save($this->_config);
         }
-
     }
-
 
     protected function _parseForTheme(Zend_Config $config, $targetTheme)
     {
@@ -101,8 +99,6 @@ class Klear_Model_JQueryUIThemeParser
 
     public function getPathForTheme($theme)
     {
-
-
         if (isset($this->_config->multicdn)) {
             foreach ($this->_config->multicdn as $cdnConfig) {
                 $foundPath = $this->_parseForTheme($cdnConfig, $theme);

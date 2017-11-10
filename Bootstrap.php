@@ -121,6 +121,22 @@ class Klear_Bootstrap extends Zend_Application_Module_Bootstrap
         );
 
         $router->addRoute(
+            'klearThemes',
+            new Zend_Controller_Router_Route_Regex(
+                '(default|klear[^/]*)/themes/(.*)$',
+                array(
+                    'controller' => 'assets',
+                    'action' => 'theme',
+                    'module' => 'klear'
+                ),
+                array(
+                    2 => 'file',
+                    1 => 'moduleName'
+                )
+            )
+        );
+
+        $router->addRoute(
             'klearCssExtended',
             new Zend_Controller_Router_Route_Regex(
                 '(default|klear[^/]*)/css-extended/(.*)/(.*)$',
