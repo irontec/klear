@@ -51,7 +51,7 @@ if ($this->SiteConfig()->getDisableCDN()) {
             ->appendStylesheet($this->baseUrl('/klear/css/base/klear.css'))
             ->appendStylesheet($this->baseUrl('/klear/css/base/selectBoxIt.css'))
             ->appendStylesheet($this->baseUrl('/klear/css/base/print.css'), 'print')
-            ->appendStylesheet('//maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css')
+            ->appendStylesheet('/klear/css/base/font-awesome.min.css')
             ->headLink(array('rel' => 'shortcut icon','href' => $this->baseUrl($favIcon)))
             ->setIndent(4);
 

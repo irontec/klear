@@ -119,11 +119,11 @@ var console = window.console || { log : function() {}};
     yepnope([
         {
             load: {
-                'jquery.min.js': 'timeout=1000!cdnCheck!//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js',
-                'jquery.tmpl.min.js': 'timeout=1000!cdnCheck!//ajax.aspnetcdn.com/ajax/jquery.templates/beta1/jquery.tmpl.js',
-                'jquery-ui.min.js': 'other!timeout=1000!cdnCheck!//ajax.googleapis.com/ajax/libs/jqueryui/1.8.24/jquery-ui.min.js',
+                'jquery.min.js': 'timeout=1000!cdnCheck!base!js//libs/jquery.min.js',
+                'jquery.tmpl.min.js': 'timeout=1000!cdnCheckbase!js//libs/jquery.tmpl.js',
+                'jquery-ui.min.js': 'other!timeout=1000!cdnCheck!base!js//libs/jquery-ui.min.js',
                 'ie-jquery-ui.min.js': 'ielt10!cdnCheck!base!js/libs/ie-jquery-ui.js',
-                'jquery-ui-i18n.min.js': 'timeout=1000!cdnCheck!//ajax.googleapis.com/ajax/libs/jqueryui/1.8.24/i18n/jquery-ui-i18n.min.js'
+                'jquery-ui-i18n.min.js': 'timeout=1000!cdnCheck!base!js//libs/jquery-ui-i18n.min.js'
             },
             callback : function(url, i, idx) {
                 switch(idx) {
@@ -156,6 +156,7 @@ var console = window.console || { log : function() {}};
             },
 
             complete: function() {
+
                 if (window.jQuery && window.jQuery.ui && window.jQuery.tmpl) {
                     _loader.target += 4;
                 } else {

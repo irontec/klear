@@ -121,6 +121,13 @@ class Klear_AssetsController extends Zend_Controller_Action
         }
     }
 
+    public function themeAction()
+    {
+        $cssFile = $this->_buildPath('/assets/themes/');
+        $this->_returnFile($cssFile);
+    }
+
+
     public function cssAction()
     {
         $cssFile = $this->_buildPath('/assets/css/');
