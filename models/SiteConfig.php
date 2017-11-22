@@ -434,7 +434,7 @@ class Klear_Model_SiteConfig
         if (!empty($this->_jqueryUICustomTheme)) {
             return $baseUrl . $this->_jqueryUICustomTheme;
         } else {
-            return $this->_jqueryUIPathTheme;
+            return $baseUrl . $this->_jqueryUIPathTheme;
         }
     }
 
