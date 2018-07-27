@@ -32,7 +32,7 @@ if ($this->SiteConfig()->getDisableCDN()) {
     echo "\n";
 
     // Este base antes que el script!!!
-    $baseUrl = $_SERVER['SCRIPT_NAME'] === '/dev.php'
+    $baseUrl = $_SERVER['SCRIPT_NAME'] !== '/index.php'
         ? $_SERVER['SCRIPT_NAME']
         : '';
 
