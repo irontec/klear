@@ -8,7 +8,6 @@
 class Klear_Model_SubSection extends Klear_Model_Section
 {
     protected $_mainFile;
-    protected $_class;
     
     public function setMainFile($file)
     {
@@ -20,11 +19,6 @@ class Klear_Model_SubSection extends Klear_Model_Section
     public function getMainFile()
     {
         return $this->_mainFile;
-    }
-
-    public function getClass()
-    {
-        return $this->_class;
     }
 
     public function isDefault()

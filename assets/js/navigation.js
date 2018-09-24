@@ -298,6 +298,13 @@
                 autoHeight : false
             });
 
+            var $submenus = $('#sidebar .submenu');
+            $submenus.accordion({
+                collapsible : true,
+                autoHeight : false,
+                active: false
+            });
+
             $sidebar.on('reposition', function() {
                 
                 if (!$(this).is(":visible") || $(window).width() <= '680') {
@@ -720,6 +727,7 @@
 
         if ($sidebar.data("seized")) {
 
+            $sidebar.removeClass("small");
             $sidebar.animate({
                 width : menuMeasures.getWidth() + 'px'
             });
@@ -736,6 +744,7 @@
 
         } else {
 
+            $sidebar.addClass("small");
             $(".textnode", $sidebar).animate({
                 fontSize : '0em',
                 opacity : '0'

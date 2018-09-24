@@ -117,6 +117,25 @@ body {
     padding: 0.3em 0 0.4em 28px;
 }
 
+#sidebar h3 {
+    font-size: 1.00em;
+    padding: 0.3em 0 0.4em 28px;
+}
+
+#sidebar h3 {
+    font-size: 1.00em;
+    padding: 0.3em 0 0.4em 0px;
+}
+
+#sidebar h3 a {
+    margin-left: 0;
+}
+
+
+#sidebar.small h3 span.ui-icon {
+    display: none;
+}
+
 #sidebar div {
     padding: 0.4em;
 }
@@ -142,6 +161,30 @@ body {
 #sidebar{
     padding: 0px 15px 0 0;
     display: none;
+}
+
+#sidebar .submenu {
+    width: 95%;
+}
+
+#sidebar .submenu ul {
+    padding: 0;
+}
+
+#sidebar .submenu a {
+    margin-left: 0;
+}
+
+#sidebar.small .submenu a {
+    padding-left: 7px;
+}
+
+#sidebar .submenu li a {
+    padding-left: 35px;
+}
+
+#sidebar.small .submenu li a {
+    padding-left: 0;
 }
 
 #sidebar .compact {

@@ -10,7 +10,9 @@ class Klear_Model_Section  implements \IteratorAggregate
     protected $_iden;
 
     protected $_name;
-    
+
+    protected $_class;
+
     protected $_meta;
      
     protected $_description;
@@ -129,6 +131,11 @@ class Klear_Model_Section  implements \IteratorAggregate
         return Klear_Model_Gettext::gettextCheck($this->_name);
     }
 
+    public function getClass()
+    {
+        return $this->_class;
+    }
+
     public function getDescription()
     {
         return Klear_Model_Gettext::gettextCheck($this->_description);
@@ -142,5 +149,10 @@ class Klear_Model_Section  implements \IteratorAggregate
     public function hasSubsections()
     {
         return count($this->_subsections) > 0;
+    }
+
+    public function getSubsections()
+    {
+        return $this->_subsections;
     }
 }

@@ -15,35 +15,67 @@ class Klear_MenuController extends Zend_Controller_Action
 
     protected function _getMenu($menuName)
     {
-        $menu = array();
+        $menu = [
+            'sections' => []
+        ];
 
         foreach ($this->_klearBootstrap->getOption($menuName) as $section) {
-            $tmpSection = array(
-                    'id' => $section->getName(),
-                    'name' => $section->getName(),
-                    'meta' => $section->getMeta(),
-                    'description' => $section->getDescription(),
-                    'opts' => array()
-            );
+            $tmpSection = [
+                'id' => $section->getName(),
+                'name' => $section->getName(),
+                'meta' => $section->getMeta(),
+                'description' => $section->getDescription(),
+                'opts' => [],
+                'subsections' => []
+            ];
             $tmpSection = $this->_thinData($tmpSection);
-            foreach ($section as $subsection) {
-                $tmpSubSection = array(
-                        'id' => $subsection->getMainFile(),
-                        'name' => $subsection->getName(),
-                        'meta' => $subsection->getMeta(),
-                        'class' => $subsection->getClass(),
-                        'default' =>  $subsection->isDefault(),
-                        'description' => $subsection->getDescription(),
-                        'Zpts' => array()
-                );
-                $tmpSubSection = $this->_thinData($tmpSubSection);
-                $tmpSection['subsections'][] = $tmpSubSection;
-            }
+            $subsections = $this->parseSubsections(
+                $section->getSubsections()
+            );
+            $tmpSection['subsections'] = $subsections;
+
             $menu['sections'][] = $tmpSection;
         }
+
         return $menu;
     }
-    
+
+    protected function parseSubsections(array $subsections)
+    {
+        $response = [];
+        foreach ($subsections as $subsection) {
+
+            if ($subsection->hasSubsections()) {
+                $response[] = [
+                    'id' => $subsection->getName(),
+                    'name' => $subsection->getName(),
+                    'meta' => $subsection->getMeta(),
+                    'class' => $subsection->getClass(),
+                    'description' => $subsection->getDescription(),
+                    'opts' => [],
+                    'subsections' => $this->parseSubsections($subsection->getSubsections())
+                ];
+
+                continue;
+            }
+
+            $tmpSubSection = [
+                'id' => $subsection->getMainFile(),
+                'name' => $subsection->getName(),
+                'meta' => $subsection->getMeta(),
+                'class' => $subsection->getClass(),
+                'default' =>  $subsection->isDefault(),
+                'description' => $subsection->getDescription(),
+                'Zpts' => []
+            ];
+
+            $tmpSubSection = $this->_thinData($tmpSubSection);
+            $response[] = $tmpSubSection;
+        }
+
+        return $response;
+    }
+
     protected function _thinData($data) {
         return array_filter($data);
     }
