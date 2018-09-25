@@ -32,6 +32,7 @@ production:
       baseurl: /klear/themes/irontec/%theme%/jquery-ui.css
       themes:
         - irontec-red
+        - irontec-blue
         - absolution
         - absolution-green
         - absolution-red
