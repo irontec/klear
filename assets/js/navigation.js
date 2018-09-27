@@ -692,6 +692,10 @@
                         return;
                     }
 
+                    if (!$(this).attr('id')) {
+                        return;
+                    }
+
                     var iden = $(this).attr("id").replace(/^target-/, '');
                     $.klear.checkNoFocusEvent(e, $.klear.canvas, $(this));
                     var tabTitle = $(this).text() != "" ? $(this).text() : $(

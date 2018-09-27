@@ -124,16 +124,20 @@ body {
 
 #sidebar h3 {
     font-size: 1.00em;
-    padding: 0.3em 0 0.4em 0px;
+    font-weight: normal;
+    padding: 0.3em 0 0.4em 0.5em;
+}
+
+#sidebar.small h3{
+    padding-left: 0px;
 }
 
 #sidebar h3 a {
     margin-left: 0;
 }
 
-
-#sidebar.small h3 span.ui-icon {
-    display: none;
+#sidebar h3 span {
+    color: #222;
 }
 
 #sidebar div {
@@ -143,10 +147,11 @@ body {
 #sidebar ul {
      list-style: none;
 }
-#sidebar li {
+#sidebar > ul > li {
     padding: 0.5em;
     font-size:0.9em;
 }
+
 #sidebar li:not(.ui-state-highlight) {
     border: 1px solid transparent;
 }
@@ -164,23 +169,39 @@ body {
 }
 
 #sidebar .submenu {
+    padding: 0 0 0 0.5em!important;
+    border: none!important;
+    width: auto;
+}
+
+
+#sidebar .submenu:hover {
+    background: none!important;
+    border: none;
+}
+
+#sidebar .submenu > * {
+    background: none;
+    border: none;
     width: 95%;
 }
 
-#sidebar .submenu ul {
-    padding: 0;
+#sidebar .submenu .ui-accordion-header .ui-icon {
+    left: auto;
+    right: 0;
 }
 
 #sidebar .submenu a {
     margin-left: 0;
+    padding: 0;
 }
 
 #sidebar.small .submenu a {
-    padding-left: 7px;
+    padding-left: 0px;
 }
 
 #sidebar .submenu li a {
-    padding-left: 35px;
+    padding-left: 10px;
 }
 
 #sidebar.small .submenu li a {
