@@ -45,6 +45,7 @@ production:
         - twitter
         - tedra
         - pinkpat
+        - redinn
 
 testing:
   _extends: production
