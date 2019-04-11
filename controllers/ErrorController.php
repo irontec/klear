@@ -116,7 +116,6 @@ class Klear_ErrorController extends Zend_Controller_Action
                 $this->view->code = 500;
                 $this->view->exceptionCode = $errors->exception->getCode();
 
-
                 if ($this->_showErrors()) {
                     $this->view->file = $errors->exception->getFile();
                     $this->view->line = $errors->exception->getLine();
@@ -124,10 +123,11 @@ class Klear_ErrorController extends Zend_Controller_Action
                 } else {
                     // Si no estamos en desarrollo, y no tenemo ćodigo de excepción, es probable
                     // que estemos ante un error de PHP. (lo ocultamos ;)
-                    if ($this->view->exceptionCode == 0) {
+                    $isDomainException = $errors->exception instanceof \DomainException;
+
+                    if (!$isDomainException && $this->view->exceptionCode == 0) {
                         $this->view->message = $this->_helper->translate('Undefined error');
                     }
-
                 }
 
                 break;
