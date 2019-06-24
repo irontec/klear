@@ -420,8 +420,10 @@
         close: function(opts) {
 
             $.console.info("["+__namespace__+"] close");
+            opts = opts || {};
+            var forced = opts.forced || false;
 
-            if (this.isLocked()) {
+            if (this.isLocked() && !forced) {
                 $(this.options.container).tabs( "select", this.options.tabIndex );
 
                 if ('function' == typeof this.options.tabLock) {
