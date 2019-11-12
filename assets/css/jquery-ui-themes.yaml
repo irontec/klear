@@ -46,6 +46,7 @@ production:
         - tedra
         - pinkpat
         - redinn
+        - grayidec
 
 testing:
   _extends: production
