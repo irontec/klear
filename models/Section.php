@@ -92,8 +92,9 @@ class Klear_Model_Section  implements \IteratorAggregate
 
         foreach ($data->submenus as $file => $sectionData) {
 
-
-            if (in_array($file, $this->_skip)) continue;
+            if (in_array($file, $this->_skip)) {
+                continue;
+            }
             
             $subsection = new Klear_Model_SubSection;
 
@@ -102,6 +103,14 @@ class Klear_Model_Section  implements \IteratorAggregate
                 ->setMainFile($file)
                 ->setData($sectionData);
 
+            $emptyShowableSubsections =
+                isset($sectionData->submenus)
+                && count($sectionData->submenus) > 0
+                && !$subsection->hasSubsections();
+
+            if ($emptyShowableSubsections) {
+                continue;
+            }
 
             if ($subsection->_hasAccess() &&
                     $subsection->isShowable()) {

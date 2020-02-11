@@ -195,7 +195,12 @@ class Klear_Model_YamlStream
     {
         // Check expression has only allowed tokens
         $expr = Klear_Model_YamlExpression::checkTokens("return (" . $data[1] . ");");
-        $value = (bool) eval ($expr);
+        try {
+            $value = (bool) eval ($expr);
+        } catch (\ParseError $e) {
+            return 'false';
+        }
+
         return $value ? 'true' : 'false';
     }
 
