@@ -140,6 +140,12 @@ class Klear_AssetsController extends Zend_Controller_Action
         $this->_sendRaw($binFile);
     }
 
+    public function templateAction()
+    {
+        $file = $this->_buildPath('/assets/template/');
+        return $this->_returnFile($file);
+    }
+
 
     public function cssImageAction()
     {
