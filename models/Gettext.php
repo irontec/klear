@@ -1,8 +1,7 @@
 <?php
+
 class Klear_Model_Gettext
 {
-
-
     /**
      * Miramos "a lo gettext para traducirlo automáticamente"
      *
@@ -13,7 +12,7 @@ class Klear_Model_Gettext
 
         $validFunctions = array("ngettext","_");
 
-        $string = trim($string);
+        $string = is_null($string) ? '' : trim($string);
 
         //Detectamos que el literal no esté contenido en una de las funciones gettext
 
@@ -129,8 +128,6 @@ class Klear_Model_Gettext
                 break;
         }
 
-        Throw Exception("Invalid function in gettext");
-
-
+        throw new Exception("Invalid function in gettext");
     }
 }

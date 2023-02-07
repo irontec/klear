@@ -120,10 +120,10 @@ var console = window.console || { log : function() {}};
         {
             load: {
                 'jquery.min.js': 'timeout=1000!cdnCheck!base!js/libs/jquery.min.js',
-                'jquery.tmpl.min.js': 'timeout=1000!cdnCheckbase!js//libs/jquery.tmpl.js',
-                'jquery-ui.min.js': 'other!timeout=1000!cdnCheck!base!js//libs/jquery-ui.min.js',
+                'jquery.tmpl.min.js': 'timeout=1000!cdnCheckbase!js/libs/jquery.tmpl.js',
+                'jquery-ui.min.js': 'other!timeout=1000!cdnCheck!base!js/libs/jquery-ui.min.js',
                 'ie-jquery-ui.min.js': 'ielt10!cdnCheck!base!js/libs/ie-jquery-ui.js',
-                'jquery-ui-i18n.min.js': 'timeout=1000!cdnCheck!base!js//libs/jquery-ui-i18n.min.js'
+                'jquery-ui-i18n.min.js': 'timeout=1000!cdnCheck!base!js/libs/jquery-ui-i18n.min.js'
             },
             callback : function(url, i, idx) {
                 switch(idx) {

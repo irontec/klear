@@ -37,7 +37,7 @@ if ($this->SiteConfig()->getDisableCDN()) {
 
 <?php
     $favIcon = $this->SiteConfig()->getFavIcon();
-    if (trim($favIcon) == "") {
+    if (is_null($favIcon) || trim($favIcon) == "") {
         $favIcon = 'images/favicon.ico';
     }
 

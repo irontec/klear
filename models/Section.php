@@ -10,9 +10,9 @@ class Klear_Model_Section  implements \IteratorAggregate
     protected $_iden;
 
     protected $_name;
-    
+
     protected $_meta;
-     
+
     protected $_description;
 
     protected $_showOnlyIf = true;
@@ -24,10 +24,10 @@ class Klear_Model_Section  implements \IteratorAggregate
     protected $_subsections = array();
 
     protected $_skip = array();
-    
+
     protected $_default = false;
 
-    public function getIterator()
+    public function getIterator(): Traversable
     {
         return new \ArrayIterator($this->_subsections);
     }
@@ -49,7 +49,7 @@ class Klear_Model_Section  implements \IteratorAggregate
         $this->_meta = $meta;
         return $this;
     }
-    
+
     public function setParentMenu($menu)
     {
         $this->_menu = $menu;
@@ -73,7 +73,7 @@ class Klear_Model_Section  implements \IteratorAggregate
         $this->_name = $config->getRequiredProperty("title");
         $this->_description = $config->getProperty("description");
         $this->_meta = $config->getProperty("meta");
-        
+
         if ($config->exists("showOnlyIf")) {
             $this->_showOnlyIf = (bool)$config->getProperty("showOnlyIf");
         }
@@ -81,7 +81,7 @@ class Klear_Model_Section  implements \IteratorAggregate
         $this->_class = $config->getProperty("class");
         $this->_default = (bool)$config->getProperty("default");
 
-        
+
         if (!isset($data->submenus) ||
                 empty($data->submenus) ||
                     !$this->_showOnlyIf) {
@@ -92,7 +92,7 @@ class Klear_Model_Section  implements \IteratorAggregate
 
 
             if (in_array($file, $this->_skip)) continue;
-            
+
             $subsection = new Klear_Model_SubSection;
 
             $subsection
@@ -113,7 +113,7 @@ class Klear_Model_Section  implements \IteratorAggregate
     {
         return $this->_showOnlyIf;
     }
-    
+
     public function getIden()
     {
         return $this->_iden;
@@ -123,7 +123,7 @@ class Klear_Model_Section  implements \IteratorAggregate
     {
         return $this->_meta;
     }
-    
+
     public function getName()
     {
         return Klear_Model_Gettext::gettextCheck($this->_name);
