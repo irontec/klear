@@ -2,8 +2,7 @@
 
 class Klear_Model_JQueryUIThemeParser
 {
-
-    const filename = 'jquery-ui-themes.yaml';
+    final const filename = 'jquery-ui-themes.yaml';
 
     protected $_config;
 
@@ -13,8 +12,8 @@ class Klear_Model_JQueryUIThemeParser
     public function setLocalExtraConfigFile($localFile)
     {
         $localFile = APPLICATION_PATH
-                   . DIRECTORY_SEPARATOR
-                   .  $localFile;
+                    . DIRECTORY_SEPARATOR
+                    .  $localFile;
 
         if (file_exists($localFile)) {
 
@@ -62,8 +61,7 @@ class Klear_Model_JQueryUIThemeParser
         $cssAssetsPath = implode(DIRECTORY_SEPARATOR, $cssAssetsPath);
 
         if (!file_exists($cssAssetsPath)) {
-
-            Throw new Zend_Exception("No existe el fichero de configuración de estilos (jQuery UI)");
+            throw new Zend_Exception("No existe el fichero de configuración de estilos (jQuery UI)");
         }
 
         $cache = $this->_getCache($cssAssetsPath);
@@ -88,8 +86,8 @@ class Klear_Model_JQueryUIThemeParser
     protected function _parseForTheme(Zend_Config $config, $targetTheme)
     {
         foreach ($config->themes as $_theme) {
-            if ($targetTheme === trim($_theme)) {
-                $themePath = str_replace('%theme%', $_theme, $config->baseurl);
+            if ($targetTheme === trim((string) $_theme)) {
+                $themePath = str_replace('%theme%', $_theme, (string) $config->baseurl);
                 return $themePath;
             }
         }
@@ -120,13 +118,13 @@ class Klear_Model_JQueryUIThemeParser
 
             foreach ($this->_localConfig->themes as $_theme) {
 
-                if ($theme === trim($_theme)) {
+                if ($theme === trim((string) $_theme)) {
                     return
-                        str_replace('%theme%', $_theme, $this->_localBaseUrl);
+                        str_replace('%theme%', $_theme, (string) $this->_localBaseUrl);
                 }
             }
         }
 
-        Throw new Zend_Exception("No existe una configuración de estilos válida");
+        throw new Zend_Exception("No existe una configuración de estilos válida");
     }
 }

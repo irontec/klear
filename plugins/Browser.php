@@ -6,7 +6,6 @@ class Klear_Plugin_Browser extends Zend_Controller_Plugin_Abstract
 {
     protected $_mainConfig;
 
-
     /**
      * Este método se ejecuta una vez se ha matcheado la ruta adecuada
      * (non-PHPdoc)
@@ -28,17 +27,16 @@ class Klear_Plugin_Browser extends Zend_Controller_Plugin_Abstract
         $bootstrap = $front->getParam('bootstrap')->getResource('modules')->offsetGet('klear');
         $config = $bootstrap->getOption("klearBaseConfigFast");
         if (!isset($config->main)) {
-           throw new Klear_Exception_MissingConfiguration('Main section is required on Browser Plugin');
+            throw new Klear_Exception_MissingConfiguration('Main section is required on Browser Plugin');
         }
         $this->_mainConfig = $config->main;
-
     }
 
     protected function _checkForbiddenExplorers()
     {
         if ($this->_mainConfig->noIE) {
             $regex = "/(MSIE|Trident|Edge)/";
-            if (preg_match($regex, $_SERVER['HTTP_USER_AGENT'])) {
+            if (preg_match($regex, (string) $_SERVER['HTTP_USER_AGENT'])) {
                 echo "<center><font face='arial'>";
                 echo "<h2>Lo sentimos, tu navegador no está soportado. / We are sorry. We don't support your browser.</h2>";
                 echo "<p>".$_SERVER['HTTP_USER_AGENT']."</p>";

@@ -279,16 +279,16 @@ class Klear_Model_SiteConfig
                 $this->_session = new Zend_Session_Namespace('UserSettings');
             }
 
-            $configTheme = isset($config->jqueryUI->theme)? $config->jqueryUI->theme: null;
+            $configTheme = $config->jqueryUI->theme ?? null;
 
-            $configThemePath = isset($config->jqueryUI->path)? $config->jqueryUI->path: null;
+            $configThemePath = $config->jqueryUI->path ?? null;
             if ($configThemePath && !$configTheme) {
                 $configTheme = $configThemePath;
             }
             $themes = $this->getThemeRoller(null);
 
             if ($requestedTheme) {
-                $requestedTheme = trim($requestedTheme);
+                $requestedTheme = trim((string) $requestedTheme);
                 if (array_key_exists($requestedTheme, $themes)) {
                     $this->_session->theme = $requestedTheme;
                 }
@@ -301,8 +301,6 @@ class Klear_Model_SiteConfig
                     $configThemePath = $themes[$configTheme];
                 }
             }
-
-
 
             if (!$configThemePath) {
                 $themeParser = new Klear_Model_JQueryUIThemeParser;
@@ -317,10 +315,8 @@ class Klear_Model_SiteConfig
                 $this->_jqueryUICustomTheme = $configThemePath;
                 $this->_currentTheme = $configTheme;
             }
-
-
         } else {
-            Throw new Zend_Exception("No existe una configuración de estilos válida");
+            throw new Zend_Exception("No existe una configuración de estilos válida");
         }
     }
 

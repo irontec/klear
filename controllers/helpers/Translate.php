@@ -1,11 +1,11 @@
 <?php
+
 //require_once('Zend/Controller/Action/Helper/Abstract.php');
 //require_once('Zend/Controller/Action/Exception.php');
 
 /**
  * Action Helper para lanzar el translate en el controlador
  * @author Alayn Gortazar <alayn+karma@irontec.com>
- *
  */
 class Klear_Controller_Helper_Translate extends Zend_Controller_Action_Helper_Abstract
 {
@@ -78,7 +78,7 @@ class Klear_Controller_Helper_Translate extends Zend_Controller_Action_Helper_Ab
      * @throws Zend_Controller_Action_Exception When no or a false instance was set
      * @return Klear_Controller_Action_Helper_Translate
      */
-    public function setTranslator($translate)
+    public function setTranslator(\Zend_Translate|\Zend_Translate_Adapter $translate)
     {
         if ($translate instanceof Zend_Translate_Adapter) {
             $this->_translator = $translate;
@@ -116,7 +116,7 @@ class Klear_Controller_Helper_Translate extends Zend_Controller_Action_Helper_Ab
      * @throws Zend_Controller_Action_Exception When no Zend_Translate instance was set
      * @return Fhecor_Controller_Action_Helper_Translate
      */
-    public function setLocale($locale = null)
+    public function setLocale(string|\Zend_Locale $locale = null)
     {
 
         $translate = $this->getTranslator();
@@ -134,9 +134,8 @@ class Klear_Controller_Helper_Translate extends Zend_Controller_Action_Helper_Ab
      * Returns the set locale for translations
      *
      * @throws Zend_Controller_Action_Exception When no Zend_Translate instance was set
-     * @return string|Zend_Locale
      */
-    public function getLocale()
+    public function getLocale(): string|\Zend_Locale
     {
         $translate = $this->getTranslator();
         if ($translate === null) {

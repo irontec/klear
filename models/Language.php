@@ -1,7 +1,6 @@
 <?php
 
-
-class Klear_Model_Language
+class Klear_Model_Language implements \Stringable
 {
     protected $_iden;
     protected $_title;
@@ -18,9 +17,9 @@ class Klear_Model_Language
         'zh-HK', 'zh-TW'
     );
 
-    public function __toString()
+    public function __toString(): string
     {
-        return $this->_title;
+        return (string) $this->_title;
     }
 
     public function setConfig(Zend_Config $config)
@@ -95,13 +94,13 @@ class Klear_Model_Language
             return $this->_locale;
         }
 
-        $locale = str_replace("_", "-", $this->_locale);
+        $locale = str_replace("_", "-", (string) $this->_locale);
 
         if (in_array($locale, $this->_jQLocales)) {
             return $locale;
         }
 
-        list($locale,) = explode("-", $locale, 2);
+        [$locale, ] = explode("-", $locale, 2);
         if (in_array($locale, $this->_jQLocales)) {
             return $locale;
         }
@@ -119,5 +118,4 @@ class Klear_Model_Language
             'jqLocale' => $this->getJqLocale()
         );
     }
-
 }

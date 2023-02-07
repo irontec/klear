@@ -90,13 +90,13 @@ class Klear_Model_Gettext
                     // Literal string (con comillas o espacios en blanco)
                     // Literal número
                     if (($curFunction === false) || ($opened == 0)) {
-                        Throw new Exception("Invalid gettext string");
+                        throw new Exception("Invalid gettext string");
                     }
                     if ($opened == 0) {
                         $literal .= $token[1];
                     }
                     if ($opened == 1) {
-                        $arguments[] = preg_replace("|^[\'\"](.*)[\'\"]$|", "$1", $token[1]);
+                        $arguments[] = preg_replace("|^[\'\"](.*)[\'\"]$|", "$1", (string) $token[1]);
                     }
 
                     break;

@@ -14,17 +14,16 @@ class Klear_Model_SectionConfig
 
     public function setFile($file)
     {
-
         $filePath = 'klear.yaml://' . $file;
 
         /*
          * Carga configuración de la sección cargada según la request.
         */
         $cache = $this->_getCache($filePath);
-        
+
         $keyGenerator = new \Klear_Model_CacheKeyGenerator($filePath);
         $cacheKey = $keyGenerator->getKey();
-        
+
         $this->_config = $cache->load($cacheKey);
 
         if (!$this->_config) {
@@ -49,28 +48,25 @@ class Klear_Model_SectionConfig
             $cache->save($this->_config);
         }
 
-
         $this->setConfig($this->_config);
     }
 
     protected function _getCache($filePath)
     {
         $cacheManager = Zend_Controller_Front::getInstance()
-        ->getParam('bootstrap')
-        ->getResource('cachemanager');
+            ->getParam('bootstrap')
+            ->getResource('cachemanager');
 
         $cache = $cacheManager->getCache('klearconfig');
         $cache->setMasterFile($filePath);
         return $cache;
     }
 
-
-
     public function _parseConfigErrorHandler($errno, $errstr, $errfile, $errline, $filePath)
     {
         $contents = file($filePath);
         $errorMessage = $errstr;
-        if (preg_match('/line (?<lineNumber>\d+)/', $errstr, $matches)) {
+        if (preg_match('/line (?<lineNumber>\d+)/', (string) $errstr, $matches)) {
             $errorContents = $contents[$matches['lineNumber'] - 2];
             $errorContents .= '<strong class="errorLine">' . $contents[$matches['lineNumber'] - 1] . '</strong>';
             $errorContents .= $contents[$matches['lineNumber']];
@@ -88,18 +84,16 @@ class Klear_Model_SectionConfig
     {
         // TODO: Control de errores, configuración mal seteada
         $this->_selectedModule = $config->main->module;
-        $this->_moduleConfigClass = ucfirst(($this->_selectedModule)) . '_Model_MainConfig';
+        $this->_moduleConfigClass = ucfirst((string) $this->_selectedModule) . '_Model_MainConfig';
     }
 
     public function isValid()
     {
-        return
-            method_exists($this->_moduleConfigClass, 'setConfig');
+        return method_exists($this->_moduleConfigClass, 'setConfig');
     }
 
     public function factoryModuleConfig()
     {
-
         $moduleConfig = new $this->_moduleConfigClass;
         $moduleConfig->setConfig($this->_config);
         return $moduleConfig;

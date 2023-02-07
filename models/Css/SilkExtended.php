@@ -1,4 +1,5 @@
 <?php
+
 class Klear_Model_Css_SilkExtended //TODO klear_Model_Css_Abstract
 {
     /**
@@ -25,7 +26,7 @@ class Klear_Model_Css_SilkExtended //TODO klear_Model_Css_Abstract
         $front = Zend_Controller_Front::getInstance();
         $this->_generate = $front->getRequest()->getParam('generate', false);
 
-        $this->_iconsPath = dirname(APPLICATION_PATH) . '/public' . $config->silkExtendedIconPath;
+        $this->_iconsPath = dirname((string) APPLICATION_PATH) . '/public' . $config->silkExtendedIconPath;
         $this->_iconsCache = dirname($this->_iconsPath) . '/cache';
 
         $this->_getIcons();
@@ -33,11 +34,12 @@ class Klear_Model_Css_SilkExtended //TODO klear_Model_Css_Abstract
 
     protected function _getFiles()
     {
-        $classClean = array(
+        $files = [];
+        $classClean = [
             '.png' => '',
             '_' => '-',
             ' ' => '-'
-        );
+        ];
         $dir = opendir($this->_iconsPath);
         while (($file = readdir($dir)) !== false) {
             $pathInfo = pathinfo($file);

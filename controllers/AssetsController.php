@@ -23,7 +23,6 @@ class Klear_AssetsController extends Zend_Controller_Action
 
     public function init()
     {
-
         $this->_applyStrongCache = ("production" === APPLICATION_ENV);
         $this->_applyStrongCache = true;
 
@@ -37,9 +36,9 @@ class Klear_AssetsController extends Zend_Controller_Action
         );
 
         $this->_siteConfig = $this->getInvokeArg('bootstrap')
-                                  ->getResource('modules')
-                                  ->offsetGet('klear')
-                                  ->getOption('siteConfig');
+            ->getResource('modules')
+            ->offsetGet('klear')
+            ->getOption('siteConfig');
     }
 
     protected function _buildPath($base)
@@ -51,7 +50,7 @@ class Klear_AssetsController extends Zend_Controller_Action
 
     protected function _getFileExtension($file)
     {
-        $pathInfo = pathinfo($file);
+        $pathInfo = pathinfo((string) $file);
         return $pathInfo['extension'];
     }
 
@@ -63,14 +62,12 @@ class Klear_AssetsController extends Zend_Controller_Action
          */
         if (file_exists($file)) {
 
-            if (strpos(mime_content_type($file), 'image') !== false) {
-
+            if (str_contains(mime_content_type($file), 'image')) {
                 return $this->_sendImage($file);
-
             } else {
 
                 $fileType = $this->_getFileExtension($file);
-                if (!isset($this->_allowedFileTypes[strtolower($fileType)])) {
+                if (!isset($this->_allowedFileTypes[strtolower((string) $fileType)])) {
                     throw new \Klear_Exception_Default($this->_helper->translate('Forbidden file type'));
                 }
 
@@ -90,13 +87,13 @@ class Klear_AssetsController extends Zend_Controller_Action
 
     public function cssExtendedAction()
     {
+        $file = null;
         $cssExtendedConfig = $this->_siteConfig->getCssExtendedConfig();
 
         if ($cssExtendedConfig) {
-
             $pluginClass = "Klear_Model_Css_";
             $pluginName = $this->getRequest()->getParam('plugin');
-            $pluginParts = explode('-', $pluginName);
+            $pluginParts = explode('-', (string) $pluginName);
 
             foreach ($pluginParts as $part) {
                 $pluginClass .= ucfirst($part);
@@ -127,7 +124,6 @@ class Klear_AssetsController extends Zend_Controller_Action
         $this->_returnFile($cssFile);
     }
 
-
     public function cssAction()
     {
         $cssFile = $this->_buildPath('/assets/css/');
@@ -139,7 +135,6 @@ class Klear_AssetsController extends Zend_Controller_Action
         $binFile = $this->_buildPath('/assets/bin/');
         $this->_sendRaw($binFile);
     }
-
 
     public function cssImageAction()
     {
@@ -221,7 +216,7 @@ class Klear_AssetsController extends Zend_Controller_Action
     {
         $modifiedHeader = $this->getRequest()->getHeader('IF-MODIFIED-SINCE');
         if ($modifiedHeader) {
-            if ($lastModifiedTime == strtotime($modifiedHeader)) {
+            if ($lastModifiedTime == strtotime((string) $modifiedHeader)) {
                 return true;
             }
         }
@@ -243,14 +238,13 @@ class Klear_AssetsController extends Zend_Controller_Action
 
         $cache = $this->_getFileCache($file);
 
-        $id = sha1($file);
+        $id = sha1((string) $file);
         $fileContents = $cache->load($id);
         $headers = $cache->load("headers" . $id);
 
         if ((false === $fileContents) || (false === $headers)) {
-
             $fileContents = $this->_getContents($file, $type);
-            $fileContentType = $this->_allowedFileTypes[strtolower($type)];
+            $fileContentType = $this->_allowedFileTypes[strtolower((string) $type)];
 
             $headers = array();
 
@@ -259,7 +253,7 @@ class Klear_AssetsController extends Zend_Controller_Action
             }
 
             $headers['Content-type'] = $fileContentType;
-            $headers['Content-length'] = mb_strlen($fileContents);
+            $headers['Content-length'] = mb_strlen((string) $fileContents);
 
             $cache->save($fileContents, $id);
             $cache->save($headers, 'headers' . $id);
@@ -324,7 +318,7 @@ class Klear_AssetsController extends Zend_Controller_Action
             }
 
             if ($this->_applyStrongCache) {
-                switch(strtolower($type)) {
+                switch (strtolower((string) $type)) {
                     case "js":
                         $minifier = new Iron_Minify_JsMin($data);
                         break;
@@ -342,7 +336,6 @@ class Klear_AssetsController extends Zend_Controller_Action
 
     public function jsTranslationAction()
     {
-
         $front = $this->getFrontController();
         $moduleDirectory = $front->getModuleDirectory($this->getRequest()->getParam('moduleName'));
 
@@ -362,8 +355,7 @@ class Klear_AssetsController extends Zend_Controller_Action
         $aLines = array();
 
         foreach ($jsTranslations as $literal) {
-
-            $key = str_replace(array('\'', '"'), '', $literal);
+            $key = str_replace(array('\'', '"'), '', (string) $literal);
             $value = $this->_helper->translate($literal);
 
             if (is_array($value)) {
@@ -373,7 +365,7 @@ class Klear_AssetsController extends Zend_Controller_Action
             $value = str_replace(
                 array('\\\'', '"'),
                 array('\'', '\"'),
-                $value
+                (string) $value
             );
 
             $aLines[] = '"'.$key.'" : "'.$value.'"';
@@ -404,6 +396,4 @@ class Klear_AssetsController extends Zend_Controller_Action
 
         $response->sendHeaders();
     }
-
 }
-

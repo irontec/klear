@@ -1,12 +1,12 @@
-<?php 
+<?php
 $module = 'klear';
 $paths = array();
-$baseDir = dirname(dirname(dirname(__DIR__)));
+$baseDir = dirname(__DIR__, 3);
 
-if (isset($argv[1]) 
-        && isset($argv[2]) 
+if (isset($argv[1])
+        && isset($argv[2])
         && $argv[1] == '--module') {
-    
+
     $module = $argv[2];
 }
 
@@ -34,17 +34,17 @@ foreach ($paths as $path) {
     if (!is_dir($dir)) {
         echo "Path " . $dir . " not found.\n";
         exit;
-    } 
+    }
     if ($dirHandle = opendir($dir)) {
         while (false !== ($entry = readdir($dirHandle))) {
             $entryInfo = pathinfo($entry);
             if (isset($entryInfo['extension']) && $entryInfo['extension'] == 'js') {
                 //TODO: Hay que mejorar la expresión pero ya.
                 $contents = file_get_contents($dir . $entry);
-                
+
                 preg_match_all('/\$\.translate\([\"|\'](.*)[\"|\'][,|\)]/iU', $contents, $result);
-                
-                $count = count($result[1]);
+
+                $count = is_countable($result[1]) ? count($result[1]) : 0;
                 if ($count<=0) {
                     continue;
                 }
@@ -54,10 +54,10 @@ foreach ($paths as $path) {
             }
         }
         closedir($dirHandle);
-    }   
+    }
 }
 $strings = array_unique($strings);
-   
+
 $translationFilePath = implode(
     DIRECTORY_SEPARATOR,
     array(
@@ -73,4 +73,3 @@ file_put_contents($translationFilePath, $fileContents);
 echo count($strings) . " unique strings found.\n";
 echo $translationFilePath . " ... Saved!\n";
 exit;
-?>

@@ -10,13 +10,12 @@
  */
 class Klear_Model_SimpleResponse
 {
-    const RESPONSE_TYPE = 'simple';
+    final const RESPONSE_TYPE = 'simple';
     protected $_data;
 
     public function setData($data)
     {
         $this->_data = $data;
-
         return $this;
     }
 

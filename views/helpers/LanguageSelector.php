@@ -13,14 +13,13 @@ class Klear_View_Helper_LanguageSelector extends Klear_View_Helper_Base
 
         if ($langs = $this->_view->SiteConfig()->getLangs()) {
 
-            if (count($langs) > 1) {
-
+            if ((is_countable($langs) ? count($langs) : 0) > 1) {
                 $ret .= '<div id="loginTools">
                 <div id="loginToolsbar">';
 
                 $ret .= '<input type="checkbox" id="langPickerLogin" '.
                         '/><label for="langPickerLogin" title="' .
-                         $this->_view->translate("Change language") . 
+                        $this->_view->translate("Change language") .
                         '" class="ui-corner-right">' .
                         '<span class="ui-icon ui-icon-flag " ></span>' .
                         '</label>';
@@ -34,7 +33,7 @@ class Klear_View_Helper_LanguageSelector extends Klear_View_Helper_Base
                         $ret .= ' checked="checked"';
                     }
 
-                    $ret .= '/><label for="lang' . $_langIden . 'Login" 
+                    $ret .= '/><label for="lang' . $_langIden . 'Login"
                             title="' . $lang . '" class="expanded pickableLanguage">' .
                             $lang .
                             '</label>';

@@ -46,7 +46,8 @@ class Klear_View_Helper_Toolsbar extends Klear_View_Helper_Base
                 }
             }
         }
-        if (count($themeRoller) > 0) {
+
+        if ((is_countable($themeRoller) ? count($themeRoller) : 0) > 0) {
             $ret .= '
                     <input type="checkbox"
                         id="themeRoller"
@@ -82,6 +83,5 @@ class Klear_View_Helper_Toolsbar extends Klear_View_Helper_Base
                 '</label>';
 
         return $ret;
-
     }
 }

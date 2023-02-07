@@ -1,4 +1,5 @@
 <?php
+
 /**
  *
  *
@@ -7,7 +8,7 @@
  */
 class Klear_Plugin_Translator extends Zend_Controller_Plugin_Abstract
 {
-    const DEFAULT_REGISTRY_KEY = 'Klear_Translate';
+    final const DEFAULT_REGISTRY_KEY = 'Klear_Translate';
 
     /**
      * @var Zend_Controller_Front

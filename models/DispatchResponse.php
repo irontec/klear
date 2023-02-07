@@ -9,7 +9,7 @@
  */
 class Klear_Model_DispatchResponse
 {
-    const RESPONSE_TYPE = 'dispatch';
+    final const RESPONSE_TYPE = 'dispatch';
 
     protected $_jsFiles = array();
     protected $_cssFiles = array();
@@ -26,7 +26,7 @@ class Klear_Model_DispatchResponse
         }
 
         if (!$iden) {
-            $iden = crc32($tmpl);
+            $iden = crc32((string) $tmpl);
         }
 
         if (!empty($module)) {
@@ -65,7 +65,7 @@ class Klear_Model_DispatchResponse
             $script = $js;
         }
 
-        $this->_jsFiles['jsFile_' . crc32($js)] = $script;
+        $this->_jsFiles['jsFile_' . crc32((string) $js)] = $script;
     }
 
     public function addJsArray($aJs)
@@ -75,7 +75,7 @@ class Klear_Model_DispatchResponse
 
     public function addCssFile($css)
     {
-        $this->_cssFiles['cssFile_' . crc32($css)] = $css;
+        $this->_cssFiles['cssFile_' . crc32((string) $css)] = $css;
     }
 
     public function addCssArray($aCss)

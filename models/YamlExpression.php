@@ -1,8 +1,7 @@
 <?php
+
 class Klear_Model_YamlExpression
 {
-
-
     /**
      * Check a given YAML expression only has valid values
      *
@@ -12,7 +11,7 @@ class Klear_Model_YamlExpression
     {
         $validStringTokens = array("true", "false", ";", ">", "<", "(", ")");
         $string = trim($string);
-        $tokens = token_get_all("<?php " . $string . " ?>");
+        $tokens = \PhpToken::tokenize("<?php " . $string . " ?>");
 
         foreach ($tokens as $idToken => $token) {
 
@@ -24,10 +23,10 @@ class Klear_Model_YamlExpression
                 continue;
             }
 
-            switch(token_name($token[0])) {
+            switch($token->getTokenName()) {
                 case 'T_STRING':
                     // Check if the string is one of the supported strings
-                    if (!in_array($token[1], $validStringTokens)) {
+                    if (!in_array($token->text, $validStringTokens)) {
                         throw new Exception("Invalid token string in YAML expression:" . $string . ' ' . $token);
                     }
                     break;
@@ -48,7 +47,7 @@ class Klear_Model_YamlExpression
                 case 'T_BOOLEAN_OR':            // ||
                     break;
                 default:
-                    Throw Exception("Invalid token in YAML expression");
+                    throw new Exception("Invalid token in YAML expression");
                     break;
             }
         }

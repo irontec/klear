@@ -1,11 +1,11 @@
 <?php
+
 /**
  * Inicializa Error Handler
  *
  */
 class Klear_Plugin_Error extends Zend_Controller_Plugin_Abstract
 {
-
     protected $_defaultErrorMessage;
     protected $_lastException;
     protected $_front;
@@ -42,8 +42,6 @@ class Klear_Plugin_Error extends Zend_Controller_Plugin_Abstract
         $this->_initErrorHandler();
     }
 
-
-
     public function preDispatch(Zend_Controller_Request_Abstract $request)
     {
         $options = $this->_bootstrap->getOptions();
@@ -52,7 +50,6 @@ class Klear_Plugin_Error extends Zend_Controller_Plugin_Abstract
         } else {
             $this->_front->throwExceptions(false);
         }
-
     }
 
     protected function _initErrorHandler()
@@ -65,14 +62,14 @@ class Klear_Plugin_Error extends Zend_Controller_Plugin_Abstract
         }
 
         $error->setErrorHandlerModule('klear')
-              ->setErrorHandlerController('error')
-              ->setErrorHandlerAction('error');
+            ->setErrorHandlerController('error')
+            ->setErrorHandlerAction('error');
 
         $this->_defaultErrorMessage = "<h2>Internal Server Error</h2>".
-                "<p>Please contact the server administrator.</p>".
-                "<p>More information about this error may be availabe in the server syslog.</p>";
+            "<p>Please contact the server administrator.</p>".
+            "<p>More information about this error may be availabe in the server syslog.</p>";
 
-        set_exception_handler(array($this, "fallback_exception_handler"));
+        set_exception_handler($this->fallback_exception_handler(...));
         register_shutdown_function(array($this, "fatal_handler"));
     }
 
@@ -98,7 +95,6 @@ class Klear_Plugin_Error extends Zend_Controller_Plugin_Abstract
         $errorMsg = $error['message'] . " (".$error['type'].") in " .
                     $error["file"] . " +" . $error["line"];
 
-
         $logLevel = $critError == true ? 1 : 5;
         $this->_logger->log($errorMsg, $logLevel);
 
@@ -115,7 +111,6 @@ class Klear_Plugin_Error extends Zend_Controller_Plugin_Abstract
 
     public function fallback_exception_handler ($exception)
     {
-
         $currentException = $exception;
         if (!is_null($exception->getPrevious())) {
             $currentException = $exception->getPrevious();

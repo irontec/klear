@@ -6,9 +6,8 @@
  * No requieren carga de ficheros extra
  *
  * @author jabi
- *
  */
 class Klear_Model_RedirectResponse extends Klear_Model_SimpleResponse
 {
-    const RESPONSE_TYPE = 'redirect';
+    final const RESPONSE_TYPE = 'redirect';
 }

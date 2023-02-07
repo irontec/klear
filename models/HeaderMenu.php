@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @author lander
  */
@@ -20,9 +21,9 @@ class Klear_Model_HeaderMenu extends Klear_Model_Menu
 
             $section = new Klear_Model_Section;
             $section
-            ->setParentMenu($this)
-            ->setName($name)
-            ->setData($sectionData);
+                ->setParentMenu($this)
+                ->setName($name)
+                ->setData($sectionData);
 
             $this->_sections[] = $section;
         }
@@ -31,7 +32,7 @@ class Klear_Model_HeaderMenu extends Klear_Model_Menu
 
     protected function _identify($configKey)
     {
-        $method = '_parse'. ucfirst($configKey);
+        $method = '_parse'. ucfirst((string) $configKey);
         if (method_exists($this, $method)) {
             $this->{$method}($configKey);
             return true;

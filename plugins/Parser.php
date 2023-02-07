@@ -1,15 +1,16 @@
 <?php
+
 /**
  * Plugin encargado de inicializar ambas versiones de klear.yaml
  *
  */
 class Klear_Plugin_Parser extends Zend_Controller_Plugin_Abstract
 {
-
     protected $_bootstrap;
     protected $_configFilePath;
     protected $_filePath;
     protected $_bootstrapConfigIden = 'klearBaseConfig';
+
     /**
      * Este método que se ejecuta una vez se ha matcheado la ruta adecuada
      * (non-PHPdoc)
@@ -35,18 +36,15 @@ class Klear_Plugin_Parser extends Zend_Controller_Plugin_Abstract
         if (!$config) {
 
             $config = new Zend_Config_Yaml(
-                    $this->_filePath,
-                    APPLICATION_ENV,
-                    array(
-                            "yamldecoder" => "yaml_parse"
-                    )
+                $this->_filePath,
+                APPLICATION_ENV,
+                ["yamldecoder" => "yaml_parse"]
             );
             $cache->save($config, $cacheKey);
         }
 
         $this->_bootstrap->setOptions(array($this->_bootstrapConfigIden => $config));
     }
-
 
     protected function _initPlugin()
     {
@@ -59,7 +57,7 @@ class Klear_Plugin_Parser extends Zend_Controller_Plugin_Abstract
             throw new Klear_Exception_MissingConfiguration('Config File Path is required on Parser Plugin');
         }
 
-        $this->_filePath = 'klear.yaml://' . basename($this->_configFilePath);
+        $this->_filePath = 'klear.yaml://' . basename((string) $this->_configFilePath);
     }
 
     protected function _getCacheKey()

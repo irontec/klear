@@ -33,7 +33,7 @@ class Klear_Model_YamlStream
         $this->_resolveExpressions();
         $this->_fixGettextInvocations();
 
-        $this->_length = mb_strlen($this->_content, '8bit');
+        $this->_length = mb_strlen((string) $this->_content, '8bit');
 
         $this->_position = 0;
 
@@ -44,7 +44,7 @@ class Klear_Model_YamlStream
 
     protected function _getRealFilepath($path)
     {
-        $baseFile = str_replace($this->_protocol, '', $path);
+        $baseFile = str_replace($this->_protocol, '', (string) $path);
 
         // TODO: sanitize file param
         $file = APPLICATION_PATH . '/configs/klear/' . trim($baseFile);
@@ -88,7 +88,7 @@ class Klear_Model_YamlStream
 
         while ($line = fgets($fp)) {
             if (preg_match("/^\#include\s+([a-z0-9\/\._\-]+)/i", $line, $matches)) {
-                $confFile = realpath(dirname($file) . DIRECTORY_SEPARATOR .  $matches[1]);
+                $confFile = realpath(dirname((string) $file) . DIRECTORY_SEPARATOR .  $matches[1]);
 
                 if ($confFile) {
                     //Nos aseguramos de no incluir un mismo fichero 2 veces
@@ -114,7 +114,7 @@ class Klear_Model_YamlStream
      */
     protected function _walkDataSublevels($path, $data)
     {
-        $pathSegments = explode(".", $path);
+        $pathSegments = explode(".", (string) $path);
         $target = array_shift($pathSegments);
         $path = implode(".", $pathSegments);
 
@@ -129,7 +129,7 @@ class Klear_Model_YamlStream
 
             case is_object($data):
 
-                $nextLevel = isset($data->$target) ? $data->$target : null;
+                $nextLevel = $data->$target ?? null;
                 break;
 
             default:
@@ -148,7 +148,7 @@ class Klear_Model_YamlStream
     protected function _parseVariables($data)
     {
         switch(true) {
-            case preg_match("/auth\.(.*)/", $data[1], $result):
+            case preg_match("/auth\.(.*)/", (string) $data[1], $result):
 
                 $auth = Zend_Auth::getInstance();
 
@@ -164,7 +164,7 @@ class Klear_Model_YamlStream
                 }
                 break;
 
-            case preg_match("/params\.(.*)/", $data[1], $result):
+            case preg_match("/params\.(.*)/", (string) $data[1], $result):
                 $request = Zend_Controller_Front::getInstance()->getRequest();
                 if (is_array($request)) {
                     $request = implode(',', $request);
@@ -186,8 +186,8 @@ class Klear_Model_YamlStream
     {
         $this->_content = preg_replace_callback(
             '/\$\{([^\}]*)\}/',
-            array($this, '_parseVariables'),
-            $this->_content
+            $this->_parseVariables(...),
+            (string) $this->_content
         );
     }
 
@@ -203,31 +203,28 @@ class Klear_Model_YamlStream
     {
         $this->_content = preg_replace_callback(
             '/\$\[([^\]]*)\]/',
-            array($this, '_parseExpression'),
-            $this->_content
+            $this->_parseExpression(...),
+            (string) $this->_content
         );
     }
 
     protected function _fixGettext($data)
     {
-        return ': "' . str_replace('"', '\\"', $data[2]). '"';
+        return ': "' . str_replace('"', '\\"', (string) $data[2]). '"';
     }
 
     protected function _fixGettextInvocations()
     {
-
         $this->_content = preg_replace_callback(
             '/:\s?(["\']{0,1})((_|ngettext)\(.*\))(["\';]{0,1})/',
-            array($this, '_fixGettext'),
-            $this->_content
+            $this->_fixGettext(...),
+            (string) $this->_content
         );
-
     }
-
 
     public function stream_read($count)
     {
-        $chunk = mb_substr($this->_content, $this->_position, $count, '8bit');
+        $chunk = mb_substr((string) $this->_content, $this->_position, $count, '8bit');
         $this->_position += $count;
         if ($this->_position > $this->_length) {
             $this->_position = $this->_length;
@@ -257,7 +254,7 @@ class Klear_Model_YamlStream
             case SEEK_SET:
                 if ($offset < $this->_length && $offset >= 0) {
                     $this->_position = $offset;
-                     return true;
+                    return true;
                 } else {
                     return false;
                 }
@@ -265,19 +262,19 @@ class Klear_Model_YamlStream
 
             case SEEK_CUR:
                 if ($offset >= 0) {
-                     $this->_position += $offset;
-                     return true;
+                    $this->_position += $offset;
+                    return true;
                 } else {
-                     return false;
+                    return false;
                 }
                 break;
 
             case SEEK_END:
                 if ($this->_length  + $offset >= 0) {
-                     $this->_position = $this->_length + $offset;
-                     return true;
+                    $this->_position = $this->_length + $offset;
+                    return true;
                 } else {
-                     return false;
+                    return false;
                 }
                 break;
 
@@ -303,5 +300,4 @@ class Klear_Model_YamlStream
         $this->_file = $this->_getRealFilepath($path);
         return stat($this->_file);
     }
-
 }
