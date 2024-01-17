@@ -6,6 +6,7 @@
 * @author jabi
 *
 */
+#[AllowDynamicProperties]
 class Klear_Model_YamlStream
 {
     protected $_protocol = 'klear.yaml://';
